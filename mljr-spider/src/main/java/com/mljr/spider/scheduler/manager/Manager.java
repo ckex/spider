@@ -3,30 +3,35 @@
  */
 package com.mljr.spider.scheduler.manager;
 
-import java.io.File;
-
-import com.mljr.spider.processor.SogouMobileProcessor;
-import com.mljr.spider.scheduler.*;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.nio.reactor.IOReactorException;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
 import com.mljr.spider.processor.BaiduMobileProcessor;
 import com.mljr.spider.processor.JuheMobileProcessor;
 import com.mljr.spider.processor.SaiGeGPSProcessor;
+import com.mljr.spider.processor.SogouMobileProcessor;
+import com.mljr.spider.scheduler.*;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
 import com.ucloud.umq.common.ServiceConfig;
-
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.nio.reactor.IOReactorException;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Ckex zha </br>
@@ -55,7 +60,7 @@ public class Manager extends AbstractMessage {
 	public void run() throws Exception {
 		// DistributionMessage dis = new
 		// DistributionMessage(getPullMsgTask(JUHE_MOBILE_RPC_QUEUE_ID));
-		// startSaiGeGPS();
+		 startSaiGeGPS();
 		//startJuheMobile();
 		//startBaiduMobile();
 		startSogouMobile();
@@ -113,10 +118,31 @@ public class Manager extends AbstractMessage {
 				.addPipeline(new LogPipeline(GPS_LOG_NAME)).setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(DEFAULT_THREAD_POOL);
-		final AbstractScheduler scheduler = new SaiGeGPSScheduler(spider, getPullMsgTask(GPS_RPC_QUEUE_ID));
-		spider.setScheduler(scheduler);
-		spider.runAsync();
-		logger.info("Start SaiGeGPSProcessor finished. " + spider.toString());
+		final Channel channel = RabbitmqClient.newChannel();
+
+		RabbitmqClient.subscribeMessage(channel, GPS_RPC_QUEUE_ID, "", true, new DefaultConsumer(channel) {
+					@Override
+					public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
+							throws IOException {
+						String message = new String(body, "UTF-8");
+						System.out.println(" [x] Received '" + message + "'");
+						if (StringUtils.startsWithIgnoreCase(message, "gps")) {
+							final AbstractScheduler scheduler;
+							try {
+								scheduler = new SaiGeGPSScheduler(spider, GPS_RPC_QUEUE_ID);
+								spider.setScheduler(scheduler);
+								spider.runAsync();
+								logger.info("Start SaiGeGPSProcessor finished. " + spider.toString());
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+
+						}
+					}
+
+				}
+		);
+
 	}
 
 	//sogou 手机
