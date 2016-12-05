@@ -3,6 +3,7 @@
  */
 package com.mljr.sync.main;
 
+import com.mljr.sync.schedule.SyncScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -30,8 +31,8 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		ctx = new ClassPathXmlApplicationContext(new String[] { "classpath*:/spring/dao.xml",
 				"classpath*:/spring/dao-datasource.xml", "classpath*:/spring/applicationContext.xml" });
-		// SyncScheduler scheduler = ctx.getBean(SyncScheduler.class);
-		// logger.debug("started . " + scheduler.toString());
+		 SyncScheduler scheduler = ctx.getBean(SyncScheduler.class);
+		 logger.debug("started . " + scheduler.toString());
 	}
 
 }

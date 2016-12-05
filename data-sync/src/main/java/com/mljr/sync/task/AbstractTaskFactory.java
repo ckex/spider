@@ -12,4 +12,6 @@ public abstract class AbstractTaskFactory {
 
 	public abstract MobileTask createMobileTask();
 
+	public abstract GPSTask createGPSTask();
+
 }

@@ -5,6 +5,8 @@ package com.mljr.spider.scheduler.manager;
 
 import java.io.File;
 
+import com.mljr.spider.processor.SogouMobileProcessor;
+import com.mljr.spider.scheduler.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.nio.reactor.IOReactorException;
 
@@ -16,10 +18,6 @@ import com.mljr.spider.listener.DownloaderSpiderListener;
 import com.mljr.spider.processor.BaiduMobileProcessor;
 import com.mljr.spider.processor.JuheMobileProcessor;
 import com.mljr.spider.processor.SaiGeGPSProcessor;
-import com.mljr.spider.scheduler.AbstractScheduler;
-import com.mljr.spider.scheduler.BaiduMobileScheduler;
-import com.mljr.spider.scheduler.JuheMobileScheduler;
-import com.mljr.spider.scheduler.SaiGeGPSScheduler;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
@@ -58,8 +56,9 @@ public class Manager extends AbstractMessage {
 		// DistributionMessage dis = new
 		// DistributionMessage(getPullMsgTask(JUHE_MOBILE_RPC_QUEUE_ID));
 		// startSaiGeGPS();
-		startJuheMobile();
-		startBaiduMobile();
+		//startJuheMobile();
+		//startBaiduMobile();
+		startSogouMobile();
 		// dis.start();
 	}
 
@@ -118,6 +117,22 @@ public class Manager extends AbstractMessage {
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start SaiGeGPSProcessor finished. " + spider.toString());
+	}
+
+	//sogou 手机
+	private void startSogouMobile() throws Exception{
+		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		final Spider spider = Spider.create(new SogouMobileProcessor())
+				.addPipeline(pipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new SogouMobileScheduler(spider, RMQ_SOGOU_MOBILE_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start SogouMobileProcessor finished. " + spider.toString());
+
 	}
 
 }
