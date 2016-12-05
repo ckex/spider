@@ -36,7 +36,7 @@ import us.codecraft.webmagic.pipeline.Pipeline;
 public class Manager extends AbstractMessage {
 
 	private static final int QUEUE_SIZE = 10;
-	private static final String FILE_PATH = "/data/html";
+	private static final String FILE_PATH = "/data/test_html";
 	private final SpiderListener listener = new DownloaderSpiderListener();
 	private final AsyncHttpClient httpClient;
 	private final String url;

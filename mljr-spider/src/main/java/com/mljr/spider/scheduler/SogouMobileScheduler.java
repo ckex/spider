@@ -31,7 +31,7 @@ public class SogouMobileScheduler extends AbstractScheduler {
 
     @Override
     public boolean pushTask(Spider spider, UMQMessage message) {
-        String url = String.format(URL, message.message, message.message);
+        String url = String.format(URL, message.message);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         push(new Request(url), spider);
         return true;
