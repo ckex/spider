@@ -60,7 +60,7 @@ public class Manager extends AbstractMessage {
 	public void run() throws Exception {
 		// DistributionMessage dis = new
 		// DistributionMessage(getPullMsgTask(JUHE_MOBILE_RPC_QUEUE_ID));
-		 startSaiGeGPS();
+//		 startSaiGeGPS();
 		//startJuheMobile();
 		//startBaiduMobile();
 		startSogouMobile();
