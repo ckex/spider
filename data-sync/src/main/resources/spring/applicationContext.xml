@@ -36,5 +36,6 @@
 
 	<bean id="abstractTaskFactory" class="com.mljr.sync.task.AbstractTaskFactory">
 		<lookup-method name="createMobileTask" bean="mobileTask" />
+		<lookup-method name="createGPSTask" bean="GPSTask" />
 	</bean>
 </beans>
