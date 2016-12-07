@@ -187,4 +187,8 @@ public class ServiceConfig {
     public static String getHuoChePiaoBankCardPath(){
         return properties.getProperty("hcp.bank.card.path");
     }
+
+    public static String getCha67BankCardPath(){
+        return properties.getProperty("cha67.bank.card.path");
+    }
 }

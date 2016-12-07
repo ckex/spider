@@ -55,7 +55,8 @@ public class Manager extends AbstractMessage {
 //		startBaiduMobile();
 //		startSogouMobile();
 		//startGuabaBankCard();
-		startHuoChePiaoBankCard();
+		//startHuoChePiaoBankCard();
+		startCha67BankCard();
 		// dis.start();
 	}
 
@@ -169,6 +170,22 @@ public class Manager extends AbstractMessage {
 		logger.info("Start startHuoChePiaoBankCard finished. " + spider.toString());
 	}
 
+	//http://www.67cha.com 银行卡
+	private void startCha67BankCard() throws Exception {
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getCha67BankCardPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(new Cha67BankCardProcessor())
+				.addPipeline(htmlPipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new Cha67BankCardScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start startCha67BankCard finished. " + spider.toString());
+	}
 
 
 }
