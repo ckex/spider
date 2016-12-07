@@ -11,7 +11,7 @@ public class SogouMobileProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me()
             .setDomain("sogou-mobile") //此字段在生成文件时用到
-            .setSleepTime(5)
+            .setSleepTime(10000) //10秒请求一次
             .setRetrySleepTime(1500)
             .setRetryTimes(3)
             .setUserAgent(

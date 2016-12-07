@@ -179,4 +179,8 @@ public class ServiceConfig {
     public static String getSogouMobilePath(){
         return properties.getProperty("sogou.mobile.path");
     }
+
+    public static String getGuabaBankCardPath(){
+        return properties.getProperty("guaba.bank.card.path");
+    }
 }
