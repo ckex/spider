@@ -25,19 +25,30 @@ public abstract class AbstractMessage {
 
 	protected transient Logger logger = LoggerFactory.getLogger(getClass());
 
+	protected static final String FILE_PATH = "/data/html";
+
 	// GPS
 	protected static final String GPS_RPC_QUEUE_ID = "gps";
 	protected static final String GPS_QUEUE_ID = "umq-luj3bt";
 	protected static final String GPS_LOG_NAME = "gps-data";
+
 	// JUHE
 	protected static final String JUHE_MOBILE_RPC_QUEUE_ID = "mobile";
 	protected static final String JUHE_MOBILE_QUEUE_ID = "umq-pevtvl";
+
+	// Log pipeline
 	protected static final String JUHE_MOBILE_LOG_NAME = "juhe-mobile-data";
 
 	// RabbitMQ
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";
 	protected static final String RMQ_BAIDU_MOBILE_QUEUE_ID = "mobile-baidu";
-	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID="mobile-sogou";
+	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID = "mobile-sogou";
+
+	// Downloader error listener
+	protected static final String JUHE_MOBILE_LISTENER_LOG_NAME = "juhe-mobile-downloader";
+	protected static final String BAIDU_MOBILE_LISTENER_LOG_NAME = "baidu-mobile-downloader";
+	protected static final String SOGOU_MOBILE_LISTENER_LOG_NAME = "sogou-mobile-downloader";
+	protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";
 
 	public AbstractMessage() {
 		super();
