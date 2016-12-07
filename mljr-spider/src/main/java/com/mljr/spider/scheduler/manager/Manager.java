@@ -5,7 +5,7 @@ package com.mljr.spider.scheduler.manager;
 
 import java.io.File;
 
-import com.mljr.spider.processor.SogouMobileProcessor;
+import com.mljr.spider.processor.*;
 import com.mljr.spider.scheduler.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.nio.reactor.IOReactorException;
@@ -15,9 +15,6 @@ import com.google.common.collect.Lists;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
-import com.mljr.spider.processor.BaiduMobileProcessor;
-import com.mljr.spider.processor.JuheMobileProcessor;
-import com.mljr.spider.processor.SaiGeGPSProcessor;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
@@ -25,6 +22,7 @@ import com.ucloud.umq.common.ServiceConfig;
 
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
+import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
@@ -137,5 +135,70 @@ public class Manager extends AbstractMessage {
 		logger.info("Start SogouMobileProcessor finished. " + spider.toString());
 
 	}
+
+	//IP138
+	private void startIP138() throws Exception{
+		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		final Spider spider = Spider.create(new IP138Processor())
+				.addPipeline(pipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new IP138Scheduler(spider, RMQ_IP138_MOBILE_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start IP138Processor finished. " + spider.toString());
+
+	}
+
+	//  http://www.114huoche.com/shouji/1840406
+	private void startHuoche114() throws Exception{
+		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		final Spider spider = Spider.create(new Huoche114Processor())
+				.addPipeline(pipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new Huoche114Scheduler(spider, RMQ_HUOCHE114_MOBILE_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start Huoche114Processor finished. " + spider.toString());
+
+	}
+
+	//  http://guishu.showji.com/search.htm?m=1390000
+	private void startGuishuShowji() throws Exception{
+		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		final Spider spider = Spider.create(new GuishuShowjiProcessor())
+				.addPipeline(pipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new GuishuShowjiScheduler(spider, RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start GuishuShowjiProcessor finished. " + spider.toString());
+
+	}
+
+	// http://www.qichacha.com/
+	private void startQichacha() throws Exception{
+		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		final Spider spider = Spider.create(new QichachaProcessor())
+				.addPipeline(pipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new QichachaScheduler(spider, RMQ_QICHACHA_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start QichachaProcessor finished. " + spider.toString());
+
+	}
+
 
 }

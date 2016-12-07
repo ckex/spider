@@ -14,7 +14,7 @@ import us.codecraft.webmagic.selector.Selectable;
  */
 public class Huoche114Processor extends AbstractPageProcessor {
 
-	private Site site = Site.me().setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
+	private Site site = Site.me().setDomain("www.114huoche.com").setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
 			"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
 	public Huoche114Processor() {
