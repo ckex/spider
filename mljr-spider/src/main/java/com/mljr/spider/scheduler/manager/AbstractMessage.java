@@ -42,13 +42,20 @@ public abstract class AbstractMessage {
 	// RabbitMQ
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";
 	protected static final String RMQ_BAIDU_MOBILE_QUEUE_ID = "mobile-baidu";
-	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID = "mobile-sogou";
-
+	protected static final String RMQ_IP138_MOBILE_QUEUE_ID="mobile-ip138";
+	protected static final String RMQ_HUOCHE114_MOBILE_QUEUE_ID="mobile-114huoche";
+	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID="mobile-showji";
+	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID="mobile-sogou";
+	
 	// Downloader error listener
+	protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";
+	protected static final String QICHACHA_LISTENER_LOG_NAME = "qichacha-downloader";
 	protected static final String JUHE_MOBILE_LISTENER_LOG_NAME = "juhe-mobile-downloader";
 	protected static final String BAIDU_MOBILE_LISTENER_LOG_NAME = "baidu-mobile-downloader";
 	protected static final String SOGOU_MOBILE_LISTENER_LOG_NAME = "sogou-mobile-downloader";
-	protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";
+	protected static final String IP138_MOBILE_LISTENER_LOG_NAME = "ip138-mobile-downloader";
+	protected static final String HUOCHE114_MOBILE_LISTENER_LOG_NAME = "huoche114-mobile-downloader";
+	protected static final String GUISHU_MOBILE_LISTENER_LOG_NAME = "guishu-mobile-downloader";
 
 	public AbstractMessage() {
 		super();
