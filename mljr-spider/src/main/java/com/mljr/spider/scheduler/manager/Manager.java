@@ -3,34 +3,28 @@
  */
 package com.mljr.spider.scheduler.manager;
 
+import java.io.File;
+
+import com.mljr.spider.processor.*;
+import com.mljr.spider.scheduler.*;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.nio.reactor.IOReactorException;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
-import com.mljr.spider.processor.*;
-import com.mljr.spider.scheduler.*;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
 import com.ucloud.umq.common.ServiceConfig;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.nio.reactor.IOReactorException;
+
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.pipeline.FilePipeline;
-import us.codecraft.webmagic.pipeline.JsonFilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Ckex zha </br>
