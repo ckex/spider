@@ -56,7 +56,7 @@ public class Manager extends AbstractMessage {
 //		startSogouMobile();
 		//startGuabaBankCard();
 		//startHuoChePiaoBankCard();
-		startYHK388BankCard();
+//		startYHK388BankCard();
 		// dis.start();
 	}
 
@@ -147,7 +147,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new GuabaBankCardScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new GuabaBankCardScheduler(spider, RMQ_GUABA_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startGuabaBankCard finished. " + spider.toString());
@@ -164,7 +164,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new HuoChePiaoScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new HuoChePiaoScheduler(spider, RMQ_HCP_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startHuoChePiaoBankCard finished. " + spider.toString());
@@ -181,16 +181,16 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new Cha67BankCardScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new Cha67BankCardScheduler(spider, RMQ_CHA67_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startCha67BankCard finished. " + spider.toString());
 	}
 
-	//http://www.67cha.com 银行卡
-	private void startYHK388BankCard() throws Exception {
+	//http://yinhangka.388g.com 银行卡
+	private void startYinHangKaBankCard() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getYHK388BankCardPath());
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getYinHangKaBankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new YinHangKa388Processor())
 				.addPipeline(htmlPipeline)
@@ -198,7 +198,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new YinHangKa388Scheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new YinHangKa388Scheduler(spider, RMQ_YHK388_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startYHK388BankCard finished. " + spider.toString());
@@ -215,7 +215,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new ChaYHKDataScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new ChaYHKDataScheduler(spider, RMQ_CHAYHK_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startChaYHKBankCard finished. " + spider.toString());
@@ -232,7 +232,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new LBSAMapGeoScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new LBSAMapGeoScheduler(spider, RMQ_LBS_AMAP_GEO_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startLBSAMapGeo finished. " + spider.toString());
@@ -249,7 +249,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new LBSAMapReGeoScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new LBSAMapReGeoScheduler(spider, RMQ_LBS_AMAP_REGEO_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startLBSAMapReGeo finished. " + spider.toString());
