@@ -62,7 +62,7 @@ public abstract class AbstractMessage {
 	}
 
 	protected static final int CORE_SIZE = 5;
-	protected static final int MAX_SIZE = 10;
+	protected static final int MAX_SIZE = 5;
 	private static final String name = "spider-dw";
 	private static final AtomicInteger count = new AtomicInteger();
 

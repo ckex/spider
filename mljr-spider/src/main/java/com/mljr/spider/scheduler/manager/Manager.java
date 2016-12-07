@@ -32,7 +32,6 @@ import com.ucloud.umq.common.ServiceConfig;
 
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
-import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
@@ -62,6 +61,22 @@ public class Manager extends AbstractMessage {
 		startJuheMobile();
 		startBaiduMobile();
 		startSogouMobile();
+		startIP138();
+		startHuoche114();
+		startGuishuShowji();
+	}
+
+	// 赛格GPS数据
+	private void startSaiGeGPS() throws Exception {
+		final Spider spider = Spider.create(new SaiGeGPSProcessor()).setDownloader(new RestfulDownloader())
+				.addPipeline(new LogPipeline(GPS_LOG_NAME)).setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(SAIGE_GPS_LISTENER_LOG_NAME);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(DEFAULT_THREAD_POOL);
+		final AbstractScheduler scheduler = new SaiGeGPSScheduler(spider, getPullMsgTask(GPS_RPC_QUEUE_ID));
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start SaiGeGPSProcessor finished. " + spider.toString());
 	}
 
 	// 聚合手机标签
@@ -98,19 +113,6 @@ public class Manager extends AbstractMessage {
 		logger.info("Start BaiduMobileProcessor finished. " + spider.toString());
 	}
 
-	// 赛格GPS数据
-	private void startSaiGeGPS() throws Exception {
-		final Spider spider = Spider.create(new SaiGeGPSProcessor()).setDownloader(new RestfulDownloader())
-				.addPipeline(new LogPipeline(GPS_LOG_NAME)).setExitWhenComplete(false);
-		SpiderListener listener = new DownloaderSpiderListener(SAIGE_GPS_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(DEFAULT_THREAD_POOL);
-		final AbstractScheduler scheduler = new SaiGeGPSScheduler(spider, getPullMsgTask(GPS_RPC_QUEUE_ID));
-		spider.setScheduler(scheduler);
-		spider.runAsync();
-		logger.info("Start SaiGeGPSProcessor finished. " + spider.toString());
-	}
-
 	// sogou 手机
 	private void startSogouMobile() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
@@ -128,15 +130,14 @@ public class Manager extends AbstractMessage {
 
 	}
 
-	//IP138
-	private void startIP138() throws Exception{
+	// IP138
+	private void startIP138() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getIP138Path());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new IP138Processor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(new IP138Processor()).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(IP138_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
 		final AbstractScheduler scheduler = new IP138Scheduler(spider, RMQ_IP138_MOBILE_QUEUE_ID);
@@ -146,15 +147,14 @@ public class Manager extends AbstractMessage {
 
 	}
 
-	//  http://www.114huoche.com/shouji/1840406
-	private void startHuoche114() throws Exception{
+	// http://www.114huoche.com/shouji/1840406
+	private void startHuoche114() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getHuoche114Path());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new Huoche114Processor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
-				.setExitWhenComplete(false);
+		final Spider spider = Spider.create(new Huoche114Processor()).addPipeline(htmlPipeline)
+				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(HUOCHE114_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
 		final AbstractScheduler scheduler = new Huoche114Scheduler(spider, RMQ_HUOCHE114_MOBILE_QUEUE_ID);
@@ -164,15 +164,14 @@ public class Manager extends AbstractMessage {
 
 	}
 
-	//  http://guishu.showji.com/search.htm?m=1390000
-	private void startGuishuShowji() throws Exception{
+	// http://guishu.showji.com/search.htm?m=1390000
+	private void startGuishuShowji() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getGuishuShowjiPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new GuishuShowjiProcessor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
-				.setExitWhenComplete(false);
+		final Spider spider = Spider.create(new GuishuShowjiProcessor()).addPipeline(htmlPipeline)
+				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(GUISHU_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
 		final AbstractScheduler scheduler = new GuishuShowjiScheduler(spider, RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID);
