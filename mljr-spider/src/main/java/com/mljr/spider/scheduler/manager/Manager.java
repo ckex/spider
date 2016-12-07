@@ -3,27 +3,13 @@
  */
 package com.mljr.spider.scheduler.manager;
 
-import com.mljr.spider.listener.DownloaderSpiderListener;
-import us.codecraft.webmagic.SpiderListener;<<<<<<< HEAD
-=======
-import java.io.File;
-
-import com.mljr.spider.processor.*;
-import com.mljr.spider.scheduler.*;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.nio.reactor.IOReactorException;
-
->>>>>>> upstream/develop
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
-<<<<<<< HEAD
 import com.mljr.spider.processor.*;
 import com.mljr.spider.scheduler.*;
-=======
->>>>>>> upstream/develop
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
@@ -32,7 +18,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.nio.reactor.IOReactorException;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
-import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
 

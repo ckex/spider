@@ -41,6 +41,13 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_HUOCHE114_MOBILE_QUEUE_ID="mobile-114huoche";
 	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID="mobile-showji";
 	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID="mobile-sogou";
+	protected static final String RMQ_GUABA_BANK_CARD_QUEUE_ID="card-guaba";
+	protected static final String RMQ_HCP_BANK_CARD_QUEUE_ID="card-hcp";
+	protected static final String RMQ_CHA67_BANK_CARD_QUEUE_ID="card-cha67";
+	protected static final String RMQ_YHK388_BANK_CARD_QUEUE_ID="card-yhk388";
+	protected static final String RMQ_CHAYHK_BANK_CARD_QUEUE_ID="card-chayhk";
+	protected static final String RMQ_LBS_AMAP_GEO_QUEUE_ID="lbs-amap-geo";
+	protected static final String RMQ_LBS_AMAP_REGEO_QUEUE_ID="lbs-amap-regeo";
 
 	public AbstractMessage() {
 		super();
