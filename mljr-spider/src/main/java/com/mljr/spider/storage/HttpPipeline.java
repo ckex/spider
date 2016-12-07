@@ -95,6 +95,7 @@ public class HttpPipeline implements Pipeline {
 							standbyPipeline.process(items, t);
 						}
 					}
+					logger.debug("response content:" + EntityUtils.toString(result.getEntity()));
 					logger.debug("response code:" + code + ",useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + ","
 							+ COUNTER.toString());
 				} catch (Exception e) {
