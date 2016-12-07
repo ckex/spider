@@ -21,14 +21,12 @@ import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
-import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 import com.mljr.spider.http.AsyncHttpClient;
 
-import net.sf.ehcache.util.counter.Counter;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
@@ -89,14 +87,19 @@ public class HttpPipeline implements Pipeline {
 				try {
 					watch.stop();
 					int code = result.getStatusLine().getStatusCode();
-					if (code != 200) {
-						COUNTER.failure.incrementAndGet();
+					String response = EntityUtils.toString(result.getEntity());
+					// response 不以 0 开头则为失败
+					if (code != 200 || !StringUtils.startsWith(response, "0")) {
 						if (flag.compareAndSet(true, false)) {
+							COUNTER.failure.incrementAndGet();
 							standbyPipeline.process(items, t);
 						}
+						logger.error("response error code:" + code + ",useTime " + watch.elapsed(TimeUnit.MILLISECONDS)
+								+ "," + COUNTER.toString() + " response:" + response);
+						return;
 					}
 					logger.debug("response code:" + code + ",useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + ","
-							+ COUNTER.toString());
+							+ COUNTER.toString() + " response:" + response);
 				} catch (Exception e) {
 					if (logger.isDebugEnabled()) {
 						e.printStackTrace();
@@ -112,10 +115,10 @@ public class HttpPipeline implements Pipeline {
 
 			@Override
 			public void failed(Exception ex) {
-				COUNTER.failure.incrementAndGet();
 				logger.debug("useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + "," + COUNTER.toString());
 				watch.stop();
 				if (flag.compareAndSet(true, false)) {
+					COUNTER.failure.incrementAndGet();
 					// 记录到文件
 					standbyPipeline.process(items, t);
 				}
@@ -123,8 +126,8 @@ public class HttpPipeline implements Pipeline {
 
 			@Override
 			public void cancelled() {
-				COUNTER.failure.incrementAndGet();
 				if (flag.compareAndSet(true, false)) {
+					COUNTER.failure.incrementAndGet();
 					// 记录到文件
 					standbyPipeline.process(items, t);
 				}
@@ -153,11 +156,18 @@ public class HttpPipeline implements Pipeline {
 			originalContent.writeTo(gzipOut);
 			gzipOut.finish();
 			post.setEntity(new ByteArrayEntity(baos.toByteArray(), contentType));
+
+			// post.setEntity(EntityBuilder.create().setContentEncoding("UTF-8").setText(html).setContentType(contentType)
+			// .gzipCompress().build());
+			COUNTER.num.incrementAndGet();
+			httpclient.post(post, callback, 3000);
+			return true;
 		} catch (Exception e) {
 			if (logger.isDebugEnabled()) {
 				e.printStackTrace();
 			}
 			logger.error(ExceptionUtils.getStackTrace(e));
+			return false;
 		} finally {
 			try {
 				if (gzipOut != null) {
@@ -178,11 +188,6 @@ public class HttpPipeline implements Pipeline {
 			} catch (IOException e) {
 			}
 		}
-		// post.setEntity(EntityBuilder.create().setContentEncoding("UTF-8").setText(html).setContentType(contentType)
-		// .gzipCompress().build());
-		COUNTER.num.incrementAndGet();
-		httpclient.post(post, callback, 3000);
-		return true;
 	}
 
 }

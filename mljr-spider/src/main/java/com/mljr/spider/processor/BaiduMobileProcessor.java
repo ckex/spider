@@ -39,7 +39,8 @@ public class BaiduMobileProcessor extends AbstractPageProcessor {
 		}
 		// processContent(page);
 		String field = "";
-		page.putField(field, page.getHtml());
+		Html html = page.getHtml();
+		page.putField(field, html);
 	}
 
 	private void processContent(Page page) {
