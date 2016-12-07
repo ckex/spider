@@ -147,7 +147,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new IP138Scheduler(spider, RMQ_SOGOU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new IP138Scheduler(spider, RMQ_IP138_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start IP138Processor finished. " + spider.toString());
@@ -165,7 +165,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new Huoche114Scheduler(spider, RMQ_SOGOU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new Huoche114Scheduler(spider, RMQ_HUOCHE114_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start Huoche114Processor finished. " + spider.toString());
@@ -183,7 +183,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new GuishuShowjiScheduler(spider, RMQ_SOGOU_MOBILE_QUEUE_ID);
+		final AbstractScheduler scheduler = new GuishuShowjiScheduler(spider, RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start GuishuShowjiProcessor finished. " + spider.toString());
