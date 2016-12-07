@@ -54,8 +54,8 @@ public class Manager extends AbstractMessage {
 		// DistributionMessage dis = new
 		// DistributionMessage(getPullMsgTask(JUHE_MOBILE_RPC_QUEUE_ID));
 		// startSaiGeGPS();
-		//startJuheMobile();
-		//startBaiduMobile();
+		startJuheMobile();
+		startBaiduMobile();
 		startSogouMobile();
 		// dis.start();
 	}
@@ -77,6 +77,7 @@ public class Manager extends AbstractMessage {
 		// LinkedBlockingQueue<UMQMessage>(QUEUE_SIZE);
 		// dis.addQueue("juhe-mobile", queue);
 		// final AbstractScheduler scheduler = new JuheMobileScheduler(spider,
+		// queue);
 		// queue);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -119,9 +120,11 @@ public class Manager extends AbstractMessage {
 
 	//sogou 手机
 	private void startSogouMobile() throws Exception{
-		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getSogouMobilePath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new SogouMobileProcessor())
-				.addPipeline(pipeline)
+				.addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));

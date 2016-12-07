@@ -42,6 +42,7 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_HUOCHE114_MOBILE_QUEUE_ID="queue-fanout-3";
 	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID="queue-fanout-3";
 	protected static final String RMQ_QICHACHA_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID="mobile-sogou";
 
 	public AbstractMessage() {
 		super();
