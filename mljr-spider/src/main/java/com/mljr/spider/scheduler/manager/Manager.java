@@ -57,6 +57,10 @@ public class Manager extends AbstractMessage {
 		startJuheMobile();
 		startBaiduMobile();
 		startSogouMobile();
+		startIP138();
+		startHuoche114();
+		startGuishuShowji();
+
 		// dis.start();
 	}
 
