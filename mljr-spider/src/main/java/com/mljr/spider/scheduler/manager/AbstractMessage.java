@@ -37,7 +37,7 @@ public abstract class AbstractMessage {
 	// RabbitMQ
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";
 	protected static final String RMQ_BAIDU_MOBILE_QUEUE_ID = "mobile-baidu";
-	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID="mobile-sogou";
 
 	public AbstractMessage() {
 		super();

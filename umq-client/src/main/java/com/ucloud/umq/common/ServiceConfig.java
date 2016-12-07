@@ -175,4 +175,8 @@ public class ServiceConfig {
     public static Properties getProperties() {
         return properties;
     }
+
+    public static String getSogouMobilePath(){
+        return properties.getProperty("sogou.mobile.path");
+    }
 }
