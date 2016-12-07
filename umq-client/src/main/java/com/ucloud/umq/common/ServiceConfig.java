@@ -191,4 +191,8 @@ public class ServiceConfig {
     public static String getCha67BankCardPath(){
         return properties.getProperty("cha67.bank.card.path");
     }
+
+    public static String getYHK388BankCardPath(){
+        return properties.getProperty("yhk388.bank.card.path");
+    }
 }
