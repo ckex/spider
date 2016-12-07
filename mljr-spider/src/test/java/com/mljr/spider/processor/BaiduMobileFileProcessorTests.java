@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.storage.HttpPipeline;
+import com.mljr.spider.storage.LocalFilePipeline;
 
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
@@ -30,7 +31,10 @@ public class BaiduMobileFileProcessorTests {
 	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) throws Exception {
-		test2();
+		for (int i = 0; i < 10; i++) {
+			System.out.println("=================>" + i);
+			test2();
+		}
 	}
 
 	private static void test1() throws Exception {
@@ -43,11 +47,13 @@ public class BaiduMobileFileProcessorTests {
 		spider.start();
 	}
 
+	private static final String FILE_PATH = "/data/html";
+
 	public static void test2() throws Exception {
 		// String url = String.format(URL, "03178117334", "03178117334");
 		String url = String.format(URL, "15601662655", "15601662655");
-		Pipeline pipeline = new HttpPipeline("http://172.28.43.68:8080/mljr_pub_api/html/baiduMobile",
-				new AsyncHttpClient(), null);
+		Pipeline pipeline = new HttpPipeline("http://172.28.43.23:8080/mljr_pub_api/html/BAIDUMobile",
+				new AsyncHttpClient(), new LocalFilePipeline(FILE_PATH));
 		Spider spider = Spider.create(new BaiduMobileProcessor()).addUrl(url).addPipeline(pipeline);
 		TimeUnit.SECONDS.sleep(1);
 		spider.start();
