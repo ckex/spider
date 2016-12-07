@@ -15,7 +15,7 @@ import us.codecraft.webmagic.Site;
 public class GuabaBankCardProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("www.guabu.com")
-            .setSleepTime(30000).setRetrySleepTime(1500).setRetryTimes(3)
+            .setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)
             .setCharset("GB2312") //返回xml格式为gb2312
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");

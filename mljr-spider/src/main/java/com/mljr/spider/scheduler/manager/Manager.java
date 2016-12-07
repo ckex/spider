@@ -308,4 +308,38 @@ public class Manager extends AbstractMessage {
 		spider.runAsync();
 		logger.info("Start startLBSAMapReGeo finished. " + spider.toString());
 	}
+
+	//lbs baidu geo
+	private void startLBSBaiduGeo() throws Exception {
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSBaiduGeoPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(new LBSBaiduGeoProcessor())
+				.addPipeline(htmlPipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new LBSBaiduGeoScheduler(spider, RMQ_LBS_BAIDU_GEO_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start startLBSBaiduGeo finished. " + spider.toString());
+	}
+
+	//lbs baidu regeo
+	private void startLBSBaiduReGeo() throws Exception {
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSBaiduReGeoPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(new LBSBaiduReGeoProcessor())
+				.addPipeline(htmlPipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new LBSBaiduReGeoScheduler(spider, RMQ_LBS_BAIDU_REGEO_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start startLBSBaiduReGeo finished. " + spider.toString());
+	}
 }

@@ -48,6 +48,8 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_CHAYHK_BANK_CARD_QUEUE_ID="card-chayhk";
 	protected static final String RMQ_LBS_AMAP_GEO_QUEUE_ID="lbs-amap-geo";
 	protected static final String RMQ_LBS_AMAP_REGEO_QUEUE_ID="lbs-amap-regeo";
+	protected static final String RMQ_LBS_BAIDU_GEO_QUEUE_ID="lbs-baidu-geo";
+	protected static final String RMQ_LBS_BAIDU_REGEO_QUEUE_ID="lbs-baidu-regeo";
 
 	public AbstractMessage() {
 		super();

@@ -223,4 +223,16 @@ public class ServiceConfig {
     public static String getGuishuShowjiPath(){
         return properties.getProperty("guishushowji.mobile.path");
     }
+
+    public static String getLBSBaiduGeoPath(){
+        return properties.getProperty("lbs.baidu.geo.path");
+    }
+
+    public static String getLBSBaiduReGeoPath(){
+        return properties.getProperty("lbs.baidu.regeo.path");
+    }
+
+    public static String getLBSBaiduKey(){
+        return properties.getProperty("lbs.baidu.key");
+    }
 }
