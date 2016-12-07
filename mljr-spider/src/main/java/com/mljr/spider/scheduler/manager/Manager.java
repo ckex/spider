@@ -112,7 +112,7 @@ public class Manager extends AbstractMessage {
 				.addPipeline(new LogPipeline(GPS_LOG_NAME)).setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(DEFAULT_THREAD_POOL);
-		final AbstractScheduler scheduler = new SaiGeGPSScheduler(spider, getPullMsgTask(GPS_RPC_QUEUE_ID));
+		final AbstractScheduler scheduler = new SaiGeGPSScheduler(spider, GPS_RPC_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start SaiGeGPSProcessor finished. " + spider.toString());
