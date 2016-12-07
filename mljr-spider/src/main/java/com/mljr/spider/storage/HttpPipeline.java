@@ -90,10 +90,13 @@ public class HttpPipeline implements Pipeline {
 					String response = EntityUtils.toString(result.getEntity());
 					// response 不以 0 开头则为失败
 					if (code != 200 || !StringUtils.startsWith(response, "0")) {
-						COUNTER.failure.incrementAndGet();
 						if (flag.compareAndSet(true, false)) {
+							COUNTER.failure.incrementAndGet();
 							standbyPipeline.process(items, t);
 						}
+						logger.error("response error code:" + code + ",useTime " + watch.elapsed(TimeUnit.MILLISECONDS)
+								+ "," + COUNTER.toString() + " response:" + response);
+						return;
 					}
 					logger.debug("response code:" + code + ",useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + ","
 							+ COUNTER.toString() + " response:" + response);
@@ -112,10 +115,10 @@ public class HttpPipeline implements Pipeline {
 
 			@Override
 			public void failed(Exception ex) {
-				COUNTER.failure.incrementAndGet();
 				logger.debug("useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + "," + COUNTER.toString());
 				watch.stop();
 				if (flag.compareAndSet(true, false)) {
+					COUNTER.failure.incrementAndGet();
 					// 记录到文件
 					standbyPipeline.process(items, t);
 				}
@@ -123,8 +126,8 @@ public class HttpPipeline implements Pipeline {
 
 			@Override
 			public void cancelled() {
-				COUNTER.failure.incrementAndGet();
 				if (flag.compareAndSet(true, false)) {
+					COUNTER.failure.incrementAndGet();
 					// 记录到文件
 					standbyPipeline.process(items, t);
 				}

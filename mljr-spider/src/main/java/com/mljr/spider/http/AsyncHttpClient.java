@@ -135,7 +135,7 @@ public class AsyncHttpClient {
 			if (logger.isDebugEnabled()) {
 				e.printStackTrace();
 			}
-			logger.error(ExceptionUtils.getStackTrace(e));
+			logger.error(post.getURI() + " " + ExceptionUtils.getStackTrace(e));
 		}
 	}
 
