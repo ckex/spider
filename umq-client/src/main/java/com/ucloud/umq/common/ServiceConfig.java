@@ -179,4 +179,13 @@ public class ServiceConfig {
     public static String getSogouMobilePath(){
         return properties.getProperty("sogou.mobile.path");
     }
+    public static String getIP138Path(){
+        return properties.getProperty("ip138.mobile.path");
+    }
+    public static String getHuoche114Path(){
+        return properties.getProperty("huoche114.mobile.path");
+    }
+    public static String getGuishuShowjiPath(){
+        return properties.getProperty("guishushowji.mobile.path");
+    }
 }
