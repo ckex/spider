@@ -33,7 +33,6 @@ public abstract class AbstractMessage {
 	protected static final String JUHE_MOBILE_RPC_QUEUE_ID = "mobile";
 	protected static final String JUHE_MOBILE_QUEUE_ID = "umq-pevtvl";
 	protected static final String JUHE_MOBILE_LOG_NAME = "juhe-mobile-data";
-	protected static final String SOGOU_MOBILE_LOG_NAME="sogou-mobile-data";
 
 	// RabbitMQ
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";

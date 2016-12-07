@@ -7,11 +7,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.GZIPOutputStream;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.mljr.spider.vo.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.Consts;
@@ -89,7 +93,7 @@ public class HttpPipeline implements Pipeline {
 					int code = result.getStatusLine().getStatusCode();
 					String response = EntityUtils.toString(result.getEntity());
 					// response 不以 0 开头则为失败
-					if (code != 200 || !StringUtils.startsWith(response, "0")) {
+					if (code != 200 || !Result.isSucc(response)) {
 						if (flag.compareAndSet(true, false)) {
 							COUNTER.failure.incrementAndGet();
 							standbyPipeline.process(items, t);
@@ -98,7 +102,6 @@ public class HttpPipeline implements Pipeline {
 								+ "," + COUNTER.toString() + " response:" + response);
 						return;
 					}
-					logger.debug("response content:" + EntityUtils.toString(result.getEntity()));
 					logger.debug("response code:" + code + ",useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + ","
 							+ COUNTER.toString() + " response:" + response);
 				} catch (Exception e) {
@@ -190,5 +193,4 @@ public class HttpPipeline implements Pipeline {
 			}
 		}
 	}
-
 }
