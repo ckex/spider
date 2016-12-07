@@ -3,30 +3,25 @@
  */
 package com.mljr.spider.scheduler.manager;
 
-import java.io.File;
-
-import com.mljr.spider.processor.SogouMobileProcessor;
-import com.mljr.spider.scheduler.*;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.nio.reactor.IOReactorException;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
-import com.mljr.spider.processor.BaiduMobileProcessor;
-import com.mljr.spider.processor.JuheMobileProcessor;
-import com.mljr.spider.processor.SaiGeGPSProcessor;
+import com.mljr.spider.processor.*;
+import com.mljr.spider.scheduler.*;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
 import com.ucloud.umq.common.ServiceConfig;
-
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.nio.reactor.IOReactorException;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
+
+import java.io.File;
 
 /**
  * @author Ckex zha </br>
@@ -56,9 +51,11 @@ public class Manager extends AbstractMessage {
 		// DistributionMessage dis = new
 		// DistributionMessage(getPullMsgTask(JUHE_MOBILE_RPC_QUEUE_ID));
 		// startSaiGeGPS();
-		startJuheMobile();
-		startBaiduMobile();
-		startSogouMobile();
+//		startJuheMobile();
+//		startBaiduMobile();
+//		startSogouMobile();
+		//startGuabaBankCard();
+		startHuoChePiaoBankCard();
 		// dis.start();
 	}
 
@@ -137,5 +134,41 @@ public class Manager extends AbstractMessage {
 		logger.info("Start SogouMobileProcessor finished. " + spider.toString());
 
 	}
+
+	//guaba 银行卡
+	private void startGuabaBankCard() throws Exception {
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getGuabaBankCardPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(new GuabaBankCardProcessor())
+				.addPipeline(htmlPipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new GuabaBankCardScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start startGuabaBankCard finished. " + spider.toString());
+	}
+
+	//www.huochepiao.com 银行卡
+	private void startHuoChePiaoBankCard() throws Exception {
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getHuoChePiaoBankCardPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(new HuoChePiaoProcessor())
+				.addPipeline(htmlPipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new HuoChePiaoScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start startHuoChePiaoBankCard finished. " + spider.toString());
+	}
+
+
 
 }

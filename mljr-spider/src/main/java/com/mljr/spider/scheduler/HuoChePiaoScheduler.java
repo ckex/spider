@@ -13,27 +13,28 @@ import java.util.concurrent.BlockingQueue;
  * Created by xi.gao
  * Date:2016/12/5
  */
-public class GuabaBankCardScheduler extends AbstractScheduler {
+public class HuoChePiaoScheduler extends AbstractScheduler {
 
-    private static final String URL = "http://www.guabu.com/api/bank/?cardid=%s";
+    private static final String URL="http://www.huochepiao.com/search/bank/?bankid=%s";
 
-    public GuabaBankCardScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
+    public HuoChePiaoScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
         super(spider, mqMsgQueue);
     }
 
-    public GuabaBankCardScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
+    public HuoChePiaoScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
         super(spider, task);
     }
 
-    public GuabaBankCardScheduler(Spider spider, String qid) throws Exception {
+    public HuoChePiaoScheduler(Spider spider, String qid) throws Exception {
         super(spider, qid);
     }
 
+
     @Override
     public boolean pushTask(Spider spider, UMQMessage message) {
-        String url = String.format(URL,message.message);
+        String url=String.format(URL,message.message);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
-        push(new Request(url), spider);
+        push(new Request(url),spider);
         return true;
     }
 
