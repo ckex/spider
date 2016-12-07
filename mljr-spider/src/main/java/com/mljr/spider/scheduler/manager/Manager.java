@@ -137,7 +137,7 @@ public class Manager extends AbstractMessage {
 	private void startIP138() throws Exception{
 		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		final Spider spider = Spider.create(new IP138Processor())
-				.addPipeline(pipeline).addPipeline(new ConsolePipeline())
+				.addPipeline(pipeline)
 				.thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -153,7 +153,7 @@ public class Manager extends AbstractMessage {
 	private void startHuoche114() throws Exception{
 		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		final Spider spider = Spider.create(new Huoche114Processor())
-				.addPipeline(pipeline).addPipeline(new ConsolePipeline())
+				.addPipeline(pipeline)
 				.thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -169,7 +169,7 @@ public class Manager extends AbstractMessage {
 	private void startGuishuShowji() throws Exception{
 		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		final Spider spider = Spider.create(new GuishuShowjiProcessor())
-				.addPipeline(pipeline).addPipeline(new ConsolePipeline())
+				.addPipeline(pipeline)
 				.thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -185,7 +185,7 @@ public class Manager extends AbstractMessage {
 	private void startQichacha() throws Exception{
 		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		final Spider spider = Spider.create(new QichachaProcessor())
-				.addPipeline(pipeline).addPipeline(new ConsolePipeline())
+				.addPipeline(pipeline)
 				.thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));

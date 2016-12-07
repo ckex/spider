@@ -38,6 +38,10 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";
 	protected static final String RMQ_BAIDU_MOBILE_QUEUE_ID = "mobile-baidu";
 	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_IP138_MOBILE_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_HUOCHE114_MOBILE_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_QICHACHA_QUEUE_ID="queue-fanout-3";
 
 	public AbstractMessage() {
 		super();
