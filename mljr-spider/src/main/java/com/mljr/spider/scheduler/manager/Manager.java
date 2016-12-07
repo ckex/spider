@@ -130,9 +130,11 @@ public class Manager extends AbstractMessage {
 
 	//IP138
 	private void startIP138() throws Exception{
-		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getIP138Path());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new IP138Processor())
-				.addPipeline(pipeline)
+				.addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -146,9 +148,11 @@ public class Manager extends AbstractMessage {
 
 	//  http://www.114huoche.com/shouji/1840406
 	private void startHuoche114() throws Exception{
-		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getHuoche114Path());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new Huoche114Processor())
-				.addPipeline(pipeline)
+				.addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -162,9 +166,11 @@ public class Manager extends AbstractMessage {
 
 	//  http://guishu.showji.com/search.htm?m=1390000
 	private void startGuishuShowji() throws Exception{
-		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getGuishuShowjiPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new GuishuShowjiProcessor())
-				.addPipeline(pipeline)
+				.addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -175,22 +181,5 @@ public class Manager extends AbstractMessage {
 		logger.info("Start GuishuShowjiProcessor finished. " + spider.toString());
 
 	}
-
-	// http://www.qichacha.com/
-	private void startQichacha() throws Exception{
-		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		final Spider spider = Spider.create(new QichachaProcessor())
-				.addPipeline(pipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
-				.setExitWhenComplete(false);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new QichachaScheduler(spider, RMQ_QICHACHA_QUEUE_ID);
-		spider.setScheduler(scheduler);
-		spider.runAsync();
-		logger.info("Start QichachaProcessor finished. " + spider.toString());
-
-	}
-
 
 }
