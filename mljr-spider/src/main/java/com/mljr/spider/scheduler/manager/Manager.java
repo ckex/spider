@@ -221,5 +221,39 @@ public class Manager extends AbstractMessage {
 		logger.info("Start startChaYHKBankCard finished. " + spider.toString());
 	}
 
+	//lbs amap
+	private void startLBSAMapGeo() throws Exception {
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSAMapGeoPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(new LBSAMapGeoProcessor())
+				.addPipeline(htmlPipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new LBSAMapGeoScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start startLBSAMapGeo finished. " + spider.toString());
+	}
+
+	//lbs amap
+	private void startLBSAMapReGeo() throws Exception {
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSAMapReGeoPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(new LBSAMapReGeoProcessor())
+				.addPipeline(htmlPipeline)
+				.thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		final AbstractScheduler scheduler = new LBSAMapReGeoScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start startLBSAMapReGeo finished. " + spider.toString());
+	}
+
 
 }

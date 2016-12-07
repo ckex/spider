@@ -199,4 +199,16 @@ public class ServiceConfig {
     public static String getChaYHKBankCardPath(){
         return properties.getProperty("cha.yhk.bank.card.path");
     }
+
+    public static String getLBSAMapKey(){
+        return properties.getProperty("lbs.amap.key");
+    }
+
+    public static String getLBSAMapGeoPath(){
+        return properties.getProperty("lbs.amap.geo.path");
+    }
+
+    public static String getLBSAMapReGeoPath(){
+        return properties.getProperty("lbs.amap.regeo.path");
+    }
 }
