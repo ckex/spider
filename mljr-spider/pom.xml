@@ -52,6 +52,10 @@
 			<artifactId>grpc</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+		</dependency>
 	</dependencies>
 
 

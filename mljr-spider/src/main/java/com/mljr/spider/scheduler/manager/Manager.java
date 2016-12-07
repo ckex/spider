@@ -36,7 +36,7 @@ import us.codecraft.webmagic.pipeline.Pipeline;
 public class Manager extends AbstractMessage {
 
 	private static final int QUEUE_SIZE = 10;
-	private static final String FILE_PATH = "/data/test_html";
+	private static final String FILE_PATH = "/data/test";
 	private final SpiderListener listener = new DownloaderSpiderListener();
 	private final AsyncHttpClient httpClient;
 	private final String url;
@@ -122,8 +122,10 @@ public class Manager extends AbstractMessage {
 	//sogou 手机
 	private void startSogouMobile() throws Exception{
 		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getSogouMobilePath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new SogouMobileProcessor())
-				.addPipeline(pipeline)
+				.addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
