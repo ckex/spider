@@ -42,11 +42,11 @@ public abstract class AbstractMessage {
 	// RabbitMQ
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";
 	protected static final String RMQ_BAIDU_MOBILE_QUEUE_ID = "mobile-baidu";
-	protected static final String RMQ_IP138_MOBILE_QUEUE_ID="mobile-ip138";
-	protected static final String RMQ_HUOCHE114_MOBILE_QUEUE_ID="mobile-114huoche";
-	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID="mobile-showji";
-	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID="mobile-sogou";
-	
+	protected static final String RMQ_IP138_MOBILE_QUEUE_ID = "mobile-ip138";
+	protected static final String RMQ_HUOCHE114_MOBILE_QUEUE_ID = "mobile-114huoche";
+	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID = "mobile-showji";
+	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID = "mobile-sogou";
+
 	// Downloader error listener
 	protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";
 	protected static final String QICHACHA_LISTENER_LOG_NAME = "qichacha-downloader";
@@ -75,13 +75,13 @@ public abstract class AbstractMessage {
 				}
 			}, new ThreadPoolExecutor.CallerRunsPolicy());
 
-	protected static final ThreadPoolExecutor newThreadPool(int coreSize, int maxSize) {
+	protected static final ThreadPoolExecutor newThreadPool(int coreSize, int maxSize, final String tname) {
 		return new ThreadPoolExecutor(coreSize, maxSize, 100, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>(10), new ThreadFactory() {
 
 					@Override
 					public Thread newThread(Runnable r) {
-						return new Thread(r, Joiner.on("-").join(name, count.incrementAndGet()));
+						return new Thread(r, Joiner.on("-").join(name, tname, count.incrementAndGet()));
 					}
 				}, new ThreadPoolExecutor.CallerRunsPolicy());
 	}

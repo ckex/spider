@@ -79,9 +79,22 @@ public class HttpPipeline implements Pipeline {
 			logger.warn("Invalid result:" + html);
 			return;
 		}
+
+		byte[] body = html.getBytes(Charset.forName("UTF-8"));
+		HttpPost post = buildPost(body);
+
 		final AtomicBoolean flag = new AtomicBoolean(true);
 		final Stopwatch watch = Stopwatch.createStarted();
-		boolean success = sentContent(html, new FutureCallback<HttpResponse>() {
+
+		if (post == null && flag.compareAndSet(true, false)) {
+			standbyPipeline.process(items, t); // 记录到文件
+			return;
+		}
+
+		final long length = body.length;
+		final long gzipLen = post.getEntity().getContentLength();
+
+		sentContent(post, new FutureCallback<HttpResponse>() {
 
 			@Override
 			public void completed(HttpResponse result) {
@@ -89,19 +102,18 @@ public class HttpPipeline implements Pipeline {
 					watch.stop();
 					int code = result.getStatusLine().getStatusCode();
 					String response = EntityUtils.toString(result.getEntity());
-					// response 不以 0 开头则为失败
 					if (code != 200 || !Result.isSucc(response)) {
 						if (flag.compareAndSet(true, false)) {
 							COUNTER.failure.incrementAndGet();
 							standbyPipeline.process(items, t);
 						}
-						logger.error("response error code:" + code + ",useTime " + watch.elapsed(TimeUnit.MILLISECONDS)
-								+ "," + COUNTER.toString() + " response:" + response);
+						logger.error(String.format("HTTP code:%s, time:%s,len:%s, gzipLen:%s, %s, %s", code,
+								watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen, COUNTER.toString(), response));
 						return;
 					}
 					if (logger.isDebugEnabled()) {
-						logger.debug("response code:" + code + ",useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + ","
-								+ COUNTER.toString() + " response:" + response);
+						logger.debug(String.format("HTTP code:%s, time:%s,len:%s, gzipLen:%s, %s, %s", code,
+								watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen, COUNTER.toString(), response));
 					}
 				} catch (Exception e) {
 					if (logger.isDebugEnabled()) {
@@ -122,8 +134,7 @@ public class HttpPipeline implements Pipeline {
 				watch.stop();
 				if (flag.compareAndSet(true, false)) {
 					COUNTER.failure.incrementAndGet();
-					// 记录到文件
-					standbyPipeline.process(items, t);
+					standbyPipeline.process(items, t); // 记录到文件
 				}
 			}
 
@@ -131,46 +142,40 @@ public class HttpPipeline implements Pipeline {
 			public void cancelled() {
 				if (flag.compareAndSet(true, false)) {
 					COUNTER.failure.incrementAndGet();
-					// 记录到文件
-					standbyPipeline.process(items, t);
+					standbyPipeline.process(items, t); // 记录到文件
 				}
 			}
 
 		});
-		if (!success && flag.compareAndSet(true, false)) {
-			// 记录到文件
-			standbyPipeline.process(items, t);
-		}
 
 	}
 
-	private boolean sentContent(String html, FutureCallback<HttpResponse> callback) {
+	private void sentContent(HttpPost post, FutureCallback<HttpResponse> callback) {
+		COUNTER.num.incrementAndGet();
+		httpclient.post(post, callback, 3000);
+	}
+
+	private HttpPost buildPost(byte[] body) {
 		ContentType contentType = ContentType.create("text/html", Consts.UTF_8);
 		HttpPost post = new HttpPost(url);
 		post.addHeader("Content-Encoding", "gzip");
-		ByteArrayOutputStream originalContent = null;
-		ByteArrayOutputStream baos = null;
+
+		ByteArrayOutputStream originalContent = new ByteArrayOutputStream();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		GZIPOutputStream gzipOut = null;
 		try {
-			originalContent = new ByteArrayOutputStream();
-			originalContent.write(html.getBytes(Charset.forName("UTF-8")));
-			baos = new ByteArrayOutputStream();
+			originalContent.write(body);
 			gzipOut = new GZIPOutputStream(baos);
 			originalContent.writeTo(gzipOut);
 			gzipOut.finish();
 			post.setEntity(new ByteArrayEntity(baos.toByteArray(), contentType));
-
-			// post.setEntity(EntityBuilder.create().setContentEncoding("UTF-8").setText(html).setContentType(contentType)
-			// .gzipCompress().build());
-			COUNTER.num.incrementAndGet();
-			httpclient.post(post, callback, 3000);
-			return true;
-		} catch (Exception e) {
+			return post;
+		} catch (IOException e) {
 			if (logger.isDebugEnabled()) {
 				e.printStackTrace();
 			}
-			logger.error(ExceptionUtils.getStackTrace(e));
-			return false;
+			logger.error("build http post error. " + ExceptionUtils.getStackTrace(e));
+			return null; // Exception .
 		} finally {
 			try {
 				if (gzipOut != null) {
@@ -192,4 +197,5 @@ public class HttpPipeline implements Pipeline {
 			}
 		}
 	}
+
 }

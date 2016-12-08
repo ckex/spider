@@ -4,6 +4,7 @@
 package com.mljr.spider.scheduler;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -19,22 +20,23 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import us.codecraft.webmagic.Request;
-import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.scheduler.MonitorableScheduler;
-import us.codecraft.webmagic.scheduler.Scheduler;
-
 import com.google.common.base.Joiner;
 import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.spider.mq.UMQClient;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage.PullMsgTask;
-import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Consumer;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.GetResponse;
+import com.rabbitmq.client.ShutdownSignalException;
 import com.ucloud.umq.action.MessageData;
+
+import us.codecraft.webmagic.Request;
+import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.scheduler.MonitorableScheduler;
+import us.codecraft.webmagic.scheduler.Scheduler;
 
 /**
  * @author Ckex zha </br>
@@ -62,6 +64,8 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 
 	public abstract boolean pushTask(Spider spider, UMQMessage message);
 
+	abstract Request buildRequst(String message);
+
 	private BlockingQueue<Request> blockQueue = new LinkedBlockingQueue<Request>(QUEUE_SIZE);
 
 	public AbstractScheduler(final Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
@@ -74,9 +78,14 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 		pullMsgTask(spider, task);
 	}
 
+	private String qid;
+	private Channel channel;
+
 	public AbstractScheduler(final Spider spider, final String qid) throws Exception {
 		super();
-		subscribeMsg(spider, qid);
+		// subscribeMsg(spider, qid);
+		this.qid = qid;
+		this.channel = RabbitmqClient.newChannel();
 	}
 
 	private void pullLocalQueue(final Spider spider, final BlockingQueue<UMQMessage> localQueue) {
@@ -246,11 +255,36 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 		}
 	}
 
+	protected String pollMessage() {
+		for (;;) {
+			boolean autoAck = true;
+			try {
+				GetResponse response = RabbitmqClient.pollMessage(channel, qid, autoAck);
+				if (response == null) {
+					logger.debug("qid=" + qid);
+					TimeUnit.SECONDS.sleep(1);
+					continue;
+				}
+				if (!autoAck) {
+					channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
+				}
+				return new String(response.getBody(), "UTF-8");
+			} catch (Exception e) {
+				if (logger.isDebugEnabled()) {
+					e.printStackTrace();
+				}
+				logger.error("Push task error. qid:" + qid + ", " + ExceptionUtils.getStackTrace(e));
+			}
+		}
+	}
+
 	// 阻塞队列
 	protected Request take() {
 		for (;;) {
 			try {
-				return blockQueue.take();
+				String msg = pollMessage();
+				return buildRequst(msg);
+				// return blockQueue.take();
 			} catch (Exception e) {
 				if (logger.isDebugEnabled()) {
 					e.printStackTrace();

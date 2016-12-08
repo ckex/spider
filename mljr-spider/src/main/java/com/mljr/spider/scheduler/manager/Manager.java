@@ -57,13 +57,15 @@ public class Manager extends AbstractMessage {
 	}
 
 	public void run() throws Exception {
+		System.out.println("Runing ...");
 		// startSaiGeGPS();
+		startGuishuShowji();
+		startIP138();
+		startHuoche114();
 		startJuheMobile();
 		startBaiduMobile();
 		startSogouMobile();
-		startIP138();
-		startHuoche114();
-		startGuishuShowji();
+
 	}
 
 	// 赛格GPS数据
@@ -89,7 +91,7 @@ public class Manager extends AbstractMessage {
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(JUHE_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_JUHE_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new JuheMobileScheduler(spider, RMQ_JUHE_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -106,7 +108,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(BAIDU_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_BAIDU_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new BaiduMobileScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -122,7 +124,7 @@ public class Manager extends AbstractMessage {
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(SOGOU_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_SOGOU_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new SogouMobileScheduler(spider, RMQ_SOGOU_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -139,7 +141,7 @@ public class Manager extends AbstractMessage {
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(IP138_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_IP138_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new IP138Scheduler(spider, RMQ_IP138_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -156,7 +158,7 @@ public class Manager extends AbstractMessage {
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(HUOCHE114_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_HUOCHE114_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new Huoche114Scheduler(spider, RMQ_HUOCHE114_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -173,7 +175,7 @@ public class Manager extends AbstractMessage {
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(GUISHU_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new GuishuShowjiScheduler(spider, RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();

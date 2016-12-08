@@ -14,6 +14,7 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Consumer;
+import com.rabbitmq.client.GetResponse;
 
 /**
  * @author Ckex zha </br>
@@ -41,6 +42,10 @@ public class RabbitmqClient {
 			Consumer consumer) throws IOException {
 		String ret = channel.basicConsume(queueId, autoAck, consumerTag, consumer);
 		logger.info(queueId + " subscribe message " + ret);
+	}
+
+	public static GetResponse pollMessage(Channel channel, String queueId, boolean autoAck) throws IOException {
+		return channel.basicGet(queueId, autoAck);
 	}
 
 	public static Channel newChannel() throws IOException {
