@@ -53,17 +53,11 @@ public class SaiGeGPSScheduler extends AbstractScheduler {
 		return 0;
 	}
 
-	private void pushTask(Spider spider) {
-		RestfulReqeust request = new RestfulReqeust(URL, params);
-		request.setMethod(AbstractRequest.POST);
-		this.push(request, spider);
-	}
-
 	@Override
 	public boolean pushTask(Spider spider, UMQMessage message) {
 		boolean isGps = StringUtils.startsWithIgnoreCase(message.message, "gps");
 		if (isGps) {
-			pushTask(spider);
+			pushTask(spider, message.message);
 		}
 		if (logger.isDebugEnabled()) {
 			logger.debug("process msg " + isGps + "," + message);
@@ -72,4 +66,14 @@ public class SaiGeGPSScheduler extends AbstractScheduler {
 		return true;
 	}
 
+	@Override
+	Request buildRequst(String message) {
+		RestfulReqeust request = new RestfulReqeust(URL, params);
+		request.setMethod(AbstractRequest.POST);
+		return request;
+	}
+
+	private void pushTask(Spider spider, String message) {
+		this.push(buildRequst(message), spider);
+	}
 }

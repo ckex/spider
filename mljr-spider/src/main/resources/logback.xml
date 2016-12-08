@@ -6,13 +6,13 @@
 <!-- -->
 <!-- For professional support please see -->
 <!-- http://www.qos.ch/shop/products/professionalSupport -->
-<!-- -->
+<!-- http://logback.qos.ch/translator/asGroovy.html -->
 <configuration scan="true" scanPeriod="300 seconds" debug="ture">
-	<!-- <property name="APP_NAME" value="mljr" /> -->
-	<!-- <property name="LOG_HOME" value="${OUTPUT_HOME}" /> -->
-	
 	<property name="APP_NAME" value="mljr" />
 	<property name="LOG_HOME" value="/data/var/log/mljr" />
+	<property name="SAIGE_DATA_HOME" value="/data/saige" />
+	<property name="JUHE_DATA_HOME" value="/data/juhe" />
+	<property name="DOWNLOADER_LISTENER_HOME" value="/data/listener" />
 	<contextName>${APP_NAME}</contextName>
 
 	<appender name="STDOUT"
@@ -59,6 +59,183 @@
 		</rollingPolicy>
 	</appender>
 
+	<appender name="JUHE-MOBILE-ERR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/juhe-mobile-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="BAIDU-MOBILE-ERR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/baidu-mobile-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="SOGOU-MOBILE-ERR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/sogou-mobile-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="SAIGE-GPS-ERR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/saige-gps-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="QICHACHA-ERR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/qichacha-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="IP138-MOBILE-ERR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/ip138-mobile-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="HUOCHE114-MOBILE-ERR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/cuoche114-mobile-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="GUISHU-MOBILE-ERR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/guishu-mobile-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	
 	<appender name="GPS-DATA"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
@@ -70,7 +247,7 @@
 		</filter>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- rollover daily -->
-			<fileNamePattern>${LOG_HOME}/GPS-%d{yyyy-MM-dd-HH}.%i.log
+			<fileNamePattern>${SAIGE_DATA_HOME}/GPS-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -80,6 +257,7 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
+	
 	<appender name="JUHE-MOBILE-DATA"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
@@ -91,7 +269,7 @@
 		</filter>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- rollover daily -->
-			<fileNamePattern>${LOG_HOME}/JUHE-MOBILE-%d{yyyy-MM-dd-HH}.%i.log
+			<fileNamePattern>${JUHE_DATA_HOME}/MOBILE-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -128,7 +306,31 @@
 	<logger name="com.mljr.spider.scheduler.manager" level="DEBUG" />
 	<logger name="com.mljr.spider.scheduler" level="DEBUG" />
 	<logger name="com.mljr.spider" level="DEBUG" />
-
+	
+	<logger name="qichacha-downloader" level="INFO" additivity="false">
+	    <appender-ref ref="QICHACHA-ERR" />
+	</logger>
+	<logger name="ip138-mobile-downloader" level="INFO" additivity="false">
+	    <appender-ref ref="IP138-MOBILE-ERR" />
+	</logger>
+	<logger name="huoche114-mobile-downloader" level="INFO" additivity="false">
+	    <appender-ref ref="HUOCHE114-MOBILE-ERR" />
+	</logger>
+	<logger name="guishu-mobile-downloader" level="INFO" additivity="false">
+	    <appender-ref ref="GUISHU-MOBILE-ERR" />
+	</logger>
+	<logger name="juhe-mobile-downloader" level="INFO" additivity="false">
+	    <appender-ref ref="JUHE-MOBILE-ERR" />
+	</logger>
+	<logger name="baidu-mobile-downloader" level="INFO" additivity="false">
+	    <appender-ref ref="BAIDU-MOBILE-ERR" />
+	</logger>
+		<logger name="sogou-mobile-downloader" level="INFO" additivity="false">
+	    <appender-ref ref="SOGOU-MOBILE-ERR" />
+	</logger>
+		<logger name="saige-gps-downloader" level="INFO" additivity="false">
+	    <appender-ref ref="SAIGE-GPS-ERR" />
+	</logger>
 	<logger name="gps-data" level="INFO" additivity="false">
 		<appender-ref ref="GPS-DATA" />
 	</logger>

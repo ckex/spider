@@ -80,7 +80,7 @@ if [ "$1" = "debug" ]; then
 	JAVA_OPTS="$JAVA_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=$DEBUG_PORT,server=y,suspend=$DEBUG_SUSPEND"
 fi
 if [ "$1" = "jmx" ]; then
-	JAVA_OPTS="$JAVA_OPTS -Djava.rmi.server.hostname=$RMI_HOST -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.access.file=$JMX_ACCESS -Dcom.sun.management.jmxremote.password.file=$JMX_PASSWD"
+	JAVA_OPTS="$JAVA_OPTS -Djava.rmi.server.hostname=$RMI_HOST -Dcom.sun.management.jmxremote.host=$RMI_HOST -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.access.file=$JMX_ACCESS -Dcom.sun.management.jmxremote.password.file=$JMX_PASSWD"
 fi
 
 # charset
