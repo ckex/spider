@@ -4,7 +4,6 @@
 package com.mljr.spider.scheduler;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -62,7 +61,7 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 				}
 			});
 
-	public abstract boolean pushTask(Spider spider, UMQMessage message);
+	abstract boolean pushTask(Spider spider, UMQMessage message);
 
 	abstract Request buildRequst(String message);
 
@@ -231,6 +230,7 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 	}
 
 	private boolean sentMsg(Spider spider, UMQMessage message) {
+
 		if (pushTask(spider, message)) {
 			if (Math.random() * 100 < 1) {
 				if (logger.isDebugEnabled()) {
