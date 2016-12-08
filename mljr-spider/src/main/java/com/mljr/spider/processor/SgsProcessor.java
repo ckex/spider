@@ -26,12 +26,38 @@ public class SgsProcessor extends AbstractPageProcessor {
 
     @Override
     public void process(Page page) {
-        Html html = page.getHtml();
-        Selectable baseInfo = html.xpath("//div[@rel='layout-01_01']");
-//        System.out.println(baseInfo.toString());
-        System.out.println(baseInfo.xpath("//td/text(0)"));
-//        page.putField("注册号",html.xpath("//html/body/div[4]/div/div/div[2]/div[3]/div[8]/table/tbody/tr[2]/td[1]/text()"));
+        page.putField("",page.getHtml());
+    }
 
+    public void getBasicInfo(Page page){
+        Html html = page.getHtml();
+        Selectable baseInfo = html.xpath("//div[@rel='layout-01_01']/table/tbody");
+
+        page.putField(baseInfo.xpath("//tr[2]/th/text()").toString(),baseInfo.xpath("//tr[2]/td/text()"));
+        page.putField(baseInfo.xpath("//tr[2]/th[2]/text()").toString(),baseInfo.xpath("//tr[2]/td[2]/text()"));
+
+        page.putField(baseInfo.xpath("//tr[3]/th/text()").toString(),baseInfo.xpath("//tr[3]/td/text()"));
+        page.putField(baseInfo.xpath("//tr[3]/th[2]/text()").toString(),baseInfo.xpath("//tr[3]/td[2]/text()"));
+
+        page.putField(baseInfo.xpath("//tr[4]/th/text()").toString(),baseInfo.xpath("//tr[4]/td/text()"));
+        page.putField(baseInfo.xpath("//tr[4]/th[2]/text()").toString(),baseInfo.xpath("//tr[4]/td[2]/text()"));
+
+        page.putField(baseInfo.xpath("//tr[5]/th/text()").toString(),baseInfo.xpath("//tr[5]/td/text()"));
+
+        page.putField(baseInfo.xpath("//tr[6]/th/text()").toString(),baseInfo.xpath("//tr[6]/td/text()"));
+        page.putField(baseInfo.xpath("//tr[6]/th[2]/text()").toString(),baseInfo.xpath("//tr[6]/td[2]/text()"));
+
+        page.putField(baseInfo.xpath("//tr[7]/th/text()").toString(),baseInfo.xpath("//tr[7]/td/text()"));
+
+        page.putField(baseInfo.xpath("//tr[8]/th/text()").toString(),baseInfo.xpath("//tr[8]/td/text()"));
+        page.putField(baseInfo.xpath("//tr[8]/th[2]/text()").toString(),baseInfo.xpath("//tr[8]/td[2]/text()"));
+
+        page.putField(baseInfo.xpath("//tr[9]/th/text()").toString(),baseInfo.xpath("//tr[9]/td/text()"));
+
+        // 股东信息
+        page.putField("股东信息",html.xpath("//table[@id='investorTable']/tbody/tidyText()"));
+        // 变更信息
+        page.putField("变更信息",html.xpath("//table[@id='alterTable']/tbody/tidyText()"));
     }
 
     @Override
@@ -46,7 +72,6 @@ public class SgsProcessor extends AbstractPageProcessor {
         }
         return site;
     }
-
 
     public void setCookie(Site site) throws Exception {
         CloseableHttpClient httpclient = HttpClients.createDefault();
