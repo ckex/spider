@@ -1,0 +1,56 @@
+package com.mljr.spider.scheduler;
+
+import com.google.common.base.CharMatcher;
+import com.mljr.spider.mq.UMQMessage;
+import com.mljr.spider.scheduler.manager.AbstractMessage;
+import us.codecraft.webmagic.Request;
+import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.Task;
+
+import java.util.concurrent.BlockingQueue;
+
+public class TianyanchaScheduler extends AbstractScheduler {
+
+    private static final String URL = "http://www.tianyancha.com/search/%s.json";
+
+    public TianyanchaScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
+        super(spider, mqMsgQueue);
+    }
+
+    public TianyanchaScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
+        super(spider, task);
+    }
+
+    public TianyanchaScheduler(Spider spider, String qid) throws Exception {
+        super(spider, qid);
+    }
+
+    @Override
+    public boolean pushTask(Spider spider, UMQMessage message) {
+//        String url = String.format(URL, message.message);
+        String url = String.format(URL, "上海云贝网络科技有限公司");
+        url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+        push(new Request(url), spider);
+        return true;
+    }
+
+    @Override
+    public int getLeftRequestsCount(Task task) {
+        return 0;
+    }
+
+    @Override
+    public int getTotalRequestsCount(Task task) {
+        return 0;
+    }
+
+    @Override
+    public void push(Request request, Task task) {
+        put(request);
+    }
+
+    @Override
+    public Request poll(Task task) {
+        return take();
+    }
+}
