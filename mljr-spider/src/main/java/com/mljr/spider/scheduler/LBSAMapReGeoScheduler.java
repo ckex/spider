@@ -32,10 +32,15 @@ public class LBSAMapReGeoScheduler extends AbstractScheduler {
 
     @Override
     public boolean pushTask(Spider spider, UMQMessage message) {
-        String url = String.format(URL, ServiceConfig.getLBSAMapKey(), message.message);
-        url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
-        push(new Request(url), spider);
+        push(buildRequst(message.message), spider);
         return true;
+    }
+
+    @Override
+    Request buildRequst(String message) {
+        String url = String.format(URL, ServiceConfig.getLBSAMapKey(), message);
+        url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+        return new Request(url);
     }
 
     @Override

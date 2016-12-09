@@ -12,7 +12,7 @@ import us.codecraft.webmagic.Site;
  * Created by xi.gao
  * Date:2016/12/5
  */
-public class GuabaBankCardProcessor extends AbstractPageProcessor {
+public class GuabuBankCardProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("www.guabu.com")
             .setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)

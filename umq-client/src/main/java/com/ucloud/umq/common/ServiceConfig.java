@@ -180,8 +180,8 @@ public class ServiceConfig {
         return properties.getProperty("sogou.mobile.path");
     }
 
-    public static String getGuabaBankCardPath(){
-        return properties.getProperty("guaba.bank.card.path");
+    public static String getGuabuBankCardPath(){
+        return properties.getProperty("guabu.bank.card.path");
     }
 
     public static String getHuoChePiaoBankCardPath(){

@@ -46,11 +46,13 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_HUOCHE114_MOBILE_QUEUE_ID = "mobile-114huoche";
 	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID = "mobile-showji";
 	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID = "mobile-sogou";
-	protected static final String RMQ_GUABA_BANK_CARD_QUEUE_ID="card-guaba";
+
+	protected static final String RMQ_GUABU_BANK_CARD_QUEUE_ID="card-guabu";
 	protected static final String RMQ_HCP_BANK_CARD_QUEUE_ID="card-hcp";
 	protected static final String RMQ_CHA67_BANK_CARD_QUEUE_ID="card-cha67";
 	protected static final String RMQ_YHK388_BANK_CARD_QUEUE_ID="card-yhk388";
 	protected static final String RMQ_CHAYHK_BANK_CARD_QUEUE_ID="card-chayhk";
+
 	protected static final String RMQ_LBS_AMAP_GEO_QUEUE_ID="lbs-amap-geo";
 	protected static final String RMQ_LBS_AMAP_REGEO_QUEUE_ID="lbs-amap-regeo";
 	protected static final String RMQ_LBS_BAIDU_GEO_QUEUE_ID="lbs-baidu-geo";
@@ -65,6 +67,17 @@ public abstract class AbstractMessage {
 	protected static final String IP138_MOBILE_LISTENER_LOG_NAME = "ip138-mobile-downloader";
 	protected static final String HUOCHE114_MOBILE_LISTENER_LOG_NAME = "huoche114-mobile-downloader";
 	protected static final String GUISHU_MOBILE_LISTENER_LOG_NAME = "guishu-mobile-downloader";
+
+	protected static final String GUABU_BANK_CARD_LISTENER_LOG_NAME="guabu-bank-card-downloader";
+	protected static final String HUOCHEPIAO_BANK_CARD_LISTENER_LOG_NAME="huochepiao-bank-card-downloader";
+	protected static final String CHA67_BANK_CARD_LISTENER_LOG_NAME="cha67-bank-card-downloader";
+	protected static final String YHK388_BANK_CARD_LISTENER_LOG_NAME="yhk388-bank-card-downloader";
+	protected static final String CHAYHK_BANK_CARD_LISTENER_LOG_NAME="chayhk-bank-card-downloader";
+
+	protected static final String LBS_AMAP_GEO_LISTENER_LOG_NAME="lbs-amap-geo-downloader";
+	protected static final String LBS_AMAP_REGEO_LISTENER_LOG_NAME="lbs-amap-regeo-downloader";
+	protected static final String LBS_BAIDU_GEO_LISTENER_LOG_NAME="lbs-baidu-geo-downloader";
+	protected static final String LBS_BAIDU_REGEO_LISTENER_LOG_NAME="lbs-baidu-regeo-downloader";
 
 	public AbstractMessage() {
 		super();

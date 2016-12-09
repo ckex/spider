@@ -52,22 +52,26 @@ public class ChaYHKDataScheduler extends AbstractScheduler {
 
     @Override
     public boolean pushTask(Spider spider, UMQMessage message) {
+        push(buildRequst(message.message), spider);
+        return true;
+    }
+
+    @Override
+    Request buildRequst(String message) {
         Request request = new Request(URL);
 
         request.setMethod(HttpConstant.Method.POST);
 
         NameValuePair[] values = new NameValuePair[1];
 
-        values[0] = new BasicNameValuePair(REQUEST_PARAM_FILED,message.message);
+        values[0] = new BasicNameValuePair(REQUEST_PARAM_FILED,message);
 
         Map<String, Object> nameValuePair = Maps.newHashMap();
 
         nameValuePair.put(FORM_PARAMS_KEY, values);
 
         request.setExtras(nameValuePair);
-
-        push(request, spider);
-        return true;
+        return request;
     }
 
     @Override

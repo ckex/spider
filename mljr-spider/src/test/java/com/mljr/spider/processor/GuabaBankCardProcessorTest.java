@@ -21,7 +21,7 @@ public class GuabaBankCardProcessorTest {
 
         Pipeline pipeline=new LocalFilePipeline(PATH);
 
-        Spider spider=Spider.create(new GuabaBankCardProcessor())
+        Spider spider=Spider.create(new GuabuBankCardProcessor())
                 .addPipeline(pipeline).addPipeline(new ConsolePipeline())
                 .addUrl(url);
         spider.runAsync();

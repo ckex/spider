@@ -185,34 +185,34 @@ public class Manager extends AbstractMessage {
 
 	}
 
-	//guaba 银行卡
-	private void startGuabaBankCard() throws Exception {
+	//http://www.guabu.com/api/bank/?cardid=62284819061
+	private void startGuabuBankCard() throws Exception {
+		AbstractPageProcessor processor = new GuabuBankCardProcessor();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getGuabaBankCardPath());
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getGuabuBankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new GuabaBankCardProcessor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(GUABU_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
-		final AbstractScheduler scheduler = new GuabaBankCardScheduler(spider, RMQ_GUABA_BANK_CARD_QUEUE_ID);
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_GUABU_BANK_CARD_QUEUE_ID));
+		final AbstractScheduler scheduler = new GuabuBankCardScheduler(spider, RMQ_GUABU_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startGuabaBankCard finished. " + spider.toString());
 	}
 
-	//www.huochepiao.com 银行卡
+	//http://www.huochepiao.com/search/bank/?bankid=6225881282879179
 	private void startHuoChePiaoBankCard() throws Exception {
+		AbstractPageProcessor processor = new HuoChePiaoProcessor();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getHuoChePiaoBankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new HuoChePiaoProcessor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(HUOCHEPIAO_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_HCP_BANK_CARD_QUEUE_ID));
 		final AbstractScheduler scheduler = new HuoChePiaoScheduler(spider, RMQ_HCP_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -221,15 +221,15 @@ public class Manager extends AbstractMessage {
 
 	//http://www.67cha.com 银行卡
 	private void startCha67BankCard() throws Exception {
+		AbstractPageProcessor processor = new Cha67BankCardProcessor();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getCha67BankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new Cha67BankCardProcessor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(CHA67_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_CHA67_BANK_CARD_QUEUE_ID));
 		final AbstractScheduler scheduler = new Cha67BankCardScheduler(spider, RMQ_CHA67_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -238,32 +238,32 @@ public class Manager extends AbstractMessage {
 
 	//http://yinhangka.388g.com 银行卡
 	private void startYinHangKaBankCard() throws Exception {
+		AbstractPageProcessor processor = new YinHangKa388Processor();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getYinHangKaBankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new YinHangKa388Processor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(YHK388_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_YHK388_BANK_CARD_QUEUE_ID));
 		final AbstractScheduler scheduler = new YinHangKa388Scheduler(spider, RMQ_YHK388_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
-		logger.info("Start startYHK388BankCard finished. " + spider.toString());
+		logger.info("Start startYinHangKaBankCard finished. " + spider.toString());
 	}
 
 	//cha.yinhangkadata.com 银行卡
 	private void startChaYHKBankCard() throws Exception {
+		AbstractPageProcessor processor = new ChaYHKDataProcessor();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getChaYHKBankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new ChaYHKDataProcessor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(CHAYHK_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_CHAYHK_BANK_CARD_QUEUE_ID));
 		final AbstractScheduler scheduler = new ChaYHKDataScheduler(spider, RMQ_CHAYHK_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -272,15 +272,15 @@ public class Manager extends AbstractMessage {
 
 	//lbs amap
 	private void startLBSAMapGeo() throws Exception {
+		AbstractPageProcessor processor = new LBSAMapGeoProcessor();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSAMapGeoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new LBSAMapGeoProcessor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(LBS_AMAP_GEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_LBS_AMAP_GEO_QUEUE_ID));
 		final AbstractScheduler scheduler = new LBSAMapGeoScheduler(spider, RMQ_LBS_AMAP_GEO_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -289,15 +289,15 @@ public class Manager extends AbstractMessage {
 
 	//lbs amap
 	private void startLBSAMapReGeo() throws Exception {
+		AbstractPageProcessor processor = new LBSAMapReGeoProcessor();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSAMapReGeoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new LBSAMapReGeoProcessor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(LBS_AMAP_REGEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_LBS_AMAP_REGEO_QUEUE_ID));
 		final AbstractScheduler scheduler = new LBSAMapReGeoScheduler(spider, RMQ_LBS_AMAP_REGEO_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -306,15 +306,15 @@ public class Manager extends AbstractMessage {
 
 	//lbs baidu geo
 	private void startLBSBaiduGeo() throws Exception {
+		AbstractPageProcessor processor = new LBSBaiduGeoProcessor();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSBaiduGeoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new LBSBaiduGeoProcessor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(LBS_BAIDU_GEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_LBS_BAIDU_GEO_QUEUE_ID));
 		final AbstractScheduler scheduler = new LBSBaiduGeoScheduler(spider, RMQ_LBS_BAIDU_GEO_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -323,15 +323,15 @@ public class Manager extends AbstractMessage {
 
 	//lbs baidu regeo
 	private void startLBSBaiduReGeo() throws Exception {
+		AbstractPageProcessor processor = new LBSBaiduReGeoProcessor();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSBaiduReGeoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(new LBSBaiduReGeoProcessor())
-				.addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(LBS_BAIDU_REGEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_LBS_BAIDU_REGEO_QUEUE_ID));
 		final AbstractScheduler scheduler = new LBSBaiduReGeoScheduler(spider, RMQ_LBS_BAIDU_REGEO_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
