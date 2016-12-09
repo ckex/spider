@@ -46,10 +46,6 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_HUOCHE114_MOBILE_QUEUE_ID = "mobile-114huoche";
 	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID = "mobile-showji";
 	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID = "mobile-sogou";
-	protected static final String RMQ_IP138_MOBILE_QUEUE_ID="mobile-ip138";
-	protected static final String RMQ_HUOCHE114_MOBILE_QUEUE_ID="mobile-114huoche";
-	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID="mobile-showji";
-	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID="mobile-sogou";
 	protected static final String RMQ_GUABA_BANK_CARD_QUEUE_ID="card-guaba";
 	protected static final String RMQ_HCP_BANK_CARD_QUEUE_ID="card-hcp";
 	protected static final String RMQ_CHA67_BANK_CARD_QUEUE_ID="card-cha67";
