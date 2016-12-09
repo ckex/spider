@@ -4,7 +4,6 @@
 package com.mljr.sync.task;
 
 import com.mljr.sync.service.GPSService;
-import com.mljr.sync.service.MobileService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
