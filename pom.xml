@@ -819,7 +819,7 @@
 		</plugins>
 	</reporting>
 
-	<repositories>
+<!-- 	<repositories>
 		<repository>
 			<id>typesafe</id>
 			<name>Typesafe Repository</name>
@@ -830,14 +830,14 @@
 			<name>Scala-tools Maven2 Repository</name>
 			<url>http://scala-tools.org/repo-releases</url>
 		</repository>
-	</repositories>
+	</repositories> -->
 
-	<pluginRepositories>
+	<!-- <pluginRepositories>
 		<pluginRepository>
 			<id>scala-tools.org</id>
 			<name>Scala-tools Maven2 Repository</name>
 			<url>http://scala-tools.org/repo-releases</url>
 		</pluginRepository>
-	</pluginRepositories>
+	</pluginRepositories> -->
 
 </project>
