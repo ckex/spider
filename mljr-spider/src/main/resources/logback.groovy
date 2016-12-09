@@ -1,5 +1,5 @@
 //
-// Built on Sat Nov 12 07:33:52 UTC 2016 by logback-translator
+// Built on Wed Dec 07 05:57:42 UTC 2016 by logback-translator
 // For more information on configuration files in Groovy
 // please see http://logback.qos.ch/manual/groovy.html
 
@@ -15,13 +15,10 @@ import ch.qos.logback.classic.filter.ThresholdFilter
 import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy
-import java.nio.charset.Charset
 
 import static ch.qos.logback.classic.Level.DEBUG
 import static ch.qos.logback.classic.Level.INFO
 import static ch.qos.logback.classic.Level.WARN
-
-println("Load logback configuration.")
 
 scan("300 seconds")
 def LOG_HOME = System.getenv("OUTPUT_HOME")
@@ -29,12 +26,27 @@ if (!LOG_HOME) {
   LOG_HOME = "/data/var/log/mljr"
 }
 
-def appName = System.getenv("APP_NAME")
-if (!appName) {
-  appName = "mljr"
+def APP_NAME = System.getenv("APP_NAME")
+if (!APP_NAME) {
+  APP_NAME = "mljr"
 }
-context.name = appName
 
+def SAIGE_DATA_HOME =System.getenv("SAIGE_DATA_HOME")
+if (!SAIGE_DATA_HOME) {
+  SAIGE_DATA_HOME = "/data/saige"
+}
+
+def JUHE_DATA_HOME =System.getenv("JUHE_DATA_HOME")
+if (!JUHE_DATA_HOME) {
+  JUHE_DATA_HOME = "/data/juhe"
+}
+
+def DOWNLOADER_LISTENER_HOME =System.getenv("DOWNLOADER_LISTENER_HOME")
+if (!DOWNLOADER_LISTENER_HOME) {
+  DOWNLOADER_LISTENER_HOME = "/data/listener"
+}
+
+context.name = "${APP_NAME}"
 appender("STDOUT", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
     pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
@@ -48,7 +60,6 @@ appender("STDOUT", RollingFileAppender) {
       maxFileSize = "100MB"
     }
     maxHistory = 300
-    // charset = Charset.forName("UTF-8")
   }
 }
 appender("A1", RollingFileAppender) {
@@ -64,7 +75,66 @@ appender("A1", RollingFileAppender) {
       maxFileSize = "100MB"
     }
     maxHistory = 300
-    // charset = Charset.forName("UTF-8")
+  }
+}
+appender("JUHE-MOBILE-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/juhe-mobile-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("BAIDU-MOBILE-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/baidu-mobile-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("SOGOU-MOBILE-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/sogou-mobile-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("SAIGE-GPS-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/saige-gps-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
   }
 }
 appender("GPS-DATA", RollingFileAppender) {
@@ -75,12 +145,11 @@ appender("GPS-DATA", RollingFileAppender) {
     level = INFO
   }
   rollingPolicy(TimeBasedRollingPolicy) {
-    fileNamePattern = "${LOG_HOME}/GPS-%d{yyyy-MM-dd-HH}.%i.log"
+    fileNamePattern = "${SAIGE_DATA_HOME}/GPS-%d{yyyy-MM-dd-HH}.%i.log"
     timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
       maxFileSize = "100MB"
     }
     maxHistory = 300
-    // charset = Charset.forName("UTF-8")
   }
 }
 appender("JUHE-MOBILE-DATA", RollingFileAppender) {
@@ -91,12 +160,11 @@ appender("JUHE-MOBILE-DATA", RollingFileAppender) {
     level = INFO
   }
   rollingPolicy(TimeBasedRollingPolicy) {
-    fileNamePattern = "${LOG_HOME}/JUHE-MOBILE-%d{yyyy-MM-dd-HH}.%i.log"
+    fileNamePattern = "${JUHE_DATA_HOME}/MOBILE-%d{yyyy-MM-dd-HH}.%i.log"
     timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
       maxFileSize = "100MB"
     }
     maxHistory = 300
-    // charset = Charset.forName("UTF-8")
   }
 }
 logger("com.alibaba.druid.filter.stat.StatFilter", INFO)
@@ -125,6 +193,10 @@ logger("com.mljr.spider.scheduler.manager.Manager", DEBUG)
 logger("com.mljr.spider.scheduler.manager", DEBUG)
 logger("com.mljr.spider.scheduler", DEBUG)
 logger("com.mljr.spider", DEBUG)
+logger("juhe-mobile-downloader", INFO, ["JUHE-MOBILE-ERR"], false)
+logger("baidu-mobile-downloader", INFO, ["BAIDU-MOBILE-ERR"], false)
+logger("sogou-mobile-downloader", INFO, ["SOGOU-MOBILE-ERR"], false)
+logger("saige-gps-downloader", INFO, ["SAIGE-GPS-ERR"], false)
 logger("gps-data", INFO, ["GPS-DATA"], false)
 logger("juhe-mobile-data", INFO, ["JUHE-MOBILE-DATA"], false)
 root(DEBUG, ["A1", "STDOUT"])

@@ -10,9 +10,9 @@ import us.codecraft.webmagic.Site;
 public class SogouMobileProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me()
-            .setDomain("sogou-mobile") //此字段在生成文件时用到
-            .setSleepTime(10000) //10秒请求一次
-            .setRetrySleepTime(1500)
+            .setDomain("sogou.com") //此字段在生成文件时用到
+            .setSleepTime(1000)
+            .setRetrySleepTime(4200)
             .setRetryTimes(3)
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");

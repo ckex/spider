@@ -10,50 +10,54 @@ import us.codecraft.webmagic.Task;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Created by xi.gao
- * Date:2016/12/2
+ * Created by xi.gao Date:2016/12/2
  */
 public class SogouMobileScheduler extends AbstractScheduler {
 
-    private static final String URL = "https://www.sogou.com/web?query=%s";
+	private static final String URL = "https://www.sogou.com/web?query=%s";
 
-    public SogouMobileScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
-        super(spider, mqMsgQueue);
-    }
+	public SogouMobileScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
+		super(spider, mqMsgQueue);
+	}
 
-    public SogouMobileScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
-        super(spider, task);
-    }
+	public SogouMobileScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
+		super(spider, task);
+	}
 
-    public SogouMobileScheduler(Spider spider, String qid) throws Exception {
-        super(spider, qid);
-    }
+	public SogouMobileScheduler(Spider spider, String qid) throws Exception {
+		super(spider, qid);
+	}
 
-    @Override
-    public boolean pushTask(Spider spider, UMQMessage message) {
-        String url = String.format(URL, message.message);
-        url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
-        push(new Request(url), spider);
-        return true;
-    }
+	@Override
+	public int getLeftRequestsCount(Task task) {
+		return 0;
+	}
 
-    @Override
-    public int getLeftRequestsCount(Task task) {
-        return 0;
-    }
+	@Override
+	public int getTotalRequestsCount(Task task) {
+		return 0;
+	}
 
-    @Override
-    public int getTotalRequestsCount(Task task) {
-        return 0;
-    }
+	@Override
+	public void push(Request request, Task task) {
+		put(request);
+	}
 
-    @Override
-    public void push(Request request, Task task) {
-        put(request);
-    }
+	@Override
+	public Request poll(Task task) {
+		return take();
+	}
 
-    @Override
-    public Request poll(Task task) {
-        return take();
-    }
+	@Override
+	public boolean pushTask(Spider spider, UMQMessage message) {
+		push(buildRequst(message.message), spider);
+		return true;
+	}
+
+	@Override
+	Request buildRequst(String message) {
+		String url = String.format(URL, message);
+		url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+		return new Request(url);
+	}
 }

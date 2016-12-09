@@ -30,7 +30,7 @@ public class ChaYHKDataProcessorTest {
 
         NameValuePair[] values = new NameValuePair[1];
 
-        values[0] = new BasicNameValuePair("card", "6225881282879179");
+        values[0] = new BasicNameValuePair("card", "6222021001085329875");
 
         Map<String, Object> nameValuePair = Maps.newHashMap();
 

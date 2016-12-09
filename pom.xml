@@ -821,6 +821,10 @@
 
 	<repositories>
 		<repository>
+			<id>youjie</id>
+			<url>http://maven.youjie.com/content/groups/public/</url>
+		</repository>
+		<repository>
 			<id>typesafe</id>
 			<name>Typesafe Repository</name>
 			<url>http://repo.typesafe.com/typesafe/releases/</url>
