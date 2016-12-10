@@ -31,8 +31,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		ctx = new ClassPathXmlApplicationContext(new String[] { "classpath*:/spring/dao.xml",
 				"classpath*:/spring/dao-datasource.xml", "classpath*:/spring/applicationContext.xml" });
-		 SyncScheduler scheduler = ctx.getBean(SyncScheduler.class);
-//		scheduler.
+// 		 SyncScheduler scheduler = ctx.getBean(SyncScheduler.class);
 		logger.debug("started . ");
 	}
 
