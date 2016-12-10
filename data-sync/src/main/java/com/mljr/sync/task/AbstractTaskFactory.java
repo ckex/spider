@@ -14,4 +14,6 @@ public abstract class AbstractTaskFactory {
 
 	public abstract GPSTask createGPSTask();
 
+	public abstract BankCardLocationTask createBankCardLocationTask();
+
 }

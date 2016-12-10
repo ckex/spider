@@ -16,7 +16,12 @@ import us.codecraft.webmagic.SpiderListener;
  */
 public class DownloaderSpiderListener implements SpiderListener {
 
-	protected transient Logger logger = LoggerFactory.getLogger(getClass());
+	protected transient final Logger logger;
+
+	public DownloaderSpiderListener(String logName) {
+		super();
+		this.logger = LoggerFactory.getLogger(logName);
+	}
 
 	@Override
 	public void onSuccess(Request request) {

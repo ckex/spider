@@ -18,7 +18,11 @@ public class BasicConstant {
 
 	public static final String MOBILE_YY_USER_CALL_RECORD_HISTORY = "yyuser.yy_user_call_record_history";
 
+	public static final String SPIDER_BANK_CARD_LOCATION = "spider_bank_card_location";
+
 	public static final String MOBILE_TABLE_LAST_ID = "last_id";
+
+	public static final String SPIDER_BANK_CARD_LOCATION_TABLE_LAST_ID = "last_id";
 
 	public static final String UTF8 = "UTF-8";
 

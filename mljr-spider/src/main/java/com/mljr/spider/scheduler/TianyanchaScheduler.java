@@ -13,10 +13,6 @@ public class TianyanchaScheduler extends AbstractScheduler {
 
     private static final String URL = "http://www.tianyancha.com/search/%s.json";
 
-    public TianyanchaScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
-        super(spider, mqMsgQueue);
-    }
-
     public TianyanchaScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
         super(spider, task);
     }
@@ -25,13 +21,18 @@ public class TianyanchaScheduler extends AbstractScheduler {
         super(spider, qid);
     }
 
+    public TianyanchaScheduler(Spider spider, BlockingQueue<UMQMessage> queue) throws Exception {
+        super(spider, queue);
+    }
+
     @Override
-    public boolean pushTask(Spider spider, UMQMessage message) {
-//        String url = String.format(URL, message.message);
-        String url = String.format(URL, "上海云贝网络科技有限公司");
-        url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
-        push(new Request(url), spider);
-        return true;
+    public void push(Request request, Task task) {
+        put(request);
+    }
+
+    @Override
+    public Request poll(Task task) {
+        return take();
     }
 
     @Override
@@ -45,12 +46,15 @@ public class TianyanchaScheduler extends AbstractScheduler {
     }
 
     @Override
-    public void push(Request request, Task task) {
-        put(request);
+    public boolean pushTask(Spider spider, UMQMessage message) {
+        push(buildRequst(message.message), spider);
+        return true;
     }
 
     @Override
-    public Request poll(Task task) {
-        return take();
+    Request buildRequst(String message) {
+        String url = String.format(URL, message);
+        url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+        return new Request(url);
     }
 }
