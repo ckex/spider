@@ -83,7 +83,7 @@ public abstract class AbstractMessage {
 	protected static final String TIANYANCHA_LISTENER_LOG_NAME = "tianyancha-downloader";
 
 	protected static final String GUABU_BANK_CARD_LISTENER_LOG_NAME="guabu-bc-downloader";
-	protected static final String HUOCHEPIAO_BANK_CARD_LISTENER_LOG_NAME="huochepiao-bc-downloader";
+	protected static final String HUOCHEPIAO_BANK_CARD_LISTENER_LOG_NAME="hcp-bc-downloader";
 	protected static final String CHA67_BANK_CARD_LISTENER_LOG_NAME="cha67-bc-downloader";
 	protected static final String YHK388_BANK_CARD_LISTENER_LOG_NAME="yhk388-bc-downloader";
 	protected static final String CHAYHK_BANK_CARD_LISTENER_LOG_NAME="chayhk-bc-downloader";
