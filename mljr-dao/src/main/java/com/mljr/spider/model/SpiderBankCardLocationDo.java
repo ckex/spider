@@ -4,8 +4,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @author ckex created 2016-12-11 10:37:07:007
+ * @explain -
+ */
 public class SpiderBankCardLocationDo implements Serializable {
-    private static final long serialVersionUID = 1481348112773L;
+    private static final long serialVersionUID = 1481423827589L;
 
     private String bankCard11Digits;
     private String bankName;
@@ -63,33 +67,60 @@ public class SpiderBankCardLocationDo implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SpiderBankCardLocationDo that = (SpiderBankCardLocationDo) o;
-
-        if (bankCard11Digits != null ? !bankCard11Digits.equals(that.bankCard11Digits) : that.bankCard11Digits != null)
-            return false;
-        if (bankName != null ? !bankName.equals(that.bankName) : that.bankName != null) return false;
-        if (bankCardType != null ? !bankCardType.equals(that.bankCardType) : that.bankCardType != null) return false;
-        if (bankCardName != null ? !bankCardName.equals(that.bankCardName) : that.bankCardName != null) return false;
-        if (bankCardProvince != null ? !bankCardProvince.equals(that.bankCardProvince) : that.bankCardProvince != null)
-            return false;
-        return bankCardCity != null ? bankCardCity.equals(that.bankCardCity) : that.bankCardCity == null;
-
-    }
-
-    @Override
     public int hashCode() {
-        int result = bankCard11Digits != null ? bankCard11Digits.hashCode() : 0;
-        result = 31 * result + (bankName != null ? bankName.hashCode() : 0);
-        result = 31 * result + (bankCardType != null ? bankCardType.hashCode() : 0);
-        result = 31 * result + (bankCardName != null ? bankCardName.hashCode() : 0);
-        result = 31 * result + (bankCardProvince != null ? bankCardProvince.hashCode() : 0);
-        result = 31 * result + (bankCardCity != null ? bankCardCity.hashCode() : 0);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((bankCard11Digits == null) ? 0 : bankCard11Digits.hashCode());
+        result = prime * result + ((bankName == null) ? 0 : bankName.hashCode());
+        result = prime * result + ((bankCardType == null) ? 0 : bankCardType.hashCode());
+        result = prime * result + ((bankCardName == null) ? 0 : bankCardName.hashCode());
+        result = prime * result + ((bankCardProvince == null) ? 0 : bankCardProvince.hashCode());
+        result = prime * result + ((bankCardCity == null) ? 0 : bankCardCity.hashCode());
         return result;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        SpiderBankCardLocationDo other = (SpiderBankCardLocationDo) obj;
+        if (bankCard11Digits == null) {
+            if(other.bankCard11Digits != null)
+                return false;
+        } else if (!bankCard11Digits.equals(other.bankCard11Digits))
+            return false;
+        if (bankName == null) {
+            if(other.bankName != null)
+                return false;
+        } else if (!bankName.equals(other.bankName))
+            return false;
+        if (bankCardType == null) {
+            if(other.bankCardType != null)
+                return false;
+        } else if (!bankCardType.equals(other.bankCardType))
+            return false;
+        if (bankCardName == null) {
+            if(other.bankCardName != null)
+                return false;
+        } else if (!bankCardName.equals(other.bankCardName))
+            return false;
+        if (bankCardProvince == null) {
+            if(other.bankCardProvince != null)
+                return false;
+        } else if (!bankCardProvince.equals(other.bankCardProvince))
+            return false;
+        if (bankCardCity == null) {
+            if(other.bankCardCity != null)
+                return false;
+        } else if (!bankCardCity.equals(other.bankCardCity))
+            return false;
+        return true;
+    }
 
+    @Override
+    public String toString() {
+        return "SpiderBankCardLocationDo[bankCard11Digits=" + bankCard11Digits + ", bankName=" + bankName + ", bankCardType=" + bankCardType + ", bankCardName=" + bankCardName + ", bankCardProvince=" + bankCardProvince + ", bankCardCity=" + bankCardCity+ "]";
+    }
 }
