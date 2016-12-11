@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Mapper.merchant_info">
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true"/>
+    <resultMap id="MerchantInfoDoResult" type="com.mljr.spider.model.MerchantInfoDo">
+        <result column="mm_id" property="mmId"/>
+        <result column="merchant_id" property="merchantId"/>
+        <result column="merchant_name" property="merchantName"/>
+        <result column="mm_bussiness_license" property="mmBussinessLicense"/>
+        <result column="mm_person_name" property="mmPersonName"/>
+        <result column="mm_account_name" property="mmAccountName"/>
+        <result column="province_name" property="provinceName"/>
+        <result column="city_name" property="cityName"/>
+        <result column="area_name" property="areaName"/>
+        <result column="phy_street" property="phyStreet"/>
+    </resultMap>
+
+    <select id="listById" resultMap="MerchantInfoDoResult" parameterType="java.util.HashMap">
+        select
+            a.mm_id ,
+            a.merchant_id ,
+            a.merchant_name ,
+            a.mm_bussiness_license ,
+            a.mm_person_name ,
+            a.mm_account_name ,
+            b.province_name ,
+            replace(c.city_name , '　' , '') as city_name ,
+            replace(d.area_name , '　' , '') as area_name ,
+            a.phy_street
+        from
+            sba.e002_m_merchant as a
+        left join sba.e002_m_province_dict as b on a.phy_state = b.province_id
+        left join sba.e002_m_city_dict as c on a.phy_city = c.city_id
+        left join sba.e002_m_area_dict as d on a.phy_area = d.area_id
+        where a.mm_id>#{id}
+        order by a.mm_id
+        limit #{limit}
+    </select>
+</mapper>
