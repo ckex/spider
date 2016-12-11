@@ -3,7 +3,6 @@
  */
 package com.mljr.sync.main;
 
-import com.mljr.sync.schedule.SyncScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -18,7 +17,7 @@ public class Main {
 
 	protected static transient Logger logger = LoggerFactory.getLogger(Main.class);
 
-	private static ApplicationContext ctx;
+	public static ApplicationContext ctx;
 
 	public Main() {
 		super();
