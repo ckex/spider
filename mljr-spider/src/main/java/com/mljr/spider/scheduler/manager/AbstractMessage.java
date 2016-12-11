@@ -58,6 +58,8 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID = "mobile-showji";
 	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID = "mobile-sogou";
 
+	protected static final String RMQ_TIANYANCHA_QUEUE_ID = "tianyancha";
+
 	protected static final String RMQ_GUABU_BANK_CARD_QUEUE_ID="bc-guabu";
 	protected static final String RMQ_HCP_BANK_CARD_QUEUE_ID="bc-hcp";
 	protected static final String RMQ_CHA67_BANK_CARD_QUEUE_ID="bc-cha67";
@@ -78,6 +80,7 @@ public abstract class AbstractMessage {
 	protected static final String IP138_MOBILE_LISTENER_LOG_NAME = "ip138-mobile-downloader";
 	protected static final String HUOCHE114_MOBILE_LISTENER_LOG_NAME = "huoche114-mobile-downloader";
 	protected static final String GUISHU_MOBILE_LISTENER_LOG_NAME = "guishu-mobile-downloader";
+	protected static final String TIANYANCHA_LISTENER_LOG_NAME = "tianyancha-downloader";
 
 	protected static final String GUABU_BANK_CARD_LISTENER_LOG_NAME="guabu-bc-downloader";
 	protected static final String HUOCHEPIAO_BANK_CARD_LISTENER_LOG_NAME="huochepiao-bc-downloader";

@@ -3,6 +3,7 @@
  */
 package com.mljr.sync.schedule;
 
+import com.mljr.sync.task.BankCardLocationTask;
 import com.mljr.sync.task.GPSTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,13 @@ public class SyncScheduler {
 	@Scheduled(cron = "0 0 0/1 * * ?")
 	private void startGPSTask() {
 		GPSTask task = abstractTaskFactory.createGPSTask();
+		task.run();
+		logger.debug(task.toString());
+	}
+
+	@Scheduled(cron = "0/5 * * * * ?")
+	private void startBankCardLocationTask() {
+		BankCardLocationTask task = abstractTaskFactory.createBankCardLocationTask();
 		task.run();
 		logger.debug(task.toString());
 	}
