@@ -13,7 +13,7 @@ import common.page.util.PageQuery;
  */
 public interface SpiderBankCardLocationDao {
 
-	@DataSource("RC")
+	@DataSource("rc")
 	SpiderBankCardLocationDo load(java.lang.String bank_card_11_digits);
 
 	boolean delete(java.lang.String bank_card_11_digits);
