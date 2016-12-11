@@ -66,7 +66,6 @@ public class MerchantInfoService {
             return true;
         }
         String jsonString = JSON.toJSONString(merchantInfoDo);
-        System.out.println(jsonString);
         BasicProperties.Builder builder = new BasicProperties.Builder();
         builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
         try {
