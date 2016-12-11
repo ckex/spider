@@ -27,4 +27,7 @@ public interface SpiderBankCardLocationDao {
 
 	@DataSource("rc")
 	List<String> listById(String lastId, int limit);
+
+	@DataSource("rc")
+	List<String> listFromDMById(String lastId, int limit);
 }

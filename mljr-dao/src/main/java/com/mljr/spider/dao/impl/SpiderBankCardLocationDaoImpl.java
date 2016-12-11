@@ -71,4 +71,12 @@ public class SpiderBankCardLocationDaoImpl extends AbstractBasicDao implements S
         map.add( "limit",limit);
         return getSqlSessionTemplate().selectList("Mapper.spider_bank_card_location.listById",map);
     }
- }
+
+    @Override
+    public List<String> listFromDMById(String lastId, int limit) {
+        SearchMap map =  new SearchMap();
+        map.add( "id",lastId);
+        map.add( "limit",limit);
+        return getSqlSessionTemplate().selectList("Mapper.spider_bank_card_location.listFromDMById",map);
+    }
+}

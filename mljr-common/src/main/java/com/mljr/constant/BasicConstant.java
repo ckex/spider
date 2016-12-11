@@ -20,6 +20,8 @@ public class BasicConstant {
 
 	public static final String SPIDER_BANK_CARD_LOCATION = "spider_bank_card_location";
 
+	public static final String DM_TOTAL_APPLICATIONS = "dm_total_applications";
+
 	public static final String MERCENT_INFO = "mercent_info";
 
 	public static final String LAST_ID = "last_id";

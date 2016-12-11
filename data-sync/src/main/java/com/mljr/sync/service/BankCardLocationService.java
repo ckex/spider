@@ -10,9 +10,6 @@ import com.mljr.constant.BasicConstant;
 import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.redis.RedisClient;
 import com.mljr.spider.dao.SpiderBankCardLocationDao;
-import com.mljr.spider.dao.YyUserAddressBookDao;
-import com.mljr.spider.dao.YyUserCallRecordDao;
-import com.mljr.spider.model.YyUserCallRecordDo;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.ucloud.umq.common.ServiceConfig;
@@ -25,10 +22,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +32,10 @@ public class BankCardLocationService {
     protected static transient Logger logger = LoggerFactory.getLogger(BankCardLocationService.class);
 
     private static final int LIMIT = 50;
+
+    private static final String SPIDER_KEY = Joiner.on("-").join(BasicConstant.SPIDER_BANK_CARD_LOCATION,BasicConstant.LAST_ID);
+
+    private static final String DM_KEY = Joiner.on("-").join(BasicConstant.DM_TOTAL_APPLICATIONS,BasicConstant.LAST_ID);
 
     @Autowired
     private RedisClient client;
@@ -56,7 +54,8 @@ public class BankCardLocationService {
                     return sentCardNo(channel, cardNo);
                 }
             };
-            syncBankcardLocation(function);
+            syncFrom(SPIDER_KEY,function);
+            syncFrom(DM_KEY,function);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -93,9 +92,15 @@ public class BankCardLocationService {
         }
     }
 
-    private void syncBankcardLocation(Function<String,Boolean> function){
-        String key = Joiner.on("-").join(BasicConstant.SPIDER_BANK_CARD_LOCATION,BasicConstant.LAST_ID);
-        List<String> locations = listData(key);
+    private void syncFrom(String key, Function<String,Boolean> function){
+        List<String> locations = new ArrayList<>();
+        if(SPIDER_KEY.equals(key)){
+            locations = listData(key);
+//            System.out.println("spider   "  + locations);
+        }else if(DM_KEY.equals(key)){
+            locations = listDM(key);
+//            System.out.println("DM   "  + locations);
+        }
         if(locations!=null&&locations.size()>0){
             for (String location : locations) {
                 if (function.apply(location)) {
@@ -114,6 +119,11 @@ public class BankCardLocationService {
         return spiderBankCardLocationDao.listById(lastId, LIMIT);
     }
 
+    private List<String> listDM(String key) {
+        String lastId = getLastId(key);
+        return spiderBankCardLocationDao.listFromDMById(lastId,LIMIT);
+    }
+
     private void setLastId(final String key, final String id) {
         client.use(new Function<Jedis, String>() {
 
@@ -125,12 +135,12 @@ public class BankCardLocationService {
         });
     }
 
-    private String getLastId(final String table) {
+    private String getLastId(final String key) {
         String result = client.use(new Function<Jedis, String>() {
 
             @Override
             public String apply(Jedis jedis) {
-                return jedis.get(table);
+                return jedis.get(key);
             }
         });
         if (StringUtils.isBlank(result)) {

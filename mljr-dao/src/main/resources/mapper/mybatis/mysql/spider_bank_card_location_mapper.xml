@@ -58,4 +58,13 @@
         (bank_name = "未知" or bank_card_type = "未知" or bank_card_name = "未知" or bank_card_province = "未知" or bank_card_city = "未知")
         order by bank_card_11_digits limit #{limit}
     </select>
+
+    <select id="listFromDMById" resultType="java.lang.String" parameterType="java.util.HashMap">
+        select distinct(substr(bank_card_no, 1, 11)) as bank_card_11_digits
+        from rc.dm_total_applications
+        where length(bank_card_no) >= 11 and substr(bank_card_no, 1, 11) != '建设银行'
+        and contract_id>#{id}
+        order by contract_id
+        limit #{limit}
+    </select>
 </mapper>
