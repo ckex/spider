@@ -63,4 +63,12 @@ public class SpiderBankCardLocationDaoImpl extends AbstractBasicDao implements S
          result.setPaginator(paginator);
          return result;
      }
+
+    @Override
+    public List<String> listById(String lastId,int limit) {
+        SearchMap map =  new SearchMap();
+        map.add( "id",lastId);
+        map.add( "limit",limit);
+        return getSqlSessionTemplate().selectList("Mapper.spider_bank_card_location.listById",map);
+    }
  }

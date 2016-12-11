@@ -9,6 +9,8 @@ import org.junit.Test;
 import com.mljr.spider.dao.AbstractIMljrDaoTest;
 import com.mljr.spider.model.SpiderBankCardLocationDo;
 
+import java.util.List;
+
 /**
  * @author ckex created 2016-12-11 10:37:07:007
  * @explain -
@@ -67,5 +69,11 @@ public class SpiderBankCardLocationDaoImplTest extends AbstractIMljrDaoTest {
 		// for (SpiderBankCardLocationDo bean : result) {
 		// logger.debug(bean.toString());
 		// }
+	}
+
+	@Test
+	public void testListById() throws Exception {
+		List<String> list = spiderBankCardLocationDao.listById("70000000000",50);
+		logger.info("result ===> " + list);
 	}
 }
