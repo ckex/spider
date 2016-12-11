@@ -3,6 +3,8 @@ package com.mljr.spider.scheduler;
 import com.google.common.collect.Maps;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
+import com.mljr.spider.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import us.codecraft.webmagic.Request;
@@ -52,19 +54,24 @@ public class ChaYHKDataScheduler extends AbstractScheduler {
 
     @Override
     public boolean pushTask(Spider spider, UMQMessage message) {
+        if(null==message || StringUtils.isBlank(message.message)){
+            logger.warn("cha yhk mq message is empty");
+            return false;
+        }
         push(buildRequst(message.message), spider);
         return true;
     }
 
     @Override
     Request buildRequst(String message) {
+
         Request request = new Request(URL);
 
         request.setMethod(HttpConstant.Method.POST);
 
         NameValuePair[] values = new NameValuePair[1];
 
-        values[0] = new BasicNameValuePair(REQUEST_PARAM_FILED,message);
+        values[0] = new BasicNameValuePair(REQUEST_PARAM_FILED, StringUtil.bankCardDefaultFill(message));
 
         Map<String, Object> nameValuePair = Maps.newHashMap();
 

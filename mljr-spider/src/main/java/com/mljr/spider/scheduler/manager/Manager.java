@@ -65,6 +65,7 @@ public class Manager extends AbstractMessage {
 		startJuheMobile();
 		startBaiduMobile();
 		startSogouMobile();
+		startGuabuBankCard();
 
 	}
 

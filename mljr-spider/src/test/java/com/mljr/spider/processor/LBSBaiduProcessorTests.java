@@ -7,7 +7,7 @@ import us.codecraft.webmagic.pipeline.ConsolePipeline;
  * Created by xi.gao
  * Date:2016/12/7
  */
-public class LBSBaiduGeoProcessorTests {
+public class LBSBaiduProcessorTests {
 
     private static final String GEO_URL = "http://api.map.baidu.com/geocoder/v2/?output=json&ak=%s&address=%s";
 
