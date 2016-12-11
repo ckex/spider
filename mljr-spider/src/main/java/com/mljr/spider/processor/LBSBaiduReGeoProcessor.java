@@ -31,7 +31,7 @@ public class LBSBaiduReGeoProcessor extends AbstractPageProcessor{
             return;
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("lbs baidu regeo request.url:{},json:{}", page.getRequest().getUrl(), json);
+            logger.debug("lbs baidu regeo request.url:{},json:{}", page.getRequest().toString(), json);
         }
 
     }

@@ -1,5 +1,7 @@
 package com.mljr.spider.processor;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.ImmutableMap;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
@@ -24,27 +26,29 @@ public class ChaYHKDataProcessor extends AbstractPageProcessor {
     public void process(Page page) {
         Html html = page.getHtml();
         if (null == html) {
-            logger.warn("cha.yinghangkadata.com result is empty " + page.getRequest().getUrl());
+            logger.warn("cha.yinghangkadata.com result is empty " + page.getRequest().toString());
             return;
         }
 
         Selectable divSelectable = html.xpath("//div[@class='home_show']/p");
 
         if (!divSelectable.match()) {
-            logger.warn("cha.yinghangkadata.com response data is not match." + page.getRequest().getUrl());
+            logger.warn("cha.yinghangkadata.com response data is not match." + page.getRequest().toString());
             return;
         }
 
         List<Selectable> selectableList = divSelectable.nodes();
 
-        if (null != selectableList && selectableList.size() > 0) {
-
-            for (Selectable selectable : selectableList) {
-
-                page.putField(selectable.xpath("//p/tidyText()").get(), selectable.xpath("//p/tidyText()").get());
-
-            }
+        if (null == selectableList || selectableList.size() == 0) {
+            logger.warn("cha.yinghangkadata.com parse nodes is not exists." + page.getRequest().toString());
+            return;
         }
+
+        ImmutableMap.Builder builder = ImmutableMap.builder();
+        for (Selectable selectable : selectableList) {
+            builder.put(selectable.xpath("//p/tidyText()").get(), selectable.xpath("//p/tidyText()").get());
+        }
+        page.putField(page.getUrl().get(), JSON.toJSON(builder.build()));
     }
 
     @Override

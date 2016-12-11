@@ -1,5 +1,7 @@
 package com.mljr.spider.processor;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.ImmutableMap;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
@@ -22,20 +24,26 @@ public class YinHangKa388Processor extends AbstractPageProcessor {
     public void process(Page page) {
         Html html = page.getHtml();
         if (null == html) {
-            logger.warn("yinhangka.388g.com result is empty." + page.getRequest().getUrl());
+            logger.warn("yinhangka.388g.com result is empty." + page.getRequest().toString());
             return;
         }
+
         Selectable selectable = html.xpath("//div[@class='knr']/center/table[2]/tbody/tr/td/table/tbody");
-        if (selectable.match()) {
-            List<Selectable> selectableList = selectable.xpath("//tr").nodes();
-            if (null == selectableList || selectableList.size() == 0) {
-                logger.warn("yinhangka.388g.com nodes is not exists." + page.getRequest().getUrl());
-                return;
-            }
-            for (Selectable st : selectableList) {
-                page.putField(st.xpath("//tr/td[1]/tidyText()").get(), st.xpath("//tr/td[2]/tidyText()").get());
-            }
+        if (!selectable.match()) {
+            logger.warn("yinhangka.388g.com response data is not match " + page.getRequest().toString());
+            return;
         }
+
+        List<Selectable> selectableList = selectable.xpath("//tr").nodes();
+        if (null == selectableList || selectableList.size() == 0) {
+            logger.warn("yinhangka.388g.com nodes is not exists." + page.getRequest().toString());
+            return;
+        }
+        ImmutableMap.Builder builder = ImmutableMap.builder();
+        for (Selectable st : selectableList) {
+            builder.put(st.xpath("//tr/td[1]/tidyText()").get(), st.xpath("//tr/td[2]/tidyText()").get());
+        }
+        page.putField(page.getUrl().get(), JSON.toJSON(builder.build()));
     }
 
     @Override

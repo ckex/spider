@@ -1,5 +1,7 @@
 package com.mljr.spider.processor;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -24,17 +26,23 @@ public class GuabuBankCardProcessor extends AbstractPageProcessor {
     public void process(Page page) {
         try {
             if (StringUtils.isEmpty(page.getRawText())) {
-                logger.warn("result is empty." + page.getRequest().getUrl());
+                logger.warn("result is empty." + page.getRequest().toString());
                 return;
             }
             Document document = DocumentHelper.parseText(page.getRawText());
+
             Element element = document.getRootElement().element("item");
-            page.putField("title", element.elementText("title"));
-            page.putField("guishu", element.elementText("guishu"));
-            page.putField("miaoshu", element.elementText("miaoshu"));
-            page.putField("image", element.elementText("image"));
-            page.putField("banktel", element.elementText("banktel"));
-            page.putField("bankurl", element.elementText("bankurl"));
+
+            ImmutableMap<Object, Object> jsonMap = ImmutableMap.builder()
+                    .put("title", element.elementText("title"))
+                    .put("guishu", element.elementText("guishu"))
+                    .put("miaoshu", element.elementText("miaoshu"))
+                    .put("image", element.elementText("image"))
+                    .put("banktel", element.elementText("banktel"))
+                    .put("bankurl", element.elementText("bankurl"))
+                    .build();
+
+            page.putField(page.getUrl().get(), JSON.toJSON(jsonMap));
 
         } catch (DocumentException e) {
             logger.error("guaba xml parse error." + page.toString(), e);

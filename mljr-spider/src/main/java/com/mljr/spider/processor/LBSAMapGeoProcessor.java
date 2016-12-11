@@ -30,7 +30,7 @@ public class LBSAMapGeoProcessor extends AbstractPageProcessor {
             return;
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("lbs amap geo request.url:{},json:{}", page.getRequest().getUrl(), json);
+            logger.debug("lbs amap geo request.page:{},json:{}", page.getRequest().toString(), json);
         }
     }
 

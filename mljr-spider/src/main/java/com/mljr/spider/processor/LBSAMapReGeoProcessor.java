@@ -31,7 +31,7 @@ public class LBSAMapReGeoProcessor extends AbstractPageProcessor {
         }
 
         if (logger.isDebugEnabled()) {
-            logger.debug("lbs amap regeo request.url:{},json:{}", page.getRequest().getUrl(), json);
+            logger.debug("lbs amap regeo request.url:{},json:{}", page.getRequest().toString(), json);
         }
     }
 

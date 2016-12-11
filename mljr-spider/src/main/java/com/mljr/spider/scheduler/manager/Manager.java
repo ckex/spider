@@ -3,33 +3,19 @@
  */
 package com.mljr.spider.scheduler.manager;
 
-import java.io.File;
-
-import com.mljr.spider.processor.*;
-import com.mljr.spider.scheduler.*;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.nio.reactor.IOReactorException;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
-import com.mljr.spider.processor.AbstractPageProcessor;
-import com.mljr.spider.processor.BaiduMobileProcessor;
-import com.mljr.spider.processor.JuheMobileProcessor;
-import com.mljr.spider.processor.SaiGeGPSProcessor;
-import com.mljr.spider.processor.SogouMobileProcessor;
-import com.mljr.spider.scheduler.AbstractScheduler;
-import com.mljr.spider.scheduler.BaiduMobileScheduler;
-import com.mljr.spider.scheduler.JuheMobileScheduler;
-import com.mljr.spider.scheduler.SaiGeGPSScheduler;
-import com.mljr.spider.scheduler.SogouMobileScheduler;
+import com.mljr.spider.processor.*;
+import com.mljr.spider.scheduler.*;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
 import com.ucloud.umq.common.ServiceConfig;
-
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.nio.reactor.IOReactorException;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 import us.codecraft.webmagic.pipeline.FilePipeline;
@@ -66,6 +52,12 @@ public class Manager extends AbstractMessage {
 		startBaiduMobile();
 		startSogouMobile();
 		startGuabuBankCard();
+		startHuoChePiaoBankCard();
+		startCha67BankCard();
+		startYinHangKaBankCard();
+		startChaYHKBankCard();
+		startLBSAMapReGeo();
+		startLBSBaiduReGeo();
 
 	}
 
@@ -88,7 +80,7 @@ public class Manager extends AbstractMessage {
 	private void startJuheMobile() throws Exception {
 		AbstractPageProcessor processor = new JuheMobileProcessor();
 		LogPipeline pipeline = new LogPipeline(JUHE_MOBILE_LOG_NAME);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getJuheMobilePath());
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getJuheMobilePath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).setDownloader(new RestfulDownloader())
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
@@ -105,7 +97,7 @@ public class Manager extends AbstractMessage {
 	private void startBaiduMobile() throws Exception {
 		AbstractPageProcessor processor = new BaiduMobileProcessor();
 		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getBaiduMobilePath());
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getBaiduMobilePath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -121,7 +113,7 @@ public class Manager extends AbstractMessage {
 	// sogou 手机
 	private void startSogouMobile() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getSogouMobilePath());
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getSogouMobilePath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new SogouMobileProcessor()).addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
@@ -138,7 +130,7 @@ public class Manager extends AbstractMessage {
 	// IP138
 	private void startIP138() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getIP138Path());
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getIP138Path());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new IP138Processor()).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -155,7 +147,7 @@ public class Manager extends AbstractMessage {
 	// http://www.114huoche.com/shouji/1840406
 	private void startHuoche114() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getHuoche114Path());
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getHuoche114Path());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new Huoche114Processor()).addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
@@ -172,7 +164,7 @@ public class Manager extends AbstractMessage {
 	// http://guishu.showji.com/search.htm?m=1390000
 	private void startGuishuShowji() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getGuishuShowjiPath());
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getGuishuShowjiPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new GuishuShowjiProcessor()).addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
@@ -189,8 +181,8 @@ public class Manager extends AbstractMessage {
 	//http://www.guabu.com/api/bank/?cardid=62284819061
 	private void startGuabuBankCard() throws Exception {
 		AbstractPageProcessor processor = new GuabuBankCardProcessor();
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getGuabuBankCardPath());
+		LogPipeline pipeline = new LogPipeline(GUABU_BANK_CARD_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getGuabuBankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -206,8 +198,8 @@ public class Manager extends AbstractMessage {
 	//http://www.huochepiao.com/search/bank/?bankid=6225881282879179
 	private void startHuoChePiaoBankCard() throws Exception {
 		AbstractPageProcessor processor = new HuoChePiaoProcessor();
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getHuoChePiaoBankCardPath());
+		LogPipeline pipeline = new LogPipeline(HCP_BANK_CARD_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getHuoChePiaoBankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -223,8 +215,8 @@ public class Manager extends AbstractMessage {
 	//http://www.67cha.com 银行卡
 	private void startCha67BankCard() throws Exception {
 		AbstractPageProcessor processor = new Cha67BankCardProcessor();
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getCha67BankCardPath());
+		LogPipeline pipeline = new LogPipeline(CHA67_BANK_CARD_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getCha67BankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -240,8 +232,8 @@ public class Manager extends AbstractMessage {
 	//http://yinhangka.388g.com 银行卡
 	private void startYinHangKaBankCard() throws Exception {
 		AbstractPageProcessor processor = new YinHangKa388Processor();
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getYinHangKaBankCardPath());
+		LogPipeline pipeline = new LogPipeline(YHK388_BANK_CARD_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getYinHangKaBankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -257,8 +249,8 @@ public class Manager extends AbstractMessage {
 	//cha.yinhangkadata.com 银行卡
 	private void startChaYHKBankCard() throws Exception {
 		AbstractPageProcessor processor = new ChaYHKDataProcessor();
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getChaYHKBankCardPath());
+		LogPipeline pipeline = new LogPipeline(CHAYHK_BANK_CARD_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getChaYHKBankCardPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -274,8 +266,8 @@ public class Manager extends AbstractMessage {
 	//lbs amap
 	private void startLBSAMapGeo() throws Exception {
 		AbstractPageProcessor processor = new LBSAMapGeoProcessor();
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSAMapGeoPath());
+		LogPipeline pipeline = new LogPipeline(LBS_AMAP_GEO_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSAMapGeoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -291,8 +283,8 @@ public class Manager extends AbstractMessage {
 	//lbs amap
 	private void startLBSAMapReGeo() throws Exception {
 		AbstractPageProcessor processor = new LBSAMapReGeoProcessor();
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSAMapReGeoPath());
+		LogPipeline pipeline = new LogPipeline(LBS_AMAP_REGEO_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSAMapReGeoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -308,8 +300,8 @@ public class Manager extends AbstractMessage {
 	//lbs baidu geo
 	private void startLBSBaiduGeo() throws Exception {
 		AbstractPageProcessor processor = new LBSBaiduGeoProcessor();
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSBaiduGeoPath());
+		LogPipeline pipeline = new LogPipeline(LBS_BAIDU_GEO_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSBaiduGeoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
@@ -325,8 +317,8 @@ public class Manager extends AbstractMessage {
 	//lbs baidu regeo
 	private void startLBSBaiduReGeo() throws Exception {
 		AbstractPageProcessor processor = new LBSBaiduReGeoProcessor();
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getLBSBaiduReGeoPath());
+		LogPipeline pipeline = new LogPipeline(LBS_BAIDU_REGEO_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSBaiduReGeoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);

@@ -31,7 +31,7 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
             return;
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("lbs baidu geo request.url:{},json:{}", page.getRequest().getUrl(), json);
+            logger.debug("lbs baidu geo request.url:{},json:{}", page.getRequest().toString(), json);
         }
 
     }
