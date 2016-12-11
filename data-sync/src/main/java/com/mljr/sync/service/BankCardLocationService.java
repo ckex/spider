@@ -94,7 +94,7 @@ public class BankCardLocationService {
     }
 
     private void syncBankcardLocation(Function<String,Boolean> function){
-        String key = Joiner.on("-").join(BasicConstant.SPIDER_BANK_CARD_LOCATION,BasicConstant.SPIDER_BANK_CARD_LOCATION_TABLE_LAST_ID);
+        String key = Joiner.on("-").join(BasicConstant.SPIDER_BANK_CARD_LOCATION,BasicConstant.LAST_ID);
         List<String> locations = listData(key);
         if(locations!=null&&locations.size()>0){
             for (String location : locations) {
