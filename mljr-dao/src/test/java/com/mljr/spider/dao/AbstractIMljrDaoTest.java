@@ -31,4 +31,7 @@ public class AbstractIMljrDaoTest extends AbstractJUnit4SpringContextTests {
 	@Autowired
 	protected RedisClient redisClient;
 
+	@Autowired
+	protected SpiderBankCardLocationDao spiderBankCardLocationDao;
+
 }
