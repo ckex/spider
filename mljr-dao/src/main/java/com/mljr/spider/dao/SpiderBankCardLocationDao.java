@@ -1,6 +1,7 @@
 package com.mljr.spider.dao;
 
 import java.lang.Integer;
+import java.util.List;
 
 import com.mljr.spider.dao.dynamic.datasource.DataSource;
 import com.mljr.spider.model.SpiderBankCardLocationDo;
@@ -13,7 +14,7 @@ import common.page.util.PageQuery;
  */
 public interface SpiderBankCardLocationDao {
 
-	@DataSource("RC")
+	@DataSource("rc")
 	SpiderBankCardLocationDo load(java.lang.String bank_card_11_digits);
 
 	boolean delete(java.lang.String bank_card_11_digits);
@@ -23,4 +24,7 @@ public interface SpiderBankCardLocationDao {
 	boolean update(SpiderBankCardLocationDo record);
 
 	PageList<SpiderBankCardLocationDo> listByPage(PageQuery pageQuery, Integer count);
+
+	@DataSource("rc")
+	List<String> listById(String lastId, int limit);
 }

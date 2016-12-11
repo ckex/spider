@@ -32,6 +32,7 @@ import com.ucloud.umq.common.ServiceConfig;
 
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
+import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
@@ -58,13 +59,14 @@ public class Manager extends AbstractMessage {
 
 	public void run() throws Exception {
 		System.out.println("Runing ...");
-		startSaiGeGPS();
-		startGuishuShowji();
-		startIP138();
-		startHuoche114();
-		startJuheMobile();
-		startBaiduMobile();
-		startSogouMobile();
+//		startSaiGeGPS();
+//		startGuishuShowji();
+//		startIP138();
+//		startHuoche114();
+//		startJuheMobile();
+//		startBaiduMobile();
+//		startSogouMobile();
+		startTianyancha();
 
 	}
 
@@ -182,6 +184,25 @@ public class Manager extends AbstractMessage {
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start GuishuShowjiProcessor finished. " + spider.toString());
+
+	}
+
+	// http://www.tianyancha.com/search/%s.json
+	private void startTianyancha() throws Exception {
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+//		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getTianyanchaPath());
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+//		final Spider spider = Spider.create(new TianyanchaProcessor()).addPipeline(htmlPipeline)
+//				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
+ 		final Spider spider = Spider.create(new TianyanchaProcessor()).addPipeline(pipeline).addPipeline(new ConsolePipeline())
+				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(TIANYANCHA_LISTENER_LOG_NAME);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_TIANYANCHA_QUEUE_ID));
+		final AbstractScheduler scheduler = new TianyanchaScheduler(spider, RMQ_TIANYANCHA_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start TianyanchaProcessor finished. " + spider.toString());
 
 	}
 

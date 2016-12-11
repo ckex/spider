@@ -51,4 +51,11 @@
         SELECT count(*) 
         FROM spider_bank_card_location         WHERE 1 
     </select>
+
+    <select id="listById" resultType="java.lang.String" parameterType="java.util.HashMap">
+        select bank_card_11_digits from spider_bank_card_location
+        where bank_card_11_digits > #{id} and
+        (bank_name = "未知" or bank_card_type = "未知" or bank_card_name = "未知" or bank_card_province = "未知" or bank_card_city = "未知")
+        order by bank_card_11_digits limit #{limit}
+    </select>
 </mapper>

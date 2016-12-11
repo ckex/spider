@@ -73,7 +73,7 @@ public class MobileService {
 	}
 
 	private void syncYyUserCallRecord(Function<String, Boolean> function) {
-		String key = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD, BasicConstant.MOBILE_TABLE_LAST_ID);
+		String key = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD, BasicConstant.LAST_ID);
 		List<YyUserCallRecordDo> result = listYyUserCallRecord(key);
 		if (result == null || result.isEmpty()) {
 			logger.info("result empty .");
@@ -102,7 +102,7 @@ public class MobileService {
 	}
 
 	private void syncYyUserAddressBook(Function<String, Boolean> function) {
-		String key = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK, BasicConstant.MOBILE_TABLE_LAST_ID);
+		String key = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK, BasicConstant.LAST_ID);
 		List<YyUserAddressBookDo> result = listYyUserAddressBook(key);
 		if (result == null || result.isEmpty()) {
 			logger.info("result empty .");

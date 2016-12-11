@@ -163,9 +163,15 @@ public class ServiceConfig {
     public static String getGPSExchange() {
         return properties.getProperty("rmq.gps.exchange");
     }
+    public static String getBankCardExchange() {
+        return properties.getProperty("rmq.bankcard.exchange");
+    }
 
     public static String getMobilerRoutingKey() {
         return properties.getProperty("rmq.mobile.routingKey");
+    }
+    public static String getBankcardRoutingKey() {
+        return properties.getProperty("rmq.bankcard.routingKey");
     }
 
     public static String getGPSRoutingKey() {
@@ -187,5 +193,12 @@ public class ServiceConfig {
     }
     public static String getGuishuShowjiPath(){
         return properties.getProperty("guishushowji.mobile.path");
+    }
+    public static String getTianyanchaPath(){
+        return properties.getProperty("tianyancha.path");
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getHuoche114Path());
     }
 }
