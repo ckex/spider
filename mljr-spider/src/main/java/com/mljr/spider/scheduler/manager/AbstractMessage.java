@@ -39,6 +39,17 @@ public abstract class AbstractMessage {
 	// Log pipeline
 	protected static final String JUHE_MOBILE_LOG_NAME = "juhe-mobile-data";
 
+
+	protected static final String GUABU_BANK_CARD_LOG_NAME="guabu-bc-data";
+	protected static final String HCP_BANK_CARD_LOG_NAME="hcp-bc-data";
+	protected static final String CHA67_BANK_CARD_LOG_NAME="cha67-bc-data";
+	protected static final String YHK388_BANK_CARD_LOG_NAME="yhk388-bc-data";
+	protected static final String CHAYHK_BANK_CARD_LOG_NAME="chayhk-bc-data";
+	protected static final String LBS_AMAP_GEO_LOG_NAME="lbs-amap-geo-data";
+	protected static final String LBS_AMAP_REGEO_LOG_NAME="lbs-amap-regeo-data";
+	protected static final String LBS_BAIDU_GEO_LOG_NAME="lbs-baidu-geo-data";
+	protected static final String LBS_BAIDU_REGEO_LOG_NAME="lbs-baidu-regeo-data";
+
 	// RabbitMQ
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";
 	protected static final String RMQ_BAIDU_MOBILE_QUEUE_ID = "mobile-baidu";
@@ -48,6 +59,17 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_SOGOU_MOBILE_QUEUE_ID = "mobile-sogou";
 
 	protected static final String RMQ_TIANYANCHA_QUEUE_ID = "tianyancha";
+
+	protected static final String RMQ_GUABU_BANK_CARD_QUEUE_ID="bc-guabu";
+	protected static final String RMQ_HCP_BANK_CARD_QUEUE_ID="bc-hcp";
+	protected static final String RMQ_CHA67_BANK_CARD_QUEUE_ID="bc-cha67";
+	protected static final String RMQ_YHK388_BANK_CARD_QUEUE_ID="bc-yhk388";
+	protected static final String RMQ_CHAYHK_BANK_CARD_QUEUE_ID="bc-chayhk";
+
+	protected static final String RMQ_LBS_AMAP_GEO_QUEUE_ID="lbs-amap-geo";
+	protected static final String RMQ_LBS_AMAP_REGEO_QUEUE_ID="lbs-amap-regeo";
+	protected static final String RMQ_LBS_BAIDU_GEO_QUEUE_ID="lbs-baidu-geo";
+	protected static final String RMQ_LBS_BAIDU_REGEO_QUEUE_ID="lbs-baidu-regeo";
 
 	// Downloader error listener
 	protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";
@@ -59,6 +81,17 @@ public abstract class AbstractMessage {
 	protected static final String HUOCHE114_MOBILE_LISTENER_LOG_NAME = "huoche114-mobile-downloader";
 	protected static final String GUISHU_MOBILE_LISTENER_LOG_NAME = "guishu-mobile-downloader";
 	protected static final String TIANYANCHA_LISTENER_LOG_NAME = "tianyancha-downloader";
+
+	protected static final String GUABU_BANK_CARD_LISTENER_LOG_NAME="guabu-bc-downloader";
+	protected static final String HUOCHEPIAO_BANK_CARD_LISTENER_LOG_NAME="hcp-bc-downloader";
+	protected static final String CHA67_BANK_CARD_LISTENER_LOG_NAME="cha67-bc-downloader";
+	protected static final String YHK388_BANK_CARD_LISTENER_LOG_NAME="yhk388-bc-downloader";
+	protected static final String CHAYHK_BANK_CARD_LISTENER_LOG_NAME="chayhk-bc-downloader";
+
+	protected static final String LBS_AMAP_GEO_LISTENER_LOG_NAME="lbs-amap-geo-downloader";
+	protected static final String LBS_AMAP_REGEO_LISTENER_LOG_NAME="lbs-amap-regeo-downloader";
+	protected static final String LBS_BAIDU_GEO_LISTENER_LOG_NAME="lbs-baidu-geo-downloader";
+	protected static final String LBS_BAIDU_REGEO_LISTENER_LOG_NAME="lbs-baidu-regeo-downloader";
 
 	public AbstractMessage() {
 		super();
