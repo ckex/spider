@@ -167,11 +167,18 @@ public class ServiceConfig {
         return properties.getProperty("rmq.bankcard.exchange");
     }
 
+    public static String getMerchantInfoExchange() {
+        return properties.getProperty("rmq.merchantinfo.exchange");
+    }
+
     public static String getMobilerRoutingKey() {
         return properties.getProperty("rmq.mobile.routingKey");
     }
     public static String getBankcardRoutingKey() {
         return properties.getProperty("rmq.bankcard.routingKey");
+    }
+    public static String getMerchantInfoRoutingKey() {
+        return properties.getProperty("rmq.merchantinfo.routingKey");
     }
 
     public static String getGPSRoutingKey() {

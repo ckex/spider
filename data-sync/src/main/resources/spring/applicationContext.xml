@@ -38,5 +38,6 @@
 		<lookup-method name="createMobileTask" bean="mobileTask" />
 		<lookup-method name="createGPSTask" bean="GPSTask" />
 		<lookup-method name="createBankCardLocationTask" bean="bankCardLocationTask" />
+		<lookup-method name="createMerchantInfoTask" bean="merchantInfoTask" />
 	</bean>
 </beans>

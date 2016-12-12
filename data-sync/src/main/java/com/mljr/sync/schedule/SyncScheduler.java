@@ -3,16 +3,12 @@
  */
 package com.mljr.sync.schedule;
 
-import com.mljr.sync.task.BankCardLocationTask;
-import com.mljr.sync.task.GPSTask;
+import com.mljr.sync.task.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import com.mljr.sync.task.AbstractTaskFactory;
-import com.mljr.sync.task.MobileTask;
 
 /**
  * @author Ckex zha </br>
@@ -27,14 +23,14 @@ public class SyncScheduler {
 	@Autowired
 	private AbstractTaskFactory abstractTaskFactory;
 
-	@Scheduled(cron = "0/5 * * * * ?")
+//	@Scheduled(cron = "0/5 * * * * ?")
 	private void startMobileTask() {
 		MobileTask task = abstractTaskFactory.createMobileTask();
 		task.run();
 		logger.debug(task.toString());
 	}
 
-	@Scheduled(cron = "0 0 0/1 * * ?")
+//	@Scheduled(cron = "0 0 0/1 * * ?")
 	private void startGPSTask() {
 		GPSTask task = abstractTaskFactory.createGPSTask();
 		task.run();
@@ -44,6 +40,13 @@ public class SyncScheduler {
 	@Scheduled(cron = "0/5 * * * * ?")
 	private void startBankCardLocationTask() {
 		BankCardLocationTask task = abstractTaskFactory.createBankCardLocationTask();
+		task.run();
+		logger.debug(task.toString());
+	}
+
+//	@Scheduled(cron = "0/5 * * * * ?")
+	private void startMerchantInfoTask() {
+		MerchantInfoTask task = abstractTaskFactory.createMerchantInfoTask();
 		task.run();
 		logger.debug(task.toString());
 	}

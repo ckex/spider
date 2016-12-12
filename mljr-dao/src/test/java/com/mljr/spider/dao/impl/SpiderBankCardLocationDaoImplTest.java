@@ -72,8 +72,9 @@ public class SpiderBankCardLocationDaoImplTest extends AbstractIMljrDaoTest {
 	}
 
 	@Test
-	public void testListById() throws Exception {
-		List<String> list = spiderBankCardLocationDao.listById("70000000000",50);
+	public void testListFromDMById() throws Exception {
+		List<String> list = spiderBankCardLocationDao.listFromDMById("0",10);
 		logger.info("result ===> " + list);
 	}
+
 }

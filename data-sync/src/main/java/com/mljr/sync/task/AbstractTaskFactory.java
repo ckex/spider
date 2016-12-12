@@ -16,4 +16,6 @@ public abstract class AbstractTaskFactory {
 
 	public abstract BankCardLocationTask createBankCardLocationTask();
 
+	public abstract MerchantInfoTask createMerchantInfoTask();
+
 }

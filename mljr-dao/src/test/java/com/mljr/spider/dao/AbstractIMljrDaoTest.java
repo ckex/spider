@@ -34,4 +34,7 @@ public class AbstractIMljrDaoTest extends AbstractJUnit4SpringContextTests {
 	@Autowired
 	protected SpiderBankCardLocationDao spiderBankCardLocationDao;
 
+	@Autowired
+	protected MerchantInfoDao merchantInfoDao;
+
 }

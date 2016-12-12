@@ -3,13 +3,15 @@
  */
 package com.mljr.sync.service;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.mljr.constant.BasicConstant;
 import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.redis.RedisClient;
-import com.mljr.spider.dao.SpiderBankCardLocationDao;
+import com.mljr.spider.dao.MerchantInfoDao;
+import com.mljr.spider.model.MerchantInfoDo;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.ucloud.umq.common.ServiceConfig;
@@ -22,40 +24,34 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class BankCardLocationService {
+public class MerchantInfoService {
 
-    protected static transient Logger logger = LoggerFactory.getLogger(BankCardLocationService.class);
+    protected static transient Logger logger = LoggerFactory.getLogger(MerchantInfoService.class);
 
     private static final int LIMIT = 50;
-
-    private static final String SPIDER_KEY = Joiner.on("-").join(BasicConstant.SPIDER_BANK_CARD_LOCATION,BasicConstant.LAST_ID);
-
-    private static final String DM_KEY = Joiner.on("-").join(BasicConstant.DM_TOTAL_APPLICATIONS,BasicConstant.LAST_ID);
 
     @Autowired
     private RedisClient client;
 
     @Autowired
-    SpiderBankCardLocationDao spiderBankCardLocationDao;
+    MerchantInfoDao merchantInfoDao;
 
-    public void syncBankCard() throws Exception {
+    public void syncMerchantInfo() throws Exception {
 
         final Channel channel = RabbitmqClient.newChannel();
         try {
-            Function<String, Boolean> function = new Function<String, Boolean>() {
+            Function<MerchantInfoDo, Boolean> function = new Function<MerchantInfoDo, Boolean>() {
 
                 @Override
-                public Boolean apply(String cardNo) {
-                    return sentCardNo(channel, cardNo);
+                public Boolean apply(MerchantInfoDo merchantInfoDo) {
+                    return sentMercentInfo(channel, merchantInfoDo);
                 }
             };
-            syncFrom(SPIDER_KEY,function);
-            syncFrom(DM_KEY,function);
+            syncMerchantInfo(function);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -65,19 +61,16 @@ public class BankCardLocationService {
         }
     }
 
-    private boolean sentCardNo(Channel channel, String cardNo) {
-        if (StringUtils.isBlank(cardNo)) {
+    private boolean sentMercentInfo(Channel channel, MerchantInfoDo merchantInfoDo) {
+        if (merchantInfoDo == null || StringUtils.isBlank(merchantInfoDo.getMerchantName())) {
             return true;
         }
-        if (!StringUtils.isNumeric(cardNo)) {
-            return true;
-        }
-
+        String jsonString = JSON.toJSONString(merchantInfoDo);
         BasicProperties.Builder builder = new BasicProperties.Builder();
         builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
         try {
-            RabbitmqClient.publishMessage(channel, ServiceConfig.getBankCardExchange(),
-                    ServiceConfig.getBankcardRoutingKey(), builder.build(), cardNo.getBytes(Charsets.UTF_8));
+            RabbitmqClient.publishMessage(channel, ServiceConfig.getMobileExchange(),
+                    ServiceConfig.getMerchantInfoRoutingKey(), builder.build(), jsonString.getBytes(Charsets.UTF_8));
             try {
                 TimeUnit.MILLISECONDS.sleep(10);
             } catch (InterruptedException e) {
@@ -92,36 +85,25 @@ public class BankCardLocationService {
         }
     }
 
-    private void syncFrom(String key, Function<String,Boolean> function){
-        List<String> locations = new ArrayList<>();
-        if(SPIDER_KEY.equals(key)){
-            locations = listData(key);
-//            System.out.println("spider   "  + locations);
-        }else if(DM_KEY.equals(key)){
-            locations = listDM(key);
-//            System.out.println("DM   "  + locations);
-        }
-        if(locations!=null&&locations.size()>0){
-            for (String location : locations) {
-                if (function.apply(location)) {
-                    setLastId(key, location);
+    private void syncMerchantInfo(Function<MerchantInfoDo, Boolean> function) {
+        String key = Joiner.on("-").join(BasicConstant.MERCENT_INFO, BasicConstant.LAST_ID);
+        List<MerchantInfoDo> infos = listData(key);
+        if (infos != null && !infos.isEmpty()) {
+            for (MerchantInfoDo info : infos) {
+                if(function.apply(info)){
+                    setLastId(key,info.getMmId());
                     continue;
                 }
-                logger.warn("sent to mq error ." );
+                logger.error("sync merchant_info error!");
                 break;
             }
         }
 
     }
 
-    private List<String> listData(String key) {
+    private List<MerchantInfoDo> listData(String key) {
         String lastId = getLastId(key);
-        return spiderBankCardLocationDao.listById(lastId, LIMIT);
-    }
-
-    private List<String> listDM(String key) {
-        String lastId = getLastId(key);
-        return spiderBankCardLocationDao.listFromDMById(lastId,LIMIT);
+        return merchantInfoDao.listById(lastId, LIMIT);
     }
 
     private void setLastId(final String key, final String id) {
@@ -135,12 +117,12 @@ public class BankCardLocationService {
         });
     }
 
-    private String getLastId(final String key) {
+    private String getLastId(final String table) {
         String result = client.use(new Function<Jedis, String>() {
 
             @Override
             public String apply(Jedis jedis) {
-                return jedis.get(key);
+                return jedis.get(table);
             }
         });
         if (StringUtils.isBlank(result)) {
