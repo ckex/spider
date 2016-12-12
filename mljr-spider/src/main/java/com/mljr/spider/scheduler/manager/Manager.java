@@ -45,14 +45,14 @@ public class Manager extends AbstractMessage {
 
 	public void run() throws Exception {
 		System.out.println("Runing ...");
-		startSaiGeGPS();
-		startGuishuShowji();
-		startIP138();
-		startHuoche114();
-		startJuheMobile();
-		startBaiduMobile();
-		startSogouMobile();
-		startTianyancha();
+//		startSaiGeGPS();
+//		startGuishuShowji();
+//		startIP138();
+//		startHuoche114();
+//		startJuheMobile();
+//		startBaiduMobile();
+//		startSogouMobile();
+//		startTianyancha();
 		startGuabuBankCard();
 		startHuoChePiaoBankCard();
 		startCha67BankCard();
@@ -60,6 +60,8 @@ public class Manager extends AbstractMessage {
 		startChaYHKBankCard();
 		startLBSAMapReGeo();
 		startLBSBaiduReGeo();
+		startLBSAMapGeo();
+		startLBSBaiduGeo();
 
 	}
 
@@ -204,8 +206,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new GuabuBankCardProcessor();
 		LogPipeline pipeline = new LogPipeline(GUABU_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getGuabuBankCardPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(GUABU_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -221,8 +223,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new HuoChePiaoProcessor();
 		LogPipeline pipeline = new LogPipeline(HCP_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getHuoChePiaoBankCardPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(HUOCHEPIAO_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -238,8 +240,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new Cha67BankCardProcessor();
 		LogPipeline pipeline = new LogPipeline(CHA67_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getCha67BankCardPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(CHA67_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -255,8 +257,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new YinHangKa388Processor();
 		LogPipeline pipeline = new LogPipeline(YHK388_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getYinHangKaBankCardPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(YHK388_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -272,8 +274,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new ChaYHKDataProcessor();
 		LogPipeline pipeline = new LogPipeline(CHAYHK_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getChaYHKBankCardPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(CHAYHK_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -289,8 +291,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSAMapGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_AMAP_GEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSAMapGeoPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_AMAP_GEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -306,8 +308,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSAMapReGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_AMAP_REGEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSAMapReGeoPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_AMAP_REGEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -323,8 +325,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSBaiduGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_BAIDU_GEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSBaiduGeoPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_BAIDU_GEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -340,8 +342,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSBaiduReGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_BAIDU_REGEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSBaiduReGeoPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_BAIDU_REGEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
