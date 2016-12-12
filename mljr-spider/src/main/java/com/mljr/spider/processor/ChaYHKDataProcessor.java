@@ -1,13 +1,15 @@
 package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.mljr.spider.vo.JSONTransferVO;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.Selectable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xi.gao
@@ -44,11 +46,14 @@ public class ChaYHKDataProcessor extends AbstractPageProcessor {
             return;
         }
 
-        ImmutableMap.Builder builder = ImmutableMap.builder();
+        Map<String, Object> map = Maps.newHashMap();
         for (Selectable selectable : selectableList) {
-            builder.put(selectable.xpath("//p/tidyText()").get(), selectable.xpath("//p/tidyText()").get());
+            map.put(selectable.xpath("//p/tidyText()").get(), selectable.xpath("//p/tidyText()").get());
         }
-        page.putField(page.getUrl().get(), JSON.toJSON(builder.build()));
+        JSONTransferVO transferVO = new JSONTransferVO();
+        transferVO.setUrl(page.getUrl().get());
+        transferVO.setContext(map);
+        page.putField("", JSON.toJSON(transferVO));
     }
 
     @Override

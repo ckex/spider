@@ -2,6 +2,8 @@ package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.mljr.spider.vo.JSONTransferVO;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -9,6 +11,8 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
+
+import java.util.Map;
 
 /**
  * Created by xi.gao
@@ -33,16 +37,18 @@ public class GuabuBankCardProcessor extends AbstractPageProcessor {
 
             Element element = document.getRootElement().element("item");
 
-            ImmutableMap<Object, Object> jsonMap = ImmutableMap.builder()
-                    .put("title", element.elementText("title"))
-                    .put("guishu", element.elementText("guishu"))
-                    .put("miaoshu", element.elementText("miaoshu"))
-                    .put("image", element.elementText("image"))
-                    .put("banktel", element.elementText("banktel"))
-                    .put("bankurl", element.elementText("bankurl"))
-                    .build();
+            Map<String, Object> jsonMap = Maps.newHashMap();
+            jsonMap.put("title", element.elementText("title"));
+            jsonMap.put("guishu", element.elementText("guishu"));
+            jsonMap.put("miaoshu", element.elementText("miaoshu"));
+            jsonMap.put("image", element.elementText("image"));
+            jsonMap.put("banktel", element.elementText("banktel"));
+            jsonMap.put("bankurl", element.elementText("bankurl"));
 
-            page.putField(page.getUrl().get(), JSON.toJSON(jsonMap));
+            JSONTransferVO json = new JSONTransferVO();
+            json.setUrl(page.getUrl().get());
+            json.setContext(jsonMap);
+            page.putField("", JSON.toJSON(json));
 
         } catch (DocumentException e) {
             logger.error("guaba xml parse error." + page.toString(), e);

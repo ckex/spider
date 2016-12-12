@@ -1,13 +1,15 @@
 package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.mljr.spider.vo.JSONTransferVO;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.Selectable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xi.gao
@@ -39,11 +41,14 @@ public class Cha67BankCardProcessor extends AbstractPageProcessor {
             logger.warn("67cha result is empty." + page.getRequest().toString());
             return;
         }
-        ImmutableMap.Builder builder = ImmutableMap.builder();
+        Map<String, Object> map = Maps.newHashMap();
         for (Selectable st : selectableList) {
-            builder.put(st.xpath("//ul/li[1]/text()").get(), st.xpath("//ul/li[2]/text()").get());
+            map.put(st.xpath("//ul/li[1]/text()").get(), st.xpath("//ul/li[2]/text()").get());
         }
-        page.putField(page.getUrl().get(), JSON.toJSON(builder.build()));
+        JSONTransferVO transferVO = new JSONTransferVO();
+        transferVO.setUrl(page.getUrl().get());
+        transferVO.setContext(map);
+        page.putField("", JSON.toJSON(transferVO));
 
     }
 
