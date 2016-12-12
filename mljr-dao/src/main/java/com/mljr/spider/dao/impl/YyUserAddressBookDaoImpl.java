@@ -7,6 +7,7 @@ import java.util.Collections;
 import org.springframework.stereotype.Repository;
 
 import com.mljr.spider.dao.YyUserAddressBookDao;
+import com.mljr.spider.dao.dynamic.datasource.DataSource;
 import com.mljr.spider.model.YyUserAddressBookDo;
 import common.search.util.SearchMap;
 import common.page.util.PageQuery;
