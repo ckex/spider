@@ -60,11 +60,17 @@ public abstract class AbstractMessage {
 
 	protected static final String RMQ_TIANYANCHA_QUEUE_ID = "tianyancha";
 
-	protected static final String RMQ_GUABU_BANK_CARD_QUEUE_ID="bc-guabu";
-	protected static final String RMQ_HCP_BANK_CARD_QUEUE_ID="bc-hcp";
-	protected static final String RMQ_CHA67_BANK_CARD_QUEUE_ID="bc-cha67";
-	protected static final String RMQ_YHK388_BANK_CARD_QUEUE_ID="bc-yhk388";
-	protected static final String RMQ_CHAYHK_BANK_CARD_QUEUE_ID="bc-chayhk";
+//	protected static final String RMQ_GUABU_BANK_CARD_QUEUE_ID="bc-guabu";
+//	protected static final String RMQ_HCP_BANK_CARD_QUEUE_ID="bc-hcp";
+//	protected static final String RMQ_CHA67_BANK_CARD_QUEUE_ID="bc-cha67";
+//	protected static final String RMQ_YHK388_BANK_CARD_QUEUE_ID="bc-yhk388";
+//	protected static final String RMQ_CHAYHK_BANK_CARD_QUEUE_ID="bc-chayhk";
+
+	protected static final String RMQ_GUABU_BANK_CARD_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_HCP_BANK_CARD_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_CHA67_BANK_CARD_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_YHK388_BANK_CARD_QUEUE_ID="queue-fanout-3";
+	protected static final String RMQ_CHAYHK_BANK_CARD_QUEUE_ID="queue-fanout-3";
 
 	protected static final String RMQ_LBS_AMAP_GEO_QUEUE_ID="lbs-amap-geo";
 	protected static final String RMQ_LBS_AMAP_REGEO_QUEUE_ID="lbs-amap-regeo";
