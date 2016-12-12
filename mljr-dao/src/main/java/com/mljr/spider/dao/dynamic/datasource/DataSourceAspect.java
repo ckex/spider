@@ -40,17 +40,30 @@ public class DataSourceAspect {
 		Class<?>[] classz = target.getClass().getInterfaces();
 
 		Class<?>[] parameterTypes = ((MethodSignature) point.getSignature()).getMethod().getParameterTypes();
+
 		try {
-			Method mthd = classz[0].getMethod(method, parameterTypes);
-			if (mthd != null && mthd.isAnnotationPresent(DataSource.class)) {
-				DataSource data = mthd.getAnnotation(DataSource.class);
-				DynamicDataSourceHolder.putDataSource(data.value());
-				if (logger.isDebugEnabled()) {
-					logger.debug("----------------------" + data.value());
+			for (Class<?> clz : classz) {
+				Method mthd = clz.getMethod(method, parameterTypes);
+				if (mthd != null && mthd.isAnnotationPresent(DataSource.class)) {
+					DataSource data = mthd.getAnnotation(DataSource.class);
+					putDataSource(data);
+					break;
+				} else if (clz.isAnnotationPresent(DataSource.class)) {
+					DataSource data = classz[0].getAnnotation(DataSource.class);
+					putDataSource(data);
+					break;
 				}
 			}
 		} catch (Exception ex) {
 			logger.error(ExceptionUtils.getStackTrace(ex));
+		}
+	}
+
+	private void putDataSource(DataSource data) {
+		DynamicDataSourceHolder.putDataSource(data.value());
+		if (logger.isDebugEnabled()) {
+			logger.debug(
+					Thread.currentThread().getName() + "<-->" + Thread.currentThread().getId() + "<-->" + data.value());
 		}
 	}
 
