@@ -37,4 +37,10 @@ public class AbstractIMljrDaoTest extends AbstractJUnit4SpringContextTests {
 	@Autowired
 	protected MerchantInfoDao merchantInfoDao;
 
+	@Autowired
+	protected YyUserCallRecordHistoryDao yyUserCallRecordHistoryDao;
+
+	@Autowired
+	protected YyUserAddressBookHistoryDao yyUserAddressBookHistoryDao;
+
 }

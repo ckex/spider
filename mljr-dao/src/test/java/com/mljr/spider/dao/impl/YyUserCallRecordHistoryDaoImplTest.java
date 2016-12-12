@@ -1,16 +1,19 @@
 package com.mljr.spider.dao.impl;
 
+import com.mljr.spider.dao.AbstractIMljrDaoTest;
+import com.mljr.spider.dao.YyUserCallRecordHistoryDao;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import com.mljr.spider.model.YyUserCallRecordHistoryDo;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author ckex created 2016-11-29 16:14:49:049
  * @explain -
  */
-public class YyUserCallRecordHistoryDaoImplTest {
+public class YyUserCallRecordHistoryDaoImplTest extends AbstractIMljrDaoTest {
 
     @Before
     public void testSetup() {
@@ -52,5 +55,11 @@ public class YyUserCallRecordHistoryDaoImplTest {
          // for (YyUserCallRecordHistoryDo bean : result) {
          //     logger.debug(bean.toString());
          // }
+    }
+
+    @Test
+    public void testListById() throws Exception {
+        System.out.println(yyUserCallRecordHistoryDao.listById(0,5));
+
     }
 }

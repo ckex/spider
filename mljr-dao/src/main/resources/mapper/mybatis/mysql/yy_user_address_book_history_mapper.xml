@@ -61,4 +61,8 @@
         SELECT count(*) 
         FROM yy_user_address_book_history         WHERE 1 
     </select>
+
+    <select id="listById" resultMap="YyUserAddressBookHistoryResult" parameterType="java.util.HashMap">
+        select id,number from yy_user_address_book_history WHERE id > #{id} order by id limit #{limit}
+    </select>
 </mapper>
