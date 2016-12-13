@@ -1,5 +1,6 @@
 package com.mljr.spider.processor;
 
+import com.google.common.base.Joiner;
 import com.mljr.spider.storage.LocalFilePipeline;
 import org.apache.commons.collections.CollectionUtils;
 import us.codecraft.webmagic.Page;
@@ -8,11 +9,14 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class TianyanchaProcessor extends AbstractPageProcessor {
-    private static String JS_PATH = System.getProperty("user.home") + System.getProperty("file.separator")
+    public static final String JS_PATH = System.getProperty("user.home") + System.getProperty("file.separator")
             + "get_page.js";
 
     private Site site = Site.me().setDomain("www.tianyancha.com")
@@ -58,7 +62,7 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
     public String getAjaxContent(String url) throws IOException {
         Runtime rt = Runtime.getRuntime();
-        Process p = rt.exec("/usr/local/bin/casperjs " + JS_PATH);
+        Process p = rt.exec(Joiner.on(" ").join("/usr/local/bin/casperjs", JS_PATH, url));
         InputStream is = p.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         StringBuffer sbf = new StringBuffer();
