@@ -1,19 +1,24 @@
-var brower = require('casper').create();
+var casper = require('casper').create();
 var page;
 
-brower.start();
 
-brower.thenOpen('http://www.tianyancha.com/company/30361073');
+console.log("first arg is " + casper.cli.args[0]);
 
-brower.then(function getPage() {
-    page = brower.evaluate(function getHtmlFromPage() {
+var url = casper.cli.args[0];
+
+casper.start();
+
+casper.thenOpen( url );
+
+casper.then(function getPage() {
+    page = casper.evaluate(function getHtmlFromPage() {
         return $("html").html();
     });
 });
 
-brower.then(function outputHtml() {
+casper.then(function outputHtml() {
     console.log(page);
-    brower.exit();
+    casper.exit();
 });
 
-brower.run();
+casper.run();
