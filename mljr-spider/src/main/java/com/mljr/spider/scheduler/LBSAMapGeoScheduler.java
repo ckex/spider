@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.CharMatcher;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
+import com.mljr.spider.util.StringUtil;
 import com.ucloud.umq.common.ServiceConfig;
+import org.apache.commons.lang3.StringUtils;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.Task;
@@ -34,6 +36,10 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
 
     @Override
     public boolean pushTask(Spider spider, UMQMessage message) {
+        if(null==message || StringUtils.isBlank(message.message)){
+            logger.warn("lbs amap geo mq message is empty");
+            return false;
+        }
         push(buildRequst(message.message), spider);
         return true;
     }
@@ -41,28 +47,31 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
     @Override
     Request buildRequst(String message) {
         JSONObject jsonObject = JSON.parseObject(message);
-        String[] cityArray=jsonObject.getString("city").split(" ");
-        String address=jsonObject.getString("address");
-        String city="";
-        switch (cityArray.length) {
-            case 1:
-                city = cityArray[0];
-                break;
-            case 2:
-                if (cityArray[0].endsWith("省")) {
-                    city = cityArray[1];
-                } else if (cityArray[0].endsWith("市")) {
+        String url = String.format(URL, ServiceConfig.getLBSAMapKey(), "","");
+        if(jsonObject.containsKey("city") && jsonObject.containsKey("address")){
+            String[] cityArray=jsonObject.getString("city").split(" ");
+            String address=jsonObject.getString("address");
+            String city="";
+            switch (cityArray.length) {
+                case 1:
                     city = cityArray[0];
-                } else {
+                    break;
+                case 2:
+                    if (cityArray[0].endsWith("省")) {
+                        city = cityArray[1];
+                    } else if (cityArray[0].endsWith("市")) {
+                        city = cityArray[0];
+                    } else {
+                        city = cityArray[1];
+                    }
+                    break;
+                default:
                     city = cityArray[1];
-                }
-                break;
-            default:
-                city = cityArray[1];
-                break;
+                    break;
+            }
+            url = String.format(URL, ServiceConfig.getLBSAMapKey(), address,city);
+            url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         }
-        String url = String.format(URL, ServiceConfig.getLBSAMapKey(), address,city);
-        url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         return new Request(url);
     }
 
