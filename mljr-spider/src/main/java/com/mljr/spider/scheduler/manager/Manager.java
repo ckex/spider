@@ -58,9 +58,8 @@ public class Manager extends AbstractMessage {
 		startCha67BankCard();
 		startYinHangKaBankCard();
 		startChaYHKBankCard();
-		startLBSAMapReGeo();
-		startLBSBaiduReGeo();
-
+		startLBSAMapGeo();
+		startLBSBaiduGeo();
 	}
 
 	// 赛格GPS数据
@@ -306,8 +305,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSAMapReGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_AMAP_REGEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSAMapReGeoPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_AMAP_REGEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -340,8 +339,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSBaiduReGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_BAIDU_REGEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSBaiduReGeoPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_BAIDU_REGEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));

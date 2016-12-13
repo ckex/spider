@@ -1,13 +1,15 @@
 package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.mljr.spider.vo.JSONTransferVO;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.Selectable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xi.gao
@@ -16,7 +18,7 @@ import java.util.List;
 public class ChaYHKDataProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("cha.yinhangkadata.com")
-            .setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)
+            .setSleepTime(10000).setRetrySleepTime(7500).setRetryTimes(3)
             .addCookie("ASPSESSIONIDCAATTCQA", "LHEGLFIDENPGIJOLIFNHOIFB")//此字段必填
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
@@ -44,11 +46,14 @@ public class ChaYHKDataProcessor extends AbstractPageProcessor {
             return;
         }
 
-        ImmutableMap.Builder builder = ImmutableMap.builder();
+        Map<String, Object> map = Maps.newHashMap();
         for (Selectable selectable : selectableList) {
-            builder.put(selectable.xpath("//p/tidyText()").get(), selectable.xpath("//p/tidyText()").get());
+            map.put(selectable.xpath("//p/tidyText()").get(), selectable.xpath("//p/tidyText()").get());
         }
-        page.putField(page.getUrl().get(), JSON.toJSON(builder.build()));
+        JSONTransferVO transferVO = new JSONTransferVO();
+        transferVO.setUrl(page.getUrl().get());
+        transferVO.setContext(map);
+        page.putField("", JSON.toJSON(transferVO));
     }
 
     @Override

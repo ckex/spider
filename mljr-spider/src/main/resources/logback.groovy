@@ -339,7 +339,7 @@ appender("JUHE-MOBILE-DATA", RollingFileAppender) {
 }
 appender("GUABU-BC-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
@@ -354,7 +354,7 @@ appender("GUABU-BC-DATA", RollingFileAppender) {
 }
 appender("HCP-BC-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
@@ -369,7 +369,7 @@ appender("HCP-BC-DATA", RollingFileAppender) {
 }
 appender("CHA67-BC-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
@@ -384,7 +384,7 @@ appender("CHA67-BC-DATA", RollingFileAppender) {
 }
 appender("YHK388-BC-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
@@ -399,7 +399,7 @@ appender("YHK388-BC-DATA", RollingFileAppender) {
 }
 appender("CHAYHK-BC-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
@@ -414,7 +414,7 @@ appender("CHAYHK-BC-DATA", RollingFileAppender) {
 }
 appender("LBS-AMAP-GEO-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
@@ -429,7 +429,7 @@ appender("LBS-AMAP-GEO-DATA", RollingFileAppender) {
 }
 appender("LBS-AMAP-REGEO-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
@@ -444,7 +444,7 @@ appender("LBS-AMAP-REGEO-DATA", RollingFileAppender) {
 }
 appender("LBS-BAIDU-GEO-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
@@ -459,7 +459,7 @@ appender("LBS-BAIDU-GEO-DATA", RollingFileAppender) {
 }
 appender("LBS-BAIDU-REGEO-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO

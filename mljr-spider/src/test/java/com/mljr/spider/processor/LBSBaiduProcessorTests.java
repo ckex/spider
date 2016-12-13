@@ -9,7 +9,7 @@ import us.codecraft.webmagic.pipeline.ConsolePipeline;
  */
 public class LBSBaiduProcessorTests {
 
-    private static final String GEO_URL = "http://api.map.baidu.com/geocoder/v2/?output=json&ak=%s&address=%s";
+    private static final String GEO_URL = "http://api.map.baidu.com/geocoder/v2/?output=json&ak=%s&address=%s&city=%s";
 
     private static final String REGEO_URL = "http://api.map.baidu.com/geocoder/v2/?output=json&ak=%s&location=%s";
 
@@ -22,7 +22,7 @@ public class LBSBaiduProcessorTests {
     }
 
     private static void testGeo() {
-        String url = String.format(GEO_URL, BAIDU_KEY, "上海浦东新区商城路506号28楼（新梅二期）");
+        String url = String.format(GEO_URL, BAIDU_KEY, "上海浦东新区商城路506号28楼（新梅二期）","上海市");
         Spider spider = Spider.create(new LBSBaiduGeoProcessor())
                 .addUrl(url)
                 .addPipeline(new ConsolePipeline());
