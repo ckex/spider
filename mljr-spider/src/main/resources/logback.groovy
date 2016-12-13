@@ -41,6 +41,41 @@ if (!JUHE_DATA_HOME) {
   JUHE_DATA_HOME = "/data/juhe"
 }
 
+def GUA_DATA_HOME =System.getenv("GUA_DATA_HOME")
+if (!GUA_DATA_HOME) {
+  GUA_DATA_HOME = "/data/guabu"
+}
+
+def HCP_DATA_HOME =System.getenv("HCP_DATA_HOME")
+if (!HCP_DATA_HOME) {
+  HCP_DATA_HOME = "/data/hcp"
+}
+
+def CHA67_DATA_HOME =System.getenv("CHA67_DATA_HOME")
+if (!CHA67_DATA_HOME) {
+  CHA67_DATA_HOME = "/data/cha67"
+}
+
+def YHK388_DATA_HOME =System.getenv("YHK388_DATA_HOME")
+if (!YHK388_DATA_HOME) {
+  YHK388_DATA_HOME = "/data/yhk388"
+}
+
+def CHAYHK_DATA_HOME =System.getenv("CHAYHK_DATA_HOME")
+if (!CHAYHK_DATA_HOME) {
+  CHAYHK_DATA_HOME = "/data/chayhk"
+}
+
+def AMAP_DATA_HOME =System.getenv("AMAP_DATA_HOME")
+if (!AMAP_DATA_HOME) {
+  AMAP_DATA_HOME = "/data/amap"
+}
+
+def BAIDU_DATA_HOME =System.getenv("BAIDU_DATA_HOME")
+if (!BAIDU_DATA_HOME) {
+  BAIDU_DATA_HOME = "/data/baidu"
+}
+
 def DOWNLOADER_LISTENER_HOME =System.getenv("DOWNLOADER_LISTENER_HOME")
 if (!DOWNLOADER_LISTENER_HOME) {
   DOWNLOADER_LISTENER_HOME = "/data/listener"
@@ -137,6 +172,141 @@ appender("SAIGE-GPS-ERR", RollingFileAppender) {
     maxHistory = 300
   }
 }
+appender("GUABU-BC-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/guabu-bc-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("HCP-BC-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/hcp-bc-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("CHA67-BC-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/cha67-bc-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("YHK388-BC-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/yhk388-bc-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("CHAYHK-BC-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/chayhk-bc-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("LBS-AMAP-GEO-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/lbs-amap-geo-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("LBS-AMAP-REGEO-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/lbs-amap-regeo-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("LBS-BAIDU-GEO-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/lbs-baidu-geo-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("LBS-BAIDU-REGEO-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/lbs-baidu-regeo-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
 appender("GPS-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
     pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
@@ -161,6 +331,141 @@ appender("JUHE-MOBILE-DATA", RollingFileAppender) {
   }
   rollingPolicy(TimeBasedRollingPolicy) {
     fileNamePattern = "${JUHE_DATA_HOME}/MOBILE-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("GUABU-BC-DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${GUA_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("HCP-BC-DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${HCP_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("CHA67-BC-DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${CHA67_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("YHK388-BC-DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${YHK388_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("CHAYHK-BC-DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${CHAYHK_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("LBS-AMAP-GEO-DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${AMAP_DATA_HOME}/GEO-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("LBS-AMAP-REGEO-DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${AMAP_DATA_HOME}/REGEO-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("LBS-BAIDU-GEO-DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${BAIDU_DATA_HOME}/GEO-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("LBS-BAIDU-REGEO-DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${BAIDU_DATA_HOME}/REGEO-%d{yyyy-MM-dd-HH}.%i.log"
     timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
       maxFileSize = "100MB"
     }
@@ -197,6 +502,24 @@ logger("juhe-mobile-downloader", INFO, ["JUHE-MOBILE-ERR"], false)
 logger("baidu-mobile-downloader", INFO, ["BAIDU-MOBILE-ERR"], false)
 logger("sogou-mobile-downloader", INFO, ["SOGOU-MOBILE-ERR"], false)
 logger("saige-gps-downloader", INFO, ["SAIGE-GPS-ERR"], false)
+logger("guabu-bc-downloader", INFO, ["GUABU-BC-ERR"], false)
+logger("hcp-bc-downloader", INFO, ["HCP-BC-ERR"], false)
+logger("cha67-bc-downloader", INFO, ["CHA67-BC-ERR"], false)
+logger("yhk388-bc-downloader", INFO, ["YHK388-BC-ERR"], false)
+logger("chayhk-bc-downloader", INFO, ["CHAYHK-BC-ERR"], false)
+logger("lbs-amap-geo-downloader", INFO, ["LBS-AMAP-GEO-ERR"], false)
+logger("lbs-amap-regeo-downloader", INFO, ["LBS-AMAP-REGEO-ERR"], false)
+logger("lbs-baidu-geo-downloader", INFO, ["LBS-BAIDU-GEO-ERR"], false)
+logger("lbs-baidu-regeo-downloader", INFO, ["LBS-BAIDU-REGEO-ERR"], false)
 logger("gps-data", INFO, ["GPS-DATA"], false)
 logger("juhe-mobile-data", INFO, ["JUHE-MOBILE-DATA"], false)
+logger("guabu-bc-data", INFO, ["GUABU-BC-DATA"], false)
+logger("hcp-bc-data", INFO, ["HCP-BC-DATA"], false)
+logger("cha67-bc-data", INFO, ["CHA67-BC-DATA"], false)
+logger("yhk388-bc-data", INFO, ["YHK388-BC-DATA"], false)
+logger("chayhk-bc-data", INFO, ["CHAYHK-BC-DATA"], false)
+logger("lbs-amap-geo-data", INFO, ["LBS-AMAP-GEO-DATA"], false)
+logger("lbs-amap-regeo-data", INFO, ["LBS-AMAP-REGEO-DATA"], false)
+logger("lbs-baidu-geo-data", INFO, ["LBS-BAIDU-GEO-DATA"], false)
+logger("lbs-baidu-regeo-data", INFO, ["LBS-BAIDU-REGEO-DATA"], false)
 root(DEBUG, ["A1", "STDOUT"])

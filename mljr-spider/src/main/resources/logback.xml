@@ -12,6 +12,14 @@
 	<property name="LOG_HOME" value="/data/var/log/mljr" />
 	<property name="SAIGE_DATA_HOME" value="/data/saige" />
 	<property name="JUHE_DATA_HOME" value="/data/juhe" />
+	<property name="GUA_DATA_HOME" value="/data/guabu"/>
+	<property name="HCP_DATA_HOME" value="/data/hcp"/>
+	<property name="CHA67_DATA_HOME" value="/data/cha67"/>
+	<property name="YHK388_DATA_HOME" value="/data/yhk388"/>
+	<property name="CHAYHK_DATA_HOME" value="/data/chayhk"/>
+	<property name="AMAP_DATA_HOME" value="/data/amap"/>
+	<property name="BAIDU_DATA_HOME" value="/data/baidu"/>
+
 	<property name="DOWNLOADER_LISTENER_HOME" value="/data/listener" />
 	<contextName>${APP_NAME}</contextName>
 
@@ -234,7 +242,204 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
+	<appender name="GUABU-BC-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/guabu-bc-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="HCP-BC-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/hcp-bc-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="CHA67-BC-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/cha67-bc-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="YHK388-BC-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/yhk388-bc-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="CHAYHK-BC-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/chayhk-bc-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="LBS-AMAP-GEO-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/lbs-amap-geo-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="LBS-AMAP-REGEO-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/lbs-amap-regeo-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="LBS-BAIDU-GEO-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/lbs-baidu-geo-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="LBS-BAIDU-REGEO-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/lbs-baidu-regeo-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
 	
 	<appender name="GPS-DATA"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -273,6 +478,204 @@
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="GUABU-BC-DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${GUA_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="HCP-BC-DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${HCP_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="CHA67-BC-DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${CHA67_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="YHK388-BC-DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${YHK388_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="CHAYHK-BC-DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${CHAYHK_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="LBS-AMAP-GEO-DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${AMAP_DATA_HOME}/GEO-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="LBS-AMAP-REGEO-DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${AMAP_DATA_HOME}/REGEO-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="LBS-BAIDU-GEO-DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${BAIDU_DATA_HOME}/GEO-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="LBS-BAIDU-REGEO-DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${BAIDU_DATA_HOME}/REGEO-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -325,10 +728,10 @@
 	<logger name="baidu-mobile-downloader" level="INFO" additivity="false">
 	    <appender-ref ref="BAIDU-MOBILE-ERR" />
 	</logger>
-		<logger name="sogou-mobile-downloader" level="INFO" additivity="false">
+	<logger name="sogou-mobile-downloader" level="INFO" additivity="false">
 	    <appender-ref ref="SOGOU-MOBILE-ERR" />
 	</logger>
-		<logger name="saige-gps-downloader" level="INFO" additivity="false">
+	<logger name="saige-gps-downloader" level="INFO" additivity="false">
 	    <appender-ref ref="SAIGE-GPS-ERR" />
 	</logger>
 	<logger name="gps-data" level="INFO" additivity="false">
@@ -336,6 +739,78 @@
 	</logger>
 	<logger name="juhe-mobile-data" level="INFO" additivity="false">
 		<appender-ref ref="JUHE-MOBILE-DATA" />
+	</logger>
+
+	<logger name="guabu-bc-data" level="INFO" additivity="false">
+		<appender-ref ref="GUABU-BC-DATA" />
+	</logger>
+
+	<logger name="hcp-bc-data" level="INFO" additivity="false">
+		<appender-ref ref="HCP-BC-DATA" />
+	</logger>
+
+	<logger name="cha67-bc-data" level="INFO" additivity="false">
+		<appender-ref ref="CHA67-BC-DATA" />
+	</logger>
+
+	<logger name="yhk388-bc-data" level="INFO" additivity="false">
+		<appender-ref ref="YHK388-BC-DATA" />
+	</logger>
+
+	<logger name="chayhk-bc-data" level="INFO" additivity="false">
+		<appender-ref ref="CHAYHK-BC-DATA" />
+	</logger>
+
+	<logger name="lbs-amap-geo-data" level="INFO" additivity="false">
+		<appender-ref ref="LBS-AMAP-GEO-DATA" />
+	</logger>
+
+	<logger name="lbs-amap-regeo-data" level="INFO" additivity="false">
+		<appender-ref ref="LBS-AMAP-REGEO-DATA" />
+	</logger>
+
+	<logger name="lbs-baidu-geo-data" level="INFO" additivity="false">
+		<appender-ref ref="LBS-BAIDU-GEO-DATA" />
+	</logger>
+
+	<logger name="lbs-baidu-regeo-data" level="INFO" additivity="false">
+		<appender-ref ref="LBS-BAIDU-REGEO-DATA" />
+	</logger>
+
+	<logger name="guabu-bc-downloader" level="INFO" additivity="false">
+		<appender-ref ref="GUABU-BC-ERR"/>
+	</logger>
+
+	<logger name="hcp-bc-downloader" level="INFO" additivity="false">
+		<appender-ref ref="HCP-BC-ERR"/>
+	</logger>
+
+	<logger name="cha67-bc-downloader" level="INFO" additivity="false">
+		<appender-ref ref="CHA67-BC-ERR"/>
+	</logger>
+
+	<logger name="yhk388-bc-downloader" level="INFO" additivity="false">
+		<appender-ref ref="YHK388-BC-ERR"/>
+	</logger>
+
+	<logger name="chayhk-bc-downloader" level="INFO" additivity="false">
+		<appender-ref ref="CHAYHK-BC-ERR"/>
+	</logger>
+
+	<logger name="lbs-amap-geo-downloader" level="INFO" additivity="false">
+		<appender-ref ref="LBS-AMAP-GEO-ERR"/>
+	</logger>
+
+	<logger name="lbs-amap-regeo-downloader" level="INFO" additivity="false">
+		<appender-ref ref="LBS-AMAP-REGEO-ERR"/>
+	</logger>
+
+	<logger name="lbs-baidu-geo-downloader" level="INFO" additivity="false">
+		<appender-ref ref="LBS-BAIDU-GEO-ERR"/>
+	</logger>
+
+	<logger name="lbs-baidu-regeo-downloader" level="INFO" additivity="false">
+		<appender-ref ref="LBS-BAIDU-REGEO-ERR"/>
 	</logger>
 
 	<root level="DEBUG">

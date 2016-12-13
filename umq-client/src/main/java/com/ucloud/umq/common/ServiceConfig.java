@@ -192,12 +192,47 @@ public class ServiceConfig {
     public static String getSogouMobilePath(){
         return properties.getProperty("sogou.mobile.path");
     }
+
+    public static String getGuabuBankCardPath(){
+        return properties.getProperty("guabu.bank.card.path");
+    }
+
+    public static String getHuoChePiaoBankCardPath(){
+        return properties.getProperty("hcp.bank.card.path");
+    }
+
+    public static String getCha67BankCardPath(){
+        return properties.getProperty("cha67.bank.card.path");
+    }
+
+    public static String getYinHangKaBankCardPath(){
+        return properties.getProperty("yhk388.bank.card.path");
+    }
+
+    public static String getChaYHKBankCardPath(){
+        return properties.getProperty("cha.yhk.bank.card.path");
+    }
+
+    public static String getLBSAMapKey(){
+        return properties.getProperty("lbs.amap.key");
+    }
+
+    public static String getLBSAMapGeoPath(){
+        return properties.getProperty("lbs.amap.geo.path");
+    }
+
+    public static String getLBSAMapReGeoPath() {
+        return properties.getProperty("lbs.amap.regeo.path");
+    }
+
     public static String getIP138Path(){
         return properties.getProperty("ip138.mobile.path");
     }
+
     public static String getHuoche114Path(){
         return properties.getProperty("huoche114.mobile.path");
     }
+
     public static String getGuishuShowjiPath(){
         return properties.getProperty("guishushowji.mobile.path");
     }
@@ -207,5 +242,17 @@ public class ServiceConfig {
 
     public static void main(String[] args) {
         System.out.println(getHuoche114Path());
+    }
+
+    public static String getLBSBaiduGeoPath(){
+        return properties.getProperty("lbs.baidu.geo.path");
+    }
+
+    public static String getLBSBaiduReGeoPath(){
+        return properties.getProperty("lbs.baidu.regeo.path");
+    }
+
+    public static String getLBSBaiduKey(){
+        return properties.getProperty("lbs.baidu.key");
     }
 }
