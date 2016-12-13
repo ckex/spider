@@ -23,14 +23,14 @@ public class SyncScheduler {
 	@Autowired
 	private AbstractTaskFactory abstractTaskFactory;
 
-//	@Scheduled(cron = "0/5 * * * * ?")
+	@Scheduled(cron = "0/10 * * * * ?")
 	private void startMobileTask() {
 		MobileTask task = abstractTaskFactory.createMobileTask();
 		task.run();
 		logger.debug(task.toString());
 	}
 
-//	@Scheduled(cron = "0 0 0/1 * * ?")
+	@Scheduled(cron = "0 0 0/1 * * ?")
 	private void startGPSTask() {
 		GPSTask task = abstractTaskFactory.createGPSTask();
 		task.run();
@@ -44,7 +44,7 @@ public class SyncScheduler {
 		logger.debug(task.toString());
 	}
 
-//	@Scheduled(cron = "0/5 * * * * ?")
+	@Scheduled(cron = "0/5 * * * * ?")
 	private void startMerchantInfoTask() {
 		MerchantInfoTask task = abstractTaskFactory.createMerchantInfoTask();
 		task.run();
