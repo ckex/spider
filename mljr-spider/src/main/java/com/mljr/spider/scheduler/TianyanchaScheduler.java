@@ -1,8 +1,8 @@
 package com.mljr.spider.scheduler;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.CharMatcher;
-import com.mljr.spider.model.MerchantInfoDo;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
 import org.apache.commons.lang3.StringUtils;
@@ -59,9 +59,9 @@ public class TianyanchaScheduler extends AbstractScheduler {
         if(StringUtils.isBlank(message)||!message.contains("merchantName")){
             return null;
         }
-        MerchantInfoDo merchantInfoDo = JSON.parseObject(message,MerchantInfoDo.class);
-        System.out.println(merchantInfoDo.getMerchantName()+" =================================== ");
-        String merchantName = merchantInfoDo.getMerchantName();
+        JSONObject jsonObject = JSON.parseObject(message);
+        System.out.println(jsonObject.getString("merchantName")+" =================================== ");
+        String merchantName = jsonObject.getString("merchantName");
         String url = String.format(URL, merchantName);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         return new Request(url);
