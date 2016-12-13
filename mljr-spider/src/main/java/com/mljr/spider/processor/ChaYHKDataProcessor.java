@@ -18,7 +18,7 @@ import java.util.Map;
 public class ChaYHKDataProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("cha.yinhangkadata.com")
-            .setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)
+            .setSleepTime(10000).setRetrySleepTime(7500).setRetryTimes(3)
             .addCookie("ASPSESSIONIDCAATTCQA", "LHEGLFIDENPGIJOLIFNHOIFB")//此字段必填
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");

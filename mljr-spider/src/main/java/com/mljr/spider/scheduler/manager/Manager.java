@@ -57,7 +57,7 @@ public class Manager extends AbstractMessage {
 		startHuoChePiaoBankCard();
 		startCha67BankCard();
 		startYinHangKaBankCard();
-		startChaYHKBankCard();
+//		startChaYHKBankCard(); //目前出现验证码
 //		startLBSAMapReGeo();
 //		startLBSBaiduReGeo();
 //		startLBSAMapGeo();
@@ -206,8 +206,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new GuabuBankCardProcessor();
 		LogPipeline pipeline = new LogPipeline(GUABU_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getGuabuBankCardPath());
-//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(GUABU_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -223,8 +223,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new HuoChePiaoProcessor();
 		LogPipeline pipeline = new LogPipeline(HCP_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getHuoChePiaoBankCardPath());
-//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(HUOCHEPIAO_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -240,8 +240,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new Cha67BankCardProcessor();
 		LogPipeline pipeline = new LogPipeline(CHA67_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getCha67BankCardPath());
-//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(CHA67_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -257,8 +257,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new YinHangKa388Processor();
 		LogPipeline pipeline = new LogPipeline(YHK388_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getYinHangKaBankCardPath());
-//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(YHK388_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -274,8 +274,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new ChaYHKDataProcessor();
 		LogPipeline pipeline = new LogPipeline(CHAYHK_BANK_CARD_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getChaYHKBankCardPath());
-//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(CHAYHK_BANK_CARD_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));

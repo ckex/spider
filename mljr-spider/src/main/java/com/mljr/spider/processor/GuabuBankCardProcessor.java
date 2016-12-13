@@ -1,7 +1,6 @@
 package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mljr.spider.vo.JSONTransferVO;
 import org.apache.commons.lang.StringUtils;
@@ -21,7 +20,7 @@ import java.util.Map;
 public class GuabuBankCardProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("www.guabu.com")
-            .setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)
+            .setSleepTime(15000).setRetrySleepTime(7500).setRetryTimes(3)
             .setCharset("GB2312") //返回xml格式为gb2312
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
