@@ -18,4 +18,6 @@ public abstract class AbstractTaskFactory {
 
 	public abstract MerchantInfoTask createMerchantInfoTask();
 
+	public abstract LbsTask createLbsTask();
+
 }

@@ -255,4 +255,12 @@ public class ServiceConfig {
     public static String getLBSBaiduKey(){
         return properties.getProperty("lbs.baidu.key");
     }
+
+    public static String getLbsExchange() {
+        return properties.getProperty("rmq.lbs.exchange");
+    }
+
+    public static String getLbsRoutingKey() {
+        return properties.getProperty("rmq.lbs.routingKey");
+    }
 }

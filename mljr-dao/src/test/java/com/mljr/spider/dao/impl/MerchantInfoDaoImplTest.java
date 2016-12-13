@@ -41,4 +41,10 @@ public class MerchantInfoDaoImplTest extends AbstractIMljrDaoTest {
 		List<MerchantInfoDo> list = merchantInfoDao.listById("70000000000", 10);
 		logger.info("result ===> " + list);
 	}
+
+	@Test
+	public void testListAddress() throws Exception {
+		System.out.println(merchantInfoDao.listAddressById("000",10));
+
+	}
 }

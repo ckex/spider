@@ -37,5 +37,19 @@
         limit #{limit}
     </select>
 
+    <select id="listAddressById" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select bc.SERIALNO as contract_id, p.companyCity as company_city, p.companyName as company_name,
+            p.homecity as home_city, p.homeaddress as home_address
+        from sba.c002_business_contract as bc
+            LEFT JOIN sba.c002_CUSTOMER_INFO as p
+            on bc.CUSTOMERID = p.CUSTOMERID
+        where p.companyCity is not null and p.homecity is not null
+        and bc.SERIALNO>#{id}
+        order by bc.SERIALNO
+        limit #{limit}
+    </select>
+
+
+
 
 </mapper>
