@@ -45,24 +45,21 @@ public class Manager extends AbstractMessage {
 
 	public void run() throws Exception {
 		System.out.println("Runing ...");
-//		startSaiGeGPS();
-//		startGuishuShowji();
-//		startIP138();
-//		startHuoche114();
-//		startJuheMobile();
-//		startBaiduMobile();
-//		startSogouMobile();
-//		startTianyancha();
+		startSaiGeGPS();
+		startGuishuShowji();
+		startIP138();
+		startHuoche114();
+		startJuheMobile();
+		startBaiduMobile();
+		startSogouMobile();
+		startTianyancha();
 		startGuabuBankCard();
 		startHuoChePiaoBankCard();
 		startCha67BankCard();
 		startYinHangKaBankCard();
-//		startChaYHKBankCard(); //目前出现验证码
-//		startLBSAMapReGeo();
-//		startLBSBaiduReGeo();
-//		startLBSAMapGeo();
-//		startLBSBaiduGeo();
-
+		startChaYHKBankCard();
+		startLBSAMapGeo();
+		startLBSBaiduGeo();
 	}
 
 	// 赛格GPS数据
@@ -291,8 +288,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSAMapGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_AMAP_GEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSAMapGeoPath());
-//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_AMAP_GEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -325,8 +322,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSBaiduGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_BAIDU_GEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSBaiduGeoPath());
-//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_BAIDU_GEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
