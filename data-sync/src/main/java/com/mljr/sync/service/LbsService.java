@@ -11,7 +11,6 @@ import com.mljr.constant.BasicConstant;
 import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.redis.RedisClient;
 import com.mljr.spider.dao.MerchantInfoDao;
-import com.mljr.spider.model.MerchantInfoDo;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.ucloud.umq.common.ServiceConfig;
@@ -24,15 +23,21 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class MerchantInfoService {
+public class LbsService {
 
-    protected static transient Logger logger = LoggerFactory.getLogger(MerchantInfoService.class);
+    protected static transient Logger logger = LoggerFactory.getLogger(LbsService.class);
 
     private static final int LIMIT = 50;
+
+    private static final String PRIMARY_KEY = "contract_id";
+
+    private static final String LBS_KEY = Joiner.on("-").join(BasicConstant.LBS_INFO, BasicConstant.LAST_ID);
 
     @Autowired
     private RedisClient client;
@@ -40,18 +45,18 @@ public class MerchantInfoService {
     @Autowired
     MerchantInfoDao merchantInfoDao;
 
-    public void syncMerchantInfo() throws Exception {
+    public void syncLbsInfo() throws Exception {
 
         final Channel channel = RabbitmqClient.newChannel();
         try {
-            Function<MerchantInfoDo, Boolean> function = new Function<MerchantInfoDo, Boolean>() {
+            Function<HashMap, Boolean> function = new Function<HashMap, Boolean>() {
 
                 @Override
-                public Boolean apply(MerchantInfoDo merchantInfoDo) {
-                    return sentMercentInfo(channel, merchantInfoDo);
+                public Boolean apply(HashMap map) {
+                    return sentMercentInfo(channel, map);
                 }
             };
-            syncMerchantInfo(function);
+            syncLbsInfo(function);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -61,16 +66,18 @@ public class MerchantInfoService {
         }
     }
 
-    private boolean sentMercentInfo(Channel channel, MerchantInfoDo merchantInfoDo) {
-        if (merchantInfoDo == null || StringUtils.isBlank(merchantInfoDo.getMerchantName())) {
+    private boolean sentMercentInfo(Channel channel, HashMap map) {
+        if (map == null || StringUtils.isBlank((String)map.get(PRIMARY_KEY))) {
             return true;
         }
-        String jsonString = JSON.toJSONString(merchantInfoDo);
+        String[] jsonArr = handleJson(map);
         BasicProperties.Builder builder = new BasicProperties.Builder();
         builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
         try {
-            RabbitmqClient.publishMessage(channel, ServiceConfig.getMerchantInfoExchange(),
-                    ServiceConfig.getMerchantInfoRoutingKey(), builder.build(), jsonString.getBytes(Charsets.UTF_8));
+            RabbitmqClient.publishMessage(channel, ServiceConfig.getLbsExchange(),
+                    ServiceConfig.getLbsRoutingKey(), builder.build(), jsonArr[0].getBytes(Charsets.UTF_8));
+            RabbitmqClient.publishMessage(channel, ServiceConfig.getLbsExchange(),
+                    ServiceConfig.getLbsRoutingKey(), builder.build(), jsonArr[1].getBytes(Charsets.UTF_8));
             try {
                 TimeUnit.MILLISECONDS.sleep(10);
             } catch (InterruptedException e) {
@@ -85,13 +92,37 @@ public class MerchantInfoService {
         }
     }
 
-    private void syncMerchantInfo(Function<MerchantInfoDo, Boolean> function) {
-        String key = Joiner.on("-").join(BasicConstant.MERCENT_INFO, BasicConstant.LAST_ID);
-        List<MerchantInfoDo> infos = listData(key);
+    private String[] handleJson(HashMap map){
+        String[] arr = new String[2];
+        String id = (String)map.get("contract_id");
+        String city = (String)map.get("company_city");
+        String home_address = (String)map.get("home_address");
+        String company_address = (String)map.get("company_name");
+
+        HashMap<String,String> homeMap = new HashMap<>();
+        homeMap.put("id",id);
+        homeMap.put("city",city);
+        homeMap.put("address",home_address);
+        homeMap.put("addressFlag","home");
+
+        HashMap<String,String> companyMap = new HashMap<>();
+        companyMap.put("id",id);
+        companyMap.put("city",city);
+        companyMap.put("address",company_address);
+        companyMap.put("addressFlag","company");
+
+        arr[0]=JSON.toJSONString(homeMap);
+        arr[1]=JSON.toJSONString(companyMap);
+        return arr;
+    }
+
+    private void syncLbsInfo(Function<HashMap, Boolean> function) {
+
+        List<HashMap> infos = listData(LBS_KEY);
         if (infos != null && !infos.isEmpty()) {
-            for (MerchantInfoDo info : infos) {
-                if(function.apply(info)){
-                    setLastId(key,info.getMmId());
+            for (HashMap map : infos) {
+                if(function.apply(map)){
+                    setLastId(LBS_KEY,(String)map.get(PRIMARY_KEY));
                     continue;
                 }
                 logger.error("sync merchant_info error!");
@@ -101,9 +132,9 @@ public class MerchantInfoService {
 
     }
 
-    private List<MerchantInfoDo> listData(String key) {
+    private List<HashMap> listData(String key) {
         String lastId = getLastId(key);
-        return merchantInfoDao.listById(lastId, LIMIT);
+        return merchantInfoDao.listAddressById(lastId, LIMIT);
     }
 
     private void setLastId(final String key, final String id) {

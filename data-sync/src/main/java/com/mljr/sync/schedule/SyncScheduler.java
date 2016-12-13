@@ -51,4 +51,11 @@ public class SyncScheduler {
 		logger.debug(task.toString());
 	}
 
+	@Scheduled(cron = "0/5 * * * * ?")
+	private void startLbsTask() {
+		LbsTask task = abstractTaskFactory.createLbsTask();
+		task.run();
+		logger.debug(task.toString());
+	}
+
 }

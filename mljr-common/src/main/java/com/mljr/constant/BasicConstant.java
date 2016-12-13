@@ -24,6 +24,8 @@ public class BasicConstant {
 
 	public static final String MERCENT_INFO = "mercent_info";
 
+	public static final String LBS_INFO = "lbs_info";
+
 	public static final String LAST_ID = "last_id";
 
 	public static final String UTF8 = "UTF-8";

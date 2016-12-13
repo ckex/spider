@@ -12,6 +12,7 @@ import common.search.util.SearchMap;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,4 +29,12 @@ public class MerchantInfoDaoImpl extends AbstractBasicDao implements MerchantInf
         map.add( "limit",limit);
         return getSqlSessionTemplate().selectList("Mapper.merchant_info.listById",map);
     }
- }
+
+    @Override
+    public List<HashMap> listAddressById(String lastId, int limit) {
+        SearchMap map =  new SearchMap();
+        map.add( "id",lastId);
+        map.add( "limit",limit);
+        return getSqlSessionTemplate().selectList("Mapper.merchant_info.listAddressById",map);
+    }
+}
