@@ -2,6 +2,7 @@ package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mljr.spider.vo.JSONTransferVO;
 import org.apache.commons.lang3.StringUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -26,7 +27,10 @@ public class LBSAMapReGeoProcessor extends AbstractPageProcessor {
         JSONObject jsonObject = JSON.parseObject(json);
         String status = jsonObject.getString("status");
         if (StringUtils.isNotEmpty(status) && SUCCESS.equalsIgnoreCase(status)) {
-            page.putField(page.getUrl().get(), json);
+            JSONTransferVO transferVO=new JSONTransferVO();
+            transferVO.setUrl(page.getUrl().get());
+            transferVO.setContext(jsonObject);
+            page.putField("",JSON.toJSON(transferVO));
             return;
         }
 

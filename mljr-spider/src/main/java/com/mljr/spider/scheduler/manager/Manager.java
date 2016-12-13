@@ -183,12 +183,10 @@ public class Manager extends AbstractMessage {
 	// http://www.tianyancha.com/search/%s.json
 	private void startTianyancha() throws Exception {
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-//		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getTianyanchaPath());
-//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-//		final Spider spider = Spider.create(new TianyanchaProcessor()).addPipeline(htmlPipeline)
-//				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
- 		final Spider spider = Spider.create(new TianyanchaProcessor()).addPipeline(pipeline).addPipeline(new ConsolePipeline())
-				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getTianyanchaPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(new TianyanchaProcessor()).addPipeline(htmlPipeline)
+				.thread(1).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(TIANYANCHA_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_TIANYANCHA_QUEUE_ID));
@@ -306,8 +304,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSAMapReGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_AMAP_REGEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSAMapReGeoPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_AMAP_REGEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -340,8 +338,8 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = new LBSBaiduReGeoProcessor();
 		LogPipeline pipeline = new LogPipeline(LBS_BAIDU_REGEO_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getLBSBaiduReGeoPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_BAIDU_REGEO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));

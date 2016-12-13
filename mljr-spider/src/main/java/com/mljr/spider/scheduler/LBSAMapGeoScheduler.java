@@ -1,5 +1,7 @@
 package com.mljr.spider.scheduler;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.CharMatcher;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
@@ -16,7 +18,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class LBSAMapGeoScheduler extends AbstractScheduler {
 
-    private static final String URL = "http://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&output=JSON";
+    private static final String URL = "http://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s&output=JSON";
 
     public LBSAMapGeoScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
         super(spider, mqMsgQueue);
@@ -38,7 +40,28 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
 
     @Override
     Request buildRequst(String message) {
-        String url = String.format(URL, ServiceConfig.getLBSAMapKey(), message);
+        JSONObject jsonObject = JSON.parseObject(message);
+        String[] cityArray=jsonObject.getString("city").split(" ");
+        String address=jsonObject.getString("address");
+        String city="";
+        switch (cityArray.length) {
+            case 1:
+                city = cityArray[0];
+                break;
+            case 2:
+                if (cityArray[0].endsWith("省")) {
+                    city = cityArray[1];
+                } else if (cityArray[0].endsWith("市")) {
+                    city = cityArray[0];
+                } else {
+                    city = cityArray[1];
+                }
+                break;
+            default:
+                city = cityArray[1];
+                break;
+        }
+        String url = String.format(URL, ServiceConfig.getLBSAMapKey(), address,city);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         return new Request(url);
     }

@@ -9,7 +9,7 @@ import us.codecraft.webmagic.pipeline.ConsolePipeline;
  */
 public class LBSAMapProcessorTests {
 
-    private static final String GEO_URL = "http://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&output=JSON";
+    private static final String GEO_URL = "http://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s&output=JSON";
 
     private static final String REGEO_URL = "http://restapi.amap.com/v3/geocode/regeo?key=%s&location=%s&output=JSON";
 
@@ -20,7 +20,7 @@ public class LBSAMapProcessorTests {
     }
 
     private static void testGeo() {
-        String url=String.format(GEO_URL,AMAP_KEY,"上海浦东新区商城路506号28楼（新梅二期）");
+        String url=String.format(GEO_URL,AMAP_KEY,"上海浦东新区商城路506号28楼（新梅二期）","上海市");
         Spider spider=Spider.create(new LBSAMapGeoProcessor())
                 .addUrl(url)
                 .addPipeline(new ConsolePipeline());
