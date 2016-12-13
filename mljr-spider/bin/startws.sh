@@ -101,7 +101,7 @@ if [ ! -d $LOG_ROOT ]; then
 fi
 
 # SET GC_LOG
-export JAVA_OPTS=" $JAVA_OPTS -verbose.gc -XX:+PrintGCTimeStamps -XX:+PrintTenuringDistribution -XX:+HandlePromotionFailure -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -Xloggc:$LOG_ROOT/$APP_NAME-gc.log"
+export JAVA_OPTS=" $JAVA_OPTS -verbose.gc -XX:+PrintGCTimeStamps -XX:+PrintTenuringDistribution -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -Xloggc:$LOG_ROOT/$APP_NAME-gc.log"
  
 
 CONFIG_DIR=$DEPLOY_HOME/conf
