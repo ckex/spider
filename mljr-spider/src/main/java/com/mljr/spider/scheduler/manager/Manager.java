@@ -58,9 +58,8 @@ public class Manager extends AbstractMessage {
 		startCha67BankCard();
 		startYinHangKaBankCard();
 		startChaYHKBankCard();
-		startLBSAMapReGeo();
-		startLBSBaiduReGeo();
-
+		startLBSAMapGeo();
+		startLBSBaiduGeo();
 	}
 
 	// 赛格GPS数据
