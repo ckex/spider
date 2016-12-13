@@ -1,8 +1,11 @@
 package com.mljr.spider.scheduler;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.CharMatcher;
+import com.mljr.spider.model.MerchantInfoDo;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
+import org.apache.commons.lang3.StringUtils;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.Task;
@@ -53,7 +56,13 @@ public class TianyanchaScheduler extends AbstractScheduler {
 
     @Override
     Request buildRequst(String message) {
-        String url = String.format(URL, message);
+        if(StringUtils.isBlank(message)||!message.contains("merchantName")){
+            return null;
+        }
+        MerchantInfoDo merchantInfoDo = JSON.parseObject(message,MerchantInfoDo.class);
+        System.out.println(merchantInfoDo.getMerchantName()+" =================================== ");
+        String merchantName = merchantInfoDo.getMerchantName();
+        String url = String.format(URL, merchantName);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         return new Request(url);
     }
