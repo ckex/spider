@@ -57,4 +57,8 @@
         SELECT count(*) 
         FROM yy_user_call_record_history         WHERE 1 
     </select>
+
+    <select id="listById" resultMap="YyUserCallRecordHistoryResult" parameterType="java.util.HashMap">
+        select id,number from yy_user_call_record_history WHERE id > #{id} order by id limit #{limit}
+    </select>
 </mapper>

@@ -29,4 +29,16 @@ public class MerchantInfoDaoImplTest extends AbstractIMljrDaoTest {
 			logger.debug(yyUserAddressBookDo.toString());
 		}
 	}
+
+	@Test
+	public void testListById2() throws Exception {
+		long id = 1;
+		List<YyUserAddressBookDo> list2 = yyUserAddressBookDao.listById(id, 10);
+		for (YyUserAddressBookDo yyUserAddressBookDo : list2) {
+			logger.debug(yyUserAddressBookDo.toString());
+		}
+		logger.info("---------------------------------------------------华丽分割线。");
+		List<MerchantInfoDo> list = merchantInfoDao.listById("70000000000", 10);
+		logger.info("result ===> " + list);
+	}
 }

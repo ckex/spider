@@ -63,4 +63,12 @@ public class YyUserAddressBookHistoryDaoImpl extends AbstractBasicDao implements
          result.setPaginator(paginator);
          return result;
      }
- }
+
+    @Override
+    public List<YyUserAddressBookHistoryDo> listById(long lastId, int limit) {
+        SearchMap map =  new SearchMap();
+        map.add( "id",lastId);
+        map.add( "limit",limit);
+        return getSqlSessionTemplate().selectList("Mapper.yy_user_address_book_history.listById",map);
+    }
+}

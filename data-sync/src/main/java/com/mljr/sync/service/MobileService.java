@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.mljr.spider.dao.YyUserAddressBookHistoryDao;
+import com.mljr.spider.dao.YyUserCallRecordHistoryDao;
+import com.mljr.spider.model.YyUserAddressBookHistoryDo;
+import com.mljr.spider.model.YyUserCallRecordHistoryDo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -42,11 +46,22 @@ public class MobileService {
 
 	private static final int LIMIT = 50;
 
+	private static final String RECORD_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD, BasicConstant.LAST_ID);
+	private static final String RECORD_HISTORY_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD_HISTORY, BasicConstant.LAST_ID);
+	private static final String BOOK_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK, BasicConstant.LAST_ID);
+	private static final String BOOK_HISTORY_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK_HISTORY, BasicConstant.LAST_ID);
+
 	@Autowired
 	private YyUserAddressBookDao yyUserAddressBookDao;
 
 	@Autowired
+	private YyUserAddressBookHistoryDao yyUserAddressBookHistoryDao;
+
+	@Autowired
 	private YyUserCallRecordDao yyUserCallRecordDao;
+
+	@Autowired
+	private YyUserCallRecordHistoryDao yyUserCallRecordHistoryDao;
 
 	@Autowired
 	private RedisClient client;
@@ -63,6 +78,8 @@ public class MobileService {
 			};
 			syncYyUserAddressBook(function);
 			syncYyUserCallRecord(function);
+			syncBookHistory(function);
+			syncRecordHistory(function);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -73,8 +90,7 @@ public class MobileService {
 	}
 
 	private void syncYyUserCallRecord(Function<String, Boolean> function) {
-		String key = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD, BasicConstant.LAST_ID);
-		List<YyUserCallRecordDo> result = listYyUserCallRecord(key);
+		List<YyUserCallRecordDo> result = listYyUserCallRecord(RECORD_KEY);
 		if (result == null || result.isEmpty()) {
 			logger.info("result empty .");
 			return;
@@ -82,10 +98,28 @@ public class MobileService {
 
 		for (YyUserCallRecordDo yyUserCallRecordDo : result) {
 			if (function.apply(yyUserCallRecordDo.getNumber())) {
-				setLastId(key, yyUserCallRecordDo.getId());
+				setLastId(RECORD_KEY, yyUserCallRecordDo.getId());
 				continue;
 			}
 			logger.warn("sent to mq error ." + yyUserCallRecordDo.toString());
+			break;
+		}
+
+	}
+
+	private void syncRecordHistory(Function<String, Boolean> function) {
+		List<YyUserCallRecordHistoryDo> result = listRecordHistory(RECORD_HISTORY_KEY);
+		if (result == null || result.isEmpty()) {
+			logger.info("result empty .");
+			return;
+		}
+
+		for (YyUserCallRecordHistoryDo history : result) {
+			if (function.apply(history.getNumber())) {
+				setLastId(RECORD_HISTORY_KEY, history.getId());
+				continue;
+			}
+			logger.warn("sent to mq error ." + history.toString());
 			break;
 		}
 
@@ -96,14 +130,23 @@ public class MobileService {
 		return yyUserCallRecordDao.listById(lastId, LIMIT);
 	}
 
+	private List<YyUserCallRecordHistoryDo> listRecordHistory(String key) {
+		long lastId = getLastId(key);
+		return yyUserCallRecordHistoryDao.listById(lastId, LIMIT);
+	}
+
 	private List<YyUserAddressBookDo> listYyUserAddressBook(String key) {
 		long lastId = getLastId(key);
 		return yyUserAddressBookDao.listById(lastId, LIMIT);
 	}
 
+	private List<YyUserAddressBookHistoryDo> listBookHistory(String key) {
+		long lastId = getLastId(key);
+		return yyUserAddressBookHistoryDao.listById(lastId, LIMIT);
+	}
+
 	private void syncYyUserAddressBook(Function<String, Boolean> function) {
-		String key = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK, BasicConstant.LAST_ID);
-		List<YyUserAddressBookDo> result = listYyUserAddressBook(key);
+		List<YyUserAddressBookDo> result = listYyUserAddressBook(BOOK_KEY);
 		if (result == null || result.isEmpty()) {
 			logger.info("result empty .");
 			return;
@@ -111,10 +154,28 @@ public class MobileService {
 
 		for (YyUserAddressBookDo yyUserAddressBookDo : result) {
 			if (function.apply(yyUserAddressBookDo.getNumber())) {
-				setLastId(key, yyUserAddressBookDo.getId());
+				setLastId(BOOK_KEY, yyUserAddressBookDo.getId());
 				continue;
 			}
 			logger.warn("sent to mq error ." + yyUserAddressBookDo.toString());
+			break;
+		}
+
+	}
+
+	private void syncBookHistory(Function<String, Boolean> function) {
+		List<YyUserAddressBookHistoryDo> result = listBookHistory(BOOK_HISTORY_KEY);
+		if (result == null || result.isEmpty()) {
+			logger.info("result empty .");
+			return;
+		}
+
+		for (YyUserAddressBookHistoryDo history : result) {
+			if (function.apply(history.getNumber())) {
+				setLastId(BOOK_HISTORY_KEY, history.getId());
+				continue;
+			}
+			logger.warn("sent to mq error ." + history.toString());
 			break;
 		}
 

@@ -8,13 +8,9 @@ import com.mljr.spider.model.SpiderBankCardLocationDo;
 import common.page.util.PageList;
 import common.page.util.PageQuery;
 
-/**
- * @author ckex created 2016-12-11 10:37:07:007
- * @explain -
- */
+@DataSource("rc")
 public interface SpiderBankCardLocationDao {
 
-	@DataSource("rc")
 	SpiderBankCardLocationDo load(java.lang.String bank_card_11_digits);
 
 	boolean delete(java.lang.String bank_card_11_digits);
@@ -25,9 +21,8 @@ public interface SpiderBankCardLocationDao {
 
 	PageList<SpiderBankCardLocationDo> listByPage(PageQuery pageQuery, Integer count);
 
-	@DataSource("rc")
+
 	List<String> listById(String lastId, int limit);
 
-	@DataSource("rc")
 	List<String> listFromDMById(String lastId, int limit);
 }

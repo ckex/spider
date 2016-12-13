@@ -1,17 +1,15 @@
 package com.mljr.spider.dao.impl;
 
-import java.lang.Integer;
-import java.util.List;
-import java.util.Collections;
-
-import org.springframework.stereotype.Repository;
-
 import com.mljr.spider.dao.YyUserCallRecordHistoryDao;
 import com.mljr.spider.model.YyUserCallRecordHistoryDo;
-import common.search.util.SearchMap;
-import common.page.util.PageQuery;
 import common.page.util.PageList;
+import common.page.util.PageQuery;
 import common.page.util.Paginator;
+import common.search.util.SearchMap;
+import org.springframework.stereotype.Repository;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author ckex created 2016-11-29 16:14:49:049
@@ -63,4 +61,12 @@ public class YyUserCallRecordHistoryDaoImpl extends AbstractBasicDao implements 
          result.setPaginator(paginator);
          return result;
      }
+
+    @Override
+    public List<YyUserCallRecordHistoryDo> listById(long id, int limit) {
+        SearchMap map = new SearchMap();
+        map.add("id", id);
+        map.add("limit", limit);
+        return getSqlSessionTemplate().selectList("Mapper.yy_user_call_record_history.listById", map);
+    }
  }
