@@ -29,8 +29,8 @@
 		<antx.conf>${path}</antx.conf>
 		<output.dir>${outputDir}</output.dir>
 		<output.file.name>${projectName}</output.file.name>
-		<maven.compiler.target>1.7</maven.compiler.target>
-		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
 		<scala.version>2.11.8</scala.version>
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<fastjson.version>1.2.6</fastjson.version>
