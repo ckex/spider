@@ -3,6 +3,7 @@ package com.mljr.spider.dao;
 import com.mljr.spider.dao.dynamic.datasource.DataSource;
 import com.mljr.spider.model.MerchantInfoDo;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,4 +14,6 @@ import java.util.List;
 public interface MerchantInfoDao {
 
 	List<MerchantInfoDo> listById(String lastId, int limit);
+
+	List<HashMap> listAddressById(String lastId, int limit);
 }
