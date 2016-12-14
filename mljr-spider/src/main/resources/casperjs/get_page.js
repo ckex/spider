@@ -1,9 +1,6 @@
 var casper = require('casper').create();
 var page;
 
-
-console.log("first arg is " + casper.cli.args[0]);
-
 var url = casper.cli.args[0];
 
 casper.start();
