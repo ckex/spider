@@ -159,6 +159,21 @@ appender("SOGOU-MOBILE-ERR", RollingFileAppender) {
     maxHistory = 300
   }
 }
+appender("TIANYANCHA-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/tianyancha-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
 appender("SAIGE-GPS-ERR", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
     pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
@@ -503,6 +518,7 @@ logger("com.mljr.spider", DEBUG)
 logger("juhe-mobile-downloader", INFO, ["JUHE-MOBILE-ERR"], false)
 logger("baidu-mobile-downloader", INFO, ["BAIDU-MOBILE-ERR"], false)
 logger("sogou-mobile-downloader", INFO, ["SOGOU-MOBILE-ERR"], false)
+logger("tianyancha-downloader", INFO, ["TIANYANCHA-ERR"], false)
 logger("saige-gps-downloader", INFO, ["SAIGE-GPS-ERR"], false)
 logger("guabu-bc-downloader", INFO, ["GUABU-BC-ERR"], false)
 logger("hcp-bc-downloader", INFO, ["HCP-BC-ERR"], false)
