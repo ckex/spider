@@ -10,16 +10,16 @@
 <configuration scan="true" scanPeriod="300 seconds" debug="ture">
 	<property name="APP_NAME" value="mljr" />
 	<property name="LOG_HOME" value="/data/var/log/mljr" />
-	<property name="SAIGE_DATA_HOME" value="/data/saige" />
-	<property name="JUHE_DATA_HOME" value="/data/juhe" />
-	<property name="GUA_DATA_HOME" value="/data/guabu"/>
-	<property name="HCP_DATA_HOME" value="/data/hcp"/>
-	<property name="CHA67_DATA_HOME" value="/data/cha67"/>
-	<property name="YHK388_DATA_HOME" value="/data/yhk388"/>
-	<property name="CHAYHK_DATA_HOME" value="/data/chayhk"/>
-	<property name="AMAP_DATA_HOME" value="/data/amap"/>
-	<property name="BAIDU_DATA_HOME" value="/data/baidu"/>
-
+	<property name="BASIC_DATA_PATH" value="/data/backup/" />
+	<property name="SAIGE_DATA_HOME" value="${BASIC_DATA_PATH}saige" />
+	<property name="JUHE_DATA_HOME" value="${BASIC_DATA_PATH}juhe" />
+	<property name="GUA_DATA_HOME" value="${BASIC_DATA_PATH}guabu"/>
+	<property name="HCP_DATA_HOME" value="${BASIC_DATA_PATH}hcp"/>
+	<property name="CHA67_DATA_HOME" value="${BASIC_DATA_PATH}cha67"/>
+	<property name="YHK388_DATA_HOME" value="${BASIC_DATA_PATH}yhk388"/>
+	<property name="CHAYHK_DATA_HOME" value="${BASIC_DATA_PATH}chayhk"/>
+	<property name="AMAP_DATA_HOME" value="${BASIC_DATA_PATH}amap"/>
+	<property name="BAIDU_DATA_HOME" value="${BASIC_DATA_PATH}baidu"/>
 	<property name="DOWNLOADER_LISTENER_HOME" value="/data/listener" />
 	<contextName>${APP_NAME}</contextName>
 
