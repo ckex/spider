@@ -7,6 +7,7 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
+import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 
 import java.io.BufferedReader;
@@ -15,16 +16,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-public class TianyanchaProcessor extends AbstractPageProcessor {
+public  class TianyanchaProcessor extends AbstractPageProcessor {
     public static final String JS_PATH = System.getProperty("user.home") + System.getProperty("file.separator")
             + "get_page.js";
 
     private Site site = Site.me().setDomain("tianyancha.com")
             .addHeader("loop", "null")
+            .setSleepTime(1000*50)
             .addHeader("Accept", "application/json, text/plain, */*")
-            .setSleepTime(50*1000)
             .setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
-                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0");
 
     public TianyanchaProcessor() {
         super();
@@ -32,22 +33,28 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
     @Override
     public synchronized void process(Page page) {
-        String url = page.getUrl().toString();
-        if (url != null && url.contains("www.tianyancha.com/search")) {
-            List<String> ids = new JsonPathSelector("$.data[*].id").selectList(page.getRawText());
-            logger.info("tianyancha ids ===============================  "+ ids);
-            if (CollectionUtils.isNotEmpty(ids)) {
-                for (String id : ids) {
-                    try {
-                        String html = getAjaxContent("http://www.tianyancha.com/company/" + id);
-                        page.putField("", html);
+        try {
+            String htmlStr  = getAjaxContent(page.getUrl().toString());
+            logger.info("htmlStr"+htmlStr);
+            logger.info("-------------------------------------------");
+            Html html = new Html(htmlStr);
+            List<String> requests = html.links().all();
+            int i=0;
+            if(requests!=null&&requests.size()>0){
+                for (String request : requests) {
+                    if(request.contains("http://www.tianyancha.com/company")){
+                        String targetHtml  = getAjaxContent(request);
+                        page.putField("",targetHtml);
                         break;
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("tianyancha error",e);
+
         }
+
     }
 
 
@@ -58,14 +65,16 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
     public static void main(String[] args) {
         Spider.create(new TianyanchaProcessor())
-                .addUrl("http://www.tianyancha.com/search/%E4%B8%8A%E6%B5%B7%E4%BA%91%E8%B4%9D%E7%BD%91%E7%BB%9C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8.json")
+                .addUrl("http://www.tianyancha.com/search?key=%E5%AE%9C%E9%83%BD%E5%B8%82%E6%9E%9D%E5%9F%8E%E9%95%87%E4%B8%AD%E4%B8%BA%E8%81%94%E9%80%9A%E5%90%88%E4%BD%9C%E8%90%A5%E4%B8%9A%E5%8E%85&checkFrom=searchBox")
                 .addPipeline(new ConsolePipeline()).addPipeline(new LocalFilePipeline("/data/html")).run();
 
     }
 
     public synchronized String getAjaxContent(String url) throws IOException {
         Runtime rt = Runtime.getRuntime();
-        Process p = rt.exec(Joiner.on(" ").join("/usr/local/bin/casperjs", JS_PATH, url));
+        String command = Joiner.on(" ").join("/usr/local/bin/casperjs", JS_PATH, url);
+        logger.info("command ================="  +  command);
+        Process p = rt.exec(command);
         InputStream is = p.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         StringBuffer sbf = new StringBuffer();
