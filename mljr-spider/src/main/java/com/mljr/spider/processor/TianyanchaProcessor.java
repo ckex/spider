@@ -22,6 +22,7 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
     private Site site = Site.me().setDomain("tianyancha.com")
             .addHeader("loop", "null")
             .addHeader("Accept", "application/json, text/plain, */*")
+            .setSleepTime(50*1000)
             .setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
@@ -34,11 +35,13 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
         String url = page.getUrl().toString();
         if (url != null && url.contains("www.tianyancha.com/search")) {
             List<String> ids = new JsonPathSelector("$.data[*].id").selectList(page.getRawText());
+            logger.info("tianyancha ids ===============================  "+ ids);
             if (CollectionUtils.isNotEmpty(ids)) {
                 for (String id : ids) {
                     try {
                         String html = getAjaxContent("http://www.tianyancha.com/company/" + id);
                         page.putField("", html);
+                        break;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
