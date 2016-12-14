@@ -72,7 +72,7 @@ public  class TianyanchaProcessor extends AbstractPageProcessor {
 
     public synchronized String getAjaxContent(String url) throws IOException {
         Runtime rt = Runtime.getRuntime();
-        String command = Joiner.on(" ").join("/usr/local/bin/casperjs", JS_PATH, url);
+        String command = Joiner.on(" ").join("phantomjs", JS_PATH, url);
         logger.info("command ================="  +  command);
         Process p = rt.exec(command);
         InputStream is = p.getInputStream();
