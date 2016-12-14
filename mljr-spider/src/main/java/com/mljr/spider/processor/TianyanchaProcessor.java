@@ -22,10 +22,10 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("tianyancha.com")
             .addHeader("loop", "null")
-            .setSleepTime(1000*30)
+            .setSleepTime(1000*50)
             .addHeader("Accept", "application/json, text/plain, */*")
             .setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
-                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0");
 
     public TianyanchaProcessor() {
         super();
@@ -70,7 +70,7 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
     }
 
-    public String getAjaxContent(String url) throws IOException {
+    public synchronized String getAjaxContent(String url) throws IOException {
         Runtime rt = Runtime.getRuntime();
         String command = Joiner.on(" ").join("/usr/local/bin/casperjs", JS_PATH, url);
         logger.info("command ================="  +  command);
