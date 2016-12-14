@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-public class TianyanchaProcessor extends AbstractPageProcessor {
+public  class TianyanchaProcessor extends AbstractPageProcessor {
     public static final String JS_PATH = System.getProperty("user.home") + System.getProperty("file.separator")
             + "get_page.js";
 
@@ -32,7 +32,7 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
     }
 
     @Override
-    public void process(Page page) {
+    public synchronized void process(Page page) {
         try {
             String htmlStr  = getAjaxContent(page.getUrl().toString());
             logger.info("htmlStr"+htmlStr);
@@ -59,7 +59,7 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
 
     @Override
-    public Site getSite() {
+    public synchronized Site getSite() {
         return this.site;
     }
 
