@@ -34,20 +34,15 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
     @Override
     public void process(Page page) {
         try {
-            logger.info("page"+page.getHtml().get());
-            logger.info("-------------------------------------------");
             String htmlStr  = getAjaxContent(page.getUrl().toString());
             logger.info("htmlStr"+htmlStr);
             logger.info("-------------------------------------------");
             Html html = new Html(htmlStr);
-            logger.info("html"+html);
-            logger.info("-------------------------------------------");
             List<String> requests = html.links().all();
             int i=0;
             if(requests!=null&&requests.size()>0){
                 for (String request : requests) {
                     if(request.contains("http://www.tianyancha.com/company")){
-                        System.out.println("===============================" + (++i));
                         String targetHtml  = getAjaxContent(request);
                         page.putField("",targetHtml);
                         break;
