@@ -19,7 +19,7 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
     public static final String JS_PATH = System.getProperty("user.home") + System.getProperty("file.separator")
             + "get_page.js";
 
-    private Site site = Site.me().setDomain("www.tianyancha.com")
+    private Site site = Site.me().setDomain("tianyancha.com")
             .addHeader("loop", "null")
             .addHeader("Accept", "application/json, text/plain, */*")
             .setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
