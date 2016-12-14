@@ -20,6 +20,7 @@
 	<property name="CHAYHK_DATA_HOME" value="${BASIC_DATA_PATH}chayhk"/>
 	<property name="AMAP_DATA_HOME" value="${BASIC_DATA_PATH}amap"/>
 	<property name="BAIDU_DATA_HOME" value="${BASIC_DATA_PATH}baidu"/>
+	<property name="TIANYANCHA_DATA_HOME" value="${BASIC_DATA_PATH}tianyancha"/>
 	<property name="DOWNLOADER_LISTENER_HOME" value="/data/listener" />
 	<contextName>${APP_NAME}</contextName>
 
@@ -683,6 +684,28 @@
 		</rollingPolicy>
 	</appender>
 
+	<appender name="TIANYANCHA-ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/tianyancha-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
 	<logger name="com.alibaba.druid.filter.stat.StatFilter" level="INFO" />
 	<logger name="com.alibaba.druid.pool.DruidDataSource" level="INFO" />
 	<logger name="com.alibaba.druid" level="INFO" />
@@ -811,6 +834,10 @@
 
 	<logger name="lbs-baidu-regeo-downloader" level="INFO" additivity="false">
 		<appender-ref ref="LBS-BAIDU-REGEO-ERR"/>
+	</logger>
+
+	<logger name="tianyancha-downloader" level="INFO" additivity="false">
+		<appender-ref ref="TIANYANCHA-ERR"/>
 	</logger>
 
 	<root level="DEBUG">
