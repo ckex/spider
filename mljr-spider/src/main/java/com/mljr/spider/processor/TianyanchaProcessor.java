@@ -22,6 +22,7 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("tianyancha.com")
             .addHeader("loop", "null")
+            .setSleepTime(1000*30)
             .addHeader("Accept", "application/json, text/plain, */*")
             .setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
@@ -33,8 +34,14 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
     @Override
     public void process(Page page) {
         try {
+            logger.info("page"+page.getHtml().get());
+            logger.info("-------------------------------------------");
             String htmlStr  = getAjaxContent(page.getUrl().toString());
+            logger.info("htmlStr"+htmlStr);
+            logger.info("-------------------------------------------");
             Html html = new Html(htmlStr);
+            logger.info("html"+html);
+            logger.info("-------------------------------------------");
             List<String> requests = html.links().all();
             int i=0;
             if(requests!=null&&requests.size()>0){
