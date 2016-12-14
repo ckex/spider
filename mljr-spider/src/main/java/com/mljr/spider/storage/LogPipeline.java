@@ -19,6 +19,7 @@ import us.codecraft.webmagic.pipeline.Pipeline;
  */
 public class LogPipeline implements Pipeline {
 
+	private static final Logger LOG = LoggerFactory.getLogger(LogPipeline.class);
 	private final Logger logger; // = LoggerFactory.getLogger("gps-data");
 
 	public LogPipeline(String name) {
@@ -27,6 +28,9 @@ public class LogPipeline implements Pipeline {
 
 	@Override
 	public void process(ResultItems resultItems, Task task) {
+		if (logger.isDebugEnabled()) {
+			LOG.debug("backup result--->" + resultItems.toString());
+		}
 		Map<String, Object> result = resultItems.getAll();
 		for (Object obj : result.values()) {
 			logger.info(obj.toString());
