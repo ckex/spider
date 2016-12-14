@@ -28,7 +28,7 @@ public class LogPipeline implements Pipeline {
 
 	@Override
 	public void process(ResultItems resultItems, Task task) {
-		if (logger.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("backup result--->" + resultItems.toString());
 		}
 		Map<String, Object> result = resultItems.getAll();
