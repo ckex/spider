@@ -45,21 +45,21 @@ public class Manager extends AbstractMessage {
 
 	public void run() throws Exception {
 		System.out.println("Runing ...");
-		startSaiGeGPS();
-		startGuishuShowji();
-		startIP138();
-		startHuoche114();
-		startJuheMobile();
-		startBaiduMobile();
-		startSogouMobile();
+//		startSaiGeGPS();
+//		startGuishuShowji();
+//		startIP138();
+//		startHuoche114();
+//		startJuheMobile();
+//		startBaiduMobile();
+//		startSogouMobile();
 		startTianyancha();
-		startGuabuBankCard();
-		startHuoChePiaoBankCard();
-		startCha67BankCard();
-		startYinHangKaBankCard();
-		startChaYHKBankCard();
-		startLBSAMapGeo();
-		startLBSBaiduGeo();
+//		startGuabuBankCard();
+//		startHuoChePiaoBankCard();
+//		startCha67BankCard();
+//		startYinHangKaBankCard();
+//		startChaYHKBankCard();
+//		startLBSAMapGeo();
+//		startLBSBaiduGeo();
 	}
 
 	// 赛格GPS数据
