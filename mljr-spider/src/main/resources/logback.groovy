@@ -31,49 +31,51 @@ if (!APP_NAME) {
   APP_NAME = "mljr"
 }
 
+def BASIC_DATA_PATH = "/data/backup/"
+
 def SAIGE_DATA_HOME =System.getenv("SAIGE_DATA_HOME")
 if (!SAIGE_DATA_HOME) {
-  SAIGE_DATA_HOME = "/data/saige"
+  SAIGE_DATA_HOME = BASIC_DATA_PATH+"saige"
 }
 
 def JUHE_DATA_HOME =System.getenv("JUHE_DATA_HOME")
 if (!JUHE_DATA_HOME) {
-  JUHE_DATA_HOME = "/data/juhe"
+  JUHE_DATA_HOME = BASIC_DATA_PATH+"juhe"
 }
 
 def GUA_DATA_HOME =System.getenv("GUA_DATA_HOME")
 if (!GUA_DATA_HOME) {
-  GUA_DATA_HOME = "/data/guabu"
+  GUA_DATA_HOME = BASIC_DATA_PATH+"guabu"
 }
 
 def HCP_DATA_HOME =System.getenv("HCP_DATA_HOME")
 if (!HCP_DATA_HOME) {
-  HCP_DATA_HOME = "/data/hcp"
+  HCP_DATA_HOME = BASIC_DATA_PATH+"hcp"
 }
 
 def CHA67_DATA_HOME =System.getenv("CHA67_DATA_HOME")
 if (!CHA67_DATA_HOME) {
-  CHA67_DATA_HOME = "/data/cha67"
+  CHA67_DATA_HOME = BASIC_DATA_PATH+"cha67"
 }
 
 def YHK388_DATA_HOME =System.getenv("YHK388_DATA_HOME")
 if (!YHK388_DATA_HOME) {
-  YHK388_DATA_HOME = "/data/yhk388"
+  YHK388_DATA_HOME = BASIC_DATA_PATH+"yhk388"
 }
 
 def CHAYHK_DATA_HOME =System.getenv("CHAYHK_DATA_HOME")
 if (!CHAYHK_DATA_HOME) {
-  CHAYHK_DATA_HOME = "/data/chayhk"
+  CHAYHK_DATA_HOME = BASIC_DATA_PATH+"chayhk"
 }
 
 def AMAP_DATA_HOME =System.getenv("AMAP_DATA_HOME")
 if (!AMAP_DATA_HOME) {
-  AMAP_DATA_HOME = "/data/amap"
+  AMAP_DATA_HOME = BASIC_DATA_PATH+"amap"
 }
 
 def BAIDU_DATA_HOME =System.getenv("BAIDU_DATA_HOME")
 if (!BAIDU_DATA_HOME) {
-  BAIDU_DATA_HOME = "/data/baidu"
+  BAIDU_DATA_HOME = BASIC_DATA_PATH+"baidu"
 }
 
 def DOWNLOADER_LISTENER_HOME =System.getenv("DOWNLOADER_LISTENER_HOME")

@@ -103,16 +103,17 @@ public class HttpPipeline implements Pipeline {
 					int code = result.getStatusLine().getStatusCode();
 					String response = EntityUtils.toString(result.getEntity());
 					if (code != 200 || !Result.isSucc(response)) {
-						if (flag.compareAndSet(true, false)) {
+						boolean isWrite = flag.compareAndSet(true, false);
+						if (isWrite) {
 							COUNTER.failure.incrementAndGet();
 							standbyPipeline.process(items, t);
 						}
-						logger.error(String.format("HTTP code:%s, time:%s,len:%s, gzipLen:%s, %s, %s", code,
+						logger.error(String.format("HTTP code:%s,isWrite:%s,time:%s,len:%s, gzipLen:%s, %s, %s", code,isWrite,
 								watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen, COUNTER.toString(), response));
 						return;
 					}
 					if (logger.isDebugEnabled()) {
-						logger.debug(String.format("HTTP code:%s, time:%s,len:%s, gzipLen:%s, %s, %s", code,
+						logger.debug(String.format("HTTP code:%s,time:%s,len:%s, gzipLen:%s, %s, %s", code,
 								watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen, COUNTER.toString(), response));
 					}
 				} catch (Exception e) {
@@ -130,9 +131,11 @@ public class HttpPipeline implements Pipeline {
 
 			@Override
 			public void failed(Exception ex) {
-				logger.debug("useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + "," + COUNTER.toString());
+				boolean isWrite = flag.compareAndSet(true, false);
+				logger.debug("useTime=" + watch.elapsed(TimeUnit.MILLISECONDS) + ", isWrite=" + isWrite + ", "
+						+ COUNTER.toString());
 				watch.stop();
-				if (flag.compareAndSet(true, false)) {
+				if (isWrite) {
 					COUNTER.failure.incrementAndGet();
 					standbyPipeline.process(items, t); // 记录到文件
 				}
@@ -140,7 +143,8 @@ public class HttpPipeline implements Pipeline {
 
 			@Override
 			public void cancelled() {
-				if (flag.compareAndSet(true, false)) {
+				boolean isWrite = flag.compareAndSet(true, false);
+				if (isWrite) {
 					COUNTER.failure.incrementAndGet();
 					standbyPipeline.process(items, t); // 记录到文件
 				}
