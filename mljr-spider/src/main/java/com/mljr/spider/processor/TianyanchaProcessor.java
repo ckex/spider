@@ -47,8 +47,10 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            logger.error("tianyancha error",e);
+
         }
 
     }
@@ -68,7 +70,9 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
     public String getAjaxContent(String url) throws IOException {
         Runtime rt = Runtime.getRuntime();
-        Process p = rt.exec(Joiner.on(" ").join("/usr/local/bin/casperjs", JS_PATH, url));
+        String command = Joiner.on(" ").join("/usr/local/bin/casperjs", JS_PATH, url);
+        logger.info("command ================="  +  command);
+        Process p = rt.exec(command);
         InputStream is = p.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         StringBuffer sbf = new StringBuffer();
