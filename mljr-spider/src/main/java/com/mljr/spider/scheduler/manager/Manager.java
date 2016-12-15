@@ -226,7 +226,7 @@ public class Manager extends AbstractMessage {
 				.thread(1).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(TIANYANCHA_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_TIANYANCHA_QUEUE_ID));
+		spider.setExecutorService(newThreadPool(1, 1, RMQ_TIANYANCHA_QUEUE_ID));
 		final AbstractScheduler scheduler = new TianyanchaScheduler(spider, RMQ_TIANYANCHA_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();

@@ -14,7 +14,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class TianyanchaScheduler extends AbstractScheduler {
 
-    private static final String URL = "http://www.tianyancha.com/search/%s.json";
+    private static final String URL = "http://www.tianyancha.com/search?key=%s&checkFrom=searchBox";
 
     public TianyanchaScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
         super(spider, task);
@@ -60,7 +60,6 @@ public class TianyanchaScheduler extends AbstractScheduler {
             return null;
         }
         JSONObject jsonObject = JSON.parseObject(message);
-        System.out.println(jsonObject.getString("merchantName")+" =================================== ");
         String merchantName = jsonObject.getString("merchantName");
         String url = String.format(URL, merchantName);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
