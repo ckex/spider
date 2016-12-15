@@ -34,6 +34,9 @@ public class MerchantInfoService {
 
     private static final int LIMIT = 50;
 
+
+    private static final String MERCHANT_INFO_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.MERCENT_INFO,BasicConstant.EXIST_IDS);
+
     @Autowired
     private RedisClient client;
 
@@ -90,6 +93,11 @@ public class MerchantInfoService {
         List<MerchantInfoDo> infos = listData(key);
         if (infos != null && !infos.isEmpty()) {
             for (MerchantInfoDo info : infos) {
+                if(CommonService.isExist(client,MERCHANT_INFO_EXIST_IDS_KEY,info.getMmId())){
+                    logger.warn("exist merchantInfo id  ========  " + info.getMmId());
+                    setLastId(key,info.getMmId());
+                    continue;
+                }
                 if(function.apply(info)){
                     setLastId(key,info.getMmId());
                     continue;

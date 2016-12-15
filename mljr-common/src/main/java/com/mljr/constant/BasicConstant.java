@@ -28,6 +28,8 @@ public class BasicConstant {
 
 	public static final String LAST_ID = "last_id";
 
+	public static final String EXIST_IDS = "exist_ids";
+
 	public static final String UTF8 = "UTF-8";
 
 	public static final String TEXT_PLAIN = "text/plain";

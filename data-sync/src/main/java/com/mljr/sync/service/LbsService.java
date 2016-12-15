@@ -39,6 +39,8 @@ public class LbsService {
 
     private static final String LBS_KEY = Joiner.on("-").join(BasicConstant.LBS_INFO, BasicConstant.LAST_ID);
 
+    private static final String LBS_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.LBS_INFO, BasicConstant.EXIST_IDS);
+
     @Autowired
     private RedisClient client;
 
@@ -121,8 +123,14 @@ public class LbsService {
         List<HashMap> infos = listData(LBS_KEY);
         if (infos != null && !infos.isEmpty()) {
             for (HashMap map : infos) {
+                String pk = (String)map.get(PRIMARY_KEY);
+                if(CommonService.isExist(client,LBS_EXIST_IDS_KEY,pk)){
+                    logger.warn("lbs exist id ==========" + pk);
+                    setLastId(LBS_KEY,pk);
+                    continue;
+                }
                 if(function.apply(map)){
-                    setLastId(LBS_KEY,(String)map.get(PRIMARY_KEY));
+                    setLastId(LBS_KEY,pk);
                     continue;
                 }
                 logger.error("sync merchant_info error!");
