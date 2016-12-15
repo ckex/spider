@@ -41,7 +41,6 @@ public  class TianyanchaProcessor extends AbstractPageProcessor {
                     if(request.contains("http://www.tianyancha.com/company")){
                         String targetHtml  = getAjaxContent(request);
                         page.putField("",targetHtml);
-                        break;
                     }
                 }
             }
