@@ -126,6 +126,7 @@ public class LbsService {
                 String pk = (String)map.get(PRIMARY_KEY);
                 if(CommonService.isExist(client,LBS_EXIST_IDS_KEY,pk)){
                     logger.warn("lbs exist id ==========" + pk);
+                    setLastId(LBS_KEY,pk);
                     continue;
                 }
                 if(function.apply(map)){

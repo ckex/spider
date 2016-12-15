@@ -95,6 +95,7 @@ public class MerchantInfoService {
             for (MerchantInfoDo info : infos) {
                 if(CommonService.isExist(client,MERCHANT_INFO_EXIST_IDS_KEY,info.getMmId())){
                     logger.warn("exist merchantInfo id  ========  " + info.getMmId());
+                    setLastId(key,info.getMmId());
                     continue;
                 }
                 if(function.apply(info)){

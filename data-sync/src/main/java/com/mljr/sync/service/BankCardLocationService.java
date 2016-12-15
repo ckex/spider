@@ -105,6 +105,7 @@ public class BankCardLocationService {
             for (String cardNo : cardNos) {
                 if(CommonService.isExist(client, BANK_CARD_EXIST_IDS_KEY,cardNo)){
                     logger.warn("exist cardNo -------------   " + cardNo);
+                    setLastId(key, cardNo);
                     continue;
                 }
                 if (function.apply(cardNo)) {
