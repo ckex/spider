@@ -14,7 +14,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class TianyanchaScheduler extends AbstractScheduler {
 
-    private static final String URL = "http://www.tianyancha.com/search/%s.json";
+    private static final String URL = "http://www.tianyancha.com/search?key=%s&checkFrom=searchBox";
 
     public TianyanchaScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
         super(spider, task);
