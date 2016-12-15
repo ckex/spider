@@ -2,13 +2,11 @@ package com.mljr.spider.processor;
 
 import com.google.common.base.Joiner;
 import com.mljr.spider.storage.LocalFilePipeline;
-import org.apache.commons.collections.CollectionUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.selector.Html;
-import us.codecraft.webmagic.selector.JsonPathSelector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,8 +33,6 @@ public  class TianyanchaProcessor extends AbstractPageProcessor {
     public  void process(Page page) {
         try {
             String htmlStr  = getAjaxContent(page.getUrl().toString());
-            logger.info("htmlStr"+htmlStr);
-            logger.info("-------------------------------------------");
             Html html = new Html(htmlStr);
             List<String> requests = html.links().all();
             int i=0;
