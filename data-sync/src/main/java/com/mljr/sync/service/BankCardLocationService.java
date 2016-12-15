@@ -37,6 +37,8 @@ public class BankCardLocationService {
 
     private static final String DM_KEY = Joiner.on("-").join(BasicConstant.DM_TOTAL_APPLICATIONS,BasicConstant.LAST_ID);
 
+    private static final String BANK_CARD_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.SPIDER_BANK_CARD_LOCATION,BasicConstant.EXIST_IDS);
+
     @Autowired
     private RedisClient client;
 
@@ -93,18 +95,20 @@ public class BankCardLocationService {
     }
 
     private void syncFrom(String key, Function<String,Boolean> function){
-        List<String> locations = new ArrayList<>();
+        List<String> cardNos = new ArrayList<>();
         if(SPIDER_KEY.equals(key)){
-            locations = listData(key);
-//            System.out.println("spider   "  + locations);
+            cardNos = listData(key);
         }else if(DM_KEY.equals(key)){
-            locations = listDM(key);
-//            System.out.println("DM   "  + locations);
+            cardNos = listDM(key);
         }
-        if(locations!=null&&locations.size()>0){
-            for (String location : locations) {
-                if (function.apply(location)) {
-                    setLastId(key, location);
+        if(cardNos!=null&&cardNos.size()>0){
+            for (String cardNo : cardNos) {
+                if(CommonService.isExist(client, BANK_CARD_EXIST_IDS_KEY,cardNo)){
+                    logger.warn("exist cardNo -------------   " + cardNo);
+                    continue;
+                }
+                if (function.apply(cardNo)) {
+                    setLastId(key, cardNo);
                     continue;
                 }
                 logger.warn("sent to mq error ." );
