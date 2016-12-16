@@ -34,30 +34,29 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
 
         Integer status = jsonObject.getInteger("status");
 
-        if (null != status && 0 == status.intValue()) {
-            JSONTransferVO transferVO = new JSONTransferVO();
-            transferVO.setUrl(page.getUrl().get());
-            transferVO.setContext(jsonObject);
-            page.putField("", JSON.toJSON(transferVO));
+        if (logger.isDebugEnabled()) {
+            logger.debug("lbs baidu geo request.url:{},json:{}", page.getRequest().toString(), json);
+        }
+
+        //判断密钥是否超出每天的限制
+        if (null!=status && 4 == status) {
+
+            String baidu_key =getKeyByRequestUrl(page.getUrl().get());
+
+            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.BAIDU, baidu_key, false);
+
             return;
         }
 
-        if (4 == status) { //表示key用完
+        if (null != status && 0 == status.intValue()) {
 
-            String baidu_key = "";
+            JSONTransferVO transferVO = new JSONTransferVO();
 
-            List<NameValuePair> params = URLEncodedUtils.parse(page.getUrl().get(), Charset.forName(UTF_8));
-            for (NameValuePair nameValuePair : params) {
-                if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "ak")) {
-                    baidu_key = nameValuePair.getValue().trim();
-                    return;
-                }
-            }
-            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.BAIDU, baidu_key, false);
-        }
+            transferVO.setUrl(page.getUrl().get());
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("lbs baidu geo request.url:{},json:{}", page.getRequest().toString(), json);
+            transferVO.setContext(jsonObject);
+
+            page.putField("", JSON.toJSON(transferVO));
         }
 
     }
@@ -65,5 +64,14 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
     @Override
     public Site getSite() {
         return site;
+    }
+
+    private String getKeyByRequestUrl(String url) {
+        List<NameValuePair> params = URLEncodedUtils.parse(url, Charset.forName(UTF_8));
+        for (NameValuePair nameValuePair : params) {
+            if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "ak"))
+                return nameValuePair.getValue().trim();
+        }
+        return null;
     }
 }

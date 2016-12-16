@@ -6,7 +6,6 @@ import com.google.common.base.CharMatcher;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
 import com.mljr.spider.util.KeyCacheUtils;
-import com.mljr.spider.util.StringUtil;
 import com.ucloud.umq.common.ServiceConfig;
 import org.apache.commons.lang3.StringUtils;
 import us.codecraft.webmagic.Request;
@@ -21,7 +20,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class LBSAMapGeoScheduler extends AbstractScheduler {
 
-    private static final String URL = "http://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s&output=JSON";
+    private static final String URL = "http://restapi.amap.com/v3/geocode/geo?output=JSON&key=%s&address=%s&city=%s";
 
     private static volatile String AMAP_KEY = "";
 

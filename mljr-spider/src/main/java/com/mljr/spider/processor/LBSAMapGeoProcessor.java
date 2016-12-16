@@ -31,11 +31,28 @@ public class LBSAMapGeoProcessor extends AbstractPageProcessor {
 
     @Override
     public void process(Page page) {
+
         String json = page.getJson().get();
+
         JSONObject jsonObject = JSON.parseObject(json);
+
         String resultStatus = jsonObject.getString("status");
 
         String infocode = jsonObject.getString("infocode");
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("lbs amap geo request.page:{},json:{}", page.getRequest().toString(), json);
+        }
+
+        //判断密钥是否超出请求限制
+        if (StringUtils.isNotEmpty(infocode) && DAILY_QUERY_OVER_LIMIT.equalsIgnoreCase(infocode)) {
+
+            String amap_key = getKeyByRequestUrl(page.getUrl().get());
+
+            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.AMAP, amap_key, Boolean.FALSE);
+
+            return;
+        }
 
         if (StringUtils.isNotEmpty(resultStatus) && SUCCESS.equalsIgnoreCase(resultStatus)) {
 
@@ -46,33 +63,20 @@ public class LBSAMapGeoProcessor extends AbstractPageProcessor {
             transferVO.setContext(jsonObject);
 
             page.putField("", JSON.toJSON(transferVO));
-
-            return;
-        }
-
-        //判断密钥是否超出请求限制
-        if (StringUtils.isNotEmpty(infocode) && DAILY_QUERY_OVER_LIMIT.equalsIgnoreCase(infocode)) {
-
-            String amap_key = "";
-
-            List<NameValuePair> params = URLEncodedUtils.parse(page.getUrl().get(), Charset.forName(UTF_8));
-            for (NameValuePair nameValuePair : params) {
-                if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "key")) {
-                    amap_key = nameValuePair.getValue().trim();
-                    return;
-                }
-            }
-            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.AMAP, amap_key, Boolean.FALSE);
-        }
-
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("lbs amap geo request.page:{},json:{}", page.getRequest().toString(), json);
         }
     }
 
     @Override
     public Site getSite() {
         return site;
+    }
+
+    private String getKeyByRequestUrl(String url) {
+        List<NameValuePair> params = URLEncodedUtils.parse(url, Charset.forName(UTF_8));
+        for (NameValuePair nameValuePair : params) {
+            if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "key"))
+                return nameValuePair.getValue().trim();
+        }
+        return null;
     }
 }
