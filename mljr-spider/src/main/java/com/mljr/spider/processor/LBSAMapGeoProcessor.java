@@ -2,10 +2,16 @@ package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mljr.spider.util.KeyCacheUtils;
 import com.mljr.spider.vo.JSONTransferVO;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
+
+import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * Created by xi.gao
@@ -21,18 +27,45 @@ public class LBSAMapGeoProcessor extends AbstractPageProcessor {
 
     private static final String SUCCESS = "1";
 
+    private static final String DAILY_QUERY_OVER_LIMIT = "10003";//当日限制标记
+
     @Override
     public void process(Page page) {
         String json = page.getJson().get();
         JSONObject jsonObject = JSON.parseObject(json);
         String resultStatus = jsonObject.getString("status");
+
+        String infocode = jsonObject.getString("infocode");
+
         if (StringUtils.isNotEmpty(resultStatus) && SUCCESS.equalsIgnoreCase(resultStatus)) {
-            JSONTransferVO transferVO=new JSONTransferVO();
+
+            JSONTransferVO transferVO = new JSONTransferVO();
+
             transferVO.setUrl(page.getUrl().get());
+
             transferVO.setContext(jsonObject);
-            page.putField("",JSON.toJSON(transferVO));
+
+            page.putField("", JSON.toJSON(transferVO));
+
             return;
         }
+
+        //判断密钥是否超出请求限制
+        if (StringUtils.isNotEmpty(infocode) && DAILY_QUERY_OVER_LIMIT.equalsIgnoreCase(infocode)) {
+
+            String amap_key = "";
+
+            List<NameValuePair> params = URLEncodedUtils.parse(page.getUrl().get(), Charset.forName(UTF_8));
+            for (NameValuePair nameValuePair : params) {
+                if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "key")) {
+                    amap_key = nameValuePair.getValue().trim();
+                    return;
+                }
+            }
+            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.AMAP, amap_key, Boolean.FALSE);
+        }
+
+
         if (logger.isDebugEnabled()) {
             logger.debug("lbs amap geo request.page:{},json:{}", page.getRequest().toString(), json);
         }

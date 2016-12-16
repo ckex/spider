@@ -46,6 +46,7 @@
 		<jedis.version>2.8.1</jedis.version>
 		<rabbitmq.version>3.6.5</rabbitmq.version>
 		<dom4j.version>1.6.1</dom4j.version>
+		<tess4j.version>3.2.1</tess4j.version>
 	</properties>
 
 	<dependencyManagement>
@@ -332,6 +333,14 @@
 				<artifactId>dom4j</artifactId>
 				<version>${dom4j.version}</version>
 			</dependency>
+
+			<!-- OCR start -->
+			<dependency>
+				<groupId>net.sourceforge.tess4j</groupId>
+				<artifactId>tess4j</artifactId>
+				<version>${tess4j.version}</version>
+			</dependency>
+			<!-- OCR end -->
 		</dependencies>
 	</dependencyManagement>
 

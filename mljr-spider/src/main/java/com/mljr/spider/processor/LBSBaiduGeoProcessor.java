@@ -2,9 +2,16 @@ package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mljr.spider.util.KeyCacheUtils;
 import com.mljr.spider.vo.JSONTransferVO;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
+
+import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * Created by xi.gao
@@ -34,6 +41,21 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
             page.putField("", JSON.toJSON(transferVO));
             return;
         }
+
+        if (4 == status) { //表示key用完
+
+            String baidu_key = "";
+
+            List<NameValuePair> params = URLEncodedUtils.parse(page.getUrl().get(), Charset.forName(UTF_8));
+            for (NameValuePair nameValuePair : params) {
+                if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "ak")) {
+                    baidu_key = nameValuePair.getValue().trim();
+                    return;
+                }
+            }
+            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.BAIDU, baidu_key, false);
+        }
+
         if (logger.isDebugEnabled()) {
             logger.debug("lbs baidu geo request.url:{},json:{}", page.getRequest().toString(), json);
         }

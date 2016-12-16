@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.CharMatcher;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
+import com.mljr.spider.util.KeyCacheUtils;
 import com.mljr.spider.util.StringUtil;
 import com.ucloud.umq.common.ServiceConfig;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,8 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
 
     private static final String URL = "http://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s&output=JSON";
 
+    private static volatile String AMAP_KEY = "";
+
     public LBSAMapGeoScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
         super(spider, mqMsgQueue);
     }
@@ -36,7 +39,7 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
 
     @Override
     public boolean pushTask(Spider spider, UMQMessage message) {
-        if(null==message || StringUtils.isBlank(message.message)){
+        if (null == message || StringUtils.isBlank(message.message)) {
             logger.warn("lbs amap geo mq message is empty");
             return false;
         }
@@ -47,11 +50,11 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
     @Override
     Request buildRequst(String message) {
         JSONObject jsonObject = JSON.parseObject(message);
-        String url = String.format(URL, ServiceConfig.getLBSAMapKey(), "","");
-        if(jsonObject.containsKey("city") && jsonObject.containsKey("address")){
-            String[] cityArray=jsonObject.getString("city").split(" ");
-            String address=jsonObject.getString("address");
-            String city="";
+        String url = String.format(URL, ServiceConfig.getLBSAMapKey(), "", "");
+        if (jsonObject.containsKey("city") && jsonObject.containsKey("address")) {
+            String[] cityArray = jsonObject.getString("city").split(" ");
+            String address = jsonObject.getString("address");
+            String city = "";
             switch (cityArray.length) {
                 case 1:
                     city = cityArray[0];
@@ -69,8 +72,11 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
                     city = cityArray[1];
                     break;
             }
-            url = String.format(URL, ServiceConfig.getLBSAMapKey(), address,city);
+            url = String.format(URL, AMAP_KEY, address, city);
             url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+            if (logger.isDebugEnabled()) {
+                logger.debug("lbs amap request info.url:{} message:{}", url, message);
+            }
         }
         return new Request(url);
     }
@@ -92,6 +98,10 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
 
     @Override
     public Request poll(Task task) {
+        AMAP_KEY = KeyCacheUtils.getValidKey(KeyCacheUtils.LBSKEY.AMAP);
+        if (StringUtils.isEmpty(AMAP_KEY)) {
+            return null;
+        }
         return take();
     }
 }
