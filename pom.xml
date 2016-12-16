@@ -20,6 +20,8 @@
 		<module>grpc</module>
 		<module>data-sync</module>
 		<module>mljr-common</module>
+		<module>spider-monitor</module>
+		<module>spider-config</module>
 	</modules>
 
 	<properties>
