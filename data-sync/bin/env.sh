@@ -4,7 +4,7 @@
 APP_NAME=spider
 MAIN_PATH=com.mljr.sync.main.Main
 PRODUCTION=run
-JAVA_HOME=/opt/soft/java/
+JAVA_HOME=/usr/local/jdk1.8.0_111/
 OUTPUT_HOME=/opt/var/log/mljr
 DEBUG_PORT=$debug_port
 JMX_PORT=8883

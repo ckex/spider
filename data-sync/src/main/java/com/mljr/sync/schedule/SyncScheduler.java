@@ -26,34 +26,39 @@ public class SyncScheduler {
 	@Scheduled(cron = "0/10 * * * * ?")
 	private void startMobileTask() {
 		MobileTask task = abstractTaskFactory.createMobileTask();
-		task.run();
+		task.setName("mobile");
+		// task.run();
 		logger.debug(task.toString());
 	}
 
-	@Scheduled(cron = "0 0 0/1 * * ?")
+	@Scheduled(cron = "10 0 0/1 * * ?")
 	private void startGPSTask() {
 		GPSTask task = abstractTaskFactory.createGPSTask();
+		task.setName("gps");
 		task.run();
 		logger.debug(task.toString());
 	}
 
-	@Scheduled(cron = "0/5 * * * * ?")
+	@Scheduled(cron = "20/5 * * * * ?")
 	private void startBankCardLocationTask() {
 		BankCardLocationTask task = abstractTaskFactory.createBankCardLocationTask();
+		task.setName("bankCard");
 		task.run();
 		logger.debug(task.toString());
 	}
 
-	@Scheduled(cron = "0/5 * * * * ?")
+	@Scheduled(cron = "30/5 * * * * ?")
 	private void startMerchantInfoTask() {
 		MerchantInfoTask task = abstractTaskFactory.createMerchantInfoTask();
+		task.setName("merchat");
 		task.run();
 		logger.debug(task.toString());
 	}
 
-	@Scheduled(cron = "0/5 * * * * ?")
+	@Scheduled(cron = "40/5 * * * * ?")
 	private void startLbsTask() {
 		LbsTask task = abstractTaskFactory.createLbsTask();
+		task.setName("lbs");
 		task.run();
 		logger.debug(task.toString());
 	}
