@@ -34,19 +34,25 @@ public class LBSTask implements Runnable {
     public void run() {
 
         try {
+            logger.info("=====start check lbs baidu key=====");
             baiduLBSRequest();
         } catch (IOException e) {
             logger.error("lbs baidu request key failure.", e);
         } catch (Exception ex) {
             logger.error("lbs baidu request key failure.", ex);
+        }finally {
+            logger.info("=====end check lbs baidu key=====");
         }
 
         try {
+            logger.info("=====start check lbs amap key=====");
             amapLBSRequest();
         } catch (IOException e) {
             logger.error("lbs amap request key failure.", e);
         } catch (Exception ex) {
             logger.error("lbs amap request key failure.", ex);
+        }finally {
+            logger.info("=====end check lbs amap key=====");
         }
 
 
