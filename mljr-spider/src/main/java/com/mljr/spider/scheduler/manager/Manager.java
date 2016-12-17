@@ -90,7 +90,7 @@ public class Manager extends AbstractMessage {
 		startJuheMobile();
 		startBaiduMobile();
 		startSogouMobile();
-//		startTianyancha();
+		startTianyancha();
 		startGuabuBankCard();
 		startHuoChePiaoBankCard();
 		startCha67BankCard();
