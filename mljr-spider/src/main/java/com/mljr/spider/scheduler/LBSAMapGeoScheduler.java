@@ -22,8 +22,6 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
 
     private static final String URL = "http://restapi.amap.com/v3/geocode/geo?output=JSON&key=%s&address=%s&city=%s";
 
-    private static volatile String AMAP_KEY = "";
-
     public LBSAMapGeoScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
         super(spider, mqMsgQueue);
     }
@@ -48,6 +46,11 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
 
     @Override
     Request buildRequst(String message) {
+		final String key = KeyCacheUtils.getValidKey(KeyCacheUtils.LBSKEY.AMAP);
+		if (StringUtils.isBlank(key)) {
+			logger.warn("invalid key " + key + " message=" + message);
+			return null;
+		}
         JSONObject jsonObject = JSON.parseObject(message);
         String url = String.format(URL, ServiceConfig.getLBSAMapKey(), "", "");
         if (jsonObject.containsKey("city") && jsonObject.containsKey("address")) {
@@ -71,7 +74,7 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
                     city = cityArray[1];
                     break;
             }
-            url = String.format(URL, AMAP_KEY, address, city);
+            url = String.format(URL, key, address, city);
             url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
             if (logger.isDebugEnabled()) {
                 logger.debug("lbs amap request info.url:{} message:{}", url, message);
@@ -97,8 +100,8 @@ public class LBSAMapGeoScheduler extends AbstractScheduler {
 
     @Override
     public Request poll(Task task) {
-        AMAP_KEY = KeyCacheUtils.getValidKey(KeyCacheUtils.LBSKEY.AMAP);
-        if (StringUtils.isEmpty(AMAP_KEY)) {
+        String value = KeyCacheUtils.getValidKey(KeyCacheUtils.LBSKEY.AMAP);
+		if (StringUtils.isBlank(value)) {
             return null;
         }
         return take();
