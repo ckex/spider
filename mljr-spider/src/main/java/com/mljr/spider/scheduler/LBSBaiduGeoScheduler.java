@@ -22,8 +22,6 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
 
     private static final String URL = "http://api.map.baidu.com/geocoder/v2/?output=json&ak=%s&address=%s&city=%s";
 
-    private static volatile String BAIDU_KEY = "";
-
     public LBSBaiduGeoScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
         super(spider, mqMsgQueue);
     }
@@ -48,6 +46,11 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
 
     @Override
     Request buildRequst(String message) {
+        final String key = KeyCacheUtils.getValidKey(KeyCacheUtils.LBSKEY.BAIDU);
+        if (StringUtils.isBlank(key)) {
+            logger.warn("baidu invalid key " + key + " message=" + message);
+            return null;
+        }
         JSONObject jsonObject = JSON.parseObject(message);
         String url = String.format(URL, ServiceConfig.getLBSBaiduKey(), "", "");
         if (jsonObject.containsKey("city") && jsonObject.containsKey("address")) {
@@ -71,7 +74,7 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
                     city = cityArray[1];
                     break;
             }
-            url = String.format(URL, BAIDU_KEY, address, city);
+            url = String.format(URL, key, address, city);
             url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
 
             if(logger.isDebugEnabled()){
@@ -98,8 +101,8 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
 
     @Override
     public Request poll(Task task) {
-        BAIDU_KEY = KeyCacheUtils.getValidKey(KeyCacheUtils.LBSKEY.BAIDU);
-        if (StringUtils.isEmpty(BAIDU_KEY)) {
+        String value = KeyCacheUtils.getValidKey(KeyCacheUtils.LBSKEY.BAIDU);
+        if (StringUtils.isBlank(value)) {
             return null;
         }
         return take();
