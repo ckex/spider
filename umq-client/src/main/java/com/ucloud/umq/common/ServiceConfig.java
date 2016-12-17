@@ -263,4 +263,8 @@ public class ServiceConfig {
     public static String getLbsRoutingKey() {
         return properties.getProperty("rmq.lbs.routingKey");
     }
+
+    public static String isStartTianYanChaOff(){
+        return properties.getProperty("tianyancha.off");
+    }
 }

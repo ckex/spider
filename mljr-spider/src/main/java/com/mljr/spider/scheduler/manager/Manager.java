@@ -90,7 +90,6 @@ public class Manager extends AbstractMessage {
 		startJuheMobile();
 		startBaiduMobile();
 		startSogouMobile();
-		startTianyancha();
 		startGuabuBankCard();
 		startHuoChePiaoBankCard();
 		startCha67BankCard();
@@ -98,6 +97,11 @@ public class Manager extends AbstractMessage {
 		startChaYHKBankCard();
 		startLBSAMapGeo();
 		startLBSBaiduGeo();
+
+		//判断天眼查是否开启
+		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
+			startTianyancha();
+		}
 	}
 
 	// 赛格GPS数据
