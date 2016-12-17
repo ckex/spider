@@ -83,12 +83,12 @@ public class LBSTask implements Runnable {
 
                         Integer status = jsonObject.getInteger("status");
 
-                        if (null != status && 4 != status.intValue()) { //表示key有效了
+                        if (null != status && 0== status.intValue()) { //表示key有效了
 
                             KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.BAIDU, entry.getKey(), Boolean.TRUE);
 
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 //
                             }
@@ -124,10 +124,10 @@ public class LBSTask implements Runnable {
 
                         String infocode = jsonObject.getString("infocode");
 
-                        if (StringUtils.isNotEmpty(infocode) && !"10003".equalsIgnoreCase(infocode)) {
+                        if (StringUtils.isNotEmpty(infocode) && "10000".equalsIgnoreCase(infocode)) {
                             KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.AMAP, entry.getKey(), Boolean.TRUE);
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 //
                             }
@@ -152,7 +152,7 @@ public class LBSTask implements Runnable {
         if (SUCCESS_CODE == httpResponse.getStatusLine().getStatusCode())
             return EntityUtils.toString(httpResponse.getEntity());
         if (logger.isDebugEnabled()) {
-            logger.debug("lbs baidu geo key request failure.url:{} response:{}", url, httpResponse.toString());
+            logger.debug("lbs geo key request failure.url:{} response:{}", url, httpResponse.toString());
         }
         return null;
     }
