@@ -48,6 +48,7 @@
 		<jedis.version>2.8.1</jedis.version>
 		<rabbitmq.version>3.6.5</rabbitmq.version>
 		<dom4j.version>1.6.1</dom4j.version>
+		<spring-boot.version>1.2.4.RELEASE</spring-boot.version>
 	</properties>
 
 	<dependencyManagement>
@@ -708,6 +709,20 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>2.9</version>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
