@@ -31,6 +31,7 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 	@Override
 	public void process(Page page) {
 		try {
+			int i=0;
 			String htmlStr = getAjaxContent(page.getUrl().toString());
 			Html html = new Html(htmlStr);
 			List<String> requests = html.links().all();
@@ -42,6 +43,10 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 							continue;
 						}
 						page.putField("", targetHtml);
+						++i;
+						if(i>3){
+							break;
+						}
 					}
 				}
 			}
