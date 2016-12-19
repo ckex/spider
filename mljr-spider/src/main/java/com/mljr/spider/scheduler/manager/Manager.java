@@ -106,17 +106,20 @@ public class Manager extends AbstractMessage {
 
 	// 赛格GPS数据
 	private void startSaiGeGPS() throws Exception {
-		final Spider spider = Spider.create(new SaiGeGPSProcessor()).setDownloader(new RestfulDownloader())
-				.addPipeline(new LogPipeline(GPS_LOG_NAME)).setExitWhenComplete(false);
+		AbstractPageProcessor processor = new SaiGeGPSProcessor();
+		LogPipeline logPipeline=new LogPipeline(GPS_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getSaiGeGPSPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, logPipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(1)
+				.setDownloader(new RestfulDownloader())
+				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(SAIGE_GPS_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(DEFAULT_THREAD_POOL);
-		// final AbstractScheduler scheduler = new SaiGeGPSScheduler(spider,
-		// getPullMsgTask(GPS_RPC_QUEUE_ID));
 		final AbstractScheduler scheduler = new SaiGeGPSScheduler(spider, GPS_RPC_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
-		logger.info("Start SaiGeGPSProcessor finished. " + spider.toString());
+		logger.info("Start startSaiGeGPS finished. " + spider.toString());
 	}
 
 	// 聚合手机标签

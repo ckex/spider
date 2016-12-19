@@ -267,4 +267,8 @@ public class ServiceConfig {
     public static String isStartTianYanChaOff(){
         return properties.getProperty("tianyancha.off");
     }
+
+    public static String getSaiGeGPSPath(){
+        return properties.getProperty("saige.gps.path");
+    }
 }

@@ -18,9 +18,9 @@ import us.codecraft.webmagic.scheduler.Scheduler;
  */
 public class SaiGeGPSProcessorTests {
 
-	private static final String URL = "http://localhost:8080/v1/user";
+	public static final String URL = "http://218.17.3.228:8008/mljrserver/vehicle/queryGpsInfo";
 
-	private static String params = "{\"user_11111\": {\"Id\": \"user_11111\",\"Username\": \"astaxie\",\"Password\": \"11111\",\"Profile\": {\"Gender\": \"male\",\"Age\": 20,\"Address\": \"Singapore\",\"Email\": \"astaxie@gmail.com\"}}}";
+	private static final String params = "{\"callLetter\":\"\",\"flag\":true,\"sign\":\"335BB919C5476417E424FF6F0BC5AD6F\"}";
 
 	public SaiGeGPSProcessorTests() {
 		super();
