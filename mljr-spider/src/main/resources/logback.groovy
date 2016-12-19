@@ -326,7 +326,7 @@ appender("LBS-BAIDU-REGEO-ERR", RollingFileAppender) {
 }
 appender("GPS-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
@@ -341,7 +341,7 @@ appender("GPS-DATA", RollingFileAppender) {
 }
 appender("JUHE-MOBILE-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
-    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+    pattern = "%msg%n"
   }
   filter(ThresholdFilter) {
     level = INFO
