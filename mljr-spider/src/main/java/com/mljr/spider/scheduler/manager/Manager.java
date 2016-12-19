@@ -110,12 +110,12 @@ public class Manager extends AbstractMessage {
 		LogPipeline logPipeline=new LogPipeline(GPS_LOG_NAME);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getSaiGeGPSPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, logPipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE)
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(1)
 				.setDownloader(new RestfulDownloader())
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(SAIGE_GPS_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, GPS_RPC_QUEUE_ID));
+		spider.setExecutorService(DEFAULT_THREAD_POOL);
 		final AbstractScheduler scheduler = new SaiGeGPSScheduler(spider, GPS_RPC_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
