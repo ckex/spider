@@ -30,7 +30,7 @@ public class SpiderWatcher implements Watcher{
 	}
 	
 	@Override
-	public void process(WatchedEvent arg0) {
+	public void process(WatchedEvent event) {
 		try {
 			List<String> newChildren = client.getChildren().usingWatcher(this).forPath("/spider");
 			System.out.println("newChildren = "+newChildren);
@@ -38,12 +38,6 @@ public class SpiderWatcher implements Watcher{
 				if(!newChildren.contains(node)){
 					System.out.println(node+"节点消失了~~~~~~~~~~~~~~~~~~~~~~~~");
 					//TODO-- 在这需要给管理员发送邮件或者短信提醒
-					/**
-					 * 发邮件使用javamail
-					 * 
-					 * 
-					 * 发短信使用 云片网
-					 */
 					System.out.println("发封邮件给大飞哥-----------");
 				}
 			}
@@ -52,7 +46,6 @@ public class SpiderWatcher implements Watcher{
 					System.out.println("新增节点:"+node);
 				}
 			}
-			
 			children = newChildren;
 		} catch (Exception e) {
 			e.printStackTrace();
