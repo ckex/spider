@@ -65,7 +65,7 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 
 	abstract Request buildRequst(String message);
 
-	private BlockingQueue<Request> blockQueue = new LinkedBlockingQueue<Request>(QUEUE_SIZE);
+	private BlockingQueue<Request> blockQueue = new LinkedBlockingQueue<Request>();//默认为最大(blank list用到)
 
 	public AbstractScheduler(final Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
 		super();
