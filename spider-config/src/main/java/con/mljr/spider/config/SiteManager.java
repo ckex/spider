@@ -65,7 +65,7 @@ public class SiteManager {
     public void sentDataToZookeeper(String ip, String domain, byte[] bytes) {
 
         try {
-            String CONFIG_PATH = Joiner.on("/").join("/test4", ip, domain);
+            String CONFIG_PATH = Joiner.on("/").join("/config", ip, domain);
             client.create()
                     .creatingParentsIfNeeded()//如果父节点不存在，则创建
                     .withMode(CreateMode.PERSISTENT)
