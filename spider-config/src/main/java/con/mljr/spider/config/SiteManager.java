@@ -3,7 +3,6 @@
  */
 package con.mljr.spider.config;
 
-import com.google.common.base.Joiner;
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,19 +27,14 @@ public class SiteManager {
 
     }
 
-    public final static String[] ips =
-            {"10.9.86.137", "10.9.120.152", "10.9.144.100", "10.9.152.221",
-                    "10.9.87.127", "10.9.186.101", "10.9.199.216", "10.9.108.39",
-                    "10.9.88.4", "10.9.136.160", "10.9.145.53", "10.9.156.231",
-                    "10.9.154.167", "10.9.169.120", "10.9.180.171"};
-
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         SiteManager siteManager = new SiteManager();
         siteManager.writeAllSiteConfig();
     }
 
-    public void writeAllSiteConfig(){
+    public void writeAllSiteConfig() {
         List<Site> siteList = ConfigUtils.getSiteList();
+        String[] ips = ConfigUtils.ips;
         for (String ip : ips) {
             for (Site site : siteList) {
                 sentDataToZookeeper(ip, site.getDomain(), site.toString().getBytes());
@@ -51,12 +45,12 @@ public class SiteManager {
     public void sentDataToZookeeper(String ip, String domain, byte[] bytes) {
 
         try {
-            String CONFIG_PATH = Joiner.on("/").join("/config", ip, domain);
+            String CONFIG_PATH = String.format("/config/%s/%s", ip, domain);
             System.out.println(CONFIG_PATH);
 
             ZkUtils.createPath(CONFIG_PATH);
 
-            client.writeData(CONFIG_PATH,bytes);
+            client.writeData(CONFIG_PATH, bytes);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("zookeeper error", e);

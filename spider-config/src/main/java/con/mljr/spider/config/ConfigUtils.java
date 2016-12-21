@@ -3,13 +3,22 @@ package con.mljr.spider.config;
 import us.codecraft.webmagic.Site;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by songchi on 16/12/21.
  */
 public class ConfigUtils {
+
+    public final static String[] ips =
+            {"10.9.86.137", "10.9.120.152", "10.9.144.100", "10.9.152.221",
+                    "10.9.87.127", "10.9.186.101", "10.9.199.216", "10.9.108.39",
+                    "10.9.88.4", "10.9.136.160", "10.9.145.53", "10.9.156.231",
+                    "10.9.154.167", "10.9.169.120", "10.9.180.171"};
     public static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36";
+
     public static List<Site> getSiteList() {
         List<Site> siteList = new ArrayList<>();
         siteList.add(
@@ -137,7 +146,29 @@ public class ConfigUtils {
         return siteList;
     }
 
+    public static Map<String,Site> getSiteMap(){
+        Map<String,Site> siteMap = new HashMap<>();
+        for (Site site : getSiteList()) {
+            siteMap.put(site.getDomain(),site);
+        }
+        return siteMap;
+    }
+
+    public static List<String> getAllNodePath() {
+        String path = "/config/%s/%s";
+        List<String> nodePaths = new ArrayList<>();
+        for (String ip : ips) {
+            for (Site site : getSiteList()) {
+                nodePaths.add(String.format(path, ip, site.getDomain()));
+            }
+        }
+        return nodePaths;
+    }
+
+
+
     public static void main(String[] args) {
-        System.out.println(getSiteList().size());
+//        System.out.println(getSiteList().size());
+        System.out.println(getAllNodePath());
     }
 }
