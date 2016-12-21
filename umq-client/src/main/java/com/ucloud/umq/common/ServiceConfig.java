@@ -271,4 +271,19 @@ public class ServiceConfig {
     public static String getSaiGeGPSPath(){
         return properties.getProperty("saige.gps.path");
     }
+
+    //获取身份证黑名单入口
+    public static String getBlackIdCardPath() {
+        return properties.getProperty("black.idCard.path");
+    }
+
+    //身份证黑名单
+    public static String getBlackIdCardExchange() {
+        return properties.getProperty("rmq.gps.exchange");
+    }
+
+    //身份证黑名单
+    public static String getBlackIdCardRoutingKey() {
+        return properties.getProperty("rmq.gps.routingKey");
+    }
 }

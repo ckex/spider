@@ -78,6 +78,11 @@ if (!BAIDU_DATA_HOME) {
   BAIDU_DATA_HOME = BASIC_DATA_PATH+"baidu"
 }
 
+def IDCARD_DATA_HOME =System.getenv("IDCARD_DATA_HOME")
+if (!IDCARD_DATA_HOME) {
+  IDCARD_DATA_HOME = BASIC_DATA_PATH+"idCard"
+}
+
 def DOWNLOADER_LISTENER_HOME =System.getenv("DOWNLOADER_LISTENER_HOME")
 if (!DOWNLOADER_LISTENER_HOME) {
   DOWNLOADER_LISTENER_HOME = "/data/listener"
@@ -324,6 +329,23 @@ appender("LBS-BAIDU-REGEO-ERR", RollingFileAppender) {
     maxHistory = 300
   }
 }
+
+appender("BLACK_IDCARD_LISTEREN_ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/IDCARD-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+
 appender("GPS-DATA", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
     pattern = "%msg%n"
@@ -489,6 +511,22 @@ appender("LBS-BAIDU-REGEO-DATA", RollingFileAppender) {
     maxHistory = 300
   }
 }
+
+appender("BLACK_IDCARD_LOG_DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${IDCARD_DATA_HOME}/REGEO-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
 logger("com.alibaba.druid.filter.stat.StatFilter", INFO)
 logger("com.alibaba.druid.pool.DruidDataSource", INFO)
 logger("com.alibaba.druid", INFO)
@@ -540,4 +578,6 @@ logger("lbs-amap-geo-data", INFO, ["LBS-AMAP-GEO-DATA"], false)
 logger("lbs-amap-regeo-data", INFO, ["LBS-AMAP-REGEO-DATA"], false)
 logger("lbs-baidu-geo-data", INFO, ["LBS-BAIDU-GEO-DATA"], false)
 logger("lbs-baidu-regeo-data", INFO, ["LBS-BAIDU-REGEO-DATA"], false)
+logger("black_idCard_log_data", INFO, ["BLACK_IDCARD_LOG_DATA"], false)
+logger("blackidcard-downloader", INFO, ["BLACK_IDCARD_LISTEREN_ERR"], false)
 root(DEBUG, ["A1", "STDOUT"])

@@ -21,6 +21,7 @@
 	<property name="AMAP_DATA_HOME" value="${BASIC_DATA_PATH}amap"/>
 	<property name="BAIDU_DATA_HOME" value="${BASIC_DATA_PATH}baidu"/>
 	<property name="TIANYANCHA_DATA_HOME" value="${BASIC_DATA_PATH}tianyancha"/>
+	<property name="IDCARD_DATA_HOME" value="${BASIC_DATA_PATH}idCard"/>
 	<property name="DOWNLOADER_LISTENER_HOME" value="/data/listener" />
 	<contextName>${APP_NAME}</contextName>
 
@@ -441,6 +442,28 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
+
+	<!--身份证黑名单监听"-->
+	<appender name="BLACK_IDCARD_LISTEREN_ERR"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/IDCARD-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
 	
 	<appender name="GPS-DATA"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -706,6 +729,28 @@
 		</rollingPolicy>
 	</appender>
 
+	<appender name="BLACK_IDCARD_LOG_DATA"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+			<pattern>%msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${IDCARD_DATA_HOME}/REGEO-%d{yyyy-MM-dd-HH}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>300</maxHistory>
+		</rollingPolicy>
+	</appender>
+
 	<logger name="com.alibaba.druid.filter.stat.StatFilter" level="INFO" />
 	<logger name="com.alibaba.druid.pool.DruidDataSource" level="INFO" />
 	<logger name="com.alibaba.druid" level="INFO" />
@@ -800,6 +845,11 @@
 		<appender-ref ref="LBS-BAIDU-REGEO-DATA" />
 	</logger>
 
+	<!--身份证黑名单-->
+	<logger name="black_idCard_log_data" level="INFO" additivity="false">
+		<appender-ref ref="BLACK_IDCARD_LOG_DATA"/>
+	</logger>
+
 	<logger name="guabu-bc-downloader" level="INFO" additivity="false">
 		<appender-ref ref="GUABU-BC-ERR"/>
 	</logger>
@@ -838,6 +888,11 @@
 
 	<logger name="tianyancha-downloader" level="INFO" additivity="false">
 		<appender-ref ref="TIANYANCHA-ERR"/>
+	</logger>
+
+	<!--身份证黑名单监听-->
+	<logger name="blackidcard-downloader" level="INFO" additivity="false">
+		<appender-ref ref="BLACK_IDCARD_LISTEREN_ERR"/>
 	</logger>
 
 	<root level="DEBUG">

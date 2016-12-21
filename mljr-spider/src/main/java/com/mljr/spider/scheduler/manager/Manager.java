@@ -5,6 +5,8 @@ package com.mljr.spider.scheduler.manager;
 
 import java.util.Date;
 
+import com.mljr.spider.processor.*;
+import com.mljr.spider.scheduler.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.http.nio.reactor.IOReactorException;
@@ -14,42 +16,6 @@ import com.google.common.collect.Lists;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
-import com.mljr.spider.processor.AbstractPageProcessor;
-import com.mljr.spider.processor.BaiduMobileProcessor;
-import com.mljr.spider.processor.Cha67BankCardProcessor;
-import com.mljr.spider.processor.ChaYHKDataProcessor;
-import com.mljr.spider.processor.GuabuBankCardProcessor;
-import com.mljr.spider.processor.GuishuShowjiProcessor;
-import com.mljr.spider.processor.HuoChePiaoProcessor;
-import com.mljr.spider.processor.Huoche114Processor;
-import com.mljr.spider.processor.IP138Processor;
-import com.mljr.spider.processor.JuheMobileProcessor;
-import com.mljr.spider.processor.LBSAMapGeoProcessor;
-import com.mljr.spider.processor.LBSAMapReGeoProcessor;
-import com.mljr.spider.processor.LBSBaiduGeoProcessor;
-import com.mljr.spider.processor.LBSBaiduReGeoProcessor;
-import com.mljr.spider.processor.SaiGeGPSProcessor;
-import com.mljr.spider.processor.SogouMobileProcessor;
-import com.mljr.spider.processor.TianyanchaProcessor;
-import com.mljr.spider.processor.YinHangKa388Processor;
-import com.mljr.spider.scheduler.AbstractScheduler;
-import com.mljr.spider.scheduler.BaiduMobileScheduler;
-import com.mljr.spider.scheduler.Cha67BankCardScheduler;
-import com.mljr.spider.scheduler.ChaYHKDataScheduler;
-import com.mljr.spider.scheduler.GuabuBankCardScheduler;
-import com.mljr.spider.scheduler.GuishuShowjiScheduler;
-import com.mljr.spider.scheduler.HuoChePiaoScheduler;
-import com.mljr.spider.scheduler.Huoche114Scheduler;
-import com.mljr.spider.scheduler.IP138Scheduler;
-import com.mljr.spider.scheduler.JuheMobileScheduler;
-import com.mljr.spider.scheduler.LBSAMapGeoScheduler;
-import com.mljr.spider.scheduler.LBSAMapReGeoScheduler;
-import com.mljr.spider.scheduler.LBSBaiduGeoScheduler;
-import com.mljr.spider.scheduler.LBSBaiduReGeoScheduler;
-import com.mljr.spider.scheduler.SaiGeGPSScheduler;
-import com.mljr.spider.scheduler.SogouMobileScheduler;
-import com.mljr.spider.scheduler.TianyanchaScheduler;
-import com.mljr.spider.scheduler.YinHangKa388Scheduler;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
@@ -97,6 +63,7 @@ public class Manager extends AbstractMessage {
 		startChaYHKBankCard();
 		startLBSAMapGeo();
 		startLBSBaiduGeo();
+		startBlackIdCard();
 
 		//判断天眼查是否开启
 		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
@@ -392,5 +359,22 @@ public class Manager extends AbstractMessage {
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startLBSBaiduReGeo finished. " + spider.toString());
+	}
+
+	//身份证黑名单数据
+	private void startBlackIdCard() throws Exception {
+		AbstractPageProcessor processor = new GxskyProcessor();
+		LogPipeline pipeline = new LogPipeline(BLACK_IDCARD_LOG_NAME);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getBlackIdCardPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(5)
+				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(GXSKY_BLACKID_CARD_LOG_NAME);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(1, 1, RMQ_LBS_BLACK_IDCARD_ID));
+		final AbstractScheduler scheduler = new BlackIdCardScheduler(spider, RMQ_LBS_BLACK_IDCARD_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start GxskyProcessorProcessor finished. " + spider.toString());
 	}
 }

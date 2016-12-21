@@ -20,4 +20,6 @@ public abstract class AbstractTaskFactory {
 
 	public abstract LbsTask createLbsTask();
 
+	public abstract GxSkyTask createGxSkyTask();
+
 }

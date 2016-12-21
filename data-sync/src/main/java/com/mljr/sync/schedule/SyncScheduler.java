@@ -63,4 +63,12 @@ public class SyncScheduler {
 		logger.debug(task.toString());
 	}
 
+	//10小时执行一次
+	@Scheduled(cron = "0 0 0/10 * * ?")
+	private void startGxSkyTask() {
+		GxSkyTask task = abstractTaskFactory.createGxSkyTask();
+		task.run();
+		logger.debug(task.toString());
+	}
+
 }
