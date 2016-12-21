@@ -282,9 +282,14 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 	protected Request take() {
 		for (;;) {
 			try {
+				Request request=blockQueue.poll();
+				if (logger.isDebugEnabled()) {
+					logger.debug("block queue poll data.time:{},request:{}", System.currentTimeMillis(), null == request ? null : request.toString());
+				}
+				if(null!=request)
+					return request;
 				String msg = pollMessage();
 				return buildRequst(msg);
-				// return blockQueue.take();
 			} catch (Exception e) {
 				if (logger.isDebugEnabled()) {
 					e.printStackTrace();
@@ -293,5 +298,4 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 			}
 		}
 	}
-
 }
