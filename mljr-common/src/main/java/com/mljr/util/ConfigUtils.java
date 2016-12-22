@@ -1,4 +1,4 @@
-package con.mljr.spider.config;
+package com.mljr.util;
 
 import us.codecraft.webmagic.Site;
 
@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by songchi on 16/12/21.
+ * Created by songchi on 16/12/22.
  */
 public class ConfigUtils {
 
     public final static String[] ips =
-            {"10.9.86.137", "10.9.120.152", "10.9.144.100", "10.9.152.221",
+            {"192.168.1.103","127.0.0.1","10.9.86.137", "10.9.120.152", "10.9.144.100", "10.9.152.221",
                     "10.9.87.127", "10.9.186.101", "10.9.199.216", "10.9.108.39",
                     "10.9.88.4", "10.9.136.160", "10.9.145.53", "10.9.156.231",
                     "10.9.154.167", "10.9.169.120", "10.9.180.171"};
@@ -165,10 +165,9 @@ public class ConfigUtils {
         return nodePaths;
     }
 
-
-
     public static void main(String[] args) {
 //        System.out.println(getSiteList().size());
         System.out.println(getAllNodePath());
     }
+
 }
