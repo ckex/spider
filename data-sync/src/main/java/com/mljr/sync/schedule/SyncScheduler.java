@@ -27,7 +27,7 @@ public class SyncScheduler {
 	private void startMobileTask() {
 		MobileTask task = abstractTaskFactory.createMobileTask();
 		task.setName("mobile");
-		// task.run();
+		task.run();
 		logger.debug(task.toString());
 	}
 
