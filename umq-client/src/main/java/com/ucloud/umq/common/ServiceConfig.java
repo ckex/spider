@@ -279,11 +279,11 @@ public class ServiceConfig {
 
     //身份证黑名单
     public static String getBlackIdCardExchange() {
-        return properties.getProperty("rmq.gps.exchange");
+        return properties.getProperty("rmq.black.list.exchanges");
     }
 
     //身份证黑名单
     public static String getBlackIdCardRoutingKey() {
-        return properties.getProperty("rmq.gps.routingKey");
+        return properties.getProperty("rmq.gxsky.routingKey");
     }
 }

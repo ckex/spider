@@ -74,7 +74,7 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_LBS_BAIDU_REGEO_QUEUE_ID="lbs-baidu-regeo";
 
 	//身份证黑名单
-	protected static final String RMQ_LBS_BLACK_IDCARD_ID="queue-fanout-3";
+	protected static final String RMQ_LBS_BLACK_IDCARD_ID="bl-gxsky";
 
 	// Downloader error listener
 	protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";
