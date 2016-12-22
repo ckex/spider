@@ -45,7 +45,7 @@ public class MobileService {
 
 	protected static transient Logger logger = LoggerFactory.getLogger(MobileService.class);
 
-	private static final int LIMIT = 50;
+	private static final int LIMIT = 500;
 
 	private static final String RECORD_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD,
 			BasicConstant.LAST_ID);
