@@ -3,9 +3,10 @@
  */
 package con.mljr.spider.config;
 
-import com.alibaba.fastjson.JSON;
+import com.mljr.entity.SiteConfig;
+import com.mljr.util.ConfigUtils;
+import com.mljr.zk.ZkUtils;
 import org.I0Itec.zkclient.ZkClient;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Site;
@@ -19,7 +20,7 @@ import java.util.List;
 public class SiteManager {
     protected transient final Logger logger = LoggerFactory.getLogger(SiteManager.class);
 
-    private static ZkClient client = ZkUtils.getZkClient();
+    private  ZkClient client = ZkUtils.getZkClient();
 
     public DynamicConfig getSiteByDomain(String domain) {
         return new DynamicConfig();
