@@ -3,7 +3,9 @@
  */
 package con.mljr.spider.config;
 
+import com.alibaba.fastjson.JSON;
 import org.I0Itec.zkclient.ZkClient;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Site;
@@ -32,12 +34,13 @@ public class SiteManager {
         siteManager.writeAllSiteConfig();
     }
 
-    public void writeAllSiteConfig() {
+    public void writeAllSiteConfig()throws Exception {
         List<Site> siteList = ConfigUtils.getSiteList();
         String[] ips = ConfigUtils.ips;
         for (String ip : ips) {
             for (Site site : siteList) {
-                sentDataToZookeeper(ip, site.getDomain(), site.toString().getBytes());
+                SiteConfig  siteConfig = new SiteConfig(site);
+                sentDataToZookeeper(ip, siteConfig.getDomain(), siteConfig.toJSONString().getBytes());
             }
         }
     }
