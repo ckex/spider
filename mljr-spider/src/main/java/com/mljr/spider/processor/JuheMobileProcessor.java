@@ -6,6 +6,7 @@ package com.mljr.spider.processor;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import con.mljr.spider.config.SiteManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -23,12 +24,11 @@ import us.codecraft.webmagic.Site;
  */
 public class JuheMobileProcessor extends AbstractPageProcessor {
 
-	private Site site = Site.me().setDomain("juhe.cn").setSleepTime(10).setRetryTimes(2).setRetrySleepTime(500)
-			.setCharset(UTF_8);
+	private static Site site = Site.me().setDomain("juhe.cn").setSleepTime(10).setRetryTimes(2).setRetrySleepTime(500)
+			.setCharset(UTF_8).addHeader("Content-Type", "application/json;charset=" + UTF_8);
 
 	public JuheMobileProcessor() {
-		super();
-		site.addHeader("Content-Type", "application/json;charset=" + UTF_8);
+		super(site);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class JuheMobileProcessor extends AbstractPageProcessor {
 
 	@Override
 	public Site getSite() {
-		return this.site;
+		return SiteManager.getSiteByDomain("juhe.cn");
 	}
 
 }

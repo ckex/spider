@@ -35,12 +35,6 @@ public class IP138Processor extends AbstractPageProcessor {
 				logger.debug("process--> " + page.getUrl());
 			}
 		}
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("useragent----------------------------------     " + getSite().getUserAgent());
 		page.putField("",page.getHtml());
 	}
 
