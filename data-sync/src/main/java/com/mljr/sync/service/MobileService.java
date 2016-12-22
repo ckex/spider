@@ -56,6 +56,9 @@ public class MobileService {
 	private static final String BOOK_HISTORY_KEY = Joiner.on("-")
 			.join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK_HISTORY, BasicConstant.LAST_ID);
 
+	private static final String MOBILE_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.MOBILE,
+			BasicConstant.EXIST_IDS);
+
 	@Autowired
 	private YyUserAddressBookDao yyUserAddressBookDao;
 
@@ -75,21 +78,10 @@ public class MobileService {
 		final Channel channel = RabbitmqClient.newChannel();
 		try {
 			Function<String, Boolean> function = (mobile) -> sentMobile(channel, mobile);
-
-			// Function<String, Boolean> function = new Function<String,
-			// Boolean>() {
-			//
-			// @Override
-			// public Boolean apply(String mobile) {
-			// return sentMobile(channel, mobile);
-			// }
-			// };
 			syncYyUserAddressBook(function);
 			syncYyUserCallRecord(function);
 			syncBookHistory(function);
 			syncRecordHistory(function);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
 		} finally {
 			if (channel != null) {
 				channel.close();
@@ -195,6 +187,10 @@ public class MobileService {
 		}
 		if (mobile.length() < 7) {
 			return true;
+		}
+		if (CommonService.isExist(client, MOBILE_EXIST_IDS_KEY, mobile)) {
+			logger.warn("Exist mobile ==========" + mobile);
+			return true; // skip
 		}
 		BasicProperties.Builder builder = new BasicProperties.Builder();
 		builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
