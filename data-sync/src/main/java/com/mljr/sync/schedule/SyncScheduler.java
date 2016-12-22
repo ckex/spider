@@ -23,7 +23,7 @@ public class SyncScheduler {
 	@Autowired
 	private AbstractTaskFactory abstractTaskFactory;
 
-	@Scheduled(cron = "0/10 * * * * ?")
+	@Scheduled(cron = "0/5 * * * * ?")
 	private void startMobileTask() {
 		MobileTask task = abstractTaskFactory.createMobileTask();
 		task.setName("mobile");
