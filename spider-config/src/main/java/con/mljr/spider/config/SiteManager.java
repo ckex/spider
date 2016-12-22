@@ -3,15 +3,15 @@
  */
 package con.mljr.spider.config;
 
-import com.mljr.entity.SiteConfig;
-import com.mljr.util.ConfigUtils;
-import com.mljr.zk.ZkUtils;
-import org.I0Itec.zkclient.ZkClient;
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Site;
 
-import java.util.List;
+import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Ckex zha </br>
@@ -20,44 +20,65 @@ import java.util.List;
 public class SiteManager {
     protected transient final Logger logger = LoggerFactory.getLogger(SiteManager.class);
 
-    private  ZkClient client = ZkUtils.getZkClient();
+//    public DynamicConfig getSiteByDomain(String domain) {
+//        return new DynamicConfig();
+//    }
 
-    public DynamicConfig getSiteByDomain(String domain) {
-        return new DynamicConfig();
+    private static Map<String, Site> siteMap = new HashMap<>();
+
+    public static Site getSiteByDomain(String domain) {
+        String ip = null;
+        try {
+            ip = InetAddress.getLocalHost().getHostAddress();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String path = String.format("/config/%s/%s", ip, domain);
+        return siteMap.get(path);
     }
 
     public synchronized void setSite(String domain, Site site) {
+        try {
+            String ip = InetAddress.getLocalHost().getHostAddress();
+            String path = String.format("/config/%s/%s", ip, domain);
 
-    }
-
-    public static void main(String[] args) throws Exception {
-        SiteManager siteManager = new SiteManager();
-        siteManager.writeAllSiteConfig();
-    }
-
-    public void writeAllSiteConfig()throws Exception {
-        List<Site> siteList = ConfigUtils.getSiteList();
-        String[] ips = ConfigUtils.ips;
-        for (String ip : ips) {
-            for (Site site : siteList) {
-                SiteConfig  siteConfig = new SiteConfig(site);
-                sentDataToZookeeper(ip, siteConfig.getDomain(), siteConfig.toJSONString().getBytes());
+            if (siteMap.containsKey(path)) {
+                Site oldSite = siteMap.get(path);
+                compareSiteObject(oldSite, site);
+                siteMap.put(path, oldSite);
+            } else {
+                siteMap.put(path, site);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("setSite error.", ExceptionUtils.getFullStackTrace(e));
+
         }
     }
 
-    public void sentDataToZookeeper(String ip, String domain, byte[] bytes) {
+    public void compareSiteObject(Site oldSite, Site newSite) {
+        if (!StringUtils.equals(oldSite.getUserAgent(), newSite.getUserAgent())) {
+            oldSite.setUserAgent(newSite.getUserAgent());
+        }
+        if (!StringUtils.equals(oldSite.getDomain(), newSite.getDomain())) {
+            oldSite.setDomain(newSite.getDomain());
+        }
+        if (!StringUtils.equals(oldSite.getCharset(), newSite.getCharset())) {
+            oldSite.setCharset(newSite.getCharset());
+        }
+        if (oldSite.getSleepTime() != newSite.getSleepTime()) {
+            oldSite.setSleepTime(newSite.getSleepTime());
+        }
+        if (oldSite.getCycleRetryTimes() != newSite.getCycleRetryTimes()) {
+            oldSite.setCycleRetryTimes(newSite.getCycleRetryTimes());
+        }
 
-        try {
-            String CONFIG_PATH = String.format("/config/%s/%s", ip, domain);
-            System.out.println(CONFIG_PATH);
+        if (oldSite.getRetrySleepTime() != newSite.getRetrySleepTime()) {
+            oldSite.setRetrySleepTime(newSite.getRetrySleepTime());
+        }
 
-            ZkUtils.createPath(CONFIG_PATH);
-
-            client.writeData(CONFIG_PATH, bytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("zookeeper error", e);
+        if (oldSite.getRetryTimes() != newSite.getRetryTimes()) {
+            oldSite.setRetryTimes(newSite.getRetryTimes());
         }
     }
 
