@@ -3,7 +3,6 @@ package com.mljr.entity;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.http.HttpHost;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Site;
@@ -18,21 +17,12 @@ import java.util.*;
  * Created by songchi on 16/12/21.
  */
 public class SiteConfig implements Serializable {
-    public static void main(String[] args) throws Exception{
-        SiteConfig siteConfig = new SiteConfig();
-//        siteConfig.setDomain("163.com");
 
-        Site site = Site.me().setDomain("sohu.com");
-        BeanUtils.copyProperties(siteConfig,site);
-        System.out.println(JSON.toJSONString(siteConfig));
-    }
-
-    public SiteConfig(){
+    public SiteConfig() {
         // nothing
     }
 
-
-    public SiteConfig(Site site){
+    public SiteConfig(Site site) {
         this.setDomain(site.getDomain());
         this.setSleepTime(site.getSleepTime());
         this.setCharset(site.getCharset());
@@ -40,11 +30,21 @@ public class SiteConfig implements Serializable {
         this.setRetrySleepTime(site.getRetrySleepTime());
         this.setRetryTimes(site.getRetryTimes());
         this.setUserAgent(site.getUserAgent());
-        // TODO header
-        // TODO cookie
+        Map<String, String> cookieMap = site.getCookies();
+        if (!cookieMap.isEmpty()) {
+            for (Map.Entry<String, String> entry : cookieMap.entrySet()) {
+                this.addCookie(entry.getKey(), entry.getValue());
+            }
+        }
+        Map<String, String> headerMap = site.getHeaders();
+        if (!headerMap.isEmpty()) {
+            for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+                this.addHeader(entry.getKey(), entry.getValue());
+            }
+        }
     }
 
-    public Site toSite(){
+    public Site toSite() {
         Site site = new Site();
         site.setDomain(this.getDomain());
         site.setSleepTime(this.getSleepTime());
@@ -53,6 +53,18 @@ public class SiteConfig implements Serializable {
         site.setRetrySleepTime(this.getRetrySleepTime());
         site.setRetryTimes(this.getRetryTimes());
         site.setUserAgent(this.getUserAgent());
+        Map<String, String> cookieMap = this.getCookies();
+        if (!cookieMap.isEmpty()) {
+            for (Map.Entry<String, String> entry : cookieMap.entrySet()) {
+                site.addCookie(entry.getKey(), entry.getValue());
+            }
+        }
+        Map<String, String> headerMap = this.getHeaders();
+        if (!headerMap.isEmpty()) {
+            for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+                site.addHeader(entry.getKey(), entry.getValue());
+            }
+        }
         return site;
     }
 
@@ -111,7 +123,7 @@ public class SiteConfig implements Serializable {
     /**
      * Add a cookie with domain {@link #getDomain()}
      *
-     * @param name name
+     * @param name  name
      * @param value value
      * @return this
      */
@@ -124,8 +136,8 @@ public class SiteConfig implements Serializable {
      * Add a cookie with specific domain.
      *
      * @param domain domain
-     * @param name name
-     * @param value value
+     * @param name   name
+     * @param value  value
      * @return this
      */
     public SiteConfig addCookie(String domain, String name, String value) {
@@ -158,7 +170,7 @@ public class SiteConfig implements Serializable {
      *
      * @return get cookies
      */
-    public Map<String,Map<String, String>> getAllCookies() {
+    public Map<String, Map<String, String>> getAllCookies() {
         return cookies.rowMap();
     }
 
@@ -462,12 +474,12 @@ public class SiteConfig implements Serializable {
      * @return this
      */
     public SiteConfig setHttpProxyPool(List<String[]> httpProxyList) {
-        this.httpProxyPool=new ProxyPool(httpProxyList);
+        this.httpProxyPool = new ProxyPool(httpProxyList);
         return this;
     }
 
     public SiteConfig enableHttpProxyPool() {
-        this.httpProxyPool=new ProxyPool();
+        this.httpProxyPool = new ProxyPool();
         return this;
     }
 
@@ -476,8 +488,8 @@ public class SiteConfig implements Serializable {
     }
 
 
-    public void returnHttpProxyToPool(HttpHost proxy,int statusCode) {
-        httpProxyPool.returnProxy(proxy,statusCode);
+    public void returnHttpProxyToPool(HttpHost proxy, int statusCode) {
+        httpProxyPool.returnProxy(proxy, statusCode);
     }
 
     public SiteConfig setProxyReuseInterval(int reuseInterval) {
@@ -485,7 +497,7 @@ public class SiteConfig implements Serializable {
         return this;
     }
 
-    public String toJSONString(){
-       return JSON.toJSONString(this);
+    public String toJSONString() {
+        return JSON.toJSONString(this);
     }
 }

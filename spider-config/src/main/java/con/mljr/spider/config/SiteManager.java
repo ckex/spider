@@ -80,6 +80,22 @@ public class SiteManager {
         if (oldSite.getRetryTimes() != newSite.getRetryTimes()) {
             oldSite.setRetryTimes(newSite.getRetryTimes());
         }
+        if(!oldSite.getCookies().equals(newSite.getCookies())){
+            Map<String, String> cookieMap = newSite.getCookies();
+            if (!cookieMap.isEmpty()) {
+                for (Map.Entry<String, String> entry : cookieMap.entrySet()) {
+                    oldSite.addCookie(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        if(!oldSite.getHeaders().equals(newSite.getHeaders())){
+            Map<String, String> headerMap = newSite.getHeaders();
+            if (!headerMap.isEmpty()) {
+                for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+                    oldSite.addHeader(entry.getKey(), entry.getValue());
+                }
+            }
+        }
     }
 
 }
