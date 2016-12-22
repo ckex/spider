@@ -1,7 +1,6 @@
-package con.mljr.spider.config;
+package com.mljr.entity;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.PropertyFilter;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import org.apache.commons.beanutils.BeanUtils;
@@ -32,10 +31,8 @@ public class SiteConfig implements Serializable {
         // nothing
     }
 
-//    public SiteConfig siteConfig;
 
     public SiteConfig(Site site){
-//        SiteConfig siteConfig = new SiteConfig();
         this.setDomain(site.getDomain());
         this.setSleepTime(site.getSleepTime());
         this.setCharset(site.getCharset());
