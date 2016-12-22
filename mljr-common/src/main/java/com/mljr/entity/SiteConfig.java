@@ -44,6 +44,18 @@ public class SiteConfig implements Serializable {
         // TODO cookie
     }
 
+    public Site toSite(){
+        Site site = new Site();
+        site.setDomain(this.getDomain());
+        site.setSleepTime(this.getSleepTime());
+        site.setCharset(this.getCharset());
+        site.setCycleRetryTimes(this.getCycleRetryTimes());
+        site.setRetrySleepTime(this.getRetrySleepTime());
+        site.setRetryTimes(this.getRetryTimes());
+        site.setUserAgent(this.getUserAgent());
+        return site;
+    }
+
     private String domain;
 
     private String userAgent;

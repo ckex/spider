@@ -45,7 +45,7 @@ public class ZkUtils {
     }
 
     public static String readData(String path) {
-//        createIgnore(path);
+        createIgnore(path);
         return getZkClient().readData(path);
     }
 
@@ -108,13 +108,7 @@ public class ZkUtils {
 
     }
 
-    public static void main(String[] args) {
-        zkClient=getZkClient();
 
-        String str = "{\"acceptStatCode\":[200],\"allCookies\":{},\"cookies\":{},\"cycleRetryTimes\":0,\"domain\":\"zhangfei.com\",\"headers\":{},\"retrySleepTime\":7500,\"retryTimes\":3,\"sleepTime\":10000,\"startRequests\":[],\"startUrls\":[],\"timeOut\":5000,\"useGzip\":true,\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36\"}";
-
-        zkClient.writeData("/config/127.0.0.1/114huoche.com",str);
-    }
 
 }
 
