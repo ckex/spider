@@ -19,7 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Function;
+import java.util.function.Function;
+
 import com.google.common.base.Joiner;
 import com.mljr.constant.BasicConstant;
 import com.mljr.rabbitmq.RabbitmqClient;
@@ -46,10 +47,17 @@ public class MobileService {
 
 	private static final int LIMIT = 50;
 
-	private static final String RECORD_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD, BasicConstant.LAST_ID);
-	private static final String RECORD_HISTORY_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD_HISTORY, BasicConstant.LAST_ID);
-	private static final String BOOK_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK, BasicConstant.LAST_ID);
-	private static final String BOOK_HISTORY_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK_HISTORY, BasicConstant.LAST_ID);
+	private static final String RECORD_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD,
+			BasicConstant.LAST_ID);
+	private static final String RECORD_HISTORY_KEY = Joiner.on("-")
+			.join(BasicConstant.MOBILE_YY_USER_CALL_RECORD_HISTORY, BasicConstant.LAST_ID);
+	private static final String BOOK_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK,
+			BasicConstant.LAST_ID);
+	private static final String BOOK_HISTORY_KEY = Joiner.on("-")
+			.join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK_HISTORY, BasicConstant.LAST_ID);
+
+	private static final String MOBILE_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.MOBILE,
+			BasicConstant.EXIST_IDS);
 
 	@Autowired
 	private YyUserAddressBookDao yyUserAddressBookDao;
@@ -69,19 +77,11 @@ public class MobileService {
 	public void syncMobile() throws Exception {
 		final Channel channel = RabbitmqClient.newChannel();
 		try {
-			Function<String, Boolean> function = new Function<String, Boolean>() {
-
-				@Override
-				public Boolean apply(String mobile) {
-					return sentMobile(channel, mobile);
-				}
-			};
+			Function<String, Boolean> function = (mobile) -> sentMobile(channel, mobile);
 			syncYyUserAddressBook(function);
 			syncYyUserCallRecord(function);
 			syncBookHistory(function);
 			syncRecordHistory(function);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
 		} finally {
 			if (channel != null) {
 				channel.close();
@@ -95,16 +95,13 @@ public class MobileService {
 			logger.info("result empty .");
 			return;
 		}
-
-		for (YyUserCallRecordDo yyUserCallRecordDo : result) {
-			if (function.apply(yyUserCallRecordDo.getNumber())) {
-				setLastId(RECORD_KEY, yyUserCallRecordDo.getId());
-				continue;
+		result.stream().filter(ele -> {
+			boolean ret = sent(function, RECORD_KEY, ele.getNumber(), ele.getId());
+			if (!ret) {
+				logger.warn("sent to mq error ." + ele.toString());
 			}
-			logger.warn("sent to mq error ." + yyUserCallRecordDo.toString());
-			break;
-		}
-
+			return !ret;
+		}).findFirst();
 	}
 
 	private void syncRecordHistory(Function<String, Boolean> function) {
@@ -113,16 +110,13 @@ public class MobileService {
 			logger.info("result empty .");
 			return;
 		}
-
-		for (YyUserCallRecordHistoryDo history : result) {
-			if (function.apply(history.getNumber())) {
-				setLastId(RECORD_HISTORY_KEY, history.getId());
-				continue;
+		result.stream().filter(ele -> {
+			boolean ret = sent(function, RECORD_HISTORY_KEY, ele.getNumber(), ele.getId());
+			if (!ret) {
+				logger.warn("sent to mq error ." + ele.toString());
 			}
-			logger.warn("sent to mq error ." + history.toString());
-			break;
-		}
-
+			return !ret;
+		}).findFirst();
 	}
 
 	private List<YyUserCallRecordDo> listYyUserCallRecord(String key) {
@@ -151,16 +145,13 @@ public class MobileService {
 			logger.info("result empty .");
 			return;
 		}
-
-		for (YyUserAddressBookDo yyUserAddressBookDo : result) {
-			if (function.apply(yyUserAddressBookDo.getNumber())) {
-				setLastId(BOOK_KEY, yyUserAddressBookDo.getId());
-				continue;
+		result.stream().filter(ele -> {
+			boolean ret = sent(function, BOOK_KEY, ele.getNumber(), ele.getId());
+			if (!ret) {
+				logger.warn("sent to mq error ." + ele.toString());
 			}
-			logger.warn("sent to mq error ." + yyUserAddressBookDo.toString());
-			break;
-		}
-
+			return !ret;
+		}).findFirst();
 	}
 
 	private void syncBookHistory(Function<String, Boolean> function) {
@@ -169,16 +160,22 @@ public class MobileService {
 			logger.info("result empty .");
 			return;
 		}
-
-		for (YyUserAddressBookHistoryDo history : result) {
-			if (function.apply(history.getNumber())) {
-				setLastId(BOOK_HISTORY_KEY, history.getId());
-				continue;
+		result.stream().filter(ele -> {
+			boolean ret = sent(function, BOOK_HISTORY_KEY, ele.getNumber(), ele.getId());
+			if (!ret) {
+				logger.warn("sent to mq error ." + ele.toString());
 			}
-			logger.warn("sent to mq error ." + history.toString());
-			break;
-		}
+			return !ret;
+		}).findFirst();
 
+	}
+
+	private boolean sent(Function<String, Boolean> function, String key, String mobile, Long lastId) {
+		boolean ret = function.apply(mobile);
+		if (ret) {
+			setLastId(key, lastId);
+		}
+		return ret;
 	}
 
 	private boolean sentMobile(Channel channel, String mobile) {
@@ -190,6 +187,10 @@ public class MobileService {
 		}
 		if (mobile.length() < 7) {
 			return true;
+		}
+		if (CommonService.isExist(client, MOBILE_EXIST_IDS_KEY, mobile)) {
+			logger.warn("Exist mobile ==========" + mobile);
+			return true; // skip
 		}
 		BasicProperties.Builder builder = new BasicProperties.Builder();
 		builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
@@ -211,7 +212,7 @@ public class MobileService {
 	}
 
 	private void setLastId(final String key, final Long id) {
-		client.use(new Function<Jedis, String>() {
+		client.use(new com.google.common.base.Function<Jedis, String>() {
 
 			@Override
 			public String apply(Jedis jedis) {
@@ -222,7 +223,7 @@ public class MobileService {
 	}
 
 	private long getLastId(final String table) {
-		String result = client.use(new Function<Jedis, String>() {
+		String result = client.use(new com.google.common.base.Function<Jedis, String>() {
 
 			@Override
 			public String apply(Jedis jedis) {
