@@ -43,7 +43,7 @@ public class StatusCodeController {
             dataList.add(data);
         }
 
-        ModelAndView mav = new ModelAndView("index");
+        ModelAndView mav = new ModelAndView("statusCode");
         mav.addObject("dataList", dataList);
         return mav;
     }
@@ -62,7 +62,7 @@ public class StatusCodeController {
             dataList.add(data);
         }
 
-        ModelAndView mav = new ModelAndView("index");
+        ModelAndView mav = new ModelAndView("statusCode");
         mav.addObject("dataList", dataList);
         return mav;
     }
