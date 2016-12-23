@@ -45,9 +45,9 @@ if [ $PRODUCTION = "run" ]; then
         let "memTotal = `cat /proc/meminfo |grep MemTotal|awk '{printf "%d", $2/1024 }'`"
         let "memThreshold = 2048"
         if [ $memTotal -gt $memThreshold ];then
-            JAVA_MEM_OPTS=" -server -Xmx1g -Xms1g -Xmn768m -XX:PermSize=128m -Xss512k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
+            JAVA_MEM_OPTS=" -server -Xmx4g -Xms4g -Xmn1024m -XX:PermSize=512m -Xss512k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
         else 
-            JAVA_MEM_OPTS=" -server -Xmx1g -Xms1g -Xmn768m -XX:PermSize=128m -Xss512k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
+            JAVA_MEM_OPTS=" -server -Xmx4g -Xms4g -Xmn1024m -XX:PermSize=512m -Xss512k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
         fi
     else
 		JAVA_MEM_OPTS=" -server -Xms1024m -Xmx1024m -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC "
