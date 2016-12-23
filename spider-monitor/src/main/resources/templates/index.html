@@ -23,7 +23,7 @@
             </tr>
             <tr th:each="data : ${dataList}">
 
-                <td><a th:href="@{'/detail/' + ${data.domain}}" th:text="${data.domain}"></a></td>
+                <td><a th:href="@{'/detail/' + ${data.domain}}+'/other'" th:text="${data.domain}"></a></td>
                 <td th:text="${data.time}">1</td>
                 <td th:text="${data.freq200}">1</td>
                 <td th:text="${data.freq401}">1</td>

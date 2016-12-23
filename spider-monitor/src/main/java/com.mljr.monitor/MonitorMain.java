@@ -7,8 +7,10 @@ import com.mljr.redis.RedisClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
@@ -27,13 +29,22 @@ public class MonitorMain {
         return "Hello World!";
     }
 
+    @RequestMapping("/form")
+    public String createForm() {
+        return "messages/form";
+    }
+
+    @RequestMapping("/index")
+    public String index() {
+        return "layout";
+    }
+
     public static void main(String[] args) throws Exception {
         SpringApplication.run(MonitorMain.class, args);
     }
 
     @RequestMapping("/statusCode")
-    @ResponseBody
-    List<MonitorData> statusCode() {
+    ModelAndView statusCode() {
         List<String> jsonList = redisClient.use(new Function<Jedis, List<String>>() {
 
             @Override
@@ -48,10 +59,31 @@ public class MonitorMain {
         });
         List<MonitorData> dataList = new ArrayList<>();
         for (String jsonStr : jsonList) {
-            MonitorData data = JSON.parseObject(jsonStr,MonitorData.class);
+            MonitorData data = JSON.parseObject(jsonStr, MonitorData.class);
             dataList.add(data);
         }
-        System.out.println(dataList.toString());
-        return dataList;
+
+        ModelAndView mav = new ModelAndView("index");//实例化一个VIew的ModelAndView实例
+        mav.addObject("dataList", dataList);
+        return mav;
+    }
+
+    @RequestMapping("/detail/{domain}/other")
+    ModelAndView detail(@PathVariable("domain") String domain) {
+        List<String> jsonList = redisClient.use(new Function<Jedis, List<String>>() {
+            @Override
+            public List<String> apply(Jedis jedis) {
+                return jedis.lrange("status-code-" + domain, 0, 100);
+            }
+        });
+        List<MonitorData> dataList = new ArrayList<>();
+        for (String jsonStr : jsonList) {
+            MonitorData data = JSON.parseObject(jsonStr, MonitorData.class);
+            dataList.add(data);
+        }
+
+        ModelAndView mav = new ModelAndView("index");//实例化一个VIew的ModelAndView实例
+        mav.addObject("dataList", dataList);
+        return mav;
     }
 }
