@@ -29,16 +29,6 @@ public class MonitorMain {
         return "Hello World!";
     }
 
-    @RequestMapping("/form")
-    public String createForm() {
-        return "messages/form";
-    }
-
-    @RequestMapping("/index")
-    public String index() {
-        return "layout";
-    }
-
     public static void main(String[] args) throws Exception {
         SpringApplication.run(MonitorMain.class, args);
     }
