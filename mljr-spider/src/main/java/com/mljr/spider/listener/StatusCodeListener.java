@@ -3,15 +3,16 @@
  */
 package com.mljr.spider.listener;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.gson.Gson;
+import com.mljr.entity.MonitorData;
 import com.mljr.redis.RedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 import us.codecraft.webmagic.Request;
@@ -35,7 +36,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
     private HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
 
     JedisPoolConfig config = new JedisPoolConfig();
-    private RedisClient redisClient = new RedisClient("127.0.0.1",6379,2000,100,10,1000);
+    private RedisClient redisClient = new RedisClient("127.0.0.1", 6379, 2000, 100, 10, 1000);
 
     public StatusCodeListener(String domain) {
         this.domain = domain;
@@ -66,27 +67,62 @@ public class StatusCodeListener implements SpiderListener, Serializable {
             }
             Long timeDiff = System.currentTimeMillis() - beginTime;
             // 一分钟写一次库
-            if (timeDiff / 1000 / 60 >= 1) {
+            if (timeDiff / 1000 / 60 >= 0.1) {
                 String currentTime = sdf.format(new Date());
-                String key = Joiner.on("-").join("status-code",domain);
+                String key = Joiner.on("-").join("status-code", domain);
 
-                Map<String, Table> map = new HashMap<>();
-                map.put(currentTime, table);
-                logger.debug("### " + new Gson().toJson(map));
+                MonitorData data = createObjectFromTable();
+                data.setTime(currentTime);
+                data.setDomain(domain);
+
+                String jsonStr  = JSON.toJSONString(data);
+
+                System.out.println("### " + jsonStr);
+                logger.debug("### " + jsonStr);
                 // 写库
                 redisClient.use(new Function<Jedis, String>() {
 
                     @Override
                     public String apply(Jedis jedis) {
-                        jedis.lpush(key,new Gson().toJson(map));
+                        jedis.lpush(key, jsonStr);
                         return null;
                     }
                 });
-
                 beginTime = null;
                 table.clear();
             }
         }
+    }
+
+    private MonitorData createObjectFromTable() {
+        MonitorData data = new MonitorData();
+        Map<Integer, Integer> codeMap = table.row(domain);
+        for (Map.Entry<Integer, Integer> entry : codeMap.entrySet()) {
+            switch (entry.getKey()) {
+                case 200:
+                    data.setFreq200(entry.getValue());
+                    break;
+                case 401:
+                    data.setFreq401(entry.getValue());
+                    break;
+                case 403:
+                    data.setFreq403(entry.getValue());
+                    break;
+                case 404:
+                    data.setFreq404(entry.getValue());
+                    break;
+                case 500:
+                    data.setFreq500(entry.getValue());
+                    break;
+                case 501:
+                    data.setFreq501(entry.getValue());
+                    break;
+                case 504:
+                    data.setFreq504(entry.getValue());
+                    break;
+            }
+        }
+        return data;
     }
 
 }
