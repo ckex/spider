@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Layout</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
+          href="../../css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <table class="table table-hover">
+            <tr>
+                <th>网站</th>
+                <th>时间</th>
+                <th>200</th>
+                <th>401</th>
+                <th>403</th>
+                <th>404</th>
+                <th>500</th>
+                <th>501</th>
+                <th>504</th>
+            </tr>
+            <tr th:each="data : ${dataList}">
+
+                <td><a th:href="@{'/detail/' + ${data.domain}}" th:text="${data.domain}"></a></td>
+                <td th:text="${data.time}">1</td>
+                <td th:text="${data.freq200}">1</td>
+                <td th:text="${data.freq401}">1</td>
+                <td th:text="${data.freq403}">1</td>
+                <td th:text="${data.freq404}">1</td>
+                <td th:text="${data.freq500}">1</td>
+                <td th:text="${data.freq501}">1</td>
+                <td th:text="${data.freq504}">1</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+</body>
+</html>
