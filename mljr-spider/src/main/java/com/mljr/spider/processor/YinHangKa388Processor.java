@@ -3,6 +3,7 @@ package com.mljr.spider.processor;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.mljr.spider.vo.JSONTransferVO;
+import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
@@ -17,10 +18,14 @@ import java.util.Map;
  */
 public class YinHangKa388Processor extends AbstractPageProcessor {
 
-    private Site site = Site.me().setDomain("yinhangka.388g.com")
+    private static Site site = Site.me().setDomain("yinhangka.388g.com")
             .setSleepTime(10000).setRetrySleepTime(7500).setRetryTimes(3)
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
+
+    public YinHangKa388Processor() {
+        super(site);
+    }
 
     @Override
     public void process(Page page) {
@@ -53,6 +58,6 @@ public class YinHangKa388Processor extends AbstractPageProcessor {
 
     @Override
     public Site getSite() {
-        return site;
+        return SiteManager.getSiteByDomain("yinhangka.388g.com");
     }
 }

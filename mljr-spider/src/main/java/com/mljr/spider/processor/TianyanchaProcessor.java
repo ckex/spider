@@ -2,6 +2,7 @@ package com.mljr.spider.processor;
 
 import com.google.common.base.Joiner;
 import com.mljr.spider.storage.LocalFilePipeline;
+import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -20,12 +21,12 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 	public static final String JS_PATH = System.getProperty("user.home") + System.getProperty("file.separator")
 			+ "get_page.js";
 
-	private Site site = Site.me().setDomain("tianyancha.com").addHeader("loop", "null").setSleepTime(1000 * 20)
+	private static Site site = Site.me().setDomain("tianyancha.com").addHeader("loop", "null").setSleepTime(1000 * 20)
 			.addHeader("Accept", "application/json, text/plain, */*").setRetrySleepTime(1000 * 45).setRetryTimes(3)
 			.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0");
 
 	public TianyanchaProcessor() {
-		super();
+		super(site);
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
 	@Override
 	public Site getSite() {
-		return this.site;
+		return SiteManager.getSiteByDomain("tianyancha.com");
 	}
 
 	public static void main(String[] args) {

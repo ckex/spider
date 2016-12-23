@@ -3,6 +3,7 @@
  */
 package com.mljr.spider.processor;
 
+import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 
@@ -12,10 +13,10 @@ import us.codecraft.webmagic.Site;
  */
 public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
-  private Site site = Site.me().setDomain("saige-gps").setCharset(UTF_8);
+  private static Site site = Site.me().setDomain("saige-gps").setCharset(UTF_8);
 
   public SaiGeGPSProcessor() {
-    super();
+    super(site);
   }
 
   @Override
@@ -25,7 +26,7 @@ public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
   @Override
   public Site getSite() {
-    return this.site;
+    return SiteManager.getSiteByDomain("saige-gps");
   }
 
 }

@@ -3,6 +3,7 @@ package com.mljr.spider.processor;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.mljr.spider.vo.JSONTransferVO;
+import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
@@ -17,12 +18,15 @@ import java.util.Map;
  */
 public class ChaYHKDataProcessor extends AbstractPageProcessor {
 
-    private Site site = Site.me().setDomain("cha.yinhangkadata.com")
+    private static Site site = Site.me().setDomain("cha.yinhangkadata.com")
             .setSleepTime(10000).setRetrySleepTime(7500).setRetryTimes(3)
             .addCookie("ASPSESSIONIDCAATTCQA", "LHEGLFIDENPGIJOLIFNHOIFB")//此字段必填
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
+    public ChaYHKDataProcessor() {
+        super(site);
+    }
 
     @Override
     public void process(Page page) {
@@ -58,6 +62,6 @@ public class ChaYHKDataProcessor extends AbstractPageProcessor {
 
     @Override
     public Site getSite() {
-        return site;
+        return  SiteManager.getSiteByDomain("cha.yinhangkadata.com");
     }
 }
