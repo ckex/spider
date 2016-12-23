@@ -1,6 +1,8 @@
 package com.mljr.monitor;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
+import com.mljr.entity.MonitorData;
 import com.mljr.redis.RedisClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -31,8 +33,8 @@ public class MonitorMain {
 
     @RequestMapping("/statusCode")
     @ResponseBody
-    List<String> statusCode() {
-        List<String> list = redisClient.use(new Function<Jedis, List<String>>() {
+    List<MonitorData> statusCode() {
+        List<String> jsonList = redisClient.use(new Function<Jedis, List<String>>() {
 
             @Override
             public List<String> apply(Jedis jedis) {
@@ -44,6 +46,12 @@ public class MonitorMain {
                 return allList;
             }
         });
-        return list;
+        List<MonitorData> dataList = new ArrayList<>();
+        for (String jsonStr : jsonList) {
+            MonitorData data = JSON.parseObject(jsonStr,MonitorData.class);
+            dataList.add(data);
+        }
+        System.out.println(dataList.toString());
+        return dataList;
     }
 }
