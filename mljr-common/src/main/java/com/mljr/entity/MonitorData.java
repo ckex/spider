@@ -1,10 +1,13 @@
 package com.mljr.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class MonitorData implements Serializable {
     private String time;
     private String domain;
+    private int totalRequests;
     private int freq200;
     private int freq401;
     private int freq403;
@@ -12,8 +15,20 @@ public class MonitorData implements Serializable {
     private int freq500;
     private int freq501;
     private int freq504;
+    // 成功率
+    private double successRate;
 
     public MonitorData() {
+    }
+
+    public double getSuccessRate() {
+        BigDecimal result =new BigDecimal(freq200*100).divide(new BigDecimal(totalRequests),2,BigDecimal.ROUND_HALF_EVEN);
+
+        return result.doubleValue();
+    }
+
+    public void setSuccessRate(double successRate) {
+        this.successRate = successRate;
     }
 
     public String getTime() {
@@ -86,6 +101,14 @@ public class MonitorData implements Serializable {
 
     public void setFreq504(int freq504) {
         this.freq504 = freq504;
+    }
+
+    public int getTotalRequests() {
+        return totalRequests;
+    }
+
+    public void setTotalRequests(int totalRequests) {
+        this.totalRequests = totalRequests;
     }
 
 

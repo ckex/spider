@@ -19,11 +19,14 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StatusCodeListener implements SpiderListener, Serializable {
     protected transient final Logger logger = LoggerFactory.getLogger(SpiderListener.class);
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+
+    private AtomicInteger totalRequests = new AtomicInteger(0);
 
     private String domain;
 
@@ -50,6 +53,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
 
     private void countStatusCodeByDomain(Request request) {
         synchronized (this) {
+            totalRequests.addAndGet(1);
             if (beginTime == null) {
                 beginTime = System.currentTimeMillis();
             }
@@ -69,6 +73,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
                 MonitorData data = createObjectFromTable();
                 data.setTime(currentTime);
                 data.setDomain(domain);
+                data.setTotalRequests(totalRequests.get());
 
                 String jsonStr  = JSON.toJSONString(data);
 
@@ -83,6 +88,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
                         return null;
                     }
                 });
+                totalRequests.set(0);
                 beginTime = null;
                 table.clear();
             }
