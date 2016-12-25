@@ -13,6 +13,7 @@ import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
@@ -38,7 +39,6 @@ public abstract class AbstractPageProcessor implements PageProcessor {
 
     private static HashSet<String> pathSet = new HashSet<>();
 
-    public static SiteManager manager = new SiteManager();
     private final String domain;
 
     public AbstractPageProcessor(String domain) {
@@ -53,17 +53,17 @@ public abstract class AbstractPageProcessor implements PageProcessor {
         try {
             String ip = InetAddress.getLocalHost().getHostAddress();
             String path = String.format("/config/%s/%s", ip, domain);
-            System.out.println("path =================" + path);
+            logger.debug("path =================" + path);
             Object object = zkClient.readData(path,true);
 
             if(object==null){
                 // zk 找不到配置
                 ZkUtils.createPath(path);
                 zkClient.writeData(path,new SiteConfig(site).toJSONString());
-                manager.setSite(domain, site);
+                SiteManager.setSite(domain, site);
             }else{
                 Site newSite = JSON.parseObject(String.valueOf(object), SiteConfig.class).toSite();
-                manager.setSite(domain, newSite);
+                SiteManager.setSite(domain, newSite);
             }
 
             if (pathSet.contains(path)) {
@@ -74,13 +74,13 @@ public abstract class AbstractPageProcessor implements PageProcessor {
             zkClient.subscribeDataChanges(path, new IZkDataListener() {
 
                 public void handleDataDeleted(String dataPath) throws Exception {
-                    System.out.println("the node 'dataPath'===>");
+                    logger.debug("the node 'dataPath'===>");
                 }
 
                 public void handleDataChange(String dataPath, Object data) throws Exception {
-                    System.out.println("site 变成了  ===============================  " + String.valueOf(data));
+                    logger.debug("site 变成了  ===============================  " + String.valueOf(data));
                     Site site = JSON.parseObject(String.valueOf(data), SiteConfig.class).toSite();
-                    manager.setSite(site.getDomain(), site);
+                    SiteManager.setSite(site.getDomain(), site);
 
                 }
             });
@@ -96,9 +96,18 @@ public abstract class AbstractPageProcessor implements PageProcessor {
         this.domain = "";
     }
 
+//    @Override
+//    public void process(Page page) {
+//        boolean success = onProcess(page);
+//        if (success){
+//            // TODO ...
+//        }else{
+//            // TODO ...
+//        }
+//    }
     @Override
     public Site getSite() {
-        return manager.getSiteByDomain(domain);
+        return SiteManager.getSiteByDomain(domain);
     }
 
 }
