@@ -7,21 +7,17 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-import com.google.gson.Gson;
 import com.mljr.entity.MonitorData;
 import com.mljr.redis.RedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPoolConfig;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.SpiderListener;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 public class StatusCodeListener implements SpiderListener, Serializable {
@@ -35,7 +31,6 @@ public class StatusCodeListener implements SpiderListener, Serializable {
     // row:domain   column:状态码    value: 状态码出现次数
     private HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
 
-    JedisPoolConfig config = new JedisPoolConfig();
     private RedisClient redisClient = new RedisClient("127.0.0.1", 6379, 2000, 100, 10, 1000);
 
     public StatusCodeListener(String domain) {
@@ -65,9 +60,9 @@ public class StatusCodeListener implements SpiderListener, Serializable {
             } else {
                 table.put(domain, statusCode, 1);
             }
-            Long timeDiff = System.currentTimeMillis() - beginTime;
+            int timeDiff = (int)(System.currentTimeMillis() - beginTime)/1000;
             // 一分钟写一次库
-            if (timeDiff / 1000 / 60 >= 0.1) {
+            if (timeDiff >= 60) {
                 String currentTime = sdf.format(new Date());
                 String key = Joiner.on("-").join("status-code", domain);
 
