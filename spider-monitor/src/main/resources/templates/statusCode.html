@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 >
 <head>
-    <title>Layout</title>
+    <title>状态码监控</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
           href="../../css/bootstrap.min.css"/>
 </head>
@@ -25,7 +25,7 @@
             </tr>
             <tr th:each="data : ${dataList}">
 
-                <td><a th:href="@{'/detail/' + ${data.domain}}+'/other'" th:text="${data.domain}"></a></td>
+                <td><a th:href="@{|/detail/${data.domain}/other|}" th:text="${data.domain}"></a></td>
                 <td th:text="${data.time}"></td>
                 <td th:text="${data.totalRequests}"></td>
                 <td th:text="${data.successRate}+' %'"></td>
