@@ -8,6 +8,10 @@
   <artifactId>spider-monitor</artifactId>
   <packaging>war</packaging>
 
+  <properties>
+    <start-class>com.mljr.monitor.MonitorMain</start-class>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
