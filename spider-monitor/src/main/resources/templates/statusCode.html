@@ -25,7 +25,7 @@
             </tr>
             <tr th:each="data : ${dataList}">
 
-                <td><a th:href="@{|/detail/${data.domain}/other|}" th:text="${data.domain}"></a></td>
+                <td><a th:href="@{'/detail/' + ${data.domain}}+'/other'" th:text="${data.domain}"></a></td>
                 <td th:text="${data.time}"></td>
                 <td th:text="${data.totalRequests}"></td>
                 <td th:text="${data.successRate}+' %'"></td>
