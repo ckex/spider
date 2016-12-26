@@ -11,14 +11,11 @@ import java.util.Random;
 /**
  * Created by songchi on 16/12/26.
  */
-@Service
 public class ZkScheduler {
     protected transient org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ZkScheduler.class);
 
     private ZkClient zkClient = ZkUtils.getZkClient();
 
-
-    @Scheduled(cron = "0/10 * * * * ?")
     public void startZkMonitorTask() {
         new Thread(new Runnable() {
             @Override
