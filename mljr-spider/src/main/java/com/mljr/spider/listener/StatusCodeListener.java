@@ -34,7 +34,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
     // row:domain   column:状态码    value: 状态码出现次数
     private HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
 
-    private RedisClient redisClient = new RedisClient("127.0.0.1", 6379, 2000, 100, 10, 1000);
+    private RedisClient redisClient = new RedisClient("10.9.175.147", 6379, 2000, 100, 10, 1000);
 
     public StatusCodeListener(String domain) {
         this.domain = domain;
