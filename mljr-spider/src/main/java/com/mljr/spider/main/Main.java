@@ -3,6 +3,7 @@
  */
 package com.mljr.spider.main;
 
+import com.mljr.spider.scheduler.zk.ZkScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +28,10 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 		logger.info("start...");
-		Manager manager = new Manager();
-		manager.run();
+//		Manager manager = new Manager();
+//		manager.run();
+		ZkScheduler zkScheduler =new ZkScheduler();
+		zkScheduler.startZkMonitorTask();
 		synchronized (Main.class) {
 			try {
 				Main.class.wait();
