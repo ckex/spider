@@ -16,7 +16,7 @@ import java.util.Set;
  */
 @Service
 public class StatusCodeService {
-    private RedisClient redisClient = new RedisClient("127.0.0.1", 6379, 2000, 100, 10, 1000);
+    private RedisClient redisClient = new RedisClient("10.9.175.147", 6379, 2000, 100, 10, 1000);
 
     /**
      * 每家网站取最新的一条监控数据,然后汇总起来
