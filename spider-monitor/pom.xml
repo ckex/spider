@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>spider-monitor</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <properties>
     <start-class>com.mljr.monitor.MonitorMain</start-class>
