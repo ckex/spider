@@ -25,7 +25,7 @@ public class ZkUtils {
 
     private static final int TIME_OUT = 1000 * 60 * 1; // Minutes
 
-    private static final String ZK_URL = "127.0.0.1:2181";
+    private static final String ZK_URL = "106.75.80.159:2181";
 
     private static ZkClient zkClient;
 
