@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>状态码监控</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
+          href="../../css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <table class="table table-hover">
+            <tr>
+                <th>网站</th>
+                <th>时间</th>
+                <th>请求总数</th>
+                <th>成功率</th>
+                <th>200</th>
+                <th>401</th>
+                <th>403</th>
+                <th>404</th>
+                <th>500</th>
+                <th>501</th>
+                <th>504</th>
+            </tr>
+            <tr th:each="data : ${dataList}">
+
+                <td><a th:href="@{|/detail/${data.domain}/other|}" th:text="${data.domain}"></a></td>
+                <td th:text="${data.time}"></td>
+                <td th:text="${data.totalRequests}"></td>
+                <td th:text="${data.successRate}+' %'"></td>
+                <td th:text="${data.freq200}"></td>
+                <td th:text="${data.freq401}"></td>
+                <td th:text="${data.freq403}"></td>
+                <td th:text="${data.freq404}"></td>
+                <td th:text="${data.freq500}"></td>
+                <td th:text="${data.freq501}"></td>
+                <td th:text="${data.freq504}"></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+</body>
+</html>

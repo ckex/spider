@@ -13,10 +13,8 @@ public class ZkTest {
     @Test
     public void updateData() throws Exception {
 
-        String str = "{\"acceptStatCode\":[200],\"allCookies\":{},\"cookies\":{}," +
-                "\"cycleRetryTimes\":0,\"domain\":\"sogou.com\",\"headers\":{}," +
-                "\"retrySleepTime\":2000,\"retryTimes\":3,\"sleepTime\":300,\"startRequests\":[]," +
-                "\"startUrls\":[],\"timeOut\":5000,\"useGzip\":true,\"userAgent\":\"diqiu\"}";
+        String str = "{\"acceptStatCode\":[200],\"allCookies\":{},\"cookies\":{\"myCookie\":\"lisi778899\"},\"cycleRetryTimes\":0,\"domain\":\"sogou.com\",\"headers\":{\"myHeader\":\"zhangsan66\"},\"retrySleepTime\":2000,\"retryTimes\":3,\"sleepTime\":300,\"startRequests\":[],\"startUrls\":[]," +
+                "\"timeOut\":5000,\"useGzip\":true,\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36\"}";
         zkClient.writeData("/config/192.168.1.101/sogou.com",str);
 
     }

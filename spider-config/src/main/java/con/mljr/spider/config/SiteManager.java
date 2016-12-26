@@ -18,7 +18,7 @@ import java.util.Map;
  *         2016年12月17日,上午11:04:51
  */
 public class SiteManager {
-    protected transient final Logger logger = LoggerFactory.getLogger(SiteManager.class);
+    protected static transient final Logger logger = LoggerFactory.getLogger(SiteManager.class);
 
 //    public DynamicConfig getSiteByDomain(String domain) {
 //        return new DynamicConfig();
@@ -37,7 +37,7 @@ public class SiteManager {
         return siteMap.get(path);
     }
 
-    public synchronized void setSite(String domain, Site site) {
+    public synchronized static  void setSite(String domain, Site site) {
         try {
             String ip = InetAddress.getLocalHost().getHostAddress();
             String path = String.format("/config/%s/%s", ip, domain);
@@ -56,7 +56,7 @@ public class SiteManager {
         }
     }
 
-    public void compareSiteObject(Site oldSite, Site newSite) {
+    public static void compareSiteObject(Site oldSite, Site newSite) {
         if (!StringUtils.equals(oldSite.getUserAgent(), newSite.getUserAgent())) {
             oldSite.setUserAgent(newSite.getUserAgent());
         }

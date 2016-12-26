@@ -1,4 +1,4 @@
-system = require('system')
+system = require('system');
 address = system.args[1];
 var page = require('webpage').create();
 var url = address;
