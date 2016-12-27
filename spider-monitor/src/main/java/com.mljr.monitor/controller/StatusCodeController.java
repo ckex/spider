@@ -27,17 +27,19 @@ public class StatusCodeController {
 
         ModelAndView mav = new ModelAndView("statusCode");
         mav.addObject("dataList", dataList);
+        mav.addObject("totolCount", statusCodeService.totolCount(dataList));
         return mav;
     }
 
-    @RequestMapping("/detail/{domain}/other")
-    public ModelAndView detail(@PathVariable("domain") String domain) {
+    @RequestMapping("/detail/{serverIp}/{domain}/other")
+    public ModelAndView detail(@PathVariable("serverIp") String serverIp, @PathVariable("domain") String domain) {
 
-        List<String> jsonList = statusCodeService.getRecordByDomain(domain);
+        List<String> jsonList = statusCodeService.getRecordByDomain(serverIp, domain);
         List<MonitorData> dataList = statusCodeService.transferToObject(jsonList);
 
         ModelAndView mav = new ModelAndView("statusCode");
         mav.addObject("dataList", dataList);
+        mav.addObject("totolCount", statusCodeService.totolCount(dataList));
         return mav;
     }
 }
