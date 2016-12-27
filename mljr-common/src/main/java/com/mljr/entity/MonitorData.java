@@ -31,6 +31,9 @@ public class MonitorData implements Serializable {
     }
 
     public double getSuccessRate() {
+        if(totalRequests==0){
+            return 0;
+        }
         BigDecimal result =new BigDecimal(freq200*100).divide(new BigDecimal(totalRequests),2,BigDecimal.ROUND_HALF_EVEN);
 
         return result.doubleValue();

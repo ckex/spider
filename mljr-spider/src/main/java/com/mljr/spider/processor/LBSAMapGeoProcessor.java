@@ -20,20 +20,18 @@ import java.util.List;
  * 高德地图:根据地址信息得出经纬度
  */
 public class LBSAMapGeoProcessor extends AbstractPageProcessor {
-    
-	private static final String DAILY_QUERY_OVER_LIMIT = "10003";//当日限制标记
-    
-	private static Site site = Site.me().setDomain("lbs.amap.com")
+
+    private static Site site = Site.me().setDomain("lbs.amap.com")
             .setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
     private static final String SUCCESS = "1";
 
+    private static final String DAILY_QUERY_OVER_LIMIT = "10003";//当日限制标记
     public LBSAMapGeoProcessor() {
         super(site);
     }
-
 
     @Override
     public void process(Page page) {

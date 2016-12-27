@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mljr.entity.SiteConfig;
+import com.mljr.utils.IpUtils;
 import com.mljr.zk.ZkUtils;
 import con.mljr.spider.config.SiteManager;
 import org.I0Itec.zkclient.IZkDataListener;
@@ -51,7 +52,7 @@ public abstract class AbstractPageProcessor implements PageProcessor {
         this.domain = site.getDomain();
 
         try {
-            String ip = InetAddress.getLocalHost().getHostAddress();
+            String ip = IpUtils.getHostName();
             String path = String.format("/config/%s/%s", ip, domain);
             logger.debug("path =================" + path);
             Object object = zkClient.readData(path,true);

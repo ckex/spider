@@ -9,6 +9,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.HashBasedTable;
 import com.mljr.entity.MonitorData;
 import com.mljr.redis.RedisClient;
+import com.mljr.utils.IpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -70,7 +71,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
             if (timeDiff >= 60) {
                 String currentTime = sdf.format(new Date());
                 try {
-                    String ip = InetAddress.getLocalHost().getHostAddress();
+                    String ip = IpUtils.getHostName();
                     String key = Joiner.on("-").join("status-code", ip, domain);
                     MonitorData data = createObjectFromTable();
                     data.setTime(currentTime);

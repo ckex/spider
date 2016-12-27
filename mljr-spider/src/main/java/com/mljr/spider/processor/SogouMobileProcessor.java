@@ -1,6 +1,5 @@
 package com.mljr.spider.processor;
 
-import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
@@ -12,7 +11,7 @@ import us.codecraft.webmagic.selector.Selectable;
  */
 public class SogouMobileProcessor extends AbstractPageProcessor {
 
-    private static Site site = Site.me()
+    private static  final Site site = Site.me()
             .setDomain("sogou.com") //此字段在生成文件时用到
             .setSleepTime(5000)
             .setRetrySleepTime(4200)
@@ -36,8 +35,4 @@ public class SogouMobileProcessor extends AbstractPageProcessor {
         page.putField("",page.getHtml());
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("sogou.com");
-    }
 }
