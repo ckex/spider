@@ -1,8 +1,5 @@
 #!/bin/bash
 
-
-
-
 # ./build spider
 # ./build data-sync
 

@@ -23,11 +23,11 @@ public class SyncScheduler {
 	@Autowired
 	private AbstractTaskFactory abstractTaskFactory;
 
-	@Scheduled(cron = "0/10 * * * * ?")
+	@Scheduled(cron = "0/2 * * * * ?")
 	private void startMobileTask() {
 		MobileTask task = abstractTaskFactory.createMobileTask();
 		task.setName("mobile");
-		// task.run();
+		task.run();
 		logger.debug(task.toString());
 	}
 
@@ -59,6 +59,14 @@ public class SyncScheduler {
 	private void startLbsTask() {
 		LbsTask task = abstractTaskFactory.createLbsTask();
 		task.setName("lbs");
+		task.run();
+		logger.debug(task.toString());
+	}
+
+	//10小时执行一次
+	@Scheduled(cron = "10 0 0/10 * * ?")
+	private void startGxSkyTask() {
+		GxSkyTask task = abstractTaskFactory.createGxSkyTask();
 		task.run();
 		logger.debug(task.toString());
 	}

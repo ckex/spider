@@ -32,6 +32,9 @@ public class BasicConstant {
 
 	public static final String UTF8 = "UTF-8";
 
+	public static final String MOBILE = "mobile_info";
+	
 	public static final String TEXT_PLAIN = "text/plain";
+	
 
 }
