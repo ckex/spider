@@ -1,5 +1,6 @@
 package com.mljr.spider.scheduler.zk;
 
+import com.mljr.utils.IpUtils;
 import com.mljr.zk.ZkUtils;
 import org.I0Itec.zkclient.ZkClient;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,7 +23,7 @@ public class ZkScheduler {
             public void run() {
                 try {
                     while (true) {
-                        String ip = InetAddress.getLocalHost().getHostAddress();
+                        String ip = IpUtils.getHostName();
                         String path = String.format("/servers/%s", ip);
                         String data = new Random().nextInt(100000) + "";
                         System.out.println("服务器上传负载：" + data);

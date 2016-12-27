@@ -3,6 +3,7 @@
  */
 package con.mljr.spider.config;
 
+import com.mljr.utils.IpUtils;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class SiteManager {
     public static Site getSiteByDomain(String domain) {
         String ip = null;
         try {
-            ip = InetAddress.getLocalHost().getHostAddress();
+            ip = IpUtils.getHostName();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,7 +40,7 @@ public class SiteManager {
 
     public synchronized static  void setSite(String domain, Site site) {
         try {
-            String ip = InetAddress.getLocalHost().getHostAddress();
+            String ip = IpUtils.getHostName();
             String path = String.format("/config/%s/%s", ip, domain);
 
             if (siteMap.containsKey(path)) {
