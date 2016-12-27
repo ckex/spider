@@ -65,11 +65,6 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
 
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("lbsyun.baidu.com");
-    }
-
     private String getKeyByRequestUrl(String url) {
         List<NameValuePair> params = URLEncodedUtils.parse(url, Charset.forName(UTF_8));
         for (NameValuePair nameValuePair : params) {

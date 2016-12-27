@@ -44,8 +44,4 @@ public class LBSBaiduReGeoProcessor extends AbstractPageProcessor {
 
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("lbsyun.baidu.com-re");
-    }
 }

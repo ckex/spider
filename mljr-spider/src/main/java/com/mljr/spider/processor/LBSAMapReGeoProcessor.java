@@ -44,8 +44,4 @@ public class LBSAMapReGeoProcessor extends AbstractPageProcessor {
         }
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("lbs.amap.com-re");
-    }
 }

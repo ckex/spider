@@ -59,8 +59,4 @@ public class HuoChePiaoProcessor extends AbstractPageProcessor {
         page.putField("", JSON.toJSON(transferVO));
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("huochepiao.com");
-    }
 }

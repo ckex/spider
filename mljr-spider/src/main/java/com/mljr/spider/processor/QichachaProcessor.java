@@ -63,11 +63,6 @@ public class QichachaProcessor extends AbstractPageProcessor {
 
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("qichacha.com");
-    }
-
     public static void main(String[] args) {
         Spider.create(new QichachaProcessor()).addUrl("http://www.qichacha.com/firm_2abadeb7044eed1a17f3202940308109.shtml")
                 .addUrl("http://www.qichacha.com/firm_a0bd2d9eb184996fcb42c722534c6993")

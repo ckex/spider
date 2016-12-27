@@ -56,8 +56,4 @@ public class YinHangKa388Processor extends AbstractPageProcessor {
         page.putField("", JSON.toJSON(transferVO));
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("yinhangka.388g.com");
-    }
 }

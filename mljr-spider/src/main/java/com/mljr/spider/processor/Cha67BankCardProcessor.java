@@ -57,8 +57,4 @@ public class Cha67BankCardProcessor extends AbstractPageProcessor {
 
     }
 
-    @Override
-    public Site getSite() {
-        return  SiteManager.getSiteByDomain("67cha.com");
-    }
 }

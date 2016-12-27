@@ -70,11 +70,6 @@ public class LBSAMapGeoProcessor extends AbstractPageProcessor {
         }
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("lbs.amap.com");
-    }
-
     private String getKeyByRequestUrl(String url) {
         List<NameValuePair> params = URLEncodedUtils.parse(url, Charset.forName(UTF_8));
         for (NameValuePair nameValuePair : params) {

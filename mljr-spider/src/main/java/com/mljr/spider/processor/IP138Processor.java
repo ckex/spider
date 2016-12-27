@@ -38,9 +38,4 @@ public class IP138Processor extends AbstractPageProcessor {
 		page.putField("",page.getHtml());
 	}
 
-	@Override
-	public Site getSite() {
-		return  SiteManager.getSiteByDomain("ip138.com");
-	}
-
 }

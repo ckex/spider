@@ -59,11 +59,6 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 
 	}
 
-	@Override
-	public Site getSite() {
-		return SiteManager.getSiteByDomain("tianyancha.com");
-	}
-
 	public static void main(String[] args) {
 		Spider.create(new TianyanchaProcessor())
 				.addUrl("http://www.tianyancha.com/search?key=%E5%AE%9C%E9%83%BD%E5%B8%82%E6%9E%9D%E5%9F%8E%E9%95%87%E4%B8%AD%E4%B8%BA%E8%81%94%E9%80%9A%E5%90%88%E4%BD%9C%E8%90%A5%E4%B8%9A%E5%8E%85&checkFrom=searchBox")

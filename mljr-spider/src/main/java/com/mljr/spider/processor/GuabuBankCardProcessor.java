@@ -59,8 +59,4 @@ public class GuabuBankCardProcessor extends AbstractPageProcessor {
         }
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("www.guabu.com");
-    }
 }

@@ -38,10 +38,4 @@ public class Huoche114Processor extends AbstractPageProcessor {
 		}
 		page.putField("",page.getHtml());
 	}
-
-	@Override
-	public Site getSite() {
-		return SiteManager.getSiteByDomain("114huoche.com");
-	}
-
 }
