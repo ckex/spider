@@ -22,7 +22,7 @@ public class StatusCodeService {
     /**
      * 每家网站取最新的一条监控数据,然后汇总起来
      */
-    public List<String> getLatestRecord(){
+    public List<String> getLatestRecord() {
         return redisClient.use(new Function<Jedis, List<String>>() {
 
             @Override
@@ -38,23 +38,54 @@ public class StatusCodeService {
     }
 
     /**
-     * 取某家网站的最新的100天记录
+     * 取某家网站的最新的100条记录
      */
-    public List<String> getRecordByDomain(String serverIp,String domain){
+    public List<String> getRecordByDomain(String serverIp, String domain) {
         return redisClient.use(new Function<Jedis, List<String>>() {
             @Override
             public List<String> apply(Jedis jedis) {
-                return jedis.lrange(Joiner.on("-").join("status-code",serverIp,domain), 0, 99);
+                return jedis.lrange(Joiner.on("-").join("status-code", serverIp, domain), 0, 99);
             }
         });
     }
 
-    public List<MonitorData> transferToObject(List<String> jsonList){
+    public List<MonitorData> transferToObject(List<String> jsonList) {
         List<MonitorData> dataList = new ArrayList<>();
         for (String jsonStr : jsonList) {
             MonitorData data = JSON.parseObject(jsonStr, MonitorData.class);
             dataList.add(data);
         }
         return dataList;
+    }
+
+    public MonitorData totolCount(List<MonitorData> list) {
+        int allTotalRequests = 0;
+        int total200 = 0;
+        int total401 = 0;
+        int total403 = 0;
+        int total404 = 0;
+        int total500 = 0;
+        int total501 = 0;
+        int total504 = 0;
+        for (MonitorData data : list) {
+            allTotalRequests += data.getTotalRequests();
+            total200 += data.getFreq200();
+            total401 += data.getFreq401();
+            total403 += data.getFreq403();
+            total404 += data.getFreq404();
+            total500 += data.getFreq500();
+            total501 += data.getFreq501();
+            total504 += data.getFreq504();
+        }
+        MonitorData totalData = new MonitorData();
+        totalData.setTotalRequests(allTotalRequests);
+        totalData.setFreq200(total200);
+        totalData.setFreq401(total401);
+        totalData.setFreq403(total403);
+        totalData.setFreq404(total404);
+        totalData.setFreq500(total500);
+        totalData.setFreq501(total501);
+        totalData.setFreq504(total504);
+        return totalData;
     }
 }
