@@ -65,7 +65,7 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 
 	abstract Request buildRequst(String message);
 
-	private BlockingQueue<Request> blockQueue = new LinkedBlockingQueue<Request>(QUEUE_SIZE);
+	private BlockingQueue<Request> blockQueue = new LinkedBlockingQueue<Request>();//默认为最大(blank list用到)
 
 	public AbstractScheduler(final Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
 		super();
@@ -282,9 +282,14 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 	protected Request take() {
 		for (;;) {
 			try {
+				Request request=blockQueue.poll();
+				if (logger.isDebugEnabled()) {
+					logger.debug("block queue poll data.time:{},request:{}", System.currentTimeMillis(), null == request ? null : request.toString());
+				}
+				if(null!=request)
+					return request;
 				String msg = pollMessage();
 				return buildRequst(msg);
-				// return blockQueue.take();
 			} catch (Exception e) {
 				if (logger.isDebugEnabled()) {
 					e.printStackTrace();
@@ -293,5 +298,4 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 			}
 		}
 	}
-
 }

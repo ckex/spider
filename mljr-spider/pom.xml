@@ -35,6 +35,10 @@
 			<artifactId>dom4j</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>net.sourceforge.tess4j</groupId>
+			<artifactId>tess4j</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
@@ -54,7 +58,6 @@
 			<artifactId>mljr-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
 	</dependencies>
 
 

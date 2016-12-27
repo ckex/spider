@@ -49,6 +49,8 @@ public abstract class AbstractMessage {
 	protected static final String LBS_AMAP_REGEO_LOG_NAME="lbs-amap-regeo-data";
 	protected static final String LBS_BAIDU_GEO_LOG_NAME="lbs-baidu-geo-data";
 	protected static final String LBS_BAIDU_REGEO_LOG_NAME="lbs-baidu-regeo-data";
+	/*身份证黑名单日志入口*/
+	protected static final String BLACK_IDCARD_LOG_NAME="black_idCard_log_data";
 
 	// RabbitMQ
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";
@@ -71,6 +73,9 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_LBS_BAIDU_GEO_QUEUE_ID="lbs-baidu-geo";
 	protected static final String RMQ_LBS_BAIDU_REGEO_QUEUE_ID="lbs-baidu-regeo";
 
+	//身份证黑名单
+	protected static final String RMQ_LBS_BLACK_IDCARD_ID="bl-gxsky";
+
 	// Downloader error listener
 	protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";
 	protected static final String QICHACHA_LISTENER_LOG_NAME = "qichacha-downloader";
@@ -92,6 +97,9 @@ public abstract class AbstractMessage {
 	protected static final String LBS_AMAP_REGEO_LISTENER_LOG_NAME="lbs-amap-regeo-downloader";
 	protected static final String LBS_BAIDU_GEO_LISTENER_LOG_NAME="lbs-baidu-geo-downloader";
 	protected static final String LBS_BAIDU_REGEO_LISTENER_LOG_NAME="lbs-baidu-regeo-downloader";
+
+	//身份证黑名单
+	protected static final String GXSKY_BLACKID_CARD_LOG_NAME = "blackidcard-downloader";
 
 	public AbstractMessage() {
 		super();
