@@ -22,10 +22,10 @@ public class GxskyProcessor extends AbstractPageProcessor {
 
     //构造函数
     public GxskyProcessor() {
-        super();
+        super(site);
     }
 
-    private Site site = Site.me()
+    private static final Site site = Site.me()
             .setDomain("idcard.gxsky.com")
             .setSleepTime(1000)
             .setRetrySleepTime(1000)
@@ -89,8 +89,4 @@ public class GxskyProcessor extends AbstractPageProcessor {
         }
     }
 
-    @Override
-    public Site getSite() {
-        return site;
-    }
 }

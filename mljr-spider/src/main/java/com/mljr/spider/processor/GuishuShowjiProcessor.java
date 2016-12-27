@@ -50,9 +50,4 @@ public class GuishuShowjiProcessor extends AbstractPageProcessor {
 //		}
 	}
 
-	@Override
-	public Site getSite() {
-		return SiteManager.getSiteByDomain("guishu.showji.com");
-	}
-
 }

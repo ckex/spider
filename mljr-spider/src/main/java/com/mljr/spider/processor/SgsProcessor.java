@@ -64,11 +64,6 @@ public class SgsProcessor extends AbstractPageProcessor {
         page.putField("变更信息",html.xpath("//table[@id='alterTable']/tbody/tidyText()"));
     }
 
-    @Override
-    public Site getSite() {
-        return SiteManager.getSiteByDomain("sgs.gov.cn");
-    }
-
     public void setCookie(Site site) throws Exception {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpClientContext context = HttpClientContext.create();

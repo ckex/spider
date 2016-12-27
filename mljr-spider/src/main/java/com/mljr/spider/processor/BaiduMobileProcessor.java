@@ -76,9 +76,4 @@ public class BaiduMobileProcessor extends AbstractPageProcessor {
 		}
 	}
 
-	@Override
-	public Site getSite() {
-		return  SiteManager.getSiteByDomain("baidu-mobile");
-	}
-
 }

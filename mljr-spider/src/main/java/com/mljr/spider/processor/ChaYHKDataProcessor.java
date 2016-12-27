@@ -60,8 +60,4 @@ public class ChaYHKDataProcessor extends AbstractPageProcessor {
         page.putField("", JSON.toJSON(transferVO));
     }
 
-    @Override
-    public Site getSite() {
-        return  SiteManager.getSiteByDomain("cha.yinhangkadata.com");
-    }
 }

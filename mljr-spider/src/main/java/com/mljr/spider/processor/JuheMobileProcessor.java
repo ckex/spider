@@ -57,9 +57,4 @@ public class JuheMobileProcessor extends AbstractPageProcessor {
 		}
 	}
 
-	@Override
-	public Site getSite() {
-		return SiteManager.getSiteByDomain("juhe.cn");
-	}
-
 }

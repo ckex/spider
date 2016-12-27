@@ -43,9 +43,4 @@ public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
     }
 
-  @Override
-  public Site getSite() {
-    return SiteManager.getSiteByDomain("saige-gps");
-  }
-
 }

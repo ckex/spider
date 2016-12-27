@@ -13,12 +13,12 @@ public class FqblackProcessor extends AbstractPageProcessor {
 
     private final static String TARGET_URL_REGEX = "http://www\\.fqblack\\.com/detail/.*";
 
-    private Site site = Site.me().setDomain("fqblack.com")
+    private final static Site site = Site.me().setDomain("fqblack.com")
             .addHeader("Accept", "application/json, text/plain, */*").setRetrySleepTime(3000).setRetryTimes(3)
             .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0");
 
     public FqblackProcessor() {
-        super();
+        super(site);
     }
 
     @Override
@@ -39,11 +39,6 @@ public class FqblackProcessor extends AbstractPageProcessor {
             // handle targetUrl
             page.putField("", page.getHtml());
         }
-    }
-
-    @Override
-    public Site getSite() {
-        return this.site;
     }
 
     public static void main(String[] args) {
