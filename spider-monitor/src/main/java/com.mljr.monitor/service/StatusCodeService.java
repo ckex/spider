@@ -2,6 +2,7 @@ package com.mljr.monitor.service;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.mljr.entity.MonitorData;
 import com.mljr.redis.RedisClient;
 import org.springframework.stereotype.Service;
@@ -39,11 +40,11 @@ public class StatusCodeService {
     /**
      * 取某家网站的最新的100天记录
      */
-    public List<String> getRecordByDomain(String domain){
+    public List<String> getRecordByDomain(String serverIp,String domain){
         return redisClient.use(new Function<Jedis, List<String>>() {
             @Override
             public List<String> apply(Jedis jedis) {
-                return jedis.lrange("status-code-" + domain, 0, 99);
+                return jedis.lrange(Joiner.on("-").join("status-code",serverIp,domain), 0, 99);
             }
         });
     }
