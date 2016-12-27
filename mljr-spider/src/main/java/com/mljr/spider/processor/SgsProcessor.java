@@ -1,5 +1,6 @@
 package com.mljr.spider.processor;
 
+import con.mljr.spider.config.SiteManager;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -20,8 +21,11 @@ public class SgsProcessor extends AbstractPageProcessor {
 
     public final String sgs_url = "http://www.sgs.gov.cn/notice/notice/view?uuid=ovY9VXcgn6d.szSRK8Tt32poa30MYwaM&tab=01";
 
+    public static Site site = Site.me().setDomain("sgs.gov.cn").setRetrySleepTime(1500).setRetryTimes(3)
+            .setUserAgent(
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
     public SgsProcessor() {
-        super();
+        super(site);
     }
 
     @Override
@@ -58,19 +62,6 @@ public class SgsProcessor extends AbstractPageProcessor {
         page.putField("股东信息",html.xpath("//table[@id='investorTable']/tbody/tidyText()"));
         // 变更信息
         page.putField("变更信息",html.xpath("//table[@id='alterTable']/tbody/tidyText()"));
-    }
-
-    @Override
-    public Site getSite() {
-        Site site = Site.me().setDomain("www.sgs.gov.cn").setRetrySleepTime(1500).setRetryTimes(3)
-                .setUserAgent(
-                        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
-        try {
-            setCookie(site);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return site;
     }
 
     public void setCookie(Site site) throws Exception {

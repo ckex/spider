@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Splitter;
 
+import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
@@ -22,12 +23,12 @@ import us.codecraft.webmagic.selector.Selectable;
  */
 public class BaiduMobileProcessor extends AbstractPageProcessor {
 
-	private Site site = Site.me().setDomain("baidu-mobile").setSleepTime(5).setRetrySleepTime(1500).setRetryTimes(3)
+	private static Site site = Site.me().setDomain("baidu-mobile").setSleepTime(5).setRetrySleepTime(1500).setRetryTimes(3)
 			.setUserAgent(
 					"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
 	public BaiduMobileProcessor() {
-		super();
+		super(site);
 	}
 
 	@Override
@@ -73,11 +74,6 @@ public class BaiduMobileProcessor extends AbstractPageProcessor {
 			// page.putField("type", dataObj.get("type"));
 			// page.putField("city", dataObj.get("city"));
 		}
-	}
-
-	@Override
-	public Site getSite() {
-		return this.site;
 	}
 
 }

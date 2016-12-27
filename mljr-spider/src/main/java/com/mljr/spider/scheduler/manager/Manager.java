@@ -5,6 +5,8 @@ package com.mljr.spider.scheduler.manager;
 
 import java.util.Date;
 
+import com.mljr.constant.DomainConstant;
+import com.mljr.spider.listener.StatusCodeListener;
 import com.mljr.spider.processor.*;
 import com.mljr.spider.scheduler.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -81,7 +83,7 @@ public class Manager extends AbstractMessage {
 				.setDownloader(new RestfulDownloader())
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(SAIGE_GPS_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_SAIGE_GPS)));
 		spider.setExecutorService(DEFAULT_THREAD_POOL);
 		final AbstractScheduler scheduler = new SaiGeGPSScheduler(spider, GPS_RPC_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -98,7 +100,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).setDownloader(new RestfulDownloader())
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(JUHE_MOBILE_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_JUHE)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_JUHE_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new JuheMobileScheduler(spider, RMQ_JUHE_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -115,7 +117,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(BAIDU_MOBILE_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_BAIDU_MOBILE)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_BAIDU_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new BaiduMobileScheduler(spider, RMQ_BAIDU_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -131,7 +133,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(new SogouMobileProcessor()).addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(SOGOU_MOBILE_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener,new StatusCodeListener(DomainConstant.DOMAIN_SOGOU)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_SOGOU_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new SogouMobileScheduler(spider, RMQ_SOGOU_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -148,7 +150,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(new IP138Processor()).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(IP138_MOBILE_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_IP138)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_IP138_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new IP138Scheduler(spider, RMQ_IP138_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -165,7 +167,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(new Huoche114Processor()).addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(HUOCHE114_MOBILE_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_114HUOCHE)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_HUOCHE114_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new Huoche114Scheduler(spider, RMQ_HUOCHE114_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -182,7 +184,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(new GuishuShowjiProcessor()).addPipeline(htmlPipeline)
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(GUISHU_MOBILE_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_GUISHU_SHOWJI)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new GuishuShowjiScheduler(spider, RMQ_GUISHUSHOWJI_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -199,7 +201,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(new TianyanchaProcessor()).addPipeline(htmlPipeline)
 				.thread(1).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(TIANYANCHA_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_TIANYANCHA)));
 		spider.setExecutorService(newThreadPool(1, 1, RMQ_TIANYANCHA_QUEUE_ID));
 		final AbstractScheduler scheduler = new TianyanchaScheduler(spider, RMQ_TIANYANCHA_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -217,7 +219,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(GUABU_BANK_CARD_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_GUABU)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_GUABU_BANK_CARD_QUEUE_ID));
 		final AbstractScheduler scheduler = new GuabuBankCardScheduler(spider, RMQ_GUABU_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -234,7 +236,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(HUOCHEPIAO_BANK_CARD_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_HUOCHEPIAO)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_HCP_BANK_CARD_QUEUE_ID));
 		final AbstractScheduler scheduler = new HuoChePiaoScheduler(spider, RMQ_HCP_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -251,7 +253,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(CHA67_BANK_CARD_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_67CHA)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_CHA67_BANK_CARD_QUEUE_ID));
 		final AbstractScheduler scheduler = new Cha67BankCardScheduler(spider, RMQ_CHA67_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -268,7 +270,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(YHK388_BANK_CARD_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_YINHANGKA_388G)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_YHK388_BANK_CARD_QUEUE_ID));
 		final AbstractScheduler scheduler = new YinHangKa388Scheduler(spider, RMQ_YHK388_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -285,7 +287,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(CHAYHK_BANK_CARD_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_CHA_YINHANGKADATA)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_CHAYHK_BANK_CARD_QUEUE_ID));
 		final AbstractScheduler scheduler = new ChaYHKDataScheduler(spider, RMQ_CHAYHK_BANK_CARD_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -302,7 +304,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_AMAP_GEO_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_LBS_AMAP)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_LBS_AMAP_GEO_QUEUE_ID));
 		final AbstractScheduler scheduler = new LBSAMapGeoScheduler(spider, RMQ_LBS_AMAP_GEO_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -319,7 +321,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_AMAP_REGEO_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_LBS_AMAP_RE)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_LBS_AMAP_REGEO_QUEUE_ID));
 		final AbstractScheduler scheduler = new LBSAMapReGeoScheduler(spider, RMQ_LBS_AMAP_REGEO_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -336,7 +338,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_BAIDU_GEO_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_LBSYUN_BAIDU)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_LBS_BAIDU_GEO_QUEUE_ID));
 		final AbstractScheduler scheduler = new LBSBaiduGeoScheduler(spider, RMQ_LBS_BAIDU_GEO_QUEUE_ID);
 		spider.setScheduler(scheduler);
@@ -353,7 +355,7 @@ public class Manager extends AbstractMessage {
 		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(LBS_BAIDU_REGEO_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_LBSYUN_BAIDU_RE)));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_LBS_BAIDU_REGEO_QUEUE_ID));
 		final AbstractScheduler scheduler = new LBSBaiduReGeoScheduler(spider, RMQ_LBS_BAIDU_REGEO_QUEUE_ID);
 		spider.setScheduler(scheduler);

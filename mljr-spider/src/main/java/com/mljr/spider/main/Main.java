@@ -4,6 +4,7 @@
 package com.mljr.spider.main;
 
 import com.mljr.spider.task.LBSTask;
+import com.mljr.spider.scheduler.zk.ZkScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,8 @@ public class Main {
         startLBSTask();
         Manager manager = new Manager();
         manager.run();
+        ZkScheduler zkScheduler =new ZkScheduler();
+        zkScheduler.startZkMonitorTask();
         synchronized (Main.class) {
             try {
                 Main.class.wait();

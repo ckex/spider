@@ -20,6 +20,8 @@
 		<module>grpc</module>
 		<module>data-sync</module>
 		<module>mljr-common</module>
+		<module>spider-monitor</module>
+		<module>spider-config</module>
 	</modules>
 
 	<properties>
@@ -47,6 +49,7 @@
 		<rabbitmq.version>3.6.5</rabbitmq.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<tess4j.version>3.2.1</tess4j.version>
+		<spring-boot.version>1.2.4.RELEASE</spring-boot.version>
 	</properties>
 
 	<dependencyManagement>
@@ -557,6 +560,13 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.101tec/zkclient -->
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>0.10</version>
+		</dependency>
+
 	</dependencies>
 
 	<profiles>
@@ -715,6 +725,20 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>2.9</version>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>

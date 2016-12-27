@@ -3,6 +3,7 @@
  */
 package com.mljr.spider.processor;
 
+import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Selectable;
@@ -14,11 +15,11 @@ import us.codecraft.webmagic.selector.Selectable;
  */
 public class Huoche114Processor extends AbstractPageProcessor {
 
-	private Site site = Site.me().setDomain("114huoche.com").setSleepTime(300).setRetrySleepTime(2000).setRetryTimes(3).setUserAgent(
+	private static Site site = Site.me().setDomain("114huoche.com").setSleepTime(300).setRetrySleepTime(2000).setRetryTimes(3).setUserAgent(
 			"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
 	public Huoche114Processor() {
-		super();
+		super(site);
 	}
 
 	@Override
@@ -37,10 +38,4 @@ public class Huoche114Processor extends AbstractPageProcessor {
 		}
 		page.putField("",page.getHtml());
 	}
-
-	@Override
-	public Site getSite() {
-		return this.site;
-	}
-
 }

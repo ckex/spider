@@ -1,6 +1,7 @@
 package com.mljr.spider.processor;
 
 import com.mljr.spider.storage.LocalFilePipeline;
+import con.mljr.spider.config.SiteManager;
 import org.apache.commons.lang3.StringUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -15,11 +16,11 @@ import us.codecraft.webmagic.selector.Selectable;
  */
 public class QichachaProcessor extends AbstractPageProcessor {
 
-    private Site site = Site.me().setDomain("www.qichacha.com/").setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
+    private static Site site = Site.me().setDomain("qichacha.com").setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
     public QichachaProcessor() {
-        super();
+        super(site);
     }
 
     @Override
@@ -60,11 +61,6 @@ public class QichachaProcessor extends AbstractPageProcessor {
         page.putField("公司简介",html.xpath("//*[@id=\"textShowMore\"]/text()"));
 
 
-    }
-
-    @Override
-    public Site getSite() {
-        return this.site;
     }
 
     public static void main(String[] args) {

@@ -10,34 +10,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>us.codecraft</groupId>
-			<artifactId>webmagic-core</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-codec</groupId>
-					<artifactId>commons-codec</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>us.codecraft</groupId>
-			<artifactId>webmagic-extension</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>com.ckex</groupId>
 			<artifactId>umq-client</artifactId>
 			<version>${project.version}</version>
@@ -54,6 +26,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.ckex</groupId>
+			<artifactId>spider-config</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 		</dependency>
@@ -61,12 +38,26 @@
 			<groupId>net.sourceforge.tess4j</groupId>
 			<artifactId>tess4j</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>0.10</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.ckex</groupId>
+			<artifactId>mljr-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 
