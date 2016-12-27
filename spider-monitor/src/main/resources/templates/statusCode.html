@@ -45,6 +45,18 @@
                 <td th:text="${data.freq501}"></td>
                 <td th:text="${data.freq504}"></td>
             </tr>
+            <tr>
+                <td colspan="3">总计</td>
+                <td th:text="${totolCount.totalRequests}"></td>
+                <td th:text="${totolCount.successRate}+' %'"></td>
+                <td th:text="${totolCount.freq200}"></td>
+                <td th:text="${totolCount.freq401}"></td>
+                <td th:text="${totolCount.freq403}"></td>
+                <td th:text="${totolCount.freq404}"></td>
+                <td th:text="${totolCount.freq500}"></td>
+                <td th:text="${totolCount.freq501}"></td>
+                <td th:text="${totolCount.freq504}"></td>
+            </tr>
 
         </table>
     </div>
