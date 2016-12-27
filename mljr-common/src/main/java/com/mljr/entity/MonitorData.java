@@ -7,6 +7,7 @@ import java.math.RoundingMode;
 public class MonitorData implements Serializable {
     private String time;
     private String domain;
+    private String serverIp;
     private int totalRequests;
     private int freq200;
     private int freq401;
@@ -19,6 +20,14 @@ public class MonitorData implements Serializable {
     private double successRate;
 
     public MonitorData() {
+    }
+
+    public String getServerIp() {
+        return serverIp;
+    }
+
+    public void setServerIp(String serverIp) {
+        this.serverIp = serverIp;
     }
 
     public double getSuccessRate() {
@@ -117,6 +126,8 @@ public class MonitorData implements Serializable {
         return "MonitorData{" +
                 "time='" + time + '\'' +
                 ", domain='" + domain + '\'' +
+                ", serverIp='" + serverIp + '\'' +
+                ", totalRequests=" + totalRequests +
                 ", freq200=" + freq200 +
                 ", freq401=" + freq401 +
                 ", freq403=" + freq403 +
@@ -124,6 +135,7 @@ public class MonitorData implements Serializable {
                 ", freq500=" + freq500 +
                 ", freq501=" + freq501 +
                 ", freq504=" + freq504 +
+                ", successRate=" + successRate +
                 '}';
     }
 }

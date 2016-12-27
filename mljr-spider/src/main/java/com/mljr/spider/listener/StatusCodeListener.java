@@ -16,6 +16,7 @@ import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.SpiderListener;
 
 import java.io.Serializable;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -64,33 +65,40 @@ public class StatusCodeListener implements SpiderListener, Serializable {
             } else {
                 table.put(domain, statusCode, 1);
             }
-            int timeDiff = (int)(System.currentTimeMillis() - beginTime)/1000;
+            int timeDiff = (int) (System.currentTimeMillis() - beginTime) / 1000;
             // 一分钟写一次库
             if (timeDiff >= 60) {
                 String currentTime = sdf.format(new Date());
-                String key = Joiner.on("-").join("status-code", domain);
+                try {
+                    String ip = InetAddress.getLocalHost().getHostAddress();
+                    String key = Joiner.on("-").join("status-code", ip, domain);
+                    MonitorData data = createObjectFromTable();
+                    data.setTime(currentTime);
+                    data.setServerIp(ip);
+                    data.setDomain(domain);
+                    data.setTotalRequests(totalRequests.get());
 
-                MonitorData data = createObjectFromTable();
-                data.setTime(currentTime);
-                data.setDomain(domain);
-                data.setTotalRequests(totalRequests.get());
+                    String jsonStr = JSON.toJSONString(data);
 
-                String jsonStr  = JSON.toJSONString(data);
+                    System.out.println("### " + jsonStr);
+                    logger.debug("### " + jsonStr);
+                    // 写库
+                    redisClient.use(new Function<Jedis, String>() {
 
-                System.out.println("### " + jsonStr);
-                logger.debug("### " + jsonStr);
-                // 写库
-                redisClient.use(new Function<Jedis, String>() {
+                        @Override
+                        public String apply(Jedis jedis) {
+                            jedis.lpush(key, jsonStr);
+                            return null;
+                        }
+                    });
+                    totalRequests.set(0);
+                    beginTime = null;
+                    table.clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.error("状态码监控报错", e);
+                }
 
-                    @Override
-                    public String apply(Jedis jedis) {
-                        jedis.lpush(key, jsonStr);
-                        return null;
-                    }
-                });
-                totalRequests.set(0);
-                beginTime = null;
-                table.clear();
             }
         }
     }
