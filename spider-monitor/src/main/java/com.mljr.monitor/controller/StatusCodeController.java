@@ -27,6 +27,7 @@ public class StatusCodeController {
 
         ModelAndView mav = new ModelAndView("statusCode");
         mav.addObject("dataList", dataList);
+        mav.addObject("totolCount", statusCodeService.totolCount(dataList));
         return mav;
     }
 
@@ -38,6 +39,7 @@ public class StatusCodeController {
 
         ModelAndView mav = new ModelAndView("statusCode");
         mav.addObject("dataList", dataList);
+        mav.addObject("totolCount", statusCodeService.totolCount(dataList));
         return mav;
     }
 }
