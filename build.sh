@@ -9,7 +9,7 @@
 function build_spider(){
 	echo "build spider"
 	mvn clean 
-	mvn -T1C -P production -pl mljr-common,umq-client,grpc,mljr-spider,spider-monitor,spider-config package -Dmaven.test.skip -U -X
+	mvn -T1C -P production -pl mljr-common,umq-client,grpc,mljr-spider,spider-config package -Dmaven.test.skip -U -X
 }
 
 function build_data_sync(){
