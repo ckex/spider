@@ -1,7 +1,7 @@
 /**
  * 
  */
-package con.mljr.spider.config;
+package com.mljr.spider.config;
 
 import us.codecraft.webmagic.Site;
 
