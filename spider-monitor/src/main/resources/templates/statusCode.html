@@ -66,7 +66,9 @@
             <tr>
                 <td colspan="3">总计</td>
                 <td th:text="${totolCount.totalRequests}"></td>
-                <td th:text="${totolCount.successRate}+' %'"></td>
+                <td th:text="${totolCount.freq200-totolCount.freqParseFail}"></td>
+                <td></td>
+                <td></td>
                 <td th:text="${totolCount.freq200}"></td>
                 <td th:text="${totolCount.freq301}"></td>
                 <td th:text="${totolCount.freq302}"></td>
