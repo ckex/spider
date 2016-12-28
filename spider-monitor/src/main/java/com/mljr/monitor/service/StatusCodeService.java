@@ -72,6 +72,7 @@ public class StatusCodeService {
         int total500 = 0;
         int total501 = 0;
         int total504 = 0;
+        int totalParseFail = 0;
         for (MonitorData data : list) {
             allTotalRequests += data.getTotalRequests();
             total200 += data.getFreq200();
@@ -85,6 +86,7 @@ public class StatusCodeService {
             total500 += data.getFreq500();
             total501 += data.getFreq501();
             total504 += data.getFreq504();
+            totalParseFail+= data.getFreqParseFail();
         }
         MonitorData totalData = new MonitorData();
         totalData.setTotalRequests(allTotalRequests);
@@ -99,6 +101,7 @@ public class StatusCodeService {
         totalData.setFreq500(total500);
         totalData.setFreq501(total501);
         totalData.setFreq504(total504);
+        totalData.setFreqParseFail(totalParseFail);
         return totalData;
     }
 }
