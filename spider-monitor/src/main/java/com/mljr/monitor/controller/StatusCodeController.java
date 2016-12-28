@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -24,6 +26,12 @@ public class StatusCodeController {
 
         List<String> jsonList = statusCodeService.getLatestRecord();
         List<MonitorData> dataList = statusCodeService.transferToObject(jsonList);
+        Collections.sort(dataList, new Comparator<MonitorData>() {
+            @Override
+            public int compare(MonitorData o1, MonitorData o2) {
+                return o1.getDomain().compareTo(o2.getDomain());
+            }
+        });
 
         ModelAndView mav = new ModelAndView("statusCode");
         mav.addObject("dataList", dataList);
