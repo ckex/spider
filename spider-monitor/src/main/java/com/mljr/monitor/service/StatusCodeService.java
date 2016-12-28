@@ -3,6 +3,7 @@ package com.mljr.monitor.service;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.mljr.common.ServiceConfig;
 import com.mljr.entity.MonitorData;
 import com.mljr.redis.RedisClient;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 @Service
 public class StatusCodeService {
-    private RedisClient redisClient = new RedisClient("10.9.175.147", 6379, 2000, 100, 10, 1000);
+    private static RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
 
     /**
      * 每家网站取最新的一条监控数据,然后汇总起来
