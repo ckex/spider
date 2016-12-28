@@ -17,29 +17,29 @@ public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
     private static final Site site = Site.me().setDomain("saige-gps").setCharset(UTF_8);
 
-    public SaiGeGPSProcessor() {
-        super(site);
-    }
-
     @Override
-    public void process(Page page) {
+    boolean onProcess(Page page) {
         String json = page.getJson().get();
         if (StringUtils.isBlank(json)) {
             logger.warn("saige-gps response no data.url:" + page.getUrl().get());
-            return;
+            return true;
         }
         JSONObject jsonObject = JSON.parseObject(json);
         boolean success = jsonObject.getBooleanValue("success");
         if (!success) {
             logger.warn("saige-gps request data failure.url:" + page.getUrl().get());
-            return;
+            return true;
         }
 
         JSONTransferVO jsonTransferVO = new JSONTransferVO();
         jsonTransferVO.setUrl(page.getUrl().get());
         jsonTransferVO.setContext(json);
         page.putField("", JSON.toJSON(jsonTransferVO));
+        return true;
+    }
 
+    public SaiGeGPSProcessor() {
+        super(site);
     }
 
 }

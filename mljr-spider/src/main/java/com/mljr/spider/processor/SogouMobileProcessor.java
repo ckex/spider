@@ -1,5 +1,8 @@
 package com.mljr.spider.processor;
 
+import com.google.common.collect.HashBasedTable;
+import com.mljr.spider.config.SiteManager;
+import com.mljr.spider.listener.StatusCodeListener;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
@@ -24,15 +27,19 @@ public class SogouMobileProcessor extends AbstractPageProcessor {
     }
 
     @Override
-    public void process(Page page) {
+    public boolean onProcess(Page page) {
         Html html=page.getHtml();
         //*[@id="seccodeInput"]
         Selectable selectable=html.xpath("//*[@id=\"seccodeInput\"]");
         if(selectable.match()){
             logger.warn("sogou请求频繁,提示验证码,url:"+page.getUrl().get());
-            return;
+            return false;
         }
         page.putField("",page.getHtml());
+        return true;
     }
+
+
+
 
 }

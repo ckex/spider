@@ -4,9 +4,11 @@
 package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.HashBasedTable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mljr.entity.SiteConfig;
+import com.mljr.spider.listener.StatusCodeListener;
 import com.mljr.utils.IpUtils;
 import com.mljr.zk.ZkUtils;
 import com.mljr.spider.config.SiteManager;
@@ -14,6 +16,7 @@ import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
@@ -25,6 +28,7 @@ import java.util.HashSet;
  */
 public abstract class AbstractPageProcessor implements PageProcessor {
 
+    public static final int PARSE_FAIL_CODE = 9999;
     protected transient Logger logger = LoggerFactory.getLogger(getClass());
 
     protected Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
@@ -39,6 +43,8 @@ public abstract class AbstractPageProcessor implements PageProcessor {
     private static HashSet<String> pathSet = new HashSet<>();
 
     private final String domain;
+
+    abstract boolean onProcess(Page page);
 
     public AbstractPageProcessor(String domain) {
         super();
@@ -95,15 +101,24 @@ public abstract class AbstractPageProcessor implements PageProcessor {
         this.domain = "";
     }
 
-//    @Override
-//    public void process(Page page) {
-//        boolean success = onProcess(page);
-//        if (success){
-//            // TODO ...
-//        }else{
-//            // TODO ...
-//        }
-//    }
+    public synchronized void parseFail(){
+        HashBasedTable<String,Integer,Integer> table =  StatusCodeListener.table;
+        if(table.contains(domain, PARSE_FAIL_CODE)){
+            Integer times = table.get(domain,PARSE_FAIL_CODE);
+            table.put(domain,PARSE_FAIL_CODE,++times);
+        }else{
+            table.put(domain,PARSE_FAIL_CODE,1);
+        }
+    }
+
+
+    @Override
+    public void process(Page page) {
+        if (!onProcess(page)){
+            parseFail();
+        }
+    }
+
     @Override
     public Site getSite() {
         return SiteManager.getSiteByDomain(domain);

@@ -24,6 +24,15 @@ public class MonitorData implements Serializable {
     private int freq500;
     private int freq501;
     private int freq504;
+    private int freqParseFail;
+
+    public int getFreqParseFail() {
+        return freqParseFail;
+    }
+
+    public void setFreqParseFail(int freqParseFail) {
+        this.freqParseFail = freqParseFail;
+    }
 
     public String getStatusCodes() {
         return statusCodes;
@@ -35,6 +44,22 @@ public class MonitorData implements Serializable {
 
     // 成功率
     private double successRate;
+
+    // 解析成功率
+    private double parseSuccessRate;
+
+    public double getParseSuccessRate() {
+        if(freq200==0){
+            return 0;
+        }
+        BigDecimal result = new BigDecimal((freq200-freqParseFail) * 100)
+                .divide(new BigDecimal(freq200), 2, BigDecimal.ROUND_HALF_EVEN);
+        return result.doubleValue();
+    }
+
+    public void setParseSuccessRate(double parseSuccessRate) {
+        this.parseSuccessRate = parseSuccessRate;
+    }
 
     private int diffTime;
 

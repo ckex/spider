@@ -25,16 +25,12 @@ public class GuabuBankCardProcessor extends AbstractPageProcessor {
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-    public GuabuBankCardProcessor() {
-        super(site);
-    }
-
     @Override
-    public void process(Page page) {
+    boolean onProcess(Page page) {
         try {
             if (StringUtils.isEmpty(page.getRawText())) {
                 logger.warn("result is empty." + page.getRequest().toString());
-                return;
+                return false;
             }
             Document document = DocumentHelper.parseText(page.getRawText());
 
@@ -56,6 +52,11 @@ public class GuabuBankCardProcessor extends AbstractPageProcessor {
         } catch (DocumentException e) {
             logger.error("guaba xml parse error." + page.toString(), e);
         }
+        return true;
+    }
+
+    public GuabuBankCardProcessor() {
+        super(site);
     }
 
 }

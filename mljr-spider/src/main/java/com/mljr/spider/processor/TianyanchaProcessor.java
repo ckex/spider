@@ -24,12 +24,8 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 			.addHeader("Accept", "application/json, text/plain, */*").setRetrySleepTime(1000 * 45).setRetryTimes(3)
 			.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0");
 
-	public TianyanchaProcessor() {
-		super(site);
-	}
-
 	@Override
-	public void process(Page page) {
+	boolean onProcess(Page page) {
 		try {
 			int i=0;
 			String htmlStr = getAjaxContent(page.getUrl().toString());
@@ -55,7 +51,11 @@ public class TianyanchaProcessor extends AbstractPageProcessor {
 			logger.error("tianyancha error", e);
 
 		}
+		return true;
+	}
 
+	public TianyanchaProcessor() {
+		super(site);
 	}
 
 	public static void main(String[] args) {

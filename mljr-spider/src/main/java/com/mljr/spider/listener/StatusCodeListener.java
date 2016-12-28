@@ -34,7 +34,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
 
     private Long beginTime;
     // row:domain   column:状态码    value: 状态码出现次数
-    private HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
+    public static HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
 
     private RedisClient redisClient = new RedisClient("10.9.175.147", 6379, 2000, 100, 10, 1000);
 
@@ -141,6 +141,9 @@ public class StatusCodeListener implements SpiderListener, Serializable {
                     break;
                 case 504:
                     data.setFreq504(entry.getValue());
+                    break;
+                case 9999:
+                    data.setFreqParseFail(entry.getValue());
                     break;
             }
         }
