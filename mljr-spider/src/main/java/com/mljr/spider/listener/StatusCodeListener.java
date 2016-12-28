@@ -78,6 +78,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
                     data.setServerIp(ip);
                     data.setDomain(domain);
                     data.setTotalRequests(totalRequests.get());
+                    data.setStatusCodes(table.row(domain).keySet().toString());
 
                     String jsonStr = JSON.toJSONString(data);
 
@@ -110,6 +111,18 @@ public class StatusCodeListener implements SpiderListener, Serializable {
             switch (entry.getKey()) {
                 case 200:
                     data.setFreq200(entry.getValue());
+                    break;
+                case 301:
+                    data.setFreq301(entry.getValue());
+                    break;
+                case 302:
+                    data.setFreq302(entry.getValue());
+                    break;
+                case 304:
+                    data.setFreq304(entry.getValue());
+                    break;
+                case 307:
+                    data.setFreq307(entry.getValue());
                     break;
                 case 401:
                     data.setFreq401(entry.getValue());

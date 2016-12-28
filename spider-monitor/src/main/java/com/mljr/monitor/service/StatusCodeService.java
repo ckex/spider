@@ -61,6 +61,10 @@ public class StatusCodeService {
     public MonitorData totolCount(List<MonitorData> list) {
         int allTotalRequests = 0;
         int total200 = 0;
+        int total301 = 0;
+        int total302 = 0;
+        int total304 = 0;
+        int total307 = 0;
         int total401 = 0;
         int total403 = 0;
         int total404 = 0;
@@ -70,6 +74,10 @@ public class StatusCodeService {
         for (MonitorData data : list) {
             allTotalRequests += data.getTotalRequests();
             total200 += data.getFreq200();
+            total301 += data.getFreq301();
+            total302 += data.getFreq302();
+            total304 += data.getFreq304();
+            total307 += data.getFreq307();
             total401 += data.getFreq401();
             total403 += data.getFreq403();
             total404 += data.getFreq404();
@@ -80,6 +88,10 @@ public class StatusCodeService {
         MonitorData totalData = new MonitorData();
         totalData.setTotalRequests(allTotalRequests);
         totalData.setFreq200(total200);
+        totalData.setFreq301(total301);
+        totalData.setFreq302(total302);
+        totalData.setFreq304(total304);
+        totalData.setFreq307(total307);
         totalData.setFreq401(total401);
         totalData.setFreq403(total403);
         totalData.setFreq404(total404);

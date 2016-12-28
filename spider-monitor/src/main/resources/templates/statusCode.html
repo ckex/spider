@@ -17,22 +17,27 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container" style="width: 1140px">
     <div class="row">
         <table class="table">
             <tr>
                 <th>网站</th>
-                <th>服务器ip</th>
+                <th>服务器</th>
                 <th>时间</th>
                 <th>请求总数</th>
                 <th>成功率</th>
                 <th>200</th>
+                <th>301</th>
+                <th>302</th>
+                <th>304</th>
+                <th>307</th>
                 <th>401</th>
                 <th>403</th>
                 <th>404</th>
                 <th>500</th>
                 <th>501</th>
                 <th>504</th>
+                <th>所有状态码</th>
             </tr>
             <tr th:each="data : ${dataList}">
 
@@ -42,18 +47,27 @@
                 <td th:text="${data.totalRequests}"></td>
                 <td th:text="${data.successRate}+' %'" th:class="${data.successRate lt 100}?success_rate"></td>
                 <td th:text="${data.freq200}"></td>
+                <td th:text="${data.freq301}"></td>
+                <td th:text="${data.freq302}"></td>
+                <td th:text="${data.freq304}"></td>
+                <td th:text="${data.freq307}"></td>
                 <td th:text="${data.freq401}"></td>
                 <td th:text="${data.freq403}"></td>
                 <td th:text="${data.freq404}"></td>
                 <td th:text="${data.freq500}"></td>
                 <td th:text="${data.freq501}"></td>
                 <td th:text="${data.freq504}"></td>
+                <td th:text="${data.statusCodes}"></td>
             </tr>
             <tr>
                 <td colspan="3">总计</td>
                 <td th:text="${totolCount.totalRequests}"></td>
                 <td th:text="${totolCount.successRate}+' %'"></td>
                 <td th:text="${totolCount.freq200}"></td>
+                <td th:text="${totolCount.freq301}"></td>
+                <td th:text="${totolCount.freq302}"></td>
+                <td th:text="${totolCount.freq304}"></td>
+                <td th:text="${totolCount.freq307}"></td>
                 <td th:text="${totolCount.freq401}"></td>
                 <td th:text="${totolCount.freq403}"></td>
                 <td th:text="${totolCount.freq404}"></td>

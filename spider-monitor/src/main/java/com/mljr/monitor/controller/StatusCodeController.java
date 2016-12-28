@@ -1,20 +1,16 @@
 package com.mljr.monitor.controller;
 
-import com.google.common.collect.ComparisonChain;
 import com.mljr.entity.MonitorData;
 import com.mljr.monitor.service.StatusCodeService;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.ToIntFunction;
 
 /**
  * Created by songchi on 16/12/23.
