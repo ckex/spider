@@ -6,7 +6,6 @@ package com.mljr.spider.processor;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import con.mljr.spider.config.SiteManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;

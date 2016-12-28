@@ -3,10 +3,8 @@
  */
 package com.mljr.spider.processor;
 
-import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.selector.Selectable;
 
 /**
  * @author Ckex zha </br>

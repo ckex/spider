@@ -3,7 +3,6 @@ package com.mljr.spider.processor;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.mljr.spider.vo.JSONTransferVO;
-import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;

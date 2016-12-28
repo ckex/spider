@@ -9,16 +9,14 @@ import com.google.gson.GsonBuilder;
 import com.mljr.entity.SiteConfig;
 import com.mljr.utils.IpUtils;
 import com.mljr.zk.ZkUtils;
-import con.mljr.spider.config.SiteManager;
+import com.mljr.spider.config.SiteManager;
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
-import java.net.InetAddress;
 import java.util.HashSet;
 
 /**
