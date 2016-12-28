@@ -81,7 +81,6 @@ public class StatusCodeListener implements SpiderListener, Serializable {
 
                     String jsonStr = JSON.toJSONString(data);
 
-                    System.out.println("### " + jsonStr);
                     logger.debug("### " + jsonStr);
                     // 写库
                     redisClient.use(new Function<Jedis, String>() {

@@ -26,7 +26,7 @@ public class ZkScheduler {
                         String ip = IpUtils.getHostName();
                         String path = String.format("/servers/%s", ip);
                         String data = new Random().nextInt(100000) + "";
-                        System.out.println("服务器上传负载：" + data);
+                        logger.debug("服务器上传负载：" + data);
                         if (!zkClient.exists("/servers")) {
                             zkClient.createPersistent("/servers");
                         }
