@@ -1,8 +1,11 @@
 package com.mljr.entity;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.text.ParseException;
+import java.util.Date;
 
 public class MonitorData implements Serializable {
     private String time;
@@ -19,6 +22,27 @@ public class MonitorData implements Serializable {
     // 成功率
     private double successRate;
 
+    private int diffTime;
+
+    public int getDiffTime() {
+        try {
+            Date dbDate = DateUtils.parseDate(time, "yy-MM-dd-HH-mm");
+            long diff = System.currentTimeMillis() - dbDate.getTime();
+            // 时间单位:分钟
+            return (int) (diff / 1000 / 60);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public void setDiffTime(int diffTime) {
+        this.diffTime = diffTime;
+    }
+
+
+
+
     public MonitorData() {
     }
 
@@ -31,10 +55,10 @@ public class MonitorData implements Serializable {
     }
 
     public double getSuccessRate() {
-        if(totalRequests==0){
+        if (totalRequests == 0) {
             return 0;
         }
-        BigDecimal result =new BigDecimal(freq200*100).divide(new BigDecimal(totalRequests),2,BigDecimal.ROUND_HALF_EVEN);
+        BigDecimal result = new BigDecimal(freq200 * 100).divide(new BigDecimal(totalRequests), 2, BigDecimal.ROUND_HALF_EVEN);
 
         return result.doubleValue();
     }

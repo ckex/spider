@@ -10,6 +10,10 @@
             color:red;
             font-weight:900;
         }
+        .expire_warn{
+            color: #f89406;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -34,7 +38,7 @@
 
                 <td><a th:href="@{'/detail/' + ${data.serverIp} +'/'+${data.domain}}+'/other'" th:text="${data.domain}"></a></td>
                 <td th:text="${data.serverIp}"></td>
-                <td th:text="${data.time}"></td>
+                <td th:text="${data.time}" th:class="${data.diffTime >= 2}?expire_warn"></td>
                 <td th:text="${data.totalRequests}"></td>
                 <td th:text="${data.successRate}+' %'" th:class="${data.successRate lt 100}?success_rate"></td>
                 <td th:text="${data.freq200}"></td>
