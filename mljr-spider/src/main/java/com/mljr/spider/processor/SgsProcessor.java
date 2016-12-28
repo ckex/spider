@@ -1,6 +1,5 @@
 package com.mljr.spider.processor;
 
-import con.mljr.spider.config.SiteManager;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;

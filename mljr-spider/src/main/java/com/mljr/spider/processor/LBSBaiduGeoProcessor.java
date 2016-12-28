@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mljr.spider.util.KeyCacheUtils;
 import com.mljr.spider.vo.JSONTransferVO;
-import con.mljr.spider.config.SiteManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;

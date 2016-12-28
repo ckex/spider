@@ -3,13 +3,6 @@
  */
 package com.mljr.spider.processor;
 
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.google.gson.reflect.TypeToken;
-
-import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 

@@ -3,7 +3,6 @@ package com.mljr.spider.processor;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.mljr.spider.vo.JSONTransferVO;
-import con.mljr.spider.config.SiteManager;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;

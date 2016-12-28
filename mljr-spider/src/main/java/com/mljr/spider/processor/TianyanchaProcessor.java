@@ -2,7 +2,6 @@ package com.mljr.spider.processor;
 
 import com.google.common.base.Joiner;
 import com.mljr.spider.storage.LocalFilePipeline;
-import con.mljr.spider.config.SiteManager;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;

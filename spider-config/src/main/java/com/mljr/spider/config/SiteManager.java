@@ -1,7 +1,7 @@
 /**
  *
  */
-package con.mljr.spider.config;
+package com.mljr.spider.config;
 
 import com.mljr.utils.IpUtils;
 import org.apache.commons.codec.binary.StringUtils;
@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Site;
 
-import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
