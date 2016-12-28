@@ -1,8 +1,8 @@
 package com.mljr.spider.zookeeper;
 
 import com.alibaba.fastjson.JSON;
+import com.mljr.common.ServiceConfig;
 import com.mljr.entity.SiteConfig;
-import com.mljr.zk.ZkUtils;
 import org.I0Itec.zkclient.ZkClient;
 import org.junit.Test;
 import us.codecraft.webmagic.utils.IPUtils;
@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
  * Created by songchi on 16/12/22.
  */
 public class ZkTest {
-    ZkClient zkClient = ZkUtils.getZkClient();
+    private ZkClient zkClient = ServiceConfig.getZkClient();
 
     @Test
     public void updateData() throws Exception {

@@ -7,10 +7,10 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.HashBasedTable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mljr.common.ServiceConfig;
 import com.mljr.entity.SiteConfig;
 import com.mljr.spider.listener.StatusCodeListener;
 import com.mljr.utils.IpUtils;
-import com.mljr.zk.ZkUtils;
 import com.mljr.spider.config.SiteManager;
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
@@ -38,7 +38,7 @@ public abstract class AbstractPageProcessor implements PageProcessor {
     public static final String UTF_8 = "UTF-8";
     public static final String GBK = "GBK";
 
-    public static ZkClient zkClient = ZkUtils.getZkClient();
+    private static ZkClient zkClient = ServiceConfig.getZkClient();
 
     private static HashSet<String> pathSet = new HashSet<>();
 
@@ -63,7 +63,7 @@ public abstract class AbstractPageProcessor implements PageProcessor {
 
             if(object==null){
                 // zk 找不到配置
-                ZkUtils.createPath(path);
+                zkClient.createPersistent(path, true);
                 zkClient.writeData(path,new SiteConfig(site).toJSONString());
                 SiteManager.setSite(domain, site);
             }else{

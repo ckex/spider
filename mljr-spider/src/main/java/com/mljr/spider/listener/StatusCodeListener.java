@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.HashBasedTable;
+import com.mljr.common.ServiceConfig;
 import com.mljr.entity.MonitorData;
 import com.mljr.redis.RedisClient;
 import com.mljr.utils.IpUtils;
@@ -36,7 +37,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
     // row:domain   column:状态码    value: 状态码出现次数
     public static HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
 
-    private RedisClient redisClient = new RedisClient("10.9.175.147", 6379, 2000, 100, 10, 1000);
+    private RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
 
     public StatusCodeListener(String domain) {
         this.domain = domain;
