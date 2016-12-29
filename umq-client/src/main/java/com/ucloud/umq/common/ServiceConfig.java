@@ -240,6 +240,10 @@ public class ServiceConfig {
         return properties.getProperty("tianyancha.path");
     }
 
+    public static String getBitautoPath(){
+        return properties.getProperty("bitauto.path");
+    }
+
     public static void main(String[] args) {
         System.out.println(getHuoche114Path());
     }
