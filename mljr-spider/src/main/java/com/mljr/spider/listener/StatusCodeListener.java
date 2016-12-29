@@ -18,7 +18,6 @@ import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.SpiderListener;
 
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -35,7 +34,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
 
     private Long beginTime;
     // row:domain   column:状态码    value: 状态码出现次数
-    public static HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
+    public HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
 
     private RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
 

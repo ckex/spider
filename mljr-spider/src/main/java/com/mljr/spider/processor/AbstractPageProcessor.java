@@ -4,14 +4,12 @@
 package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.HashBasedTable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mljr.common.ServiceConfig;
 import com.mljr.entity.SiteConfig;
-import com.mljr.spider.listener.StatusCodeListener;
-import com.mljr.utils.IpUtils;
 import com.mljr.spider.config.SiteManager;
+import com.mljr.utils.IpUtils;
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
@@ -102,13 +100,13 @@ public abstract class AbstractPageProcessor implements PageProcessor {
     }
 
     public synchronized void parseFail(){
-        HashBasedTable<String,Integer,Integer> table =  StatusCodeListener.table;
-        if(table.contains(domain, PARSE_FAIL_CODE)){
-            Integer times = table.get(domain,PARSE_FAIL_CODE);
-            table.put(domain,PARSE_FAIL_CODE,++times);
-        }else{
-            table.put(domain,PARSE_FAIL_CODE,1);
-        }
+//        HashBasedTable<String,Integer,Integer> table =  StatusCodeListener.table;
+//        if(table.contains(domain, PARSE_FAIL_CODE)){
+//            Integer times = table.get(domain,PARSE_FAIL_CODE);
+//            table.put(domain,PARSE_FAIL_CODE,++times);
+//        }else{
+//            table.put(domain,PARSE_FAIL_CODE,1);
+//        }
     }
 
 
