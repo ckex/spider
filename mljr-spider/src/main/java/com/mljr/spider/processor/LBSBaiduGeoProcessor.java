@@ -24,13 +24,8 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-    public LBSBaiduGeoProcessor() {
-        super(site);
-    }
-
     @Override
-    public void process(Page page) {
-
+    boolean onProcess(Page page) {
         String json = page.getJson().get();
 
         JSONObject jsonObject = JSON.parseObject(json);
@@ -48,7 +43,7 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
 
             KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.BAIDU, baidu_key, false);
 
-            return;
+            return true;
         }
 
         if (null != status && 0 == status.intValue()) {
@@ -61,7 +56,11 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
 
             page.putField("", JSON.toJSON(transferVO));
         }
+        return true;
+    }
 
+    public LBSBaiduGeoProcessor() {
+        super(site);
     }
 
     private String getKeyByRequestUrl(String url) {

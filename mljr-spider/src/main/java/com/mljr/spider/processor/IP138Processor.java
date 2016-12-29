@@ -17,13 +17,9 @@ public class IP138Processor extends AbstractPageProcessor {
 			"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
 
-	public IP138Processor() {
-		super(site);
-	}
-
 	@Override
-	public void process(Page page) {
-//		Selectable tbody = page.getHtml().xpath("//body//table[2]/tbody");
+	boolean onProcess(Page page) {
+		//		Selectable tbody = page.getHtml().xpath("//body//table[2]/tbody");
 //		page.putField("卡号归属地", tbody.xpath("//tr[3]//td[2]//text()"));
 //		page.putField("卡类型", tbody.xpath("//tr[4]//td[2]//text()"));
 //		page.putField("区号", tbody.xpath("//tr[5]//td[2]//text()"));
@@ -34,6 +30,11 @@ public class IP138Processor extends AbstractPageProcessor {
 			}
 		}
 		page.putField("",page.getHtml());
+		return true;
+	}
+
+	public IP138Processor() {
+		super(site);
 	}
 
 }

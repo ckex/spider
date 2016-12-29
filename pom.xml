@@ -49,6 +49,7 @@
 		<dom4j.version>1.6.1</dom4j.version>
 		<tess4j.version>3.2.1</tess4j.version>
 		<spring-boot.version>1.2.4.RELEASE</spring-boot.version>
+		<webmagic.version>0.6.0</webmagic.version>
 	</properties>
 
 	<dependencyManagement>
@@ -148,12 +149,32 @@
 			<dependency>
 				<groupId>us.codecraft</groupId>
 				<artifactId>webmagic-core</artifactId>
-				<version>0.5.3</version>
+				<version>${webmagic.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>us.codecraft</groupId>
 				<artifactId>webmagic-extension</artifactId>
-				<version>0.5.3</version>
+				<version>${webmagic.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>us.codecraft</groupId>
+				<artifactId>webmagic-samples</artifactId>
+				<version>${webmagic.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>us.codecraft</groupId>
+				<artifactId>webmagic-saxon</artifactId>
+				<version>${webmagic.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>us.codecraft</groupId>
+				<artifactId>webmagic-scripts</artifactId>
+				<version>${webmagic.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>us.codecraft</groupId>
+				<artifactId>webmagic-selenium</artifactId>
+				<version>${webmagic.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.htmlparser</groupId>

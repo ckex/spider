@@ -20,6 +20,26 @@ import java.util.Map;
 public class GxskyProcessor extends AbstractPageProcessor {
     private static String TARGET_URL = "http://idcard.gxsky.com/more_card.asp?page=%s&city=%s";
 
+    @Override
+    boolean onProcess(Page page) {
+        if (page.getUrl().toString().contains("city") && page.getUrl().toString().contains("page")) {
+            if (!page.getHtml().toString().contains("姓名")) {
+                return true;
+            }
+            // 抓取页面特定信息
+            processOneCity(page);
+        } else {
+            List<String> cityNames = getCityNames(page);
+            for (String cityName : cityNames) {
+                for (int i = 1; i < 37; i++) {
+                    String targetUrl = String.format(TARGET_URL, i, cityName);
+                    page.addTargetRequest(targetUrl);
+                }
+            }
+        }
+        return true;
+    }
+
     //构造函数
     public GxskyProcessor() {
         super(site);
@@ -33,25 +53,6 @@ public class GxskyProcessor extends AbstractPageProcessor {
             .setRetryTimes(3)
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
-
-    @Override
-    public void process(Page page) {
-        if (page.getUrl().toString().contains("city") && page.getUrl().toString().contains("page")) {
-            if (!page.getHtml().toString().contains("姓名")) {
-                return;
-            }
-            // 抓取页面特定信息
-            processOneCity(page);
-        } else {
-            List<String> cityNames = getCityNames(page);
-            for (String cityName : cityNames) {
-                for (int i = 1; i < 37; i++) {
-                    String targetUrl = String.format(TARGET_URL, i, cityName);
-                    page.addTargetRequest(targetUrl);
-                }
-            }
-        }
-    }
 
     //获取城市名称
     private List<String> getCityNames(Page page) {

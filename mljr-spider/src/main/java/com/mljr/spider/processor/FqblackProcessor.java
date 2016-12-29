@@ -17,12 +17,8 @@ public class FqblackProcessor extends AbstractPageProcessor {
             .addHeader("Accept", "application/json, text/plain, */*").setRetrySleepTime(3000).setRetryTimes(3)
             .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0");
 
-    public FqblackProcessor() {
-        super(site);
-    }
-
     @Override
-    public void process(Page page) {
+    boolean onProcess(Page page) {
         if (page.getUrl().regex(HELP_URL_REGEX).match()) {
             // handle helpUrl
             List<String> requests =page.getHtml().links().all();
@@ -39,6 +35,11 @@ public class FqblackProcessor extends AbstractPageProcessor {
             // handle targetUrl
             page.putField("", page.getHtml());
         }
+        return true;
+    }
+
+    public FqblackProcessor() {
+        super(site);
     }
 
     public static void main(String[] args) {

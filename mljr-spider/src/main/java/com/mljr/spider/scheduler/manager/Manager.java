@@ -131,10 +131,10 @@ public class Manager extends AbstractMessage {
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getSogouMobilePath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new SogouMobileProcessor()).addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
+				.thread(CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(SOGOU_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener,new StatusCodeListener(DomainConstant.DOMAIN_SOGOU)));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_SOGOU_MOBILE_QUEUE_ID));
+		spider.setExecutorService(newThreadPool(2, 2, RMQ_SOGOU_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new SogouMobileScheduler(spider, RMQ_SOGOU_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();

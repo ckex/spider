@@ -12,17 +12,88 @@ public class MonitorData implements Serializable {
     private String domain;
     private String serverIp;
     private int totalRequests;
+    private String statusCodes;
     private int freq200;
+    private int freq301;
+    private int freq302;
+    private int freq304;
+    private int freq307;
     private int freq401;
     private int freq403;
     private int freq404;
     private int freq500;
     private int freq501;
     private int freq504;
+    private int freqParseFail;
+
+    public int getFreqParseFail() {
+        return freqParseFail;
+    }
+
+    public void setFreqParseFail(int freqParseFail) {
+        this.freqParseFail = freqParseFail;
+    }
+
+    public String getStatusCodes() {
+        return statusCodes;
+    }
+
+    public void setStatusCodes(String statusCodes) {
+        this.statusCodes = statusCodes;
+    }
+
     // 成功率
     private double successRate;
 
+    // 解析成功率
+    private double parseSuccessRate;
+
+    public double getParseSuccessRate() {
+        if(freq200==0){
+            return 0;
+        }
+        BigDecimal result = new BigDecimal((freq200-freqParseFail) * 100)
+                .divide(new BigDecimal(freq200), 2, BigDecimal.ROUND_HALF_EVEN);
+        return result.doubleValue();
+    }
+
+    public void setParseSuccessRate(double parseSuccessRate) {
+        this.parseSuccessRate = parseSuccessRate;
+    }
+
     private int diffTime;
+
+    public int getFreq301() {
+        return freq301;
+    }
+
+    public void setFreq301(int freq301) {
+        this.freq301 = freq301;
+    }
+
+    public int getFreq302() {
+        return freq302;
+    }
+
+    public void setFreq302(int freq302) {
+        this.freq302 = freq302;
+    }
+
+    public int getFreq304() {
+        return freq304;
+    }
+
+    public void setFreq304(int freq304) {
+        this.freq304 = freq304;
+    }
+
+    public int getFreq307() {
+        return freq307;
+    }
+
+    public void setFreq307(int freq307) {
+        this.freq307 = freq307;
+    }
 
     public int getDiffTime() {
         try {
@@ -147,7 +218,6 @@ public class MonitorData implements Serializable {
         this.totalRequests = totalRequests;
     }
 
-
     @Override
     public String toString() {
         return "MonitorData{" +
@@ -156,6 +226,10 @@ public class MonitorData implements Serializable {
                 ", serverIp='" + serverIp + '\'' +
                 ", totalRequests=" + totalRequests +
                 ", freq200=" + freq200 +
+                ", freq301=" + freq301 +
+                ", freq302=" + freq302 +
+                ", freq304=" + freq304 +
+                ", freq307=" + freq307 +
                 ", freq401=" + freq401 +
                 ", freq403=" + freq403 +
                 ", freq404=" + freq404 +
@@ -163,6 +237,7 @@ public class MonitorData implements Serializable {
                 ", freq501=" + freq501 +
                 ", freq504=" + freq504 +
                 ", successRate=" + successRate +
+                ", diffTime=" + diffTime +
                 '}';
     }
 }

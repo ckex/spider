@@ -22,28 +22,24 @@ public class YinHangKa388Processor extends AbstractPageProcessor {
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-    public YinHangKa388Processor() {
-        super(site);
-    }
-
     @Override
-    public void process(Page page) {
+    boolean onProcess(Page page) {
         Html html = page.getHtml();
         if (null == html) {
             logger.warn("yinhangka.388g.com result is empty." + page.getRequest().toString());
-            return;
+            return true;
         }
 
         Selectable selectable = html.xpath("//div[@class='knr']/center/table[2]/tbody/tr/td/table/tbody");
         if (!selectable.match()) {
             logger.warn("yinhangka.388g.com response data is not match " + page.getRequest().toString());
-            return;
+            return true;
         }
 
         List<Selectable> selectableList = selectable.xpath("//tr").nodes();
         if (null == selectableList || selectableList.size() == 0) {
             logger.warn("yinhangka.388g.com nodes is not exists." + page.getRequest().toString());
-            return;
+            return true;
         }
         Map<String, Object> map = Maps.newHashMap();
         for (Selectable st : selectableList) {
@@ -53,6 +49,11 @@ public class YinHangKa388Processor extends AbstractPageProcessor {
         transferVO.setUrl(page.getUrl().get());
         transferVO.setContext(map);
         page.putField("", JSON.toJSON(transferVO));
+        return true;
+    }
+
+    public YinHangKa388Processor() {
+        super(site);
     }
 
 }

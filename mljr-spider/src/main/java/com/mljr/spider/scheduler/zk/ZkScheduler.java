@@ -1,12 +1,9 @@
 package com.mljr.spider.scheduler.zk;
 
+import com.mljr.common.ServiceConfig;
 import com.mljr.utils.IpUtils;
-import com.mljr.zk.ZkUtils;
 import org.I0Itec.zkclient.ZkClient;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 
-import java.net.InetAddress;
 import java.util.Random;
 
 /**
@@ -15,7 +12,7 @@ import java.util.Random;
 public class ZkScheduler {
     protected transient org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ZkScheduler.class);
 
-    private ZkClient zkClient = ZkUtils.getZkClient();
+    private ZkClient zkClient = ServiceConfig.getZkClient();
 
     public void startZkMonitorTask() {
         new Thread(new Runnable() {

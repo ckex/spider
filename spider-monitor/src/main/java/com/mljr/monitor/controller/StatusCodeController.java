@@ -2,12 +2,14 @@ package com.mljr.monitor.controller;
 
 import com.mljr.entity.MonitorData;
 import com.mljr.monitor.service.StatusCodeService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -24,7 +26,9 @@ public class StatusCodeController {
 
         List<String> jsonList = statusCodeService.getLatestRecord();
         List<MonitorData> dataList = statusCodeService.transferToObject(jsonList);
-
+        if(CollectionUtils.isNotEmpty(dataList)){
+            dataList.sort(Comparator.comparing(MonitorData::getDomain).thenComparing(MonitorData::getServerIp));
+        }
         ModelAndView mav = new ModelAndView("statusCode");
         mav.addObject("dataList", dataList);
         mav.addObject("totolCount", statusCodeService.totolCount(dataList));
