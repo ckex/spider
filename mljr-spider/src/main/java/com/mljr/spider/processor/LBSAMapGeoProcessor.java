@@ -28,13 +28,9 @@ public class LBSAMapGeoProcessor extends AbstractPageProcessor {
     private static final String SUCCESS = "1";
 
     private static final String DAILY_QUERY_OVER_LIMIT = "10003";//当日限制标记
-    public LBSAMapGeoProcessor() {
-        super(site);
-    }
 
     @Override
-    public void process(Page page) {
-
+    boolean onProcess(Page page) {
         String json = page.getJson().get();
 
         JSONObject jsonObject = JSON.parseObject(json);
@@ -54,7 +50,7 @@ public class LBSAMapGeoProcessor extends AbstractPageProcessor {
 
             KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.AMAP, amap_key, Boolean.FALSE);
 
-            return;
+            return true;
         }
 
         if (StringUtils.isNotEmpty(resultStatus) && SUCCESS.equalsIgnoreCase(resultStatus)) {
@@ -67,6 +63,11 @@ public class LBSAMapGeoProcessor extends AbstractPageProcessor {
 
             page.putField("", JSON.toJSON(transferVO));
         }
+        return true;
+    }
+
+    public LBSAMapGeoProcessor() {
+        super(site);
     }
 
     private String getKeyByRequestUrl(String url) {

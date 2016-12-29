@@ -16,12 +16,8 @@ public class GuishuShowjiProcessor extends AbstractPageProcessor {
 	private static Site site = Site.me().setDomain("guishu.showji.com").setSleepTime(300).setRetrySleepTime(2000).setRetryTimes(3).setUserAgent(
 			"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-	public GuishuShowjiProcessor() {
-		super(site);
-	}
-
 	@Override
-	public void process(Page page) {
+	boolean onProcess(Page page) {
 		if (Math.random() * 100 < 1) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("process--> " + page.getUrl());
@@ -41,6 +37,11 @@ public class GuishuShowjiProcessor extends AbstractPageProcessor {
 //		} else {
 //			logger.error("Matcher error " + jsonp + ", " + page.getUrl());
 //		}
+		return true;
+	}
+
+	public GuishuShowjiProcessor() {
+		super(site);
 	}
 
 }

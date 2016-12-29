@@ -22,28 +22,24 @@ public class Cha67BankCardProcessor extends AbstractPageProcessor {
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-    public Cha67BankCardProcessor() {
-        super(site);
-    }
-
     @Override
-    public void process(Page page) {
+    boolean onProcess(Page page) {
         Html html = page.getHtml();
         if (null == html) {
             logger.warn("67cha result is empty." + page.getRequest().toString());
-            return;
+            return true;
         }
 
         Selectable selectable = html.xpath("//ol[@class='result']");
         if (!selectable.match()) {
             logger.warn("www.67cha.com response data is not match " + page.getRequest().toString());
-            return;
+            return true;
         }
 
         List<Selectable> selectableList = selectable.xpath("//ul").nodes();
         if (null == selectableList || selectableList.size() == 0) {
             logger.warn("67cha result is empty." + page.getRequest().toString());
-            return;
+            return true;
         }
         Map<String, Object> map = Maps.newHashMap();
         for (Selectable st : selectableList) {
@@ -53,7 +49,11 @@ public class Cha67BankCardProcessor extends AbstractPageProcessor {
         transferVO.setUrl(page.getUrl().get());
         transferVO.setContext(map);
         page.putField("", JSON.toJSON(transferVO));
+        return true;
+    }
 
+    public Cha67BankCardProcessor() {
+        super(site);
     }
 
 }

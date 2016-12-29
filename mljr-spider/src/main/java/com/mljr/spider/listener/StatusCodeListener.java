@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.HashBasedTable;
+import com.mljr.common.ServiceConfig;
 import com.mljr.entity.MonitorData;
 import com.mljr.redis.RedisClient;
 import com.mljr.utils.IpUtils;
@@ -17,7 +18,6 @@ import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.SpiderListener;
 
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -34,9 +34,9 @@ public class StatusCodeListener implements SpiderListener, Serializable {
 
     private Long beginTime;
     // row:domain   column:状态码    value: 状态码出现次数
-    private HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
+    public HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
 
-    private RedisClient redisClient = new RedisClient("10.9.175.147", 6379, 2000, 100, 10, 1000);
+    private RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
 
     public StatusCodeListener(String domain) {
         this.domain = domain;
@@ -78,6 +78,7 @@ public class StatusCodeListener implements SpiderListener, Serializable {
                     data.setServerIp(ip);
                     data.setDomain(domain);
                     data.setTotalRequests(totalRequests.get());
+                    data.setStatusCodes(table.row(domain).keySet().toString());
 
                     String jsonStr = JSON.toJSONString(data);
 
@@ -111,6 +112,18 @@ public class StatusCodeListener implements SpiderListener, Serializable {
                 case 200:
                     data.setFreq200(entry.getValue());
                     break;
+                case 301:
+                    data.setFreq301(entry.getValue());
+                    break;
+                case 302:
+                    data.setFreq302(entry.getValue());
+                    break;
+                case 304:
+                    data.setFreq304(entry.getValue());
+                    break;
+                case 307:
+                    data.setFreq307(entry.getValue());
+                    break;
                 case 401:
                     data.setFreq401(entry.getValue());
                     break;
@@ -128,6 +141,9 @@ public class StatusCodeListener implements SpiderListener, Serializable {
                     break;
                 case 504:
                     data.setFreq504(entry.getValue());
+                    break;
+                case 9999:
+                    data.setFreqParseFail(entry.getValue());
                     break;
             }
         }
