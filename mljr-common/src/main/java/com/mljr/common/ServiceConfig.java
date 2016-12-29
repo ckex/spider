@@ -13,7 +13,7 @@ import java.util.Properties;
 
 public class ServiceConfig {
     private static String SETTING_FILE = System.getProperty("user.home") + System.getProperty("file.separator")
-            + "antx-dev.properties";
+            + "ucloud_umq.properties";
 
     private static Properties properties = new Properties();
 
