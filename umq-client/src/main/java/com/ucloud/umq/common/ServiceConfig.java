@@ -171,6 +171,14 @@ public class ServiceConfig {
         return properties.getProperty("rmq.merchantinfo.exchange");
     }
 
+    public static String getBitautoExchange() {
+        return properties.getProperty("rmq.bitauto.exchange");
+    }
+
+    public static String getBitautoRoutingKey() {
+        return properties.getProperty("rmq.bitauto.routingKey");
+    }
+
     public static String getMobilerRoutingKey() {
         return properties.getProperty("rmq.mobile.routingKey");
     }
