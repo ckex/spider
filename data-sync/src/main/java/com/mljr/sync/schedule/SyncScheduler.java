@@ -71,4 +71,13 @@ public class SyncScheduler {
 		logger.debug(task.toString());
 	}
 
+	// 2小时执行一次
+	@Scheduled(cron = "0 0 0/2 * * ? ")
+	private void startBitautoTask() {
+		BitautoTask task = abstractTaskFactory.createBitautoTask();
+		task.run();
+		logger.debug(task.toString());
+	}
+
+
 }

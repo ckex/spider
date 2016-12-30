@@ -3,18 +3,17 @@
  */
 package com.mljr.spider.scheduler.manager;
 
+import com.google.common.base.Joiner;
+import com.mljr.spider.grpc.GrpcClient;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Joiner;
-import com.mljr.spider.grpc.GrpcClient;
 
 /**
  * @author Ckex zha </br>
@@ -72,6 +71,7 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_LBS_AMAP_REGEO_QUEUE_ID="lbs-amap-regeo";
 	protected static final String RMQ_LBS_BAIDU_GEO_QUEUE_ID="lbs-baidu-geo";
 	protected static final String RMQ_LBS_BAIDU_REGEO_QUEUE_ID="lbs-baidu-regeo";
+	protected static final String RMQ_BITAUTO_QUEUE_ID="bitauto";
 
 	//身份证黑名单
 	protected static final String RMQ_LBS_BLACK_IDCARD_ID="bl-gxsky";
@@ -100,6 +100,7 @@ public abstract class AbstractMessage {
 
 	//身份证黑名单
 	protected static final String GXSKY_BLACKID_CARD_LOG_NAME = "blackidcard-downloader";
+	protected static final String BITAUTO_LISTENER_LOG_NAME = "bitauto-downloader";
 
 	public AbstractMessage() {
 		super();
