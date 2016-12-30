@@ -38,6 +38,10 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>us.codecraft</groupId>
+			<artifactId>webmagic-selenium</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.ckex</groupId>
 			<artifactId>mljr-common</artifactId>
 			<version>${project.version}</version>

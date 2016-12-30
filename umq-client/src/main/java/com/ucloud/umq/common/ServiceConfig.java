@@ -171,6 +171,14 @@ public class ServiceConfig {
         return properties.getProperty("rmq.merchantinfo.exchange");
     }
 
+    public static String getBitautoExchange() {
+        return properties.getProperty("rmq.bitauto.exchange");
+    }
+
+    public static String getBitautoRoutingKey() {
+        return properties.getProperty("rmq.bitauto.routingKey");
+    }
+
     public static String getMobilerRoutingKey() {
         return properties.getProperty("rmq.mobile.routingKey");
     }
@@ -238,6 +246,10 @@ public class ServiceConfig {
     }
     public static String getTianyanchaPath(){
         return properties.getProperty("tianyancha.path");
+    }
+
+    public static String getBitautoPath(){
+        return properties.getProperty("bitauto.path");
     }
 
     public static void main(String[] args) {

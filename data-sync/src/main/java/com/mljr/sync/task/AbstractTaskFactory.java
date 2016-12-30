@@ -22,4 +22,6 @@ public abstract class AbstractTaskFactory {
 
 	public abstract GxSkyTask createGxSkyTask();
 
+	public abstract BitautoTask createBitautoTask();
+
 }

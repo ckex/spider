@@ -467,36 +467,6 @@ public class SiteConfig implements Serializable {
                 '}';
     }
 
-    /**
-     * Set httpProxyPool, String[0]:ip, String[1]:port <br>
-     *
-     * @param httpProxyList httpProxyList
-     * @return this
-     */
-    public SiteConfig setHttpProxyPool(List<String[]> httpProxyList) {
-        this.httpProxyPool = new ProxyPool(httpProxyList);
-        return this;
-    }
-
-    public SiteConfig enableHttpProxyPool() {
-        this.httpProxyPool = new ProxyPool();
-        return this;
-    }
-
-    public ProxyPool getHttpProxyPool() {
-        return httpProxyPool;
-    }
-
-
-    public void returnHttpProxyToPool(HttpHost proxy, int statusCode) {
-        httpProxyPool.returnProxy(proxy, statusCode);
-    }
-
-    public SiteConfig setProxyReuseInterval(int reuseInterval) {
-        this.httpProxyPool.setReuseInterval(reuseInterval);
-        return this;
-    }
-
     public String toJSONString() {
         return JSON.toJSONString(this);
     }

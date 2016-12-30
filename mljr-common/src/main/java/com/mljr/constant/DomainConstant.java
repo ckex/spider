@@ -42,5 +42,7 @@ public class DomainConstant {
 
     public static final String DOMAIN_YINHANGKA_388G = "yinhangka.388g.com";
 
+    public static final String DOMAIN_BITAUTO = "bitauto.com";
+
 
 }

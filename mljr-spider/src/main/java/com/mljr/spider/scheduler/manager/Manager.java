@@ -3,30 +3,29 @@
  */
 package com.mljr.spider.scheduler.manager;
 
-import java.util.Date;
-
-import com.mljr.constant.DomainConstant;
-import com.mljr.spider.listener.StatusCodeListener;
-import com.mljr.spider.processor.*;
-import com.mljr.spider.scheduler.*;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.http.nio.reactor.IOReactorException;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.mljr.constant.DomainConstant;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
+import com.mljr.spider.listener.StatusCodeListener;
+import com.mljr.spider.processor.*;
+import com.mljr.spider.scheduler.*;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
 import com.ucloud.umq.common.ServiceConfig;
-
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.http.nio.reactor.IOReactorException;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
+import us.codecraft.webmagic.downloader.PhantomJSDownloader;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
+
+import java.util.Date;
 
 /**
  * @author Ckex zha </br>
@@ -71,6 +70,8 @@ public class Manager extends AbstractMessage {
 		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
 			startTianyancha();
 		}
+
+		startBitauto();
 	}
 
 	// 赛格GPS数据
@@ -131,10 +132,10 @@ public class Manager extends AbstractMessage {
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getSogouMobilePath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new SogouMobileProcessor()).addPipeline(htmlPipeline)
-				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
+				.thread(CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(SOGOU_MOBILE_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener,new StatusCodeListener(DomainConstant.DOMAIN_SOGOU)));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_SOGOU_MOBILE_QUEUE_ID));
+		spider.setExecutorService(newThreadPool(2, 2, RMQ_SOGOU_MOBILE_QUEUE_ID));
 		final AbstractScheduler scheduler = new SogouMobileScheduler(spider, RMQ_SOGOU_MOBILE_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
@@ -207,6 +208,25 @@ public class Manager extends AbstractMessage {
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start TianyanchaProcessor finished. " + spider.toString());
+
+	}
+
+	// http://price.bitauto.com/mb9/
+	public void startBitauto() throws Exception {
+		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		String targetUrl = Joiner.on("").join(url, ServiceConfig.getBitautoPath());
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		final Spider spider = Spider.create(new BitautoProcessor())
+				.setDownloader(new PhantomJSDownloader())
+				.addPipeline(htmlPipeline)
+				.thread(1).setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(BITAUTO_LISTENER_LOG_NAME);
+		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_BITAUTO)));
+		spider.setExecutorService(newThreadPool(1, 1, RMQ_BITAUTO_QUEUE_ID));
+		final AbstractScheduler scheduler = new BitautoScheduler(spider, RMQ_BITAUTO_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start BitautoProcessor finished. " + spider.toString());
 
 	}
 
