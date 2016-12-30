@@ -20,9 +20,9 @@ public class BitautoProcessor extends AbstractPageProcessor {
 
     private static final Site site = Site.me()
             .setDomain(DomainConstant.DOMAIN_BITAUTO) //此字段在生成文件时用到
-            .setSleepTime(5000)
+            .setSleepTime(1000)
             .setRetrySleepTime(4200)
-            .setRetryTimes(3)
+            .setRetryTimes(2)
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
@@ -37,19 +37,21 @@ public class BitautoProcessor extends AbstractPageProcessor {
 
     @Override
     public boolean onProcess(Page page) {
-        Selectable url = page.getUrl();
-
-        System.out.println(page.getHtml());
-        if (url.regex(FIRST_HELP_URL).match()) {
+        Selectable currentUrl = page.getUrl();
+        if (currentUrl.regex(FIRST_HELP_URL).match()) {
             List<String> secondList = page.getHtml().links().regex(SECOND_HELP_URL).all();
             if(secondList!=null&&secondList.size()>0){
-                System.out.println("-----------------  有数据了");
+
                 page.addTargetRequests(secondList);
             }
-        } else if (url.regex(SECOND_HELP_URL).match()) {
-            List<String> targetList = page.getHtml().links().regex(TARGET_URL).all();
-            page.addTargetRequests(targetList);
-        } else if (url.regex(TARGET_URL).match()) {
+        } else if (currentUrl.regex(SECOND_HELP_URL).match()) {
+            List<String> targetUrls = page.getHtml().links().all();
+            for (String url : targetUrls) {
+                if(url.contains("peizhi")){
+                    page.addTargetRequest(url);
+                }
+            }
+        } else if (currentUrl.regex(TARGET_URL).match()) {
             page.putField("", page.getHtml());
         }
 
@@ -57,12 +59,12 @@ public class BitautoProcessor extends AbstractPageProcessor {
     }
 
     public static void main(String[] args) throws Exception {
-//        PhantomJSDownloader phantomDownloader = new PhantomJSDownloader().setRetryNum(3);
+        PhantomJSDownloader phantomDownloader = new PhantomJSDownloader().setRetryNum(3);
 
         CollectorPipeline<ResultItems> collectorPipeline = new ResultItemsCollectorPipeline();
 
         Spider.create(new BitautoProcessor())
-                .addUrl("http://price.bitauto.com/mb9/") //%B6%AC%D7%B0为冬装的GBK编码
+                .addUrl("http://price.bitauto.com/mb9/")
                 .setDownloader(new PhantomJSDownloader())
                 .addPipeline(collectorPipeline)
                 .thread((Runtime.getRuntime().availableProcessors() - 1) << 1)

@@ -70,6 +70,8 @@ public class Manager extends AbstractMessage {
 		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
 			startTianyancha();
 		}
+
+		startBitauto();
 	}
 
 	// 赛格GPS数据
