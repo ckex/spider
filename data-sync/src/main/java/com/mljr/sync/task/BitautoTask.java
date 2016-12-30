@@ -24,7 +24,7 @@ public class BitautoTask extends AbstractTask {
 	@Override
 	void execute() {
 		try {
-//			bitautoService.syncMerchantInfo();
+			bitautoService.syncCarinfo();
 		} catch (Exception ex) {
 			if (logger.isDebugEnabled()) {
 				ex.printStackTrace();

@@ -4,9 +4,11 @@
 package com.mljr.sync.service;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
 import com.mljr.constant.BasicConstant;
 import com.mljr.rabbitmq.RabbitmqClient;
+import com.mljr.redis.RedisClient;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.ucloud.umq.common.ServiceConfig;
@@ -15,6 +17,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,11 +31,20 @@ public class BitautoService {
 
     protected static transient Logger logger = LoggerFactory.getLogger(BitautoService.class);
 
+    private static final String BITAUTO_EXIST_IDS_KEY = Joiner.on("-").join("bitauto", BasicConstant.EXIST_IDS);
+
+    @Autowired
+    RedisClient redisClient;
+
     public void syncCarinfo() throws Exception {
 
         final Channel channel = RabbitmqClient.newChannel();
         try {
             for (String carCode : getCarInfo()) {
+                if(CommonService.isExist(redisClient,BITAUTO_EXIST_IDS_KEY,carCode)){
+                    logger.warn("exist bitauto id =============> {}",carCode);
+                    continue;
+                }
                 sentCarinfo(channel, carCode);
             }
 

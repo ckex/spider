@@ -2,7 +2,12 @@ package com.mljr.spider.processor;
 
 import com.mljr.constant.DomainConstant;
 import us.codecraft.webmagic.Page;
+import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Site;
+import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.downloader.PhantomJSDownloader;
+import us.codecraft.webmagic.pipeline.CollectorPipeline;
+import us.codecraft.webmagic.pipeline.ResultItemsCollectorPipeline;
 import us.codecraft.webmagic.selector.Selectable;
 
 import java.util.List;
@@ -33,9 +38,14 @@ public class BitautoProcessor extends AbstractPageProcessor {
     @Override
     public boolean onProcess(Page page) {
         Selectable url = page.getUrl();
+
+        System.out.println(page.getHtml());
         if (url.regex(FIRST_HELP_URL).match()) {
             List<String> secondList = page.getHtml().links().regex(SECOND_HELP_URL).all();
-            page.addTargetRequests(secondList);
+            if(secondList!=null&&secondList.size()>0){
+                System.out.println("-----------------  有数据了");
+                page.addTargetRequests(secondList);
+            }
         } else if (url.regex(SECOND_HELP_URL).match()) {
             List<String> targetList = page.getHtml().links().regex(TARGET_URL).all();
             page.addTargetRequests(targetList);
@@ -44,5 +54,21 @@ public class BitautoProcessor extends AbstractPageProcessor {
         }
 
         return true;
+    }
+
+    public static void main(String[] args) throws Exception {
+//        PhantomJSDownloader phantomDownloader = new PhantomJSDownloader().setRetryNum(3);
+
+        CollectorPipeline<ResultItems> collectorPipeline = new ResultItemsCollectorPipeline();
+
+        Spider.create(new BitautoProcessor())
+                .addUrl("http://price.bitauto.com/mb9/") //%B6%AC%D7%B0为冬装的GBK编码
+                .setDownloader(new PhantomJSDownloader())
+                .addPipeline(collectorPipeline)
+                .thread((Runtime.getRuntime().availableProcessors() - 1) << 1)
+                .run();
+
+        List<ResultItems> resultItemsList = collectorPipeline.getCollected();
+        System.out.println(resultItemsList.get(0).get("html").toString());
     }
 }
