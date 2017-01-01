@@ -26,8 +26,8 @@ public class StatusCodeController {
 
         List<String> jsonList = statusCodeService.getLatestRecord();
         List<MonitorData> dataList = statusCodeService.transferToObject(jsonList);
-        if(CollectionUtils.isNotEmpty(dataList)){
-            dataList.sort(Comparator.comparing(MonitorData::getDomain).thenComparing(MonitorData::getServerIp));
+        if (CollectionUtils.isNotEmpty(dataList)) {
+            dataList.sort(Comparator.comparing(MonitorData::getDomain).thenComparing(MonitorData::getServerIp, ipComparator));
         }
         ModelAndView mav = new ModelAndView("statusCode");
         mav.addObject("dataList", dataList);
@@ -46,4 +46,21 @@ public class StatusCodeController {
         mav.addObject("totolCount", statusCodeService.totolCount(dataList));
         return mav;
     }
+
+    Comparator<String> ipComparator = new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+            try{
+                if (o1.startsWith("ucloud") && o2.startsWith("ucloud")) {
+                    int num1 = Integer.parseInt(o1.replace("ucloud", ""));
+                    int num2 = Integer.parseInt(o2.replace("ucloud", ""));
+                    return num1 - num2;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return o1.compareTo(o2);
+            }
+            return o1.compareTo(o2);
+        }
+    };
 }
