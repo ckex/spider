@@ -1,11 +1,11 @@
 package com.mljr.spider.processor;
 
 import com.mljr.constant.DomainConstant;
+import com.mljr.spider.downloader.MljrPhantomJSDownloader;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.downloader.PhantomJSDownloader;
 import us.codecraft.webmagic.pipeline.CollectorPipeline;
 import us.codecraft.webmagic.pipeline.ResultItemsCollectorPipeline;
 import us.codecraft.webmagic.selector.Selectable;
@@ -59,18 +59,18 @@ public class BitautoProcessor extends AbstractPageProcessor {
     }
 
     public static void main(String[] args) throws Exception {
-        PhantomJSDownloader phantomDownloader = new PhantomJSDownloader().setRetryNum(3);
+        MljrPhantomJSDownloader phantomDownloader = new MljrPhantomJSDownloader().setRetryNum(1);
 
         CollectorPipeline<ResultItems> collectorPipeline = new ResultItemsCollectorPipeline();
 
         Spider.create(new BitautoProcessor())
                 .addUrl("http://price.bitauto.com/mb9/")
-                .setDownloader(new PhantomJSDownloader())
+                .setDownloader(phantomDownloader)
                 .addPipeline(collectorPipeline)
                 .thread((Runtime.getRuntime().availableProcessors() - 1) << 1)
                 .run();
 
         List<ResultItems> resultItemsList = collectorPipeline.getCollected();
-        System.out.println(resultItemsList.get(0).get("html").toString());
+        System.out.println(resultItemsList);
     }
 }
