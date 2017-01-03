@@ -217,7 +217,7 @@ public class Manager extends AbstractMessage {
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getBitautoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new BitautoProcessor())
-				.setDownloader(new PhantomJSDownloader())
+				.setDownloader(new PhantomJSDownloader("/usr/local/bin/phantomjs"))
 				.addPipeline(htmlPipeline)
 				.thread(1).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(BITAUTO_LISTENER_LOG_NAME);
