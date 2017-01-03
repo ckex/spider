@@ -18,6 +18,10 @@ public class BasicConstant {
 
 	public static final String MOBILE_YY_USER_CALL_RECORD_HISTORY = "yyuser.yy_user_call_record_history";
 
+	public static final String CONTRACT_LIST_KEY = "yybgrk.t_jxl_contact_list";
+
+	public static final String CONTRACT_LIST_HISTORY_KEY = "yybgrk.t_jxl_contact_list_history";
+
 	public static final String SPIDER_BANK_CARD_LOCATION = "spider_bank_card_location";
 
 	public static final String DM_TOTAL_APPLICATIONS = "dm_total_applications";
