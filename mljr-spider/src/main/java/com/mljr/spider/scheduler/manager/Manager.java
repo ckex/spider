@@ -3,6 +3,7 @@
  */
 package com.mljr.spider.scheduler.manager;
 
+import ch.qos.logback.core.util.Loader;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.constant.DomainConstant;
@@ -213,11 +214,12 @@ public class Manager extends AbstractMessage {
 
 	// http://price.bitauto.com/mb9/
 	public void startBitauto() throws Exception {
+		String jsPath = Loader.getResourceBySelfClassLoader("crawl.js").getPath();
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getBitautoPath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(new BitautoProcessor())
-				.setDownloader(new PhantomJSDownloader("/usr/local/bin/phantomjs"))
+				.setDownloader(new PhantomJSDownloader(jsPath,"/usr/local/bin/phantomjs"))
 				.addPipeline(htmlPipeline)
 				.thread(1).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(BITAUTO_LISTENER_LOG_NAME);
