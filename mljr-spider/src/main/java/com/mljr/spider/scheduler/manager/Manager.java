@@ -223,6 +223,7 @@ public class Manager extends AbstractMessage {
 				.setDownloader(new MljrPhantomJSDownloader())
 				.addPipeline(htmlPipeline)
 				.addPipeline(new ConsolePipeline())
+				.addPipeline(pipeline)
 				.thread(1).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(BITAUTO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_BITAUTO)));
