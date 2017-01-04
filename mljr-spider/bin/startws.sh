@@ -94,10 +94,10 @@ if [ ! -z "$EXIST_PIDS" ]; then
 fi
 
 if [ ! -d $OUTPUT_HOME ]; then
-	mkdir $OUTPUT_HOME
+	mkdir -p $OUTPUT_HOME
 fi
 if [ ! -d $LOG_ROOT ]; then
-	mkdir $LOG_ROOT
+	mkdir -p $LOG_ROOT
 fi
 
 # SET GC_LOG
@@ -109,15 +109,24 @@ LIB_JARS=$DEPLOY_HOME/lib/*
 echo -e "Starting havana monitor server $HOST_NAME ...\c"
         LOG_DIR=$LOG_ROOT
         STORE_DIR=$STORE_PATH
-
+	    STDOUT_LOG=$LOG_DIR/$APP_NAME.stdout.log
+		
 		if [ ! -d $LOG_DIR ]; then
-			mkdir $LOG_DIR
+			mkdir -p $LOG_DIR
 		fi
 		if [ ! -d $STORE_PATH ]; then
-			mkdir $STORE_PATH
+			mkdir -p $STORE_PATH
 		fi
-	STDOUT_LOG=$LOG_DIR/$APP_NAME.stdout.log
-	nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CONFIG_DIR:$LIB_JARS $MAIN_PATH >> $STDOUT_LOG 2>&1 &
+		if [ ! -f $STDOUT_LOG ]; then
+			touch $STDOUT_LOG
+		fi 
+		
+		echo "$DETACHED"
+		if [ $DETACHED = "false" ]; then
+			$JAVA_HOME/bin/java $JAVA_OPTS -classpath $CONFIG_DIR:$LIB_JARS $MAIN_PATH >> $STDOUT_LOG 2>&1
+		else
+			nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CONFIG_DIR:$LIB_JARS $MAIN_PATH >> $STDOUT_LOG 2>&1 &
+		fi
 
 echo "OK!"
 START_PIDS=`ps  --no-heading -C java -f --width 1000 | grep "$DEPLOY_HOME" |awk '{print $2}'`
