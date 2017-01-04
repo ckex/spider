@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.mljr.utils.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -261,7 +262,9 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 			try {
 				GetResponse response = RabbitmqClient.pollMessage(channel, qid, autoAck);
 				if (response == null) {
-					logger.debug("qid=" + qid);
+					if(RandomUtils.randomPrint(100)){
+						logger.debug("qid=" + qid+"queue is empty.waitting message");
+					}
 					TimeUnit.SECONDS.sleep(1);
 					continue;
 				}

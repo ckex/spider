@@ -3,6 +3,7 @@
  */
 package com.mljr.spider.processor;
 
+import com.mljr.utils.RandomUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 
@@ -24,7 +25,7 @@ public class IP138Processor extends AbstractPageProcessor {
 //		page.putField("卡类型", tbody.xpath("//tr[4]//td[2]//text()"));
 //		page.putField("区号", tbody.xpath("//tr[5]//td[2]//text()"));
 //		page.putField("邮编", tbody.xpath("//tr[6]//td[2]//text()"));
-		if (Math.random() * 100 < 1) {
+		if (RandomUtils.randomPrint(100)) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("process--> " + page.getUrl());
 			}
