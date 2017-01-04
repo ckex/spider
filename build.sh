@@ -40,6 +40,14 @@ function build_spider_monitor(){
 	mvn -T1C -P production -pl $model package -Dmaven.test.skip -U -X
 }
 
+function docker_spider(){
+	command -v docker >/dev/null 2>&1 || { echo >&2 "Command not found: docker. please install docker."; exit 1; }
+	echo "docker build spider image"
+	docker build --no-cache -t ckex/spider:develop .
+	docker tag ckex/spider:develop ucloud20:5000/ckex/spider:develop
+	docker push ucloud20:5000/ckex/spider:develop
+}
+
 case $1 in
 	"spider")
 		build_spider
@@ -49,6 +57,9 @@ case $1 in
 	;;
 	"spider-monitor")
 		build_spider_monitor
+	;;
+	"docker-spider-image")
+		build_spider && docker_spider
 	;;
 	*)
 		echo "wrong select" && exit 1
