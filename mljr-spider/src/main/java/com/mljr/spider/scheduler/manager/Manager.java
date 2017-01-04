@@ -12,6 +12,7 @@ import com.mljr.spider.listener.DownloaderSpiderListener;
 import com.mljr.spider.listener.StatusCodeListener;
 import com.mljr.spider.processor.*;
 import com.mljr.spider.scheduler.*;
+import com.mljr.spider.storage.BitautoLocalFilePipeline;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
@@ -212,12 +213,12 @@ public class Manager extends AbstractMessage {
 
 	// http://price.bitauto.com/mb9/
 	public void startBitauto() throws Exception {
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+		BitautoLocalFilePipeline localFilePipeline = new BitautoLocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getBitautoPath());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+		Pipeline httpPipeline = new HttpPipeline(targetUrl, this.httpClient, localFilePipeline);
 		final Spider spider = Spider.create(new BitautoProcessor())
-				.addPipeline(htmlPipeline)
-				.addPipeline(pipeline)
+				.addPipeline(httpPipeline)
+				.addPipeline(localFilePipeline)
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(BITAUTO_LISTENER_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_BITAUTO)));
