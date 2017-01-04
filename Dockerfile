@@ -26,7 +26,7 @@ WORKDIR $SPIDER_HOME/bin
 # docker tag ckex/spider:develop ucloud20:5000/ckex/spider:develop
 # docker push ucloud20:5000/ckex/spider:develop
 #  --restart=always
-# docker run --name spider -v /data:/data -d ucloud20:5000/ckex/spider:develop restartws.sh
+# hn=`hostname` &&  docker run --name spider --hostname="docker$hn" -v /data:/data -d ucloud20:5000/ckex/spider:develop restartws.sh
 
 
 
