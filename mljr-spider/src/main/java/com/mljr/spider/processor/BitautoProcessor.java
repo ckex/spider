@@ -1,11 +1,11 @@
 package com.mljr.spider.processor;
 
 import com.mljr.constant.DomainConstant;
+import com.mljr.spider.downloader.MljrPhantomJSDownloader;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.downloader.PhantomJSDownloader;
 import us.codecraft.webmagic.pipeline.CollectorPipeline;
 import us.codecraft.webmagic.pipeline.ResultItemsCollectorPipeline;
 import us.codecraft.webmagic.selector.Selectable;
@@ -19,10 +19,10 @@ import java.util.List;
 public class BitautoProcessor extends AbstractPageProcessor {
 
     private static final Site site = Site.me()
-            .setDomain(DomainConstant.DOMAIN_BITAUTO) //此字段在生成文件时用到
-            .setSleepTime(1000)
-            .setRetrySleepTime(4200)
-            .setRetryTimes(2)
+            .setDomain(DomainConstant.DOMAIN_BITAUTO)
+            .setSleepTime(300)
+            .setRetrySleepTime(2000)
+            .setRetryTimes(1)
             .setUserAgent(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
@@ -51,26 +51,29 @@ public class BitautoProcessor extends AbstractPageProcessor {
                     page.addTargetRequest(url);
                 }
             }
-        } else if (currentUrl.regex(TARGET_URL).match()) {
+        } else if (currentUrl.get().contains("peizhi")) {
             page.putField("", page.getHtml());
+            logger.debug("bitauto success");
+        }else{
+            logger.error("bitauto error");
         }
 
         return true;
     }
 
     public static void main(String[] args) throws Exception {
-        PhantomJSDownloader phantomDownloader = new PhantomJSDownloader().setRetryNum(3);
+        MljrPhantomJSDownloader phantomDownloader = new MljrPhantomJSDownloader().setRetryNum(1);
 
         CollectorPipeline<ResultItems> collectorPipeline = new ResultItemsCollectorPipeline();
 
         Spider.create(new BitautoProcessor())
                 .addUrl("http://price.bitauto.com/mb9/")
-                .setDownloader(new PhantomJSDownloader())
+                .setDownloader(phantomDownloader)
                 .addPipeline(collectorPipeline)
                 .thread((Runtime.getRuntime().availableProcessors() - 1) << 1)
                 .run();
 
         List<ResultItems> resultItemsList = collectorPipeline.getCollected();
-        System.out.println(resultItemsList.get(0).get("html").toString());
+        System.out.println(resultItemsList);
     }
 }

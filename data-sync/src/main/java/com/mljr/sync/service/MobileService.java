@@ -3,37 +3,32 @@
  */
 package com.mljr.sync.service;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import com.mljr.spider.dao.YyUserAddressBookHistoryDao;
-import com.mljr.spider.dao.YyUserCallRecordHistoryDao;
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
+import com.mljr.constant.BasicConstant;
+import com.mljr.rabbitmq.RabbitmqClient;
+import com.mljr.redis.RedisClient;
+import com.mljr.spider.dao.*;
+import com.mljr.spider.model.YyUserAddressBookDo;
 import com.mljr.spider.model.YyUserAddressBookHistoryDo;
+import com.mljr.spider.model.YyUserCallRecordDo;
 import com.mljr.spider.model.YyUserCallRecordHistoryDo;
+import com.rabbitmq.client.AMQP.BasicProperties;
+import com.rabbitmq.client.Channel;
+import com.ucloud.umq.common.ServiceConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.common.base.Charsets;
-import java.util.function.Function;
-
-import com.google.common.base.Joiner;
-import com.mljr.constant.BasicConstant;
-import com.mljr.rabbitmq.RabbitmqClient;
-import com.mljr.redis.RedisClient;
-import com.mljr.spider.dao.YyUserAddressBookDao;
-import com.mljr.spider.dao.YyUserCallRecordDao;
-import com.mljr.spider.model.YyUserAddressBookDo;
-import com.mljr.spider.model.YyUserCallRecordDo;
-import com.rabbitmq.client.AMQP.BasicProperties;
-import com.rabbitmq.client.Channel;
-import com.ucloud.umq.common.ServiceConfig;
-
 import redis.clients.jedis.Jedis;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * @author Ckex zha </br>
@@ -49,12 +44,21 @@ public class MobileService {
 
 	private static final String RECORD_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_CALL_RECORD,
 			BasicConstant.LAST_ID);
+
 	private static final String RECORD_HISTORY_KEY = Joiner.on("-")
 			.join(BasicConstant.MOBILE_YY_USER_CALL_RECORD_HISTORY, BasicConstant.LAST_ID);
+
 	private static final String BOOK_KEY = Joiner.on("-").join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK,
 			BasicConstant.LAST_ID);
+
 	private static final String BOOK_HISTORY_KEY = Joiner.on("-")
 			.join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK_HISTORY, BasicConstant.LAST_ID);
+
+	private static final String CONTRACT_LIST_KEY = Joiner.on("-")
+			.join(BasicConstant.CONTRACT_LIST_KEY, BasicConstant.LAST_ID);
+
+	private static final String CONTRACT_LIST_HISTORY_KEY = Joiner.on("-")
+			.join(BasicConstant.CONTRACT_LIST_HISTORY_KEY, BasicConstant.LAST_ID);
 
 	private static final String MOBILE_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.MOBILE,
 			BasicConstant.EXIST_IDS);
@@ -72,6 +76,9 @@ public class MobileService {
 	private YyUserCallRecordHistoryDao yyUserCallRecordHistoryDao;
 
 	@Autowired
+	private YybgrkContactListDao yybgrkContactListDao;
+
+	@Autowired
 	private RedisClient client;
 
 	public void syncMobile() throws Exception {
@@ -82,11 +89,43 @@ public class MobileService {
 			syncYyUserCallRecord(function);
 			syncBookHistory(function);
 			syncRecordHistory(function);
+			syncYybgrkContactList(function);
+			syncYybgrkContactListHistory(function);
 		} finally {
 			if (channel != null) {
 				channel.close();
 			}
 		}
+	}
+
+	private void syncYybgrkContactList(Function<String, Boolean> function) {
+		List<Map> result = listContractList(CONTRACT_LIST_KEY);
+		if (result == null || result.isEmpty()) {
+			logger.info("result empty .");
+			return;
+		}
+		result.stream().filter(ele -> {
+			boolean ret = sent(function, CONTRACT_LIST_KEY, (String)ele.get("phoneNum"), (Long)ele.get("id"));
+			if (!ret) {
+				logger.warn("sent to mq error ." + ele.toString());
+			}
+			return !ret;
+		}).findFirst();
+	}
+
+	private void syncYybgrkContactListHistory(Function<String, Boolean> function) {
+		List<Map> result = listContractListHistory(CONTRACT_LIST_HISTORY_KEY);
+		if (result == null || result.isEmpty()) {
+			logger.info("result empty .");
+			return;
+		}
+		result.stream().filter(ele -> {
+			boolean ret = sent(function, CONTRACT_LIST_HISTORY_KEY, (String)ele.get("phoneNum"), (Long)ele.get("id"));
+			if (!ret) {
+				logger.warn("sent to mq error ." + ele.toString());
+			}
+			return !ret;
+		}).findFirst();
 	}
 
 	private void syncYyUserCallRecord(Function<String, Boolean> function) {
@@ -117,6 +156,16 @@ public class MobileService {
 			}
 			return !ret;
 		}).findFirst();
+	}
+
+	private List<Map> listContractList(String key) {
+		long lastId = getLastId(key);
+		return yybgrkContactListDao.listById(lastId, LIMIT);
+	}
+
+	private List<Map> listContractListHistory(String key) {
+		long lastId = getLastId(key);
+		return yybgrkContactListDao.listHistoryById(lastId, LIMIT);
 	}
 
 	private List<YyUserCallRecordDo> listYyUserCallRecord(String key) {
