@@ -7,6 +7,7 @@ function start_spider(){
 	docker stop spider
 	docker rm spider
 	docker run --name spider -v /data:/data -d ucloud20:5000/ckex/spider:develop restartws.sh
+	hn=`hostname` &&  docker run --name spider --hostname="docker$hn" -v /data:/data -d ucloud20:5000/ckex/spider:develop restartws.sh
 }
 
 case $1 in
