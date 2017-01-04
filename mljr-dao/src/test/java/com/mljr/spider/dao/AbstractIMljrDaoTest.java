@@ -3,13 +3,12 @@
  */
 package com.mljr.spider.dao;
 
+import com.mljr.redis.RedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-
-import com.mljr.redis.RedisClient;
 
 /**
  * @author Ckex zha </br>
@@ -42,5 +41,8 @@ public class AbstractIMljrDaoTest extends AbstractJUnit4SpringContextTests {
 
 	@Autowired
 	protected YyUserAddressBookHistoryDao yyUserAddressBookHistoryDao;
+
+	@Autowired
+	protected YybgrkContactListDao yybgrkContactListDao;
 
 }
