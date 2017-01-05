@@ -4,6 +4,7 @@
 package com.mljr.spider.listener;
 
 import java.util.Date;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -17,6 +18,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalListeners;
 import com.google.common.cache.RemovalNotification;
 import com.mljr.common.ServiceConfig;
 import com.mljr.entity.MonitorData;
@@ -49,9 +51,9 @@ public abstract class AbstractMonitorCache {
 	};
 
 	// http://blog.csdn.net/abc86319253/article/details/53020432
-	private static final LoadingCache<LocalCacheKey, MonitorData> LOCAL_CACHE = CacheBuilder.newBuilder()
-			.concurrencyLevel(5).expireAfterWrite(1, TimeUnit.MINUTES).refreshAfterWrite(10, TimeUnit.SECONDS)
-			.initialCapacity(10).maximumSize(10000).removalListener(LISTENER).recordStats()
+	private static final LoadingCache<LocalCacheKey, MonitorData> LOCAL_CACHE = CacheBuilder.newBuilder().concurrencyLevel(5)
+			.expireAfterWrite(1, TimeUnit.MINUTES).refreshAfterWrite(10, TimeUnit.SECONDS).initialCapacity(10).maximumSize(10000)
+			.removalListener(RemovalListeners.asynchronous(LISTENER, Executors.newSingleThreadExecutor())).recordStats()
 			.build(new CacheLoader<LocalCacheKey, MonitorData>() {
 
 				@Override
@@ -66,6 +68,7 @@ public abstract class AbstractMonitorCache {
 		synchronized (value) { // 同步 原子操作
 			setter.setData(LOCAL_CACHE.getUnchecked(key));
 		}
+		
 	}
 
 	private static void saveData(final LocalCacheKey key, final MonitorData value) {
@@ -74,6 +77,7 @@ public abstract class AbstractMonitorCache {
 			@Override
 			public Void apply(Jedis jedis) {
 				String keyStr = Joiner.on("-").join(KEY_PRE, key.hostname, key.domain);
+				value.setTime(key.time);
 				jedis.lpush(keyStr, JSON.toJSONString(value));
 //				List<String> list = jedis.lrange(keyStr, 0, 0);
 //				if (list.isEmpty()) {
