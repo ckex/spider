@@ -3,151 +3,93 @@
  */
 package com.mljr.spider.listener;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.collect.HashBasedTable;
-import com.mljr.common.ServiceConfig;
-import com.mljr.entity.MonitorData;
-import com.mljr.redis.RedisClient;
+import com.google.common.base.Splitter;
 import com.mljr.utils.IpUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import redis.clients.jedis.Jedis;
+
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.SpiderListener;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashSet;
+import java.util.Set;
 
-public class StatusCodeListener implements SpiderListener, Serializable {
-    protected transient final Logger logger = LoggerFactory.getLogger(SpiderListener.class);
+public class StatusCodeListener extends AbstractMonitorCache implements SpiderListener, Serializable {
+	private static final long serialVersionUID = 1L;
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+	private final String domain;
 
-    private AtomicInteger totalRequests = new AtomicInteger(0);
+	public StatusCodeListener(String domain) {
+		this.domain = domain;
+	}
 
-    private String domain;
+	@Override
+	public void onSuccess(Request request) {
+		update(true, request);
+	}
 
-    private Long beginTime;
-    // row:domain   column:状态码    value: 状态码出现次数
-    public HashBasedTable<String, Integer, Integer> table = HashBasedTable.create();
+	@Override
+	public void onError(Request request) {
+		update(false, request);
+	}
 
-    private RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
-
-    public StatusCodeListener(String domain) {
-        this.domain = domain;
-    }
-
-    @Override
-    public void onSuccess(Request request) {
-        countStatusCodeByDomain(request);
-    }
-
-    @Override
-    public void onError(Request request) {
-        countStatusCodeByDomain(request);
-
-    }
-
-    private void countStatusCodeByDomain(Request request) {
-        synchronized (this) {
-            totalRequests.addAndGet(1);
-            if (beginTime == null) {
-                beginTime = System.currentTimeMillis();
-            }
-            Integer statusCode = (Integer) request.getExtras().get("statusCode");
-            if (table.contains(domain, statusCode)) {
-                int times = table.get(domain, statusCode);
-                table.put(domain, statusCode, ++times);
-            } else {
-                table.put(domain, statusCode, 1);
-            }
-            int timeDiff = (int) (System.currentTimeMillis() - beginTime) / 1000;
-            // 一分钟写一次库
-            if (timeDiff >= 60) {
-                String currentTime = sdf.format(new Date());
-                try {
-                    String ip = IpUtils.getHostName();
-                    String key = Joiner.on("-").join("status-code", ip, domain);
-                    MonitorData data = createObjectFromTable();
-                    data.setTime(currentTime);
-                    data.setServerIp(ip);
-                    data.setDomain(domain);
-                    data.setTotalRequests(totalRequests.get());
-                    data.setStatusCodes(table.row(domain).keySet().toString());
-
-                    String jsonStr = JSON.toJSONString(data);
-
-                    logger.debug("### " + jsonStr);
-                    // 写库
-                    redisClient.use(new Function<Jedis, String>() {
-
-                        @Override
-                        public String apply(Jedis jedis) {
-                            jedis.lpush(key, jsonStr);
-                            return null;
-                        }
-                    });
-                    totalRequests.set(0);
-                    beginTime = null;
-                    table.clear();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    logger.error("状态码监控报错", e);
-                }
-
-            }
-        }
-    }
-
-    private MonitorData createObjectFromTable() {
-        MonitorData data = new MonitorData();
-        Map<Integer, Integer> codeMap = table.row(domain);
-        for (Map.Entry<Integer, Integer> entry : codeMap.entrySet()) {
-            switch (entry.getKey()) {
-                case 200:
-                    data.setFreq200(entry.getValue());
-                    break;
-                case 301:
-                    data.setFreq301(entry.getValue());
-                    break;
-                case 302:
-                    data.setFreq302(entry.getValue());
-                    break;
-                case 304:
-                    data.setFreq304(entry.getValue());
-                    break;
-                case 307:
-                    data.setFreq307(entry.getValue());
-                    break;
-                case 401:
-                    data.setFreq401(entry.getValue());
-                    break;
-                case 403:
-                    data.setFreq403(entry.getValue());
-                    break;
-                case 404:
-                    data.setFreq404(entry.getValue());
-                    break;
-                case 500:
-                    data.setFreq500(entry.getValue());
-                    break;
-                case 501:
-                    data.setFreq501(entry.getValue());
-                    break;
-                case 504:
-                    data.setFreq504(entry.getValue());
-                    break;
-                case 9999:
-                    data.setFreqParseFail(entry.getValue());
-                    break;
-            }
-        }
-        return data;
-    }
+	private void update(boolean isSuccess, Request request) {
+		int statusCode = (Integer) request.getExtras().get("statusCode");
+		Setter setter = data -> {
+			Set<String> codes = new HashSet<>();
+			codes.add(String.valueOf(statusCode));
+			codes.addAll(Splitter.on(",").omitEmptyStrings().splitToList(data.getStatusCodes()));
+			data.setTotalRequests(data.getTotalRequests() + 1);
+			data.setStatusCodes(Joiner.on(",").join(codes));
+			if (isSuccess) {
+				data.setOnSuccessCount(data.getOnSuccessCount() + 1);
+			} else {
+				data.setOnErrorCount(data.getOnErrorCount() + 1);
+			}
+			switch (statusCode) {
+			case 200:
+				data.setFreq200(data.getFreq200() + 1);
+				break;
+			case 301:
+				data.setFreq301(data.getFreq301() + 1);
+				break;
+			case 302:
+				data.setFreq302(data.getFreq302() + 1);
+				break;
+			case 304:
+				data.setFreq304(data.getFreq304() + 1);
+				break;
+			case 307:
+				data.setFreq307(data.getFreq307() + 1);
+				break;
+			case 401:
+				data.setFreq401(data.getFreq401() + 1);
+				break;
+			case 403:
+				data.setFreq403(data.getFreq403() + 1);
+				break;
+			case 404:
+				data.setFreq404(data.getFreq404() + 1);
+				break;
+			case 500:
+				data.setFreq500(data.getFreq500() + 1);
+				break;
+			case 501:
+				data.setFreq501(data.getFreq501() + 1);
+				break;
+			case 504:
+				data.setFreq504(data.getFreq504() + 1);
+				break;
+			case 9999:
+				data.setFreqParseFail(data.getFreqParseFail() + 1);
+				break;
+			default:
+				logger.warn(" Invalid http code" + statusCode);
+				break;
+			}
+		};
+		updateValue(new LocalCacheKey(new Date(), IpUtils.getHostName(), domain), setter);
+	}
 
 }
