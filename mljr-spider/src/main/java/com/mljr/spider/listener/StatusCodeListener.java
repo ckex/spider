@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class StatusCodeListener extends AbstractMonitorCache implements SpiderListener, Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +41,9 @@ public class StatusCodeListener extends AbstractMonitorCache implements SpiderLi
 		Setter setter = data -> {
 			Set<String> codes = new HashSet<>();
 			codes.add(String.valueOf(statusCode));
-			codes.addAll(Splitter.on(",").omitEmptyStrings().splitToList(data.getStatusCodes()));
+			if (StringUtils.isNotBlank(data.getStatusCodes())) {
+				codes.addAll(Splitter.on(",").omitEmptyStrings().splitToList(data.getStatusCodes()));
+			}
 			data.setTotalRequests(data.getTotalRequests() + 1);
 			data.setStatusCodes(Joiner.on(",").join(codes));
 			if (isSuccess) {

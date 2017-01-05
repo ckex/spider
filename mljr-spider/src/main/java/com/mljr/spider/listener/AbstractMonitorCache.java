@@ -48,9 +48,11 @@ public abstract class AbstractMonitorCache {
 
 	};
 
+	// http://blog.csdn.net/abc86319253/article/details/53020432
 	private static final LoadingCache<LocalCacheKey, MonitorData> LOCAL_CACHE = CacheBuilder.newBuilder()
-			.concurrencyLevel(5).expireAfterWrite(1, TimeUnit.MINUTES).initialCapacity(10).maximumSize(100)
-			.removalListener(LISTENER).recordStats().build(new CacheLoader<LocalCacheKey, MonitorData>() {
+			.concurrencyLevel(5).expireAfterWrite(1, TimeUnit.MINUTES).refreshAfterWrite(10, TimeUnit.SECONDS)
+			.initialCapacity(10).maximumSize(10000).removalListener(LISTENER).recordStats()
+			.build(new CacheLoader<LocalCacheKey, MonitorData>() {
 
 				@Override
 				public MonitorData load(LocalCacheKey key) {
