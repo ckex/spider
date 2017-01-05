@@ -3,10 +3,7 @@
  */
 package com.mljr.spider.listener;
 
-import java.util.Date;
-
 import com.mljr.spider.processor.AbstractPageProcessor.PageListener;
-import com.mljr.utils.IpUtils;
 
 import us.codecraft.webmagic.Page;
 
@@ -27,7 +24,7 @@ public class ProcessListener extends AbstractMonitorCache implements PageListene
 			return; // nothing.
 		}
 		Setter setter = val -> val.setFreqParseFail(1 + val.getFreqParseFail());
-		updateValue(new LocalCacheKey(new Date(), IpUtils.getHostName(), domain), setter);
+		updateValue(new LocalCacheKey(domain), setter);
 	}
 
 }

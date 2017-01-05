@@ -4,10 +4,13 @@
 package com.mljr.spider.listener;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,7 @@ import com.google.common.cache.RemovalNotification;
 import com.mljr.common.ServiceConfig;
 import com.mljr.entity.MonitorData;
 import com.mljr.redis.RedisClient;
+import com.mljr.utils.IpUtils;
 
 import redis.clients.jedis.Jedis;
 
@@ -42,67 +46,74 @@ public abstract class AbstractMonitorCache {
 
 	private static RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
 
-	private static final RemovalListener<LocalCacheKey, MonitorData> LISTENER = new RemovalListener<LocalCacheKey, MonitorData>() {
+	private static final RemovalListener<LocalCacheKey, Map<String, MonitorData>> LISTENER = new RemovalListener<LocalCacheKey, Map<String, MonitorData>>() {
 
 		@Override
-		public void onRemoval(RemovalNotification<LocalCacheKey, MonitorData> notification) {
+		public void onRemoval(RemovalNotification<LocalCacheKey, Map<String, MonitorData>> notification) {
 			saveData(notification.getKey(), notification.getValue());
 		}
 
 	};
 
 	// http://blog.csdn.net/abc86319253/article/details/53020432
-	private static final LoadingCache<LocalCacheKey, MonitorData> LOCAL_CACHE = CacheBuilder.newBuilder().concurrencyLevel(5)
-			.expireAfterWrite(1, TimeUnit.MINUTES).refreshAfterWrite(10, TimeUnit.SECONDS).initialCapacity(10).maximumSize(10000)
-			.removalListener(RemovalListeners.asynchronous(LISTENER, Executors.newSingleThreadExecutor(new ThreadFactory() {
-				
+	private static final LoadingCache<LocalCacheKey, Map<String, MonitorData>> LOCAL_CACHE = CacheBuilder.newBuilder()
+			.concurrencyLevel(5).expireAfterWrite(80, TimeUnit.SECONDS).refreshAfterWrite(40, TimeUnit.SECONDS)
+			.initialCapacity(10).maximumSize(10000).removalListener(
+					RemovalListeners.asynchronous(LISTENER, Executors.newSingleThreadExecutor(new ThreadFactory() {
+
 						@Override
 						public Thread newThread(Runnable r) {
 							final Thread thread = new Thread(r, "cache-remove-listener");
 							thread.setDaemon(true);
 							return thread;
 						}
-			}))).recordStats()
-			.build(new CacheLoader<LocalCacheKey, MonitorData>() {
+					})))
+			.recordStats().build(new CacheLoader<LocalCacheKey, Map<String, MonitorData>>() {
 
 				@Override
-				public MonitorData load(LocalCacheKey key) {
-					return new MonitorData();
+				public Map<String, MonitorData> load(LocalCacheKey key) {
+					// return new MonitorData();
+					return new HashMap<>();
 				}
 
 			});
 
 	protected void updateValue(LocalCacheKey key, Setter setter) {
-		MonitorData value = LOCAL_CACHE.getUnchecked(key);
-		synchronized (value) { // 同步 原子操作
-			setter.setData(LOCAL_CACHE.getUnchecked(key));
-		}
-		
+		updateValue(key, nowStr(), setter);
 	}
 
-	private static void saveData(final LocalCacheKey key, final MonitorData value) {
-		redisClient.use(new Function<Jedis, Void>() {
-
-			@Override
-			public Void apply(Jedis jedis) {
-				String keyStr = Joiner.on("-").join(KEY_PRE, key.hostname, key.domain);
-				value.setTime(key.time);
-				jedis.lpush(keyStr, JSON.toJSONString(value));
-//				List<String> list = jedis.lrange(keyStr, 0, 0);
-//				if (list.isEmpty()) {
-//					jedis.lpush(keyStr, JSON.toJSONString(value));
-//				} else {
-//					merge(JSON.parseObject(list.get(0), MonitorData.class), value);
-//					jedis.lset(keyStr, 0, JSON.toJSONString(value));
-//				}
-				return null;
+	protected void updateValue(LocalCacheKey key, String time, Setter setter) {
+		synchronized (LOCAL_CACHE) {
+			Map<String, MonitorData> map = LOCAL_CACHE.getUnchecked(key);
+			if (!map.containsKey(time)) {
+				map.put(time, new MonitorData());
 			}
+			setter.setData(map.get(time));
+		}
+	}
 
-//			private void merge(MonitorData oldData, MonitorData value) {
-//				// merge value
-//				// value.setFreq200(value.getFreq200() + oldData.getFreq200());
-//			}
-		});
+	private static void saveData(final LocalCacheKey key, final Map<String, MonitorData> values) {
+		synchronized (LOCAL_CACHE) {
+
+			redisClient.use(new Function<Jedis, Void>() {
+
+				@Override
+				public Void apply(Jedis jedis) {
+					String keyStr = Joiner.on("-").join(KEY_PRE, key.hostname, key.domain);
+					values.forEach((k, val) -> {
+						if (StringUtils.equalsIgnoreCase(k, nowStr())) {
+							LOCAL_CACHE.getUnchecked(key).put(k, val);
+						} else {
+							val.setTime(k);
+							val.setDomain(key.domain);
+							val.setServerIp(key.hostname);
+							jedis.lpush(keyStr, JSON.toJSONString(val));
+						}
+					});
+					return null;
+				}
+			});
+		}
 	}
 
 	@FunctionalInterface
@@ -114,20 +125,17 @@ public abstract class AbstractMonitorCache {
 		super();
 	}
 
+	public static String nowStr() {
+		return DateFormatUtils.format(new Date(), PATTERN);
+	}
+
 	public static final class LocalCacheKey {
 
-		public final String time;
-		public final String hostname;
+		public final String hostname = IpUtils.getHostName();
 		public final String domain;
 
-		public LocalCacheKey(Date time, String hostname, String domain) {
-			this(DateFormatUtils.format(time, PATTERN), hostname, domain);
-		}
-
-		public LocalCacheKey(String time, String hostname, String domain) {
+		public LocalCacheKey(String domain) {
 			super();
-			this.time = time;
-			this.hostname = hostname;
 			this.domain = domain;
 		}
 
@@ -137,7 +145,6 @@ public abstract class AbstractMonitorCache {
 			int result = 1;
 			result = prime * result + ((domain == null) ? 0 : domain.hashCode());
 			result = prime * result + ((hostname == null) ? 0 : hostname.hashCode());
-			result = prime * result + ((time == null) ? 0 : time.hashCode());
 			return result;
 		}
 
@@ -159,11 +166,6 @@ public abstract class AbstractMonitorCache {
 				if (other.hostname != null)
 					return false;
 			} else if (!hostname.equals(other.hostname))
-				return false;
-			if (time == null) {
-				if (other.time != null)
-					return false;
-			} else if (!time.equals(other.time))
 				return false;
 			return true;
 		}

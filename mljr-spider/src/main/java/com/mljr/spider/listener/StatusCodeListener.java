@@ -5,13 +5,11 @@ package com.mljr.spider.listener;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-import com.mljr.utils.IpUtils;
 
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.SpiderListener;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -93,7 +91,7 @@ public class StatusCodeListener extends AbstractMonitorCache implements SpiderLi
 				break;
 			}
 		};
-		updateValue(new LocalCacheKey(new Date(), IpUtils.getHostName(), domain), setter);
+		updateValue(new LocalCacheKey(domain), setter);
 	}
 
 }
