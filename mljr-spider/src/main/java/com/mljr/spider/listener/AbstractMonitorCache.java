@@ -5,6 +5,7 @@ package com.mljr.spider.listener;
 
 import java.util.Date;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -53,7 +54,15 @@ public abstract class AbstractMonitorCache {
 	// http://blog.csdn.net/abc86319253/article/details/53020432
 	private static final LoadingCache<LocalCacheKey, MonitorData> LOCAL_CACHE = CacheBuilder.newBuilder().concurrencyLevel(5)
 			.expireAfterWrite(1, TimeUnit.MINUTES).refreshAfterWrite(10, TimeUnit.SECONDS).initialCapacity(10).maximumSize(10000)
-			.removalListener(RemovalListeners.asynchronous(LISTENER, Executors.newSingleThreadExecutor())).recordStats()
+			.removalListener(RemovalListeners.asynchronous(LISTENER, Executors.newSingleThreadExecutor(new ThreadFactory() {
+				
+						@Override
+						public Thread newThread(Runnable r) {
+							final Thread thread = new Thread(r, "cache-remove-listener");
+							thread.setDaemon(true);
+							return thread;
+						}
+			}))).recordStats()
 			.build(new CacheLoader<LocalCacheKey, MonitorData>() {
 
 				@Override
