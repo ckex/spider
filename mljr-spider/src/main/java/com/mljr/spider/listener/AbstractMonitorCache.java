@@ -4,7 +4,6 @@
 package com.mljr.spider.listener;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -62,7 +61,7 @@ public abstract class AbstractMonitorCache {
 
 	protected void updateValue(LocalCacheKey key, Setter setter) {
 		MonitorData value = LOCAL_CACHE.getUnchecked(key);
-		synchronized (value) { // 同步/原子操作
+		synchronized (value) { // 同步 原子操作
 			setter.setData(LOCAL_CACHE.getUnchecked(key));
 		}
 	}
@@ -73,20 +72,21 @@ public abstract class AbstractMonitorCache {
 			@Override
 			public Void apply(Jedis jedis) {
 				String keyStr = Joiner.on("-").join(KEY_PRE, key.hostname, key.domain);
-				List<String> list = jedis.lrange(keyStr, 0, 0);
-				if (list.isEmpty()) {
-					jedis.lpush(keyStr, JSON.toJSONString(value));
-				} else {
-					merge(JSON.parseObject(list.get(0), MonitorData.class), value);
-					jedis.lset(keyStr, 0, JSON.toJSONString(value));
-				}
+				jedis.lpush(keyStr, JSON.toJSONString(value));
+//				List<String> list = jedis.lrange(keyStr, 0, 0);
+//				if (list.isEmpty()) {
+//					jedis.lpush(keyStr, JSON.toJSONString(value));
+//				} else {
+//					merge(JSON.parseObject(list.get(0), MonitorData.class), value);
+//					jedis.lset(keyStr, 0, JSON.toJSONString(value));
+//				}
 				return null;
 			}
 
-			private void merge(MonitorData oldData, MonitorData value) {
-				// merge value
-				// value.setFreq200(value.getFreq200() + oldData.getFreq200());
-			}
+//			private void merge(MonitorData oldData, MonitorData value) {
+//				// merge value
+//				// value.setFreq200(value.getFreq200() + oldData.getFreq200());
+//			}
 		});
 	}
 
