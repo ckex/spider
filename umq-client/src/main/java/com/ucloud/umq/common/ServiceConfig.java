@@ -298,4 +298,13 @@ public class ServiceConfig {
     public static String getBlackIdCardRoutingKey() {
         return properties.getProperty("rmq.gxsky.routingKey");
     }
+
+    //QQZone
+    public static String getQQZoneIndex(){
+        return properties.getProperty("qqzone.index.path");
+    }
+
+    public static String getQQZoneExchange(){
+        return properties.getProperty("rmq.qqzone.exchange");
+    }
 }
