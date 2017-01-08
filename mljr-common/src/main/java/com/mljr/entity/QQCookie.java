@@ -10,20 +10,23 @@ public class QQCookie implements Serializable {
 
     private static final long serialVersionUID = 3539754193877470622L;
 
-    private String user;
+    private String user;//账号
 
-    private String password;
+    private String password;//密码
 
-    List<CCookie> cookies;
+    private List<CCookie> cookies;//cookies
+
+    private long timestamp = System.currentTimeMillis();
 
     public QQCookie() {
 
     }
 
-    public QQCookie(String user, String password, List<CCookie> cookies) {
+    public QQCookie(String user, String password, List<CCookie> cookies, long timestamp) {
         this.user = user;
         this.password = password;
         this.cookies = cookies;
+        this.timestamp = timestamp;
     }
 
     public String getUser() {
@@ -48,5 +51,13 @@ public class QQCookie implements Serializable {
 
     public void setCookies(List<CCookie> cookies) {
         this.cookies = cookies;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

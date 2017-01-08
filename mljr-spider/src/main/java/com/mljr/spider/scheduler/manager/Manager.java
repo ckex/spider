@@ -5,6 +5,8 @@ package com.mljr.spider.scheduler.manager;
 
 import java.util.Date;
 
+import com.mljr.spider.processor.*;
+import com.mljr.spider.scheduler.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.http.nio.reactor.IOReactorException;
@@ -18,46 +20,6 @@ import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
 import com.mljr.spider.listener.ProcessListener;
 import com.mljr.spider.listener.StatusCodeListener;
-import com.mljr.spider.processor.AbstractPageProcessor;
-import com.mljr.spider.processor.BaiduMobileProcessor;
-import com.mljr.spider.processor.BitautoProcessor;
-import com.mljr.spider.processor.Cha67BankCardProcessor;
-import com.mljr.spider.processor.ChaYHKDataProcessor;
-import com.mljr.spider.processor.GuabuBankCardProcessor;
-import com.mljr.spider.processor.GuishuShowjiProcessor;
-import com.mljr.spider.processor.GxskyProcessor;
-import com.mljr.spider.processor.HuoChePiaoProcessor;
-import com.mljr.spider.processor.Huoche114Processor;
-import com.mljr.spider.processor.IP138Processor;
-import com.mljr.spider.processor.JuheMobileProcessor;
-import com.mljr.spider.processor.LBSAMapGeoProcessor;
-import com.mljr.spider.processor.LBSAMapReGeoProcessor;
-import com.mljr.spider.processor.LBSBaiduGeoProcessor;
-import com.mljr.spider.processor.LBSBaiduReGeoProcessor;
-import com.mljr.spider.processor.SaiGeGPSProcessor;
-import com.mljr.spider.processor.SogouMobileProcessor;
-import com.mljr.spider.processor.TianyanchaProcessor;
-import com.mljr.spider.processor.YinHangKa388Processor;
-import com.mljr.spider.scheduler.AbstractScheduler;
-import com.mljr.spider.scheduler.BaiduMobileScheduler;
-import com.mljr.spider.scheduler.BitautoScheduler;
-import com.mljr.spider.scheduler.BlackIdCardScheduler;
-import com.mljr.spider.scheduler.Cha67BankCardScheduler;
-import com.mljr.spider.scheduler.ChaYHKDataScheduler;
-import com.mljr.spider.scheduler.GuabuBankCardScheduler;
-import com.mljr.spider.scheduler.GuishuShowjiScheduler;
-import com.mljr.spider.scheduler.HuoChePiaoScheduler;
-import com.mljr.spider.scheduler.Huoche114Scheduler;
-import com.mljr.spider.scheduler.IP138Scheduler;
-import com.mljr.spider.scheduler.JuheMobileScheduler;
-import com.mljr.spider.scheduler.LBSAMapGeoScheduler;
-import com.mljr.spider.scheduler.LBSAMapReGeoScheduler;
-import com.mljr.spider.scheduler.LBSBaiduGeoScheduler;
-import com.mljr.spider.scheduler.LBSBaiduReGeoScheduler;
-import com.mljr.spider.scheduler.SaiGeGPSScheduler;
-import com.mljr.spider.scheduler.SogouMobileScheduler;
-import com.mljr.spider.scheduler.TianyanchaScheduler;
-import com.mljr.spider.scheduler.YinHangKa388Scheduler;
 import com.mljr.spider.storage.BitautoLocalFilePipeline;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
@@ -462,7 +424,7 @@ public class Manager extends AbstractMessage {
 
 	//QQ空间首页　
 	private void startQQZoneIndex() throws Exception{
-		AbstractPageProcessor processor=new QQZoneIndexProcessor();
+		AbstractPageProcessor processor=fac.create(new QQZoneIndexProcessor());
 		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getQQZoneIndex());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);

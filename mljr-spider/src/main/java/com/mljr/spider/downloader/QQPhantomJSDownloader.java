@@ -3,9 +3,11 @@ package com.mljr.spider.downloader;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
 import com.mljr.common.ServiceConfig;
+import com.mljr.constant.RedisConstant;
 import com.mljr.entity.CCookie;
 import com.mljr.entity.QQCookie;
 import com.mljr.redis.RedisClient;
+import com.mljr.utils.QQUtils;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -28,39 +30,35 @@ public class QQPhantomJSDownloader extends AbstractDownloader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QQPhantomJSDownloader.class);
 
-    private static final String QQ_GROUPS_KEY = "qq-groups";
-
     private static RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
 
-    private int count = 1;
+    private int retryCount = 3;
 
     public QQPhantomJSDownloader() {
     }
 
     @Override
     public Page download(Request request, Task task) {
-        WebDriver webDriver = new PhantomJSDriver();
-        List<String> randomKeyList = getRandomKey(this.count);
+        List<String> randomKeyList = QQUtils.getRandomKey(1);
         if (null == randomKeyList || randomKeyList.size() == 0) {
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.error("redis qq-groups key is null.");
+                LOGGER.warn("redis qq-groups key is null.");
                 return null;
             }
         }
-        List<CCookie> cookieList = getCookie(randomKeyList.get(0));
-        cookieList.forEach(new Consumer<CCookie>() {
-            @Override
-            public void accept(CCookie cCookie) {
-                webDriver.manage().addCookie(convert(cCookie));
+        String[] qqStr = QQUtils.spiltQQ(randomKeyList.get(0));
+        QQCookie qqCookie = QQUtils.getRedisCookie(qqStr[0]);
+        if (null == qqCookie) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.warn("qq {} not find cookie.request {}", qqStr[0], request.getUrl());
+                return null;
             }
-        });
-
+        }
+        WebDriver webDriver = new PhantomJSDriver();
+        qqCookie.getCookies().forEach(cookie -> webDriver.manage().addCookie(QQUtils.convert(cookie)));
         webDriver.get(request.getUrl());
-
         Page page = new Page();
-
         String content = webDriver.getPageSource();
-
         if (content.contains("HTTP request failed")) {
             page.setRequest(request);
             return page;
@@ -75,47 +73,6 @@ public class QQPhantomJSDownloader extends AbstractDownloader {
 
     @Override
     public void setThread(int threadNum) {
-        this.count = threadNum;
-    }
-
-    /**
-     * 随机从QQ中获取Key
-     *
-     * @param randomCount 获取数量
-     * @return
-     */
-    private List<String> getRandomKey(final int randomCount) {
-        return redisClient.use(new Function<Jedis, List<String>>() {
-            @Override
-            public List<String> apply(Jedis jedis) {
-                return jedis.srandmember(QQ_GROUPS_KEY, randomCount);
-            }
-        });
-    }
-
-    /**
-     * 获取QQ账号信息
-     *
-     * @param key key
-     * @return QQ Cookie
-     */
-    private List<CCookie> getCookie(final String key) {
-        return redisClient.use(new Function<Jedis, List<CCookie>>() {
-            @Override
-            public List<CCookie> apply(Jedis jedis) {
-                QQCookie qqCookie = JSON.parseObject(jedis.get(key), QQCookie.class);
-                return qqCookie.getCookies();
-            }
-        });
-    }
-
-    private Cookie convert(CCookie cCookie) {
-        Cookie.Builder builder = new Cookie.Builder(cCookie.getName(), cCookie.getValue())
-                .domain(cCookie.getDomain())
-                .expiresOn(cCookie.getExpiry())
-                .isHttpOnly(cCookie.isHttpOnly())
-                .isSecure(cCookie.isSecure())
-                .path(cCookie.getPath());
-        return builder.build();
+        this.retryCount = threadNum;
     }
 }

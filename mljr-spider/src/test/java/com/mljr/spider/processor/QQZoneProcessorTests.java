@@ -37,7 +37,6 @@ public class QQZoneProcessorTests {
 
     public static void main(String[] args) {
         testIndex();
-       // getCookies();
     }
 
     public static void testIndex() {
@@ -48,62 +47,5 @@ public class QQZoneProcessorTests {
         spider.runAsync();
 
     }
-
-    private static void getCookies() {
-        WebDriver webDriver = new PhantomJSDriver();
-
-        webDriver.get("http://i.qq.com");
-
-        webDriver.switchTo().frame("login_frame");
-
-        webDriver.findElement(By.id("switcher_plogin")).click();
-
-        WebElement account_input = webDriver.findElement(By.id("u"));//账号输入狂
-
-        WebElement password_input = webDriver.findElement(By.id("p"));//密码输入框
-
-        WebElement login_button = webDriver.findElement(By.id("login_button"));//登陆按钮
-
-        account_input.clear();
-
-        password_input.clear();
-
-        account_input.sendKeys(QQ_NUMBER);//QQ账号
-
-        password_input.sendKeys(QQ_PASSWORD);//QQ密码
-
-        login_button.click();
-
-        Set<Cookie> cookieSet = webDriver.manage().getCookies();//获取cookies信息
-        List<CCookie> list = Lists.newArrayList();
-        cookieSet.forEach(new Consumer<Cookie>() {
-            @Override
-            public void accept(Cookie cookie) {
-                list.add(convert(cookie));
-            }
-        });
-
-        redisClient.use(new Function<Jedis, String>() {
-            @Override
-            public String apply(Jedis jedis) {
-                return jedis.set(QQ_NUMBER, JSON.toJSONString(new QQCookie(QQ_NUMBER, QQ_PASSWORD, list)));
-            }
-        });
-
-        webDriver.quit();
-    }
-
-    private static CCookie convert(Cookie cookie) {
-        CCookie entity = new CCookie();
-        entity.setDomain(cookie.getDomain());
-        entity.setExpiry(cookie.getExpiry());
-        entity.setHttpOnly(cookie.isHttpOnly());
-        entity.setName(cookie.getName());
-        entity.setValue(cookie.getValue());
-        entity.setPath(cookie.getPath());
-        entity.setSecure(cookie.isSecure());
-        return entity;
-    }
-
 
 }
