@@ -13,6 +13,7 @@ import com.mljr.spider.model.YyUserAddressBookDo;
 import com.mljr.spider.model.YyUserAddressBookHistoryDo;
 import com.mljr.spider.model.YyUserCallRecordDo;
 import com.mljr.spider.model.YyUserCallRecordHistoryDo;
+import com.mljr.utils.RandomUtils;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.ucloud.umq.common.ServiceConfig;
@@ -238,7 +239,9 @@ public class MobileService {
 			return true;
 		}
 		if (CommonService.isExist(client, MOBILE_EXIST_IDS_KEY, mobile)) {
-			logger.warn("Exist mobile ==========" + mobile);
+			if (RandomUtils.randomPrint(500)) {
+				logger.warn("Exist mobile ==========" + mobile);	
+			}
 			return true; // skip
 		}
 		BasicProperties.Builder builder = new BasicProperties.Builder();
