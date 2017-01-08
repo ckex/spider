@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Ckex zha </br>
@@ -36,12 +35,7 @@ public class GPSService {
         try {
             RabbitmqClient.publishMessage(channel, ServiceConfig.getGPSExchange(),
                     ServiceConfig.getGPSRoutingKey(), builder.build(), flag.getBytes(Charsets.UTF_8));
-            logger.info(flag);
-            System.out.println(flag);
-            try {
-                TimeUnit.MILLISECONDS.sleep(10);
-            } catch (InterruptedException e) {
-            }
+            logger.info("sent-gps -->"+flag);
             return true;
         } catch (IOException e) {
             if (logger.isDebugEnabled()) {
