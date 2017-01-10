@@ -13,8 +13,7 @@ public class PhantomJSTest {
 
 	public static void main(String[] args) throws IOException {
 		Runtime runtime = Runtime.getRuntime();
-		Process process = runtime.exec("phantomjs -v");
-
+		Process process = runtime.exec("/usr/local/bin/phantomjs -v");
 		InputStream is = process.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		StringBuffer stringBuffer = new StringBuffer();
