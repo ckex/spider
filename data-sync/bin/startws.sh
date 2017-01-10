@@ -100,9 +100,15 @@ if [ ! -d $LOG_ROOT ]; then
 	mkdir $LOG_ROOT
 fi
 
+if [ ! -d $LOG_ROOT/dump ]; then
+	mkdir $LOG_ROOT/dump
+fi
+
+# SET OutOfMemoryError
+export JAVA_OPTS=" $JAVA_OPTS -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$LOG_ROOT/dump/error-$(date +%Y%m%d%H%M%S) -XX:OnOutOfMemoryError=$BIN_DIR/restartws.sh "
+
 # SET GC_LOG
 export JAVA_OPTS=" $JAVA_OPTS -verbose.gc -XX:+PrintGCTimeStamps -XX:+PrintTenuringDistribution -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -Xloggc:$LOG_ROOT/$APP_NAME-gc.log"
- 
 
 CONFIG_DIR=$DEPLOY_HOME/conf
 LIB_JARS=$DEPLOY_HOME/lib/*
