@@ -43,6 +43,10 @@ public class GPSService {
             }
             logger.error(ExceptionUtils.getStackTrace(e));
             return false;
+        } finally {
+            if (channel != null) {
+                channel.close();
+            }
         }
     }
 
