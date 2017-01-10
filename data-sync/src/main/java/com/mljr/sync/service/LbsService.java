@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -59,8 +58,6 @@ public class LbsService {
                 }
             };
             syncLbsInfo(function);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             if (channel != null) {
                 channel.close();

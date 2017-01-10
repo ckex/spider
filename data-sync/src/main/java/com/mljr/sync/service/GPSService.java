@@ -9,12 +9,10 @@ import com.mljr.rabbitmq.RabbitmqClient;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.ucloud.umq.common.ServiceConfig;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,12 +35,6 @@ public class GPSService {
                     ServiceConfig.getGPSRoutingKey(), builder.build(), flag.getBytes(Charsets.UTF_8));
             logger.info("sent-gps -->"+flag);
             return true;
-        } catch (IOException e) {
-            if (logger.isDebugEnabled()) {
-                e.printStackTrace();
-            }
-            logger.error(ExceptionUtils.getStackTrace(e));
-            return false;
         } finally {
             if (channel != null) {
                 channel.close();
