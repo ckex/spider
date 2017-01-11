@@ -55,6 +55,8 @@ public class MerchantInfoService {
                 }
             };
             syncMerchantInfo(function);
+        } catch (Exception e){
+            logger.error("sync MerchantInfo error!",e);
         } finally {
             if (channel != null) {
                 channel.close();

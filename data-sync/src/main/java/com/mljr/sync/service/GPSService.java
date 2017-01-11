@@ -35,11 +35,14 @@ public class GPSService {
                     ServiceConfig.getGPSRoutingKey(), builder.build(), flag.getBytes(Charsets.UTF_8));
             logger.info("sent-gps -->"+flag);
             return true;
+        } catch (Exception e){
+            logger.error("sync gps error!",e);
         } finally {
             if (channel != null) {
                 channel.close();
             }
         }
+        return false;
     }
 
 }
