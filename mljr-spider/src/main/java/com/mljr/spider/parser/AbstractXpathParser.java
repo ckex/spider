@@ -14,16 +14,16 @@ import java.util.List;
  * Created by songchi on 17/1/10.
  */
 public abstract class AbstractXpathParser {
-    public abstract String[] getHearders(Html html);
+    public abstract String[] getHeaders(Html html);
 
     public abstract List<String[]> getContent(Html html);
 
     public abstract void parseToCsv(Html html);
 
-    public  Html readHtmlFile(File file) {
+    public Html readHtmlFile(File file, String charset) {
         try {
             StringBuilder sb = new StringBuilder();
-            List<String> lines = FileUtils.readLines(file, "GBK");
+            List<String> lines = FileUtils.readLines(file, charset);
             if (lines != null && lines.size() > 3) {
                 for (int i = 0; i < lines.size(); i++) {
                     if (i == 0) {
@@ -33,7 +33,7 @@ public abstract class AbstractXpathParser {
                         sb.append(lines.get(1).replaceFirst(":", ""));
                         continue;
                     }
-                    sb.append(lines.get(i));
+                    sb.append(lines.get(i).replace("&nbsp;",""));
                 }
                 return new Html(sb.toString());
             }
@@ -43,16 +43,20 @@ public abstract class AbstractXpathParser {
         return null;
     }
 
-    public  void write(final String filePath, String[] headers, List<String[]> content) {
+    public Html readHtmlFile(File file) {
+        return this.readHtmlFile(file, "utf-8");
+    }
 
-        File file = new File(filePath);
+    public void write(final String fullName, String[] headers, List<String[]> content) {
+
+        File file = new File(fullName);
         File parent = file.getParentFile();
         if (!parent.exists()) {
             parent.mkdirs();
         }
 
         try {
-            CsvWriter csvWriter = new CsvWriter(filePath, ',', Charset.forName("GBK"));
+            CsvWriter csvWriter = new CsvWriter(fullName, ',', Charset.forName("GBK"));
             csvWriter.writeRecord(headers, true);
             for (String[] row : content) {
                 csvWriter.writeRecord(row);
@@ -64,7 +68,7 @@ public abstract class AbstractXpathParser {
         }
     }
 
-    public  File[] getHtmlFiles(String htmlFilePath) {
+    public File[] getHtmlFiles(String htmlFilePath) {
         File htmlDir = new File(htmlFilePath);
         return htmlDir.listFiles(new FilenameFilter() {
             @Override
