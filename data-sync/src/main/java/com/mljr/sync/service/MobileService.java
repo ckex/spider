@@ -92,6 +92,8 @@ public class MobileService {
 			syncRecordHistory(function);
 			syncYybgrkContactList(function);
 			syncYybgrkContactListHistory(function);
+		} catch (Exception e){
+			logger.error("sync mobile error!",e);
 		} finally {
 			if (channel != null) {
 				channel.close();

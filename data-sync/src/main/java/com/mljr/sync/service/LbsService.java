@@ -58,6 +58,8 @@ public class LbsService {
                 }
             };
             syncLbsInfo(function);
+        } catch (Exception e){
+            logger.error("sync LbsInfo error!",e);
         } finally {
             if (channel != null) {
                 channel.close();

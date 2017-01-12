@@ -58,7 +58,9 @@ public class BankCardLocationService {
             };
             syncFrom(SPIDER_KEY,function);
             syncFrom(DM_KEY,function);
-        } finally {
+        } catch (Exception e){
+            logger.error("sync bankcard error!",e);
+        } finally{
             if (channel != null) {
                 channel.close();
             }

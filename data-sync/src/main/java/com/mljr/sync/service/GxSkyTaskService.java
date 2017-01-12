@@ -9,7 +9,6 @@ import com.mljr.rabbitmq.RabbitmqClient;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.ucloud.umq.common.ServiceConfig;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -38,12 +37,15 @@ public class GxSkyTaskService {
 			RabbitmqClient.publishMessage(channel, ServiceConfig.getBlackIdCardExchange(),
 					ServiceConfig.getBlackIdCardRoutingKey(), builder.build(), result.getBytes(Charsets.UTF_8));
 			return true;
+		} catch (Exception e){
+			logger.error("sync GxSky error!",e);
+
 		} finally {
 			if (channel != null) {
 				channel.close();
 			}
 		}
-		
+		return false;
 	}
 }
 
