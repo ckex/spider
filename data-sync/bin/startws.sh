@@ -31,6 +31,9 @@ fi
 #import home var env
 . $BIN_DIR/env.sh
 
+#import tprofiler
+. $BIN_DIR/tprofiler.sh
+
 if [ ! -r $JAVA_HOME/bin/java ]; then
     echo "********************************************************************"
     echo "** Error: havana.javahome=$JAVA_HOME not exist!"
@@ -45,9 +48,9 @@ if [ $PRODUCTION = "run" ]; then
         let "memTotal = `cat /proc/meminfo |grep MemTotal|awk '{printf "%d", $2/1024 }'`"
         let "memThreshold = 2048"
         if [ $memTotal -gt $memThreshold ];then
-            JAVA_MEM_OPTS=" -server -Xmx4g -Xms4g -Xmn1024m -XX:PermSize=512m -Xss512k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
+            JAVA_MEM_OPTS=" -server -Xmx2g -Xms2g -Xmn1024m -XX:PermSize=512m -Xss512k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
         else 
-            JAVA_MEM_OPTS=" -server -Xmx4g -Xms4g -Xmn1024m -XX:PermSize=512m -Xss512k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
+            JAVA_MEM_OPTS=" -server -Xmx2g -Xms2g -Xmn1024m -XX:PermSize=512m -Xss512k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
         fi
     else
 		JAVA_MEM_OPTS=" -server -Xms1024m -Xmx1024m -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC "
@@ -122,8 +125,13 @@ echo -e "Starting havana monitor server $HOST_NAME ...\c"
 		if [ ! -d $STORE_PATH ]; then
 			mkdir $STORE_PATH
 		fi
-	STDOUT_LOG=$LOG_DIR/$APP_NAME.stdout.log
-	nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CONFIG_DIR:$LIB_JARS $MAIN_PATH >> $STDOUT_LOG 2>&1 &
+		STDOUT_LOG=$LOG_DIR/$APP_NAME.stdout.log
+		
+		if [ "$tprofiler_switch" == "enable" ];then
+			nohup $JAVA_HOME/bin/java $tprofiler $JAVA_OPTS -classpath $CONFIG_DIR:$LIB_JARS $MAIN_PATH >> $STDOUT_LOG 2>&1 &	
+		else
+			nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CONFIG_DIR:$LIB_JARS $MAIN_PATH >> $STDOUT_LOG 2>&1 &
+		fi
 
 echo "OK!"
 START_PIDS=`ps  --no-heading -C java -f --width 1000 | grep "$DEPLOY_HOME" |awk '{print $2}'`
