@@ -28,8 +28,8 @@ $BIN_DIR/dump.sh
 
 echo -e "Stopping havana monitor server $HOST_NAME ...\c"
 for PID in $KILL_PIDS ; do
-	echo "kill $PID"
-	kill $PID > /dev/null 2>&1
+	echo "kill -9 $PID"
+	kill -9 $PID > /dev/null 2>&1
 done
 
 COUNT=0
