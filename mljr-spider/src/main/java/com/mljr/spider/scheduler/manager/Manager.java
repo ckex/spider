@@ -88,7 +88,7 @@ public class Manager extends AbstractMessage {
 		}
 
 		startBitauto();
-		startQQZoneIndex();
+//		startQQZoneIndex();
 	}
 
 	// 赛格GPS数据
@@ -423,20 +423,20 @@ public class Manager extends AbstractMessage {
 	}
 
 	//QQ空间首页　
-	private void startQQZoneIndex() throws Exception{
-		AbstractPageProcessor processor=fac.create(new QQZoneIndexProcessor());
-		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on("").join(url, ServiceConfig.getQQZoneIndex());
-		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline)
-				.setDownloader(new QQPhantomJSDownloader())
-				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
-		SpiderListener listener = new DownloaderSpiderListener(QQZONE_INDEX_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_QQZONE_INDEX)));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_QQZONE_INDEX_QUEUE_ID));
-		final AbstractScheduler scheduler = new QQZoneIndexScheduler(spider, RMQ_QQZONE_INDEX_QUEUE_ID);
-		spider.setScheduler(scheduler);
-		spider.runAsync();
-		logger.info("Start startQQZoneIndex finished. " + spider.toString());
-	}
+//	private void startQQZoneIndex() throws Exception{
+//		AbstractPageProcessor processor=fac.create(new QQZoneIndexProcessor());
+//		LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
+//		String targetUrl = Joiner.on("").join(url, ServiceConfig.getQQZoneIndex());
+//		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+//		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline)
+//				.setDownloader(new QQPhantomJSDownloader())
+//				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
+//		SpiderListener listener = new DownloaderSpiderListener(QQZONE_INDEX_LOG_NAME);
+//		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_QQZONE_INDEX)));
+//		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_QQZONE_INDEX_QUEUE_ID));
+//		final AbstractScheduler scheduler = new QQZoneIndexScheduler(spider, RMQ_QQZONE_INDEX_QUEUE_ID);
+//		spider.setScheduler(scheduler);
+//		spider.runAsync();
+//		logger.info("Start startQQZoneIndex finished. " + spider.toString());
+//	}
 }

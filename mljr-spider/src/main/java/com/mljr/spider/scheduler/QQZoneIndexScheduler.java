@@ -3,6 +3,7 @@ package com.mljr.spider.scheduler;
 import com.google.common.base.CharMatcher;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
+import com.mljr.utils.QQUtils;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.Task;
@@ -14,8 +15,6 @@ import java.util.concurrent.BlockingQueue;
  * QQ空间首页
  */
 public class QQZoneIndexScheduler extends AbstractScheduler {
-
-    private static final String QQZONE_INDEX_URL = "http://user.qzone.qq.com/%s";
 
     public QQZoneIndexScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
         super(spider, mqMsgQueue);
@@ -57,7 +56,7 @@ public class QQZoneIndexScheduler extends AbstractScheduler {
 
     @Override
     Request buildRequst(String message) {
-        String url = String.format(QQZONE_INDEX_URL, message);
+        String url = String.format(QQUtils.FRIEND_URL, message);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         return new Request(url);
     }
