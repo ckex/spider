@@ -28,6 +28,8 @@ public class BasicConstant {
 
 	public static final String MERCENT_INFO = "mercent_info";
 
+	public static final String QQ_NUMBER = "qq_number";
+
 	public static final String LBS_INFO = "lbs_info";
 
 	public static final String LAST_ID = "last_id";
