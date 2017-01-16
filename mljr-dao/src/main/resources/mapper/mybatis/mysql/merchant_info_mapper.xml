@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Mapper.merchant_info">
-    <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true"/>
     <resultMap id="MerchantInfoDoResult" type="com.mljr.spider.model.MerchantInfoDo">
         <result column="mm_id" property="mmId"/>
         <result column="merchant_id" property="merchantId"/>
@@ -15,7 +14,7 @@
         <result column="phy_street" property="phyStreet"/>
     </resultMap>
 
-    <select id="listById" resultMap="MerchantInfoDoResult" parameterType="java.util.HashMap">
+    <select id="listById" resultMap="MerchantInfoDoResult" parameterType="java.util.HashMap" useCache="false">
         select
             a.mm_id ,
             a.merchant_id ,
@@ -37,7 +36,7 @@
         limit #{limit}
     </select>
 
-    <select id="listAddressById" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+    <select id="listAddressById" resultType="java.util.HashMap" parameterType="java.util.HashMap" useCache="false">
         select bc.SERIALNO as contract_id, p.companyCity as company_city, p.companyName as company_name,
             p.homecity as home_city, p.homeaddress as home_address
         from sba.c002_business_contract as bc
