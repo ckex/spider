@@ -20,55 +20,73 @@ public class SyncScheduler {
 
 	protected static transient Logger logger = LoggerFactory.getLogger(SyncScheduler.class);
 
+//	@Autowired
+//	private AbstractTaskFactory abstractTaskFactory;
+	
 	@Autowired
-	private AbstractTaskFactory abstractTaskFactory;
-
+	private AbstractTask mobileTask;
+	
+	@Autowired
+	private AbstractTask gPSTask;
+	
+	@Autowired
+	private AbstractTask bankCardLocationTask;
+	
+	@Autowired
+	private AbstractTask merchantInfoTask;
+	
+	@Autowired
+	private AbstractTask lbsTask;
+	
+	@Autowired
+	private AbstractTask gxSkyTask;
+	
 	@Scheduled(cron = "0/2 * * * * ?")
 	private void startMobileTask() {
-		MobileTask task = abstractTaskFactory.createMobileTask();
-		task.setName("mobile");
-		task.run();
-		logger.debug(task.toString());
+//		MobileTask task = abstractTaskFactory.createMobileTask();
+//		task.setName("mobile");
+		mobileTask.run();
+		logger.debug(mobileTask.toString());
 	}
 
 	@Scheduled(cron = "10 0 0/1 * * ?")
 	private void startGPSTask() {
-		GPSTask task = abstractTaskFactory.createGPSTask();
-		task.setName("gps");
-		task.run();
-		logger.debug(task.toString());
+//		GPSTask task = abstractTaskFactory.createGPSTask();
+//		task.setName("gps");
+		gPSTask.run();
+		logger.debug(gPSTask.toString());
 	}
 
 	@Scheduled(cron = "20/5 * * * * ?")
 	private void startBankCardLocationTask() {
-		BankCardLocationTask task = abstractTaskFactory.createBankCardLocationTask();
-		task.setName("bankCard");
-		task.run();
-		logger.debug(task.toString());
+//		BankCardLocationTask task = abstractTaskFactory.createBankCardLocationTask();
+//		task.setName("bankCard");
+		bankCardLocationTask.run();
+		logger.debug(bankCardLocationTask.toString());
 	}
 
 	@Scheduled(cron = "30/5 * * * * ?")
 	private void startMerchantInfoTask() {
-		MerchantInfoTask task = abstractTaskFactory.createMerchantInfoTask();
-		task.setName("merchat");
-		task.run();
-		logger.debug(task.toString());
+//		MerchantInfoTask task = abstractTaskFactory.createMerchantInfoTask();
+//		task.setName("merchat");
+		merchantInfoTask.run();
+		logger.debug(merchantInfoTask.toString());
 	}
 
 	@Scheduled(cron = "40/5 * * * * ?")
 	private void startLbsTask() {
-		LbsTask task = abstractTaskFactory.createLbsTask();
-		task.setName("lbs");
-		task.run();
-		logger.debug(task.toString());
+//		LbsTask task = abstractTaskFactory.createLbsTask();
+//		task.setName("lbs");
+		lbsTask.run();
+		logger.debug(lbsTask.toString());
 	}
 
 	//10小时执行一次
 	@Scheduled(cron = "10 0 0/10 * * ?")
 	private void startGxSkyTask() {
-		GxSkyTask task = abstractTaskFactory.createGxSkyTask();
-		task.run();
-		logger.debug(task.toString());
+//		GxSkyTask task = abstractTaskFactory.createGxSkyTask();
+		gxSkyTask.run();
+		logger.debug(gxSkyTask.toString());
 	}
 
 }
