@@ -34,8 +34,8 @@ public class ConnectionFactory {
 
 	protected static Connection newConnection() throws IOException, TimeoutException {
 		Config config = new Config().withRecoveryPolicy(RecoveryPolicies.recoverAlways())
-				.withRetryPolicy(new RetryPolicy().withMaxAttempts(10).withInterval(Duration.seconds(5))
-						.withMaxDuration(Duration.days(3)));
+				.withRetryPolicy(new RetryPolicy().withMaxAttempts(15).withInterval(Duration.seconds(5))
+						.withMaxDuration(Duration.minutes(8)));
 		Connection connection = Connections.create(FactoryHolder.FA.options, config);
 		return connection;
 	}
