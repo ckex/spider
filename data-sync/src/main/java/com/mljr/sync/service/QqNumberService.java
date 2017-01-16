@@ -9,6 +9,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.mljr.constant.BasicConstant;
 import com.mljr.rabbitmq.RabbitmqClient;
+import com.mljr.rabbitmq.Rmq;
 import com.mljr.redis.RedisClient;
 import com.mljr.spider.dao.CustomerInfoDao;
 import com.rabbitmq.client.AMQP.BasicProperties;
@@ -45,48 +46,57 @@ public class QqNumberService {
 
     public void syncQqNumber() throws Exception {
 
-        final Channel channel = RabbitmqClient.newChannel();
+//        final Channel channel = RabbitmqClient.newChannel();
+    	final Rmq rmq = new Rmq();
         try {
             Function<Map, Boolean> function = new Function<Map, Boolean>() {
 
                 @Override
                 public Boolean apply(Map map) {
-                    return sentQqNumber(channel, map);
+//                    return sentQqNumber(channel, map);
+                    return sentQqNumber(rmq, map);
+                	
                 }
             };
             syncQqNumber(function);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            if (channel != null) {
-                channel.close();
-            }
+        	rmq.closed();
         }
     }
 
-    private boolean sentQqNumber(Channel channel, Map qqMap) {
-        if (qqMap == null || StringUtils.isBlank((String) qqMap.get("qq"))) {
-            return true;
-        }
-        String jsonString = JSON.toJSONString(qqMap);
-        BasicProperties.Builder builder = new BasicProperties.Builder();
-        builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
-        try {
-            RabbitmqClient.publishMessage(channel, ServiceConfig.getQqNumberExchange(),
-                    ServiceConfig.getQqNumberRoutingKey(), builder.build(), jsonString.getBytes(Charsets.UTF_8));
-            try {
-                TimeUnit.MILLISECONDS.sleep(10);
-            } catch (InterruptedException e) {
-            }
-            return true;
-        } catch (IOException e) {
-            if (logger.isDebugEnabled()) {
-                e.printStackTrace();
-            }
-            logger.error(ExceptionUtils.getStackTrace(e));
-            return false;
-        }
-    }
+	private boolean sentQqNumber(Rmq rmq, Map qqMap) {
+		if (qqMap == null || StringUtils.isBlank((String) qqMap.get("qq"))) {
+			return true;
+		}
+		String jsonString = JSON.toJSONString(qqMap);
+		BasicProperties.Builder builder = new BasicProperties.Builder();
+		builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
+		return rmq.publish(new java.util.function.Function<Channel, Boolean>() {
+
+			@Override
+			public Boolean apply(Channel t) {
+				try {
+					RabbitmqClient.publishMessage(t, ServiceConfig.getQqNumberExchange(),
+							ServiceConfig.getQqNumberRoutingKey(), builder.build(),
+							jsonString.getBytes(Charsets.UTF_8));
+					try {
+						TimeUnit.MILLISECONDS.sleep(10);
+					} catch (InterruptedException e) {
+					}
+					return true;
+				} catch (IOException e) {
+					if (logger.isDebugEnabled()) {
+						e.printStackTrace();
+					}
+					logger.error(ExceptionUtils.getStackTrace(e));
+					return false;
+				}
+			}
+		});
+
+	}
 
     private void syncQqNumber(Function<Map, Boolean> function) {
         String key = Joiner.on("-").join(BasicConstant.QQ_NUMBER, BasicConstant.LAST_ID);
