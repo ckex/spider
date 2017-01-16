@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Mapper.spider_bank_card_location">
-   <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" />
     <resultMap id="SpiderBankCardLocationResult" type="com.mljr.spider.model.SpiderBankCardLocationDo">
         <result column="bank_card_11_digits" property="bankCard11Digits" />
         <result column="bank_name" property="bankName" />
@@ -52,14 +51,14 @@
         FROM spider_bank_card_location         WHERE 1 
     </select>
 
-    <select id="listById" resultType="java.lang.String" parameterType="java.util.HashMap">
+    <select id="listById" resultType="java.lang.String" parameterType="java.util.HashMap" useCache="false">
         select bank_card_11_digits from spider_bank_card_location
         where bank_card_11_digits > #{id} and
         (bank_name = "未知" or bank_card_type = "未知" or bank_card_name = "未知" or bank_card_province = "未知" or bank_card_city = "未知")
         order by bank_card_11_digits limit #{limit}
     </select>
 
-    <select id="listFromDMById" resultType="java.lang.String" parameterType="java.util.HashMap">
+    <select id="listFromDMById" resultType="java.lang.String" parameterType="java.util.HashMap" useCache="false">
         select distinct(substr(bank_card_no, 1, 11)) as bank_card_11_digits
         from rc.dm_total_applications
         where length(bank_card_no) >= 11 and substr(bank_card_no, 1, 11) != '建设银行'
