@@ -9,12 +9,8 @@ import java.util.List;
  * Created by songchi on 17/1/10.
  */
 public class Che300Parser extends AbstractXpathParser {
-    @Override
-    public String[] getHearders(Html html) {
-        return new String[0];
-    }
 
-    @Override
+	@Override
     public List<String[]> getContent(Html html) {
         return null;
     }
@@ -22,7 +18,7 @@ public class Che300Parser extends AbstractXpathParser {
     @Override
     public void parseToCsv(Html html) {
         String filePath = "";
-        this.write(filePath, this.getHearders(html), this.getContent(html));
+        this.write(filePath, this.getHeaders(html), this.getContent(html));
     }
 
     public static void main(String[] args) {
@@ -36,4 +32,9 @@ public class Che300Parser extends AbstractXpathParser {
             }
         }
     }
+
+	@Override
+	public String[] getHeaders(Html html) {
+		return new String[0];
+	}
 }
