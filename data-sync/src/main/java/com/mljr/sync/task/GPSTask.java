@@ -8,7 +8,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("gpsTask")
 //@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class GPSTask extends AbstractTask {
 
