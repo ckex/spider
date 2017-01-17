@@ -1,37 +1,31 @@
 /**
- * 
+ *
  */
 package com.mljr.spider.scheduler.manager;
-
-import java.util.Date;
-
-import com.mljr.spider.processor.*;
-import com.mljr.spider.scheduler.*;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.http.nio.reactor.IOReactorException;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.constant.DomainConstant;
-import com.mljr.spider.downloader.QQPhantomJSDownloader;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
 import com.mljr.spider.listener.ProcessListener;
 import com.mljr.spider.listener.StatusCodeListener;
-import com.mljr.spider.storage.BitautoLocalFilePipeline;
+import com.mljr.spider.processor.*;
+import com.mljr.spider.scheduler.*;
 import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
-import com.rabbitmq.client.AMQP.Basic.Return;
-import com.sun.jna.Native.ffi_callback;
 import com.ucloud.umq.common.ServiceConfig;
-
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.http.nio.reactor.IOReactorException;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
+
+import java.util.Date;
 
 /**
  * @author Ckex zha </br>
@@ -53,7 +47,7 @@ public class Manager extends AbstractMessage {
 			throw new RuntimeException("Instantiation bean exception." + ExceptionUtils.getStackTrace(e));
 		}
 	}
-	
+
 	private final ProcessFactory fac = p -> {
 		p.addPageProcessListener(new ProcessListener());
 		return p;
@@ -87,8 +81,6 @@ public class Manager extends AbstractMessage {
 			startTianyancha();
 		}
 
-		startBitauto();
-//		startQQZoneIndex();
 	}
 
 	// 赛格GPS数据
@@ -230,25 +222,6 @@ public class Manager extends AbstractMessage {
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start TianyanchaProcessor finished. " + spider.toString());
-
-	}
-
-	// http://price.bitauto.com/mb9/
-	public void startBitauto() throws Exception {
-		BitautoLocalFilePipeline localFilePipeline = new BitautoLocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on("").join(url, ServiceConfig.getBitautoPath());
-		Pipeline httpPipeline = new HttpPipeline(targetUrl, this.httpClient, localFilePipeline);
-		final Spider spider = Spider.create(fac.create(new BitautoProcessor()))
-				.addPipeline(httpPipeline)
-				.addPipeline(localFilePipeline)
-				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
-		SpiderListener listener = new DownloaderSpiderListener(BITAUTO_LISTENER_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_BITAUTO)));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_BITAUTO_QUEUE_ID));
-		final AbstractScheduler scheduler = new BitautoScheduler(spider, RMQ_BITAUTO_QUEUE_ID);
-		spider.setScheduler(scheduler);
-		spider.runAsync();
-		logger.info("Start BitautoProcessor finished. " + spider.toString());
 
 	}
 
