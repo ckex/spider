@@ -16,7 +16,7 @@ import java.util.List;
 public class AutoIfengProcessor extends AbstractPageProcessor {
 
     private static final Site site = Site.me()
-            .setDomain(DomainConstant.DOMAIN_AUTO_IFENG) //此字段在生成文件时用到
+            .setDomain(DomainConstant.DOMAIN_AUTOIFENG)
             .setSleepTime(1000)
             .setRetrySleepTime(4200)
             .setRetryTimes(2)
@@ -29,7 +29,6 @@ public class AutoIfengProcessor extends AbstractPageProcessor {
     public final static String START_URL = "http://car.auto.ifeng.com/";
 
 
-
     public AutoIfengProcessor() {
         super(site);
     }
@@ -37,24 +36,24 @@ public class AutoIfengProcessor extends AbstractPageProcessor {
     @Override
     public boolean onProcess(Page page) {
         Selectable currentUrl = page.getUrl();
-       if(START_URL.equals(currentUrl.get())){
-           List<String> urls = page.getHtml().links().all();
-           for (String url : urls) {
-               if(url.contains("series")){
-                   url+="spec/";
-                   page.addTargetRequest(url);
-               }
-           }
-       }else if(currentUrl.regex(TARGET_URL).match()){
-           page.putField("",page.getHtml());
-           logger.debug("autoifeng success---------------------------");
-       }
+        if (START_URL.equals(currentUrl.get())) {
+            List<String> urls = page.getHtml().links().all();
+            for (String url : urls) {
+                if (url.contains("series")) {
+                    url += "spec/";
+                    page.addTargetRequest(url);
+                }
+            }
+        } else if (currentUrl.regex(TARGET_URL).match()) {
+            page.putField("", page.getHtml());
+            logger.debug("autoifeng success---------------------------");
+        }
 
         return true;
     }
 
     public static void main(String[] args) throws Exception {
-       Spider.create(new AutoIfengProcessor()).addPipeline(new LocalFilePipeline("/data/autoifeng"))
-               .addUrl(START_URL).start();
+        Spider.create(new AutoIfengProcessor()).addPipeline(new LocalFilePipeline("/data/autoifeng"))
+                .addUrl(START_URL).start();
     }
 }
