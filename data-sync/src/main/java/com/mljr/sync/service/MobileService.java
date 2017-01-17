@@ -7,6 +7,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.mljr.constant.BasicConstant;
 import com.mljr.rabbitmq.RabbitmqClient;
+import com.mljr.rabbitmq.Rmq;
 import com.mljr.redis.RedisClient;
 import com.mljr.spider.dao.*;
 import com.mljr.spider.model.YyUserAddressBookDo;
@@ -55,11 +56,11 @@ public class MobileService {
 	private static final String BOOK_HISTORY_KEY = Joiner.on("-")
 			.join(BasicConstant.MOBILE_YY_USER_ADDRESS_BOOK_HISTORY, BasicConstant.LAST_ID);
 
-	private static final String CONTRACT_LIST_KEY = Joiner.on("-")
-			.join(BasicConstant.CONTRACT_LIST_KEY, BasicConstant.LAST_ID);
+	private static final String CONTRACT_LIST_KEY = Joiner.on("-").join(BasicConstant.CONTRACT_LIST_KEY,
+			BasicConstant.LAST_ID);
 
-	private static final String CONTRACT_LIST_HISTORY_KEY = Joiner.on("-")
-			.join(BasicConstant.CONTRACT_LIST_HISTORY_KEY, BasicConstant.LAST_ID);
+	private static final String CONTRACT_LIST_HISTORY_KEY = Joiner.on("-").join(BasicConstant.CONTRACT_LIST_HISTORY_KEY,
+			BasicConstant.LAST_ID);
 
 	private static final String MOBILE_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.MOBILE,
 			BasicConstant.EXIST_IDS);
@@ -83,19 +84,19 @@ public class MobileService {
 	private RedisClient client;
 
 	public void syncMobile() throws Exception {
-		final Channel channel = RabbitmqClient.newChannel();
+		final Rmq rmq = new Rmq();
 		try {
-			Function<String, Boolean> function = (mobile) -> sentMobile(channel, mobile);
+			Function<String, Boolean> function = (mobile) -> sentMobile(rmq, mobile);
 			syncYyUserAddressBook(function);
 			syncYyUserCallRecord(function);
 			syncBookHistory(function);
 			syncRecordHistory(function);
 			syncYybgrkContactList(function);
 			syncYybgrkContactListHistory(function);
+		} catch (Exception e) {
+			logger.error("sync mobile error!", e);
 		} finally {
-			if (channel != null) {
-				channel.close();
-			}
+			rmq.closed();
 		}
 	}
 
@@ -106,7 +107,7 @@ public class MobileService {
 			return;
 		}
 		result.stream().filter(ele -> {
-			boolean ret = sent(function, CONTRACT_LIST_KEY, (String)ele.get("phoneNum"), (Long)ele.get("id"));
+			boolean ret = sent(function, CONTRACT_LIST_KEY, (String) ele.get("phoneNum"), (Long) ele.get("id"));
 			if (!ret) {
 				logger.warn("sent to mq error ." + ele.toString());
 			}
@@ -121,7 +122,7 @@ public class MobileService {
 			return;
 		}
 		result.stream().filter(ele -> {
-			boolean ret = sent(function, CONTRACT_LIST_HISTORY_KEY, (String)ele.get("phoneNum"), (Long)ele.get("id"));
+			boolean ret = sent(function, CONTRACT_LIST_HISTORY_KEY, (String) ele.get("phoneNum"), (Long) ele.get("id"));
 			if (!ret) {
 				logger.warn("sent to mq error ." + ele.toString());
 			}
@@ -228,6 +229,48 @@ public class MobileService {
 		return ret;
 	}
 
+	private boolean sentMobile(Rmq rmq, String mobile) {
+		if (StringUtils.isBlank(mobile)) {
+			return true;
+		}
+		if (!StringUtils.isNumeric(mobile)) {
+			return true;
+		}
+		if (mobile.length() < 7) {
+			return true;
+		}
+		if (CommonService.isExist(client, MOBILE_EXIST_IDS_KEY, mobile)) {
+			if (RandomUtils.randomPrint(500)) {
+				logger.warn("Exist mobile ==========" + mobile);
+			}
+			return true; // skip
+		}
+		BasicProperties.Builder builder = new BasicProperties.Builder();
+		builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
+		return rmq.publish(new Function<Channel, Boolean>() {
+
+			@Override
+			public Boolean apply(Channel t) {
+				try {
+					RabbitmqClient.publishMessage(t, ServiceConfig.getMobileExchange(),
+							ServiceConfig.getMobilerRoutingKey(), builder.build(), mobile.getBytes(Charsets.UTF_8));
+					try {
+						TimeUnit.MILLISECONDS.sleep(10);
+					} catch (InterruptedException e) {
+					}
+					return true;
+				} catch (IOException e) {
+					if (logger.isDebugEnabled()) {
+						e.printStackTrace();
+					}
+					logger.error(ExceptionUtils.getStackTrace(e));
+					return false;
+				}
+
+			}
+		});
+	}
+
 	private boolean sentMobile(Channel channel, String mobile) {
 		if (StringUtils.isBlank(mobile)) {
 			return true;
@@ -240,7 +283,7 @@ public class MobileService {
 		}
 		if (CommonService.isExist(client, MOBILE_EXIST_IDS_KEY, mobile)) {
 			if (RandomUtils.randomPrint(500)) {
-				logger.warn("Exist mobile ==========" + mobile);	
+				logger.warn("Exist mobile ==========" + mobile);
 			}
 			return true; // skip
 		}

@@ -175,6 +175,14 @@ public class ServiceConfig {
         return properties.getProperty("rmq.bitauto.exchange");
     }
 
+    public static String getQqNumberExchange() {
+        return properties.getProperty("rmq.qqnumber.exchange");
+    }
+
+    public static String getQqNumberRoutingKey() {
+        return properties.getProperty("rmq.qqnumber.routingKey");
+    }
+
     public static String getBitautoRoutingKey() {
         return properties.getProperty("rmq.bitauto.routingKey");
     }

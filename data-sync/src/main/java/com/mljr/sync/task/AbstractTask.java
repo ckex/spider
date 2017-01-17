@@ -3,12 +3,8 @@
  */
 package com.mljr.sync.task;
 
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,35 +18,35 @@ import com.google.common.base.Stopwatch;
  */
 public abstract class AbstractTask implements Runnable {
 
-	protected static transient Logger logger = LoggerFactory.getLogger(AbstractTask.class);
+	protected transient Logger logger = LoggerFactory.getLogger(getClass());
 
-	private static final Map<String, AtomicReference<Status>> RUN_TASK = new Hashtable<>();
+//	private static final Map<String, AtomicReference<Status>> RUN_TASK = new Hashtable<>();
 
-	private enum Status {
-		runing, finished
-	}
+//	private enum Status {
+//		runing, finished
+//	}
 
-	private String name;
+//	private String name;
 
 	public AbstractTask() {
 		super();
 	}
 
-	abstract void execute();
+	abstract  void  execute();
 
-	public synchronized void setName(String name) {
-		this.name = name;
-		RUN_TASK.put(name, new AtomicReference<>(Status.finished));
-	}
+//	public synchronized void setName(String name) {
+//		this.name = name;
+//		RUN_TASK.put(name, new AtomicReference<>(Status.finished));
+//	}
 
 	@Override
-	public void run() {
+	public synchronized void run() {
 		try {
-			boolean isNext = checkRunning();
-			if (!isNext) {
-				logger.warn(name + ", Task is running... ");
-				return;
-			}
+//			boolean isNext = checkRunning();
+//			if (!isNext) {
+//				logger.warn(name + ", Task is running... ");
+//				return;
+//			}
 			Stopwatch watch = Stopwatch.createStarted();
 			execute();
 			watch.stop();
@@ -59,22 +55,22 @@ public abstract class AbstractTask implements Runnable {
 			ex.printStackTrace();
 			logger.error("execute task error. " + ExceptionUtils.getStackTrace(ex));
 		} finally {
-			finishedTask();
+//			finishedTask();
 		}
 	}
 
-	private synchronized void finishedTask() {
-		if (StringUtils.isBlank(name)) {
-			return;
-		}
-		RUN_TASK.get(name).set(Status.finished);
-	}
+//	private synchronized void finishedTask() {
+//		if (StringUtils.isBlank(name)) {
+//			return;
+//		}
+//		RUN_TASK.get(name).set(Status.finished);
+//	}
 
-	private synchronized boolean checkRunning() {
-		if (StringUtils.isBlank(name)) {
-			return true;
-		}
-		return RUN_TASK.get(name).compareAndSet(Status.finished, Status.runing);
-	}
+//	private synchronized boolean checkRunning() {
+//		if (StringUtils.isBlank(name)) {
+//			return true;
+//		}
+//		return RUN_TASK.get(name).compareAndSet(Status.finished, Status.runing);
+//	}
 
 }

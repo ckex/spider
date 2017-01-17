@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Mapper.customer_info">
+
+    <select id="listById" resultType="java.util.HashMap" parameterType="java.util.HashMap" useCache="false">
+       select customerid as id, mfcustomerid, certid as idcard_no, qq
+       from  sba.c002_CUSTOMER_INFO
+       where  qq is not null
+       and customerid>#{id}
+       order by customerid
+       limit #{limit}
+    </select>
+
+</mapper>

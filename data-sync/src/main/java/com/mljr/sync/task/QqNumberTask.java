@@ -1,28 +1,27 @@
 /**
- * 
+ *
  */
 package com.mljr.sync.task;
 
-import com.mljr.sync.service.BankCardLocationService;
+import com.mljr.sync.service.QqNumberService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class BankCardLocationTask extends AbstractTask {
+@Service
+public class QqNumberTask extends AbstractTask {
 
 	@Autowired
-	private BankCardLocationService bankCardLocationService;
+	private QqNumberService qqNumberService;
 
-	public BankCardLocationTask() {
+	public QqNumberTask() {
 		super();
 	}
 
 	@Override
 	void execute() {
 		try {
-			bankCardLocationService.syncBankCard();
+			qqNumberService.syncQqNumber();
 		} catch (Exception ex) {
 			if (logger.isDebugEnabled()) {
 				ex.printStackTrace();

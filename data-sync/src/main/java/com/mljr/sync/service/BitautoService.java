@@ -47,9 +47,8 @@ public class BitautoService {
                 }
                 sentCarinfo(channel, carCode);
             }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e){
+            logger.error("sync bitauto error!",e);
         } finally {
             if (channel != null) {
                 channel.close();
