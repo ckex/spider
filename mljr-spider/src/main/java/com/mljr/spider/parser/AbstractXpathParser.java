@@ -14,19 +14,22 @@ import java.util.List;
  * Created by songchi on 17/1/10.
  */
 public abstract class AbstractXpathParser {
-    public abstract String[] getHeaders(Html html);
+    public abstract String[] getHeaders(ParsePage page);
 
-    public abstract List<String[]> getContent(Html html);
+    public abstract List<String[]> getContent(ParsePage page);
 
-    public abstract void parseToCsv(Html html);
+    public abstract void parseToCsv(ParsePage page);
 
-    public Html readHtmlFile(File file, String charset) {
+    public ParsePage readHtmlFile(File file, String charset) {
+        ParsePage page = new ParsePage();
+        page.setLocalFilePath(file.getAbsolutePath());
         try {
             StringBuilder sb = new StringBuilder();
             List<String> lines = FileUtils.readLines(file, charset);
             if (lines != null && lines.size() > 3) {
                 for (int i = 0; i < lines.size(); i++) {
                     if (i == 0) {
+                        page.setUrl(lines.get(i).replace("url:","").trim());
                         continue;
                     }
                     if (i == 1 && lines.get(1).startsWith(":")) {
@@ -35,7 +38,8 @@ public abstract class AbstractXpathParser {
                     }
                     sb.append(lines.get(i).replace("&nbsp;",""));
                 }
-                return new Html(sb.toString());
+                page.setHtml(new Html(sb.toString()));
+                return page;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,7 +47,7 @@ public abstract class AbstractXpathParser {
         return null;
     }
 
-    public Html readHtmlFile(File file) {
+    public ParsePage readHtmlFile(File file) {
         return this.readHtmlFile(file, "utf-8");
     }
 
