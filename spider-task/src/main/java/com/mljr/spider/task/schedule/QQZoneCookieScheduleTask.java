@@ -29,10 +29,7 @@ public class QQZoneCookieScheduleTask implements IScheduleTaskDealSingle<String>
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QQZoneCookieScheduleTask.class);
 
-    private WebDriverUtils webDriverUtils = new WebDriverUtils();
-
     private static final String QQ_ZONE_LOGIN_URL = "http://i.qq.com";
-
 
     @Override
     public boolean execute(String task, String ownSign) throws Exception {
@@ -78,7 +75,7 @@ public class QQZoneCookieScheduleTask implements IScheduleTaskDealSingle<String>
 
         LOGGER.info("start get qq cookie.user:{},password:{}", user, password);
 
-        WebDriver webDriver =new PhantomJSDriver();
+        WebDriver webDriver = new PhantomJSDriver();
 
         webDriver.get(QQ_ZONE_LOGIN_URL);
 
@@ -101,6 +98,11 @@ public class QQZoneCookieScheduleTask implements IScheduleTaskDealSingle<String>
         password_input.sendKeys(password);//QQ密码
 
         login_button.click();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            // ingore
+        }
 
         Set<Cookie> cookieSet = webDriver.manage().getCookies();//获取cookies信息
 

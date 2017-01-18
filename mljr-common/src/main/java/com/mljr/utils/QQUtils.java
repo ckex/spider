@@ -2,31 +2,41 @@ package com.mljr.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
 import com.mljr.common.ServiceConfig;
 import com.mljr.constant.RedisConstant;
 import com.mljr.entity.CCookie;
 import com.mljr.entity.QQCookie;
 import org.openqa.selenium.Cookie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by gaoxi on 2017/1/8.
  */
 public class QQUtils {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(QQUtils.class);
+
     private QQUtils() {
     }
 
+    public static final String QQ_P_SKY = "p_skey";
+
+    public static final String QQ_COOKIE = "cookie";
+
+    public static final String QQ_LOGIN = "login_qq";
+
     /**
-     * QQ好友URL
+     * QQ首页动态
      */
-    public static final String FRIEND_URL = "http://ic2.s2.qzone.qq.com/cgi-bin/feeds/feeds_html_module?i_uin=%s&i_login_uin=%s&mode=4&previewV8=1&style=31&version=8&needDelOpr=true&transparence=true&hideExtend=false&showcount=%s&MORE_FEEDS_CGI=http%3A%2F%2Fic2.s2.qzone.qq.com%2Fcgi-bin%2Ffeeds%2Ffeeds_html_act_all&refer=2&paramstring=os-mac|100";
+    public static final String QQ_INDEX_URL = "https://h5.qzone.qq.com/proxy/domain/ic2.qzone.qq.com/cgi-bin/feeds/feeds_html_act_all?uin=" + QQ_LOGIN + "&hostuin=%s&scope=0&filter=all&flag=1&refresh=0&firstGetGroup=0&mixnocache=0&scene=0&begintime=undefined&icServerTime=&start=0&count=10&sidomain=qzonestyle.gtimg.cn&useutf8=1&outputhtmlfeed=1&refer=2&r=0.8536552901318883&g_tk=" + QQ_P_SKY;
 
     public static Set<String> getAllQQ() {
         return ServiceConfig.getSpiderRedisClient().use(new Function<Jedis, Set<String>>() {
@@ -122,20 +132,17 @@ public class QQUtils {
         return (hash & 0x7fffffff) + "";
     }
 
-    public static String getJsonFromJsonp(String jsonp) {
-        Pattern pattern = Pattern.compile("_Callback\\((.*)\\);");
-        Matcher matcher = pattern.matcher(jsonp);
-        if (matcher.find()) {
-            return matcher.group(1);
+    public static LinkedTreeMap<String, Object> convert(String jsonp) {
+        LinkedTreeMap<String, Object> treeMap = null;
+        try {
+            Gson gson = new GsonBuilder().create();
+            Object object = gson.fromJson(jsonp, Object.class);
+            if (object instanceof LinkedTreeMap) {
+                treeMap = (LinkedTreeMap<String, Object>) object;
+            }
+        } catch (Exception e) {
+            LOGGER.error("gson convert json failure.jsonp:{}", jsonp, e);
         }
-        return null;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getG_TK("s76Z7fEwM7sE3qz3G1vCtiZsbozX03CFYvjUpwNu7JE_"));
-
-        Date date=new Date(1483940905);
-
-        System.out.println(date.toString());
+        return treeMap;
     }
 }

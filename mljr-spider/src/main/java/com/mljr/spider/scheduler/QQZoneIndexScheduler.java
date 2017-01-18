@@ -1,5 +1,7 @@
 package com.mljr.spider.scheduler;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.CharMatcher;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
@@ -50,13 +52,19 @@ public class QQZoneIndexScheduler extends AbstractScheduler {
 
     @Override
     boolean pushTask(Spider spider, UMQMessage message) {
-        push(buildRequst(message.message), spider);
+        JSONObject jsonObject = JSON.parseObject(message.message);
+        String qq = jsonObject.containsKey("qq") ? jsonObject.getString("qq") : null;
+        if (null == qq) {
+            logger.warn("qq index scheduler rabbitmq json message is error,message:{}", message.message);
+            return false;
+        }
+        push(buildRequst(qq), spider);
         return true;
     }
 
     @Override
     Request buildRequst(String message) {
-        String url = String.format(QQUtils.FRIEND_URL, message);
+        String url = String.format(QQUtils.QQ_INDEX_URL, message);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         return new Request(url);
     }

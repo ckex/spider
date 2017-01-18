@@ -1,16 +1,13 @@
 package com.mljr.spider.processor;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.internal.LinkedTreeMap;
 import com.mljr.utils.QQUtils;
+import org.apache.commons.lang3.StringUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Html;
-import us.codecraft.webmagic.selector.Selectable;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Created by gaoxi on 2017/1/5.
@@ -18,50 +15,69 @@ import java.util.function.Consumer;
  */
 public class QQZoneIndexProcessor extends AbstractPageProcessor {
 
-    private static   Site site = Site.me().setDomain("qqzone.index")
+    private Site site = Site.me().setDomain("qqzone.index")
             .setSleepTime(3000).setRetrySleepTime(3000).setRetryTimes(3)
-            .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36")
-            .addHeader("Cookie","pgv_pvi=7619716096; pgv_si=s3455289344; pgv_pvid=3348108335; pgv_info=ssid=s1200344877; ptisp=ctc; pt2gguin=o0543109152; uin=o0543109152; skey=@4nqjh9lVE; RK=kdcS5dqbep; ptcz=7570452e9ddf6fe2ba8cd570e121ba660a84c6d2c95a726ba5bfb5a816db28d1; p_uin=o0543109152; p_skey=m5*Ob4yHYwzskabhTtQrNE3WETta6W-UY*442PG5sjM_; pt4_token=fYMSHk05LD5TgrEsJyV8gkPL-RbWu3UBALvTHDv0HMc_; Loading=Yes; QZ_FE_WEBP_SUPPORT=0; cpu_performance_v8=17; __Q_w_s__QZN_TodoMsgCnt=1");
-
-//    public QQZoneIndexProcessor() {
-//        super(site);
-//    }
+            .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
     @Override
     boolean onProcess(Page page) {
-        System.out.println(page.getHtml().toString());
-        return false;
+        try {
+            String json = extract(page.getRawText());
+            LinkedTreeMap treeMap = QQUtils.convert(json);
+            if (null == treeMap) {
+                logger.warn("qq shuoshuo jsonp data convert json failure.url:{}", page.getRequest().getUrl());
+                return false;
+            }
+            double code = Math.abs(Double.parseDouble(treeMap.get("code").toString()));
+            if (code == 0) { //成功
+                LinkedTreeMap<String, Object> dataTreeMap = (LinkedTreeMap<String, Object>) treeMap.get("data");
+                List<Object> friendDataList = (List<Object>) dataTreeMap.get("friend_data");
+                StringBuilder builder = new StringBuilder();
+                if (null != friendDataList && friendDataList.size() > 0) {
+                    friendDataList.forEach(object -> {
+                        if (object instanceof LinkedTreeMap) {
+                            LinkedTreeMap<String, Object> friendDataTreeMap = (LinkedTreeMap<String, Object>) object;
+                            String result = replace(friendDataTreeMap.get("html").toString());
+                            builder.append(result);
+                        }
+                    });
+                }
+                if (StringUtils.isNotBlank(builder.toString())) {
+                    Html html = new Html(builder.toString());
+//                    List<Selectable> selectableList = html.xpath("//li[@class=\"f-single f-s-s\"]").nodes();
+//                    selectableList.forEach(selectable -> {
+//                        String shuoshuoTime = selectable.xpath("/li/div[1]/div[2]/div[2]/span[1]/text()").get();
+//                        String content = selectable.xpath("/li/div[2]/div[1]/div[1]/text()").get();
+//                        String ss = selectable.xpath("/li/div[2]/div[1]/div[2]").get();
+//                    });
+                    page.putField("", html);
+                }
+            } else if (code == 4001) {//未登陆
+                page.addTargetRequest(page.getRequest());
+            } else if (code == 5008) { //无权限
+                logger.warn("qq shuoshuo no auth.qq_result_code:{},url:{}", code, page.getRequest().getUrl());
+            } else {
+                logger.warn("qq shuoshuo result error.qq_result_code:{},url:{}", code, page.getRequest().getUrl());
+            }
+        } catch (Exception e) {
+            logger.error("qq shuoshuo json parse failure.url:{}", page.getRequest().getUrl(), e);
+            return false;
+        }
+        return true;
     }
 
-    public QQZoneIndexProcessor() {
-        super(site);
+    @Override
+    public Site getSite() {
+        return site;
     }
 
+    private String extract(String str) {
+        String jsonp = str.replace("_Callback(", "");
+        return jsonp.substring(0, jsonp.length() - 2);
+    }
 
-//    @Override
-//    public void process(Page page) {
-////        String json= QQUtils.getJsonFromJsonp(page.getRawText());
-////
-////        JSONObject object=JSON.parseObject(json);
-//
-//        System.out.println(page.getHtml().toString());
-//    }
-//
-//    @Override
-//    public Site getSite() {
-//        return site;
-//    }
-
-//    @Override
-//    boolean onProcess(Page page) {
-//        String json= QQUtils.getJsonFromJsonp(page.getRawText());
-//
-//        JSONObject object=JSON.parseObject(json);
-//
-//        System.out.println();
-//
-//        r
-//
-// eturn true;
-//    }
+    private String replace(String str) {
+        String html = StringUtils.replaceEach(str, new String[]{"x3C", "x22"}, new String[]{"<", "\""});
+        return html;
+    }
 }
