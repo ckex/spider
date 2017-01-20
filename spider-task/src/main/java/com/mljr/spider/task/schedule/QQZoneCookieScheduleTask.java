@@ -109,9 +109,4 @@ public class QQZoneCookieScheduleTask implements IScheduleTaskDealSingle<String>
 
         return cookieSet;
     }
-
-    public static void main(String[] args) throws Exception {
-        QQZoneCookieScheduleTask task=new QQZoneCookieScheduleTask();
-        task.execute("543109152:sg*1090?CJ","BASE");
-    }
 }
