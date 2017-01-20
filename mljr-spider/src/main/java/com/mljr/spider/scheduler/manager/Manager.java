@@ -401,9 +401,9 @@ public class Manager extends AbstractMessage {
     private void startQQZoneIndex() throws Exception {
         AbstractPageProcessor processor = fac.create(new QQZoneIndexProcessor());
         LocalFilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-        String targetUrl = Joiner.on("").join(url, ServiceConfig.getQQZoneIndex());
-        Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
-        final Spider spider = Spider.create(processor).addPipeline(htmlPipeline)
+//        String targetUrl = Joiner.on("").join(url, ServiceConfig.getQQZoneIndex());
+//        Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
+        final Spider spider = Spider.create(processor).addPipeline(pipeline)
                 .setDownloader(new QQHttpClientDownloader()).thread(MAX_SIZE)
                 .thread(MAX_SIZE).setExitWhenComplete(false);
         SpiderListener listener = new DownloaderSpiderListener(QQZONE_INDEX_LOG_NAME);
