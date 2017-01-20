@@ -34,7 +34,7 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         logger.info("start...");
-//        startLBSTask();
+        startLBSTask();
         Manager manager = new Manager();
         manager.run();
         ZkScheduler zkScheduler =new ZkScheduler();

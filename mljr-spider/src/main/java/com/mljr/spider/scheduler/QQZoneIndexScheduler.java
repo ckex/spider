@@ -52,19 +52,19 @@ public class QQZoneIndexScheduler extends AbstractScheduler {
 
     @Override
     boolean pushTask(Spider spider, UMQMessage message) {
-        JSONObject jsonObject = JSON.parseObject(message.message);
-        String qq = jsonObject.containsKey("qq") ? jsonObject.getString("qq") : null;
-        if (null == qq) {
-            logger.warn("qq index scheduler rabbitmq json message is error,message:{}", message.message);
-            return false;
-        }
-        push(buildRequst(qq), spider);
+        push(buildRequst(message.message), spider);
         return true;
     }
 
     @Override
     Request buildRequst(String message) {
-        String url = String.format(QQUtils.QQ_INDEX_URL, message,0);
+        JSONObject jsonObject = JSON.parseObject(message);
+        String qq = jsonObject.containsKey("qq") ? jsonObject.getString("qq") : null;
+        if (null == qq) {
+            logger.warn("qq index scheduler rabbitmq json message is error,message:{}", message);
+            return null;
+        }
+        String url = String.format(QQUtils.QQ_INDEX_URL, qq, 0);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         return new Request(url);
     }

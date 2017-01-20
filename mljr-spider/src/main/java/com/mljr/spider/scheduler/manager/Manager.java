@@ -405,7 +405,7 @@ public class Manager extends AbstractMessage {
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getQQZoneIndex());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline)
-				.setDownloader(new QQSeleniumDownloader())
+				.setDownloader(new QQHttpClientDownloader()).thread(MAX_SIZE)
 				.thread(MAX_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(QQZONE_INDEX_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_QQZONE_INDEX)));
