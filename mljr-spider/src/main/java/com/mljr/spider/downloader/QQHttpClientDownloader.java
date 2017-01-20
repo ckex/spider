@@ -48,8 +48,9 @@ public class QQHttpClientDownloader extends HttpClientDownloader {
         List<String> list = QQUtils.getRandomKey(1);
         StringBuilder builder = new StringBuilder();
         if (null != list && list.size() > 0) {
-            map.put(QQUtils.QQ_LOGIN, list.get(0));
-            QQCookie qqCookie = QQUtils.getRedisCookie(list.get(0));
+            String qqKey=QQUtils.spiltQQ(list.get(0))[0];
+            map.put(QQUtils.QQ_LOGIN,qqKey);
+            QQCookie qqCookie = QQUtils.getRedisCookie(qqKey);
             if (null != qqCookie) {
                 qqCookie.getCookies().forEach(cookie -> {
                     builder.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");

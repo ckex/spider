@@ -55,7 +55,6 @@
 		<zookeeper.version>3.5.1-alpha</zookeeper.version>
 		<selenium.version>3.0.1</selenium.version>
 		<htmlunit.driver.version>2.23.2</htmlunit.driver.version>
-		<phantomjs.driver.version>1.2.0</phantomjs.driver.version>
 	</properties>
 
 	<dependencyManagement>
@@ -417,12 +416,6 @@
 				<groupId>org.seleniumhq.selenium</groupId>
 				<artifactId>htmlunit-driver</artifactId>
 				<version>${htmlunit.driver.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.github.detro</groupId>
-				<artifactId>phantomjsdriver</artifactId>
-				<version>${phantomjs.driver.version}</version>
 			</dependency>
 			<!-- selenium end-->
 

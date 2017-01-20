@@ -16,6 +16,8 @@ import redis.clients.jedis.Jedis;
 
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by gaoxi on 2017/1/8.
@@ -33,10 +35,17 @@ public class QQUtils {
 
     public static final String QQ_LOGIN = "login_qq";
 
+    public static final int QQ_DEFAULT_COUNT = 20;
+
+    /**
+     * 默认分页
+     */
+    public static final int QQ_DEFAULT_PAGE = 10;
+
     /**
      * QQ首页动态
      */
-    public static final String QQ_INDEX_URL = "https://h5.qzone.qq.com/proxy/domain/ic2.qzone.qq.com/cgi-bin/feeds/feeds_html_act_all?uin=" + QQ_LOGIN + "&hostuin=%s&scope=0&filter=all&flag=1&refresh=0&firstGetGroup=0&mixnocache=0&scene=0&begintime=undefined&icServerTime=&start=0&count=10&sidomain=qzonestyle.gtimg.cn&useutf8=1&outputhtmlfeed=1&refer=2&r=0.8536552901318883&g_tk=" + QQ_P_SKY;
+    public static final String QQ_INDEX_URL = "https://h5.qzone.qq.com/proxy/domain/ic2.qzone.qq.com/cgi-bin/feeds/feeds_html_act_all?scope=0&filter=all&flag=1&refresh=0&firstGetGroup=0&mixnocache=0&scene=0&begintime=undefined&icServerTime=&sidomain=qzonestyle.gtimg.cn&useutf8=1&outputhtmlfeed=1&refer=2&r=0.8536552901318883&uin=" + QQ_LOGIN + "&count=" + QQ_DEFAULT_COUNT + "&g_tk=" + QQ_P_SKY + "&hostuin=%s&start=%s";
 
     public static Set<String> getAllQQ() {
         return ServiceConfig.getSpiderRedisClient().use(new Function<Jedis, Set<String>>() {
@@ -144,5 +153,18 @@ public class QQUtils {
             LOGGER.error("gson convert json failure.jsonp:{}", jsonp, e);
         }
         return treeMap;
+    }
+
+    /**
+     * @param jsonp 服务端直接返回过来的数据
+     * @return 抽取出json
+     */
+    public static String getJsonFromJsonp(String jsonp) {
+        Pattern pattern = Pattern.compile("_Callback\\((.*)\\);");
+        Matcher matcher = pattern.matcher(jsonp);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
     }
 }

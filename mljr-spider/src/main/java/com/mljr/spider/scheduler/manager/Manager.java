@@ -7,6 +7,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.constant.DomainConstant;
 import com.mljr.spider.downloader.QQHttpClientDownloader;
+import com.mljr.spider.downloader.QQSeleniumDownloader;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
@@ -61,26 +62,27 @@ public class Manager extends AbstractMessage {
 
 	public void run() throws Exception {
 		System.out.println(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss:SSS") + ",Runing ...");
-		startSaiGeGPS();
-		startGuishuShowji();
-		startIP138();
-		startHuoche114();
-		startJuheMobile();
-		startBaiduMobile();
-		startSogouMobile();
-		startGuabuBankCard();
-		startHuoChePiaoBankCard();
-		startCha67BankCard();
-		startYinHangKaBankCard();
-		startChaYHKBankCard();
-		startLBSAMapGeo();
-		startLBSBaiduGeo();
-		startBlackIdCard();
-
-		//判断天眼查是否开启
-		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
-			startTianyancha();
-		}
+//		startSaiGeGPS();
+//		startGuishuShowji();
+//		startIP138();
+//		startHuoche114();
+//		startJuheMobile();
+//		startBaiduMobile();
+//		startSogouMobile();
+//		startGuabuBankCard();
+//		startHuoChePiaoBankCard();
+//		startCha67BankCard();
+//		startYinHangKaBankCard();
+//		startChaYHKBankCard();
+//		startLBSAMapGeo();
+//		startLBSBaiduGeo();
+//		startBlackIdCard();
+//
+//		//判断天眼查是否开启
+//		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
+//			startTianyancha();
+//		}
+		startQQZoneIndex();
 
 	}
 
@@ -403,7 +405,7 @@ public class Manager extends AbstractMessage {
 		String targetUrl = Joiner.on("").join(url, ServiceConfig.getQQZoneIndex());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline)
-				.setDownloader(new QQHttpClientDownloader()).thread(MAX_SIZE)
+				.setDownloader(new QQSeleniumDownloader())
 				.thread(MAX_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(QQZONE_INDEX_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_QQZONE_INDEX)));

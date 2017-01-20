@@ -1,6 +1,6 @@
 package com.mljr.spider.processor;
 
-import com.mljr.spider.downloader.QQHttpClientDownloader;
+import com.mljr.spider.downloader.QQSeleniumDownloader;
 import com.mljr.utils.QQUtils;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
@@ -15,8 +15,8 @@ public class QQZoneProcessorTests {
     }
 
     private static void testShuoShuo() {
-        String url = String.format(QQUtils.QQ_INDEX_URL, "467732755");
-        Spider spider = Spider.create(new QQZoneIndexProcessor()).setDownloader(new QQHttpClientDownloader()).thread(3)
+        String url = String.format(QQUtils.QQ_INDEX_URL, "467732755", 0);
+        Spider spider = Spider.create(new QQZoneIndexProcessor()).setDownloader(new QQSeleniumDownloader())
                 .addUrl(url).addPipeline(new ConsolePipeline());
         spider.runAsync();
     }

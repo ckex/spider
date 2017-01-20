@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.mljr.entity.CCookie;
 import com.mljr.entity.QQCookie;
 import com.mljr.utils.QQUtils;
-import com.mljr.utils.WebDriverUtils;
 import com.taobao.pamirs.schedule.IScheduleTaskDealSingle;
 import com.taobao.pamirs.schedule.TaskItemDefine;
 import org.openqa.selenium.By;
@@ -109,5 +108,10 @@ public class QQZoneCookieScheduleTask implements IScheduleTaskDealSingle<String>
         webDriver.quit();
 
         return cookieSet;
+    }
+
+    public static void main(String[] args) throws Exception {
+        QQZoneCookieScheduleTask task=new QQZoneCookieScheduleTask();
+        task.execute("543109152:sg*1090?CJ","BASE");
     }
 }

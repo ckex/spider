@@ -527,6 +527,21 @@ appender("BLACK_IDCARD_LOG_DATA", RollingFileAppender) {
     maxHistory = 300
   }
 }
+appender("QQZONE-SHUOSHUO-ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/qqzone-shuoshuo-%d{yyyy-MM-dd}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
 logger("com.alibaba.druid.filter.stat.StatFilter", INFO)
 logger("com.alibaba.druid.pool.DruidDataSource", INFO)
 logger("com.alibaba.druid", INFO)
@@ -580,4 +595,5 @@ logger("lbs-baidu-geo-data", INFO, ["LBS-BAIDU-GEO-DATA"], false)
 logger("lbs-baidu-regeo-data", INFO, ["LBS-BAIDU-REGEO-DATA"], false)
 logger("black_idCard_log_data", INFO, ["BLACK_IDCARD_LOG_DATA"], false)
 logger("blackidcard-downloader", INFO, ["BLACK_IDCARD_LISTEREN_ERR"], false)
+logger("qqzone-downloader", INFO, ["QQZONE-SHUOSHUO-ERR"], false)
 root(DEBUG, ["A1", "STDOUT"])

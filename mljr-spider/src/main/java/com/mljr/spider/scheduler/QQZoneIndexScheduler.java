@@ -64,7 +64,7 @@ public class QQZoneIndexScheduler extends AbstractScheduler {
 
     @Override
     Request buildRequst(String message) {
-        String url = String.format(QQUtils.QQ_INDEX_URL, message);
+        String url = String.format(QQUtils.QQ_INDEX_URL, message,0);
         url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
         return new Request(url);
     }

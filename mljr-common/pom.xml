@@ -52,10 +52,5 @@
 			<artifactId>htmlunit-driver</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.github.detro</groupId>
-			<artifactId>phantomjsdriver</artifactId>
-		</dependency>
-
 	</dependencies>
 </project>
