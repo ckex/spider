@@ -6,7 +6,6 @@ package com.mljr.spider.scheduler.manager;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.constant.DomainConstant;
-import com.mljr.spider.downloader.QQHttpClientDownloader;
 import com.mljr.spider.downloader.QQSeleniumDownloader;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
@@ -32,6 +31,7 @@ import java.util.Date;
 /**
  * @author Ckex zha </br>
  *         2016年11月9日,下午3:27:45
+ *
  */
 public class Manager extends AbstractMessage {
 
@@ -78,17 +78,16 @@ public class Manager extends AbstractMessage {
         startBlackIdCard();
 
         //判断天眼查是否开启
-        if ("1".equals(ServiceConfig.isStartTianYanChaOff())) {
+        if("1".equals(ServiceConfig.isStartTianYanChaOff())){
             startTianyancha();
         }
-        startQQZoneIndex();
 
     }
 
     // 赛格GPS数据
     private void startSaiGeGPS() throws Exception {
         AbstractPageProcessor processor = fac.create(new SaiGeGPSProcessor());
-        LogPipeline logPipeline = new LogPipeline(GPS_LOG_NAME);
+        LogPipeline logPipeline=new LogPipeline(GPS_LOG_NAME);
         String targetUrl = Joiner.on("").join(url, ServiceConfig.getSaiGeGPSPath());
         Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, logPipeline);
         final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(1)
@@ -105,7 +104,7 @@ public class Manager extends AbstractMessage {
 
     // 聚合手机标签
     private void startJuheMobile() throws Exception {
-        AbstractPageProcessor processor = fac.create(new JuheMobileProcessor());
+        AbstractPageProcessor processor =fac.create(new JuheMobileProcessor());
         LogPipeline pipeline = new LogPipeline(JUHE_MOBILE_LOG_NAME);
         String targetUrl = Joiner.on("").join(url, ServiceConfig.getJuheMobilePath());
         Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
@@ -146,7 +145,7 @@ public class Manager extends AbstractMessage {
         final Spider spider = Spider.create(processor).addPipeline(htmlPipeline)
                 .thread(1).setExitWhenComplete(false);
         SpiderListener listener = new DownloaderSpiderListener(SOGOU_MOBILE_LISTENER_LOG_NAME);
-        spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_SOGOU)));
+        spider.setSpiderListeners(Lists.newArrayList(listener,new StatusCodeListener(DomainConstant.DOMAIN_SOGOU)));
         spider.setExecutorService(newThreadPool(1, 1, RMQ_SOGOU_MOBILE_QUEUE_ID));
         final AbstractScheduler scheduler = new SogouMobileScheduler(spider, RMQ_SOGOU_MOBILE_QUEUE_ID);
         spider.setScheduler(scheduler);
@@ -297,7 +296,7 @@ public class Manager extends AbstractMessage {
 
     //cha.yinhangkadata.com 银行卡
     private void startChaYHKBankCard() throws Exception {
-        AbstractPageProcessor processor = fac.create(new ChaYHKDataProcessor());
+        AbstractPageProcessor processor = fac.create( new ChaYHKDataProcessor());
         LogPipeline pipeline = new LogPipeline(CHAYHK_BANK_CARD_LOG_NAME);
         String targetUrl = Joiner.on("").join(url, ServiceConfig.getChaYHKBankCardPath());
         Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
@@ -404,7 +403,7 @@ public class Manager extends AbstractMessage {
 //        String targetUrl = Joiner.on("").join(url, ServiceConfig.getQQZoneIndex());
 //        Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
         final Spider spider = Spider.create(processor).addPipeline(pipeline)
-                .setDownloader(new QQHttpClientDownloader()).thread(MAX_SIZE)
+                .setDownloader(new QQSeleniumDownloader())
                 .thread(MAX_SIZE).setExitWhenComplete(false);
         SpiderListener listener = new DownloaderSpiderListener(QQZONE_INDEX_LOG_NAME);
         spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_QQZONE_INDEX)));
