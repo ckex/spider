@@ -103,4 +103,12 @@ public class ServiceConfig {
         return Integer.parseInt(properties.getProperty("redis.spider.maxWaitMillis"));
     }
 
+    public static String getGpsFileDir() {
+        return properties.getProperty("gps.file.dir");
+    }
+
+    public static String getGpsHistoryFileDir() {
+        return properties.getProperty("gps.history.dir");
+    }
+
 }
