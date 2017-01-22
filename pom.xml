@@ -21,6 +21,7 @@
 		<module>mljr-common</module>
 		<module>spider-monitor</module>
 		<module>spider-config</module>
+		<module>gps-monitor</module>
 	</modules>
 
 	<properties>
