@@ -76,6 +76,8 @@ public abstract class AbstractMessage {
 	//身份证黑名单
 	protected static final String RMQ_LBS_BLACK_IDCARD_ID="bl-gxsky";
 
+	protected static final String RMQ_JD_ITEM_PRICE_QUEUE_ID="jd-item-price";
+
 	// Downloader error listener
 	protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";
 	protected static final String QICHACHA_LISTENER_LOG_NAME = "qichacha-downloader";
@@ -101,6 +103,7 @@ public abstract class AbstractMessage {
 	//身份证黑名单
 	protected static final String GXSKY_BLACKID_CARD_LOG_NAME = "blackidcard-downloader";
 	protected static final String BITAUTO_LISTENER_LOG_NAME = "bitauto-downloader";
+	protected static final String JD_ITEM_PRICE_LISTENER_LOG_NAME = "jd-item-price-downloader";
 
 	public AbstractMessage() {
 		super();
@@ -111,7 +114,7 @@ public abstract class AbstractMessage {
 	private static final String name = "spider-dw";
 	private static final AtomicInteger count = new AtomicInteger();
 
-	protected static final ThreadPoolExecutor DEFAULT_THREAD_POOL = new ThreadPoolExecutor(CORE_SIZE, MAX_SIZE, 100,
+	public static final ThreadPoolExecutor DEFAULT_THREAD_POOL = new ThreadPoolExecutor(CORE_SIZE, MAX_SIZE, 100,
 			TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(10), new ThreadFactory() {
 
 				@Override
