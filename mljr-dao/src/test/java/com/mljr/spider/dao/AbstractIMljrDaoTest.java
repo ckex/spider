@@ -45,4 +45,10 @@ public class AbstractIMljrDaoTest extends AbstractJUnit4SpringContextTests {
 	@Autowired
 	protected YybgrkContactListDao yybgrkContactListDao;
 
+	@Autowired
+	protected DmPhonePriceDao dmPhonePriceDao;
+
+	@Autowired
+	protected SrcDmPhonePriceDao srcDmPhonePriceDao;
+
 }

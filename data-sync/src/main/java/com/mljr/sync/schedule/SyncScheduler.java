@@ -40,6 +40,9 @@ public class SyncScheduler {
     @Autowired
     private AbstractTask qqNumberTask;
 
+    @Autowired
+    private AbstractTask jdTask;
+
     @Scheduled(cron = "0/2 * * * * ?")
     private void startMobileTask() {
         mobileTask.run();
@@ -81,6 +84,12 @@ public class SyncScheduler {
     private void startQqNumberTask() {
         qqNumberTask.run();
         logger.debug(qqNumberTask.toString());
+    }
+
+    @Scheduled(cron = "0 0 6/24 * * ?")
+    private void startJdTask() {
+        jdTask.run();
+        logger.debug(jdTask.toString());
     }
 
 }
