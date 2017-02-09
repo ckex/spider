@@ -690,6 +690,85 @@
 				</plugins>
 			</build>
 		</profile>
+		
+		<!-- 生产环境 spider-->
+		<profile>
+			<id>spider-production</id>
+			<properties>
+				<env>spider-production</env>
+				<path>/opt/project/config/antx-${env}.properties</path>
+				<outputDir>${project.parent.build.directory}</outputDir>
+				<projectName>${project.artifactId}.v${commit.version}-${timestamp}</projectName>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>buildnumber-maven-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<phase>validate</phase>
+								<goals>
+									<goal>create</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<doCheck>false</doCheck>
+							<doUpdate>false</doUpdate>
+							<buildNumberPropertiesFileLocation>${project.build.directory}</buildNumberPropertiesFileLocation>
+							<buildNumberPropertyName>commit.version</buildNumberPropertyName>
+							<shortRevisionLength>7</shortRevisionLength>
+							<timestampFormat>{0,date,yyyyMMddHHmmss}</timestampFormat>
+							<items>
+								<item>timestamp</item>
+							</items>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<!-- 生产环境 datasync-->
+		<profile>
+			<id>datasync-production</id>
+			<properties>
+				<env>datasync-production</env>
+				<path>/opt/project/config/antx-${env}.properties</path>
+				<outputDir>${project.parent.build.directory}</outputDir>
+				<projectName>${project.artifactId}.v${commit.version}-${timestamp}</projectName>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>buildnumber-maven-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<phase>validate</phase>
+								<goals>
+									<goal>create</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<doCheck>false</doCheck>
+							<doUpdate>false</doUpdate>
+							<buildNumberPropertiesFileLocation>${project.build.directory}</buildNumberPropertiesFileLocation>
+							<buildNumberPropertyName>commit.version</buildNumberPropertyName>
+							<shortRevisionLength>7</shortRevisionLength>
+							<timestampFormat>{0,date,yyyyMMddHHmmss}</timestampFormat>
+							<items>
+								<item>timestamp</item>
+							</items>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
 	</profiles>
 
 	<build>
