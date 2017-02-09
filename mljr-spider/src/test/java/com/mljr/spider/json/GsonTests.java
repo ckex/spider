@@ -33,6 +33,14 @@ public class GsonTests {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+
+//		String jsonText = readJsonText();
+//		System.out.println(jsonText.length());
+//		Gson gson = new GsonBuilder().create();
+//		// gson.fromJson(jsonText, Map.class);
+//		// JSON.parse(jsonText);
+//		JSONObject jsonObject = JSON.parseObject(jsonText);
+
 //		String jsonText = readJsonText();
 		String jsonText = "[\n" +
 				"\t\n" +
@@ -326,10 +334,12 @@ public class GsonTests {
 
 		}
 
+
 	}
 
 	public static String readJsonText() {
 		String filePath = "/Users/ckex/Desktop/gps.json";
+		filePath = "/Users/ckex/Desktop/1485063511129-part-0000.json";
 		try {
 			String encoding = "UTF-8";
 			File file = new File(filePath);
