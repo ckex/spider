@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>gps重发</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
+          href="../../css/bootstrap.min.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.7.2.js"></script>
+</head>
+<body>
+<div class="container" style="width: 1140px">
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>历史文件</th>
+            </tr>
+            <tr th:each="data : ${dataList}">
+
+                <td th:each="d:${data}">
+
+                    <span th:text="${d}"></span>
+                    <span style="padding-left: 50px"></span>
+                    <button th:onclick="|resend('${d}')|" type="button"
+                            class="btn btn-success" th:text="重发"></button>
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
+</div>
+<script>
+    function resend(fileName) {
+
+        $.ajax({
+            type: "POST",
+            url: "/resendHistory/" + fileName,
+            cache: false,
+            async: true,
+            success: function (json) {
+                alert(JSON.stringify(json));
+            }
+
+        });
+
+    }
+
+</script>
+</body>
+</html>

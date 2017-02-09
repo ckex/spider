@@ -163,6 +163,10 @@ public class ServiceConfig {
     public static String getGPSExchange() {
         return properties.getProperty("rmq.gps.exchange");
     }
+
+    public static String getJdExchange() {
+        return properties.getProperty("rmq.jd.exchange");
+    }
     public static String getBankCardExchange() {
         return properties.getProperty("rmq.bankcard.exchange");
     }

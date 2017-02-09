@@ -51,7 +51,7 @@ public abstract class AbstractXpathParser {
         return this.readHtmlFile(file, "utf-8");
     }
 
-    public void write(final String fullName, String[] headers, List<String[]> content) {
+    public static void write(final String fullName, String[] headers, List<String[]> content) {
 
         File file = new File(fullName);
         File parent = file.getParentFile();

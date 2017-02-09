@@ -10,7 +10,6 @@ import com.mljr.common.ServiceConfig;
 import com.mljr.entity.SiteConfig;
 import com.mljr.spider.config.SiteManager;
 import com.mljr.utils.IpUtils;
-
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -81,7 +80,6 @@ public abstract class AbstractPageProcessor implements PageProcessor {
 				}
 
 				public void handleDataChange(String dataPath, Object data) throws Exception {
-					logger.debug("site 变成了  ===============================  " + String.valueOf(data));
 					Site site = JSON.parseObject(String.valueOf(data), SiteConfig.class).toSite();
 					SiteManager.setSite(site.getDomain(), site);
 				}

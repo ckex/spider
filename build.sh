@@ -21,16 +21,16 @@ function build_spider(){
 		mv $file $backdir
 	fi
 	
-	model="mljr-common,umq-client,spider-config,grpc,mljr-spider"
+	model="mljr-common,mljr-dao,umq-client,spider-config,grpc,mljr-spider"
 	mvn -pl $model clean
-	mvn -T1C -P production -pl $model package -Dmaven.test.skip -U -X
+	mvn -T1C -P spider-production -pl $model package -Dmaven.test.skip -U -X
 }
 
 function build_data_sync(){
 	echo "build data-sync"
 	model="mljr-common,umq-client,mljr-dao,data-sync"
 	mvn -pl $model clean 
-	mvn -T1C -P production -pl $model package -Dmaven.test.skip -U -X
+	mvn -T1C -P datasync-production -pl $model package -Dmaven.test.skip -U -X
 }
 
 function build_spider_monitor(){
