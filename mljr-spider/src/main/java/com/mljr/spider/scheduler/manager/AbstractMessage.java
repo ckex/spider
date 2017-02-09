@@ -73,6 +73,9 @@ public abstract class AbstractMessage {
 	protected static final String RMQ_LBS_BAIDU_REGEO_QUEUE_ID="lbs-baidu-regeo";
 	protected static final String RMQ_BITAUTO_QUEUE_ID="bitauto";
 
+	//QQZone
+	protected static final String RMQ_QQZONE_INDEX_QUEUE_ID="qqzone-index";
+
 	//身份证黑名单
 	protected static final String RMQ_LBS_BLACK_IDCARD_ID="bl-gxsky";
 
@@ -104,6 +107,9 @@ public abstract class AbstractMessage {
 	protected static final String GXSKY_BLACKID_CARD_LOG_NAME = "blackidcard-downloader";
 	protected static final String BITAUTO_LISTENER_LOG_NAME = "bitauto-downloader";
 	protected static final String JD_ITEM_PRICE_LISTENER_LOG_NAME = "jd-item-price-downloader";
+
+	//QQZone
+	protected static final String QQZONE_INDEX_LOG_NAME="qqzone-downloader";
 
 	public AbstractMessage() {
 		super();

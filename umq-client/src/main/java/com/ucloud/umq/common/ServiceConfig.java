@@ -310,4 +310,9 @@ public class ServiceConfig {
     public static String getBlackIdCardRoutingKey() {
         return properties.getProperty("rmq.gxsky.routingKey");
     }
+
+    //QQZone
+    public static String getQQZoneIndex(){
+        return properties.getProperty("qqzone.index.path");
+    }
 }

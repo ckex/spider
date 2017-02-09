@@ -46,5 +46,7 @@ public class DomainConstant {
 
     public static final String DOMAIN_AUTOIFENG = "auto.ifeng.com";
 
+    public static final String DOMAIN_QQZONE_INDEX="qqzone.index";
+
 
 }

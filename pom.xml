@@ -23,6 +23,7 @@
 		<module>spider-config</module>
 		<module>gps-monitor</module>
 		<module>data-import</module>
+		<module>spider-task</module>
 	</modules>
 
 	<properties>
@@ -52,6 +53,10 @@
 		<tess4j.version>3.2.1</tess4j.version>
 		<spring-boot.version>1.2.4.RELEASE</spring-boot.version>
 		<webmagic.version>0.6.1-SNAPSHOT</webmagic.version>
+        <tbschedule.version>3.3.3.2</tbschedule.version>
+		<zookeeper.version>3.5.1-alpha</zookeeper.version>
+		<selenium.version>3.0.1</selenium.version>
+		<htmlunit.driver.version>2.23.2</htmlunit.driver.version>
 	</properties>
 
 	<dependencyManagement>
@@ -366,6 +371,56 @@
 				<version>${tess4j.version}</version>
 			</dependency>
 			<!-- OCR end -->
+
+			<!-- tbschedule -->
+			<dependency>
+				<groupId>com.taobao.pamirs.schedule</groupId>
+				<artifactId>tbschedule</artifactId>
+				<version>${tbschedule.version}</version>
+			</dependency>
+
+			<!-- zookeeper -->
+			<dependency>
+				<groupId>org.apache.zookeeper</groupId>
+				<artifactId>zookeeper</artifactId>
+				<version>${zookeeper.version}</version>
+			</dependency>
+
+			<!-- spring boot start -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-logging</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<version>${spring-boot.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- spring boot end -->
+
+			<!-- selenium start -->
+			<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-java</artifactId>
+				<version>${selenium.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>htmlunit-driver</artifactId>
+				<version>${htmlunit.driver.version}</version>
+			</dependency>
+			<!-- selenium end-->
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -690,7 +745,7 @@
 				</plugins>
 			</build>
 		</profile>
-		
+
 		<!-- 生产环境 spider-->
 		<profile>
 			<id>spider-production</id>
@@ -729,7 +784,7 @@
 				</plugins>
 			</build>
 		</profile>
-		
+
 		<!-- 生产环境 datasync-->
 		<profile>
 			<id>datasync-production</id>
@@ -768,7 +823,7 @@
 				</plugins>
 			</build>
 		</profile>
-		
+
 	</profiles>
 
 	<build>
