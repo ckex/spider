@@ -86,7 +86,8 @@ public class SyncScheduler {
         logger.debug(qqNumberTask.toString());
     }
 
-    @Scheduled(cron = "0 0 6/24 * * ?")
+    // 每天0点,8点,16点执行
+    @Scheduled(cron = "0 0 0,8,16 * * ?")
     private void startJdTask() {
         jdTask.run();
         logger.debug(jdTask.toString());
