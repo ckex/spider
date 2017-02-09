@@ -40,6 +40,13 @@ function build_spider_monitor(){
 	mvn -T1C -P production -pl $model package -Dmaven.test.skip -U -X
 }
 
+function build_spider_task(){
+	echo "build spider task"
+	model="mljr-common,spider-config,spider-task" 
+	mvn -pl $model clean 
+	mvn -T1C -P production -pl $model package -Dmaven.test.skip -U -X
+}
+
 function docker_spider(){
 	command -v docker >/dev/null 2>&1 || { echo >&2 "Command not found: docker. please install docker."; exit 1; }
 	echo "docker build spider image"
@@ -57,6 +64,9 @@ case $1 in
 	;;
 	"spider-monitor")
 		build_spider_monitor
+	;;
+	"spider-task")
+		build_spider_task
 	;;
 	"docker-spider-image")
 		build_spider && docker_spider
