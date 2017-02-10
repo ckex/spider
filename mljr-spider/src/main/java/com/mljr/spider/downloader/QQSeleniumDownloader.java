@@ -29,6 +29,7 @@ public class QQSeleniumDownloader extends AbstractDownloader {
 
     @Override
     public Page download(Request request, Task task) {
+        LOGGER.info("downloading page {}", request.getUrl());
         Map<String, Object> paramsMap = getRequestParams();
         String url = request.getUrl().replace(QQUtils.QQ_LOGIN, paramsMap.get(QQUtils.QQ_LOGIN).toString()).replace(QQUtils.QQ_P_SKY, paramsMap.get(QQUtils.QQ_P_SKY).toString());
         WebDriver webDriver = new PhantomJSDriver();
