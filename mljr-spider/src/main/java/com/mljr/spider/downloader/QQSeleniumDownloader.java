@@ -37,10 +37,9 @@ public class QQSeleniumDownloader extends AbstractDownloader {
         WebDriver webDriver = new PhantomJSDriver();
         try {
             List<Cookie> cookieList = (List<Cookie>) paramsMap.get(QQUtils.QQ_COOKIE);
-            LOGGER.info("qq shuoshuo redis cookie:" + JSON.toJSONString(cookieList));
             cookieList.forEach(cookie -> webDriver.manage().addCookie(cookie));
             webDriver.get(url);
-            (new WebDriverWait(webDriver, 10)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(webDriver, 100)).until(new ExpectedCondition<Boolean>() {
                 @Override
                 public Boolean apply(WebDriver driver) {
                     return driver.getPageSource().indexOf("_Callback(") >= 0;
@@ -48,9 +47,8 @@ public class QQSeleniumDownloader extends AbstractDownloader {
             });
             pageSource = webDriver.getPageSource();
         } catch (Exception e) {
-            LOGGER.error("qq page down timeout.", e);
+            LOGGER.error("qq page down exception.", e);
         } finally {
-            LOGGER.info("qq selenium downloader quit");
             if (null != webDriver) {
                 webDriver.quit();
             }
@@ -78,7 +76,9 @@ public class QQSeleniumDownloader extends AbstractDownloader {
             QQCookie qqCookie = QQUtils.getRedisCookie(login_qq);
             if (null != qqCookie) {
                 qqCookie.getCookies().forEach(cCookie -> {
-                    cookieList.add(QQUtils.convert(cCookie));
+                    if (cCookie.getDomain().startsWith(".")) { //规范
+                        cookieList.add(QQUtils.convert(cCookie));
+                    }
                     if (cCookie.getName().equalsIgnoreCase(QQUtils.QQ_P_SKY)) {
                         g_tk[0] = QQUtils.getG_TK(cCookie.getValue());
                     }

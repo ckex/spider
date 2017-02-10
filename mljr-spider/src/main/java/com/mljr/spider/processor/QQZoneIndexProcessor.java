@@ -24,9 +24,10 @@ public class QQZoneIndexProcessor extends AbstractPageProcessor {
     @Override
     boolean onProcess(Page page) {
         try {
-            logger.info("download qq page content:"+page.getRawText());
-            if (StringUtils.isBlank(page.getRawText()))
+            if (StringUtils.isBlank(page.getRawText())) {
+                logger.info("qq shuoshuo download page content is empty.url:{}", page.getRequest().getUrl());
                 return true;
+            }
             Integer start = Integer.parseInt(getKeyByRequestUrl(page.getRequest().getUrl(), "start"));
             String hostuin = getKeyByRequestUrl(page.getRequest().getUrl(), "hostuin");
             String json = extract(page.getRawText());
@@ -37,7 +38,7 @@ public class QQZoneIndexProcessor extends AbstractPageProcessor {
             }
             double code = Math.abs(Double.parseDouble(treeMap.get("code").toString()));
             if (code == 0) { //成功
-                logger.info("qq shuoshuo success.url{}",page.getRequest().getUrl());
+                logger.info("qq shuoshuo success.url{}", page.getRequest().getUrl());
                 LinkedTreeMap<String, Object> dataTreeMap = (LinkedTreeMap<String, Object>) treeMap.get("data");
                 List<Object> friendDataList = (List<Object>) dataTreeMap.get("friend_data");
                 StringBuilder builder = new StringBuilder("<html><head></head><title></title><body>");
@@ -60,7 +61,7 @@ public class QQZoneIndexProcessor extends AbstractPageProcessor {
                 }
 
             } else if (code == 4001) {//未登陆
-                logger.warn("qq shuoshuo no login.qq_result_code:{},url:{}",code,page.getRequest().getUrl());
+                logger.warn("qq shuoshuo no login.qq_result_code:{},url:{}", code, page.getRequest().getUrl());
                 String url = String.format(QQUtils.QQ_INDEX_URL, hostuin, start);
                 page.addTargetRequest(new Request(url));
             } else if (code == 5008) { //无权限

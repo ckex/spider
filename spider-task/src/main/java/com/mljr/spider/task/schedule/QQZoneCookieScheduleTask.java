@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -70,43 +71,52 @@ public class QQZoneCookieScheduleTask implements IScheduleTaskDealSingle<String>
         return null;
     }
 
-    private Set<Cookie> getCookie(String user, String password) throws Exception {
+    private Set<Cookie> getCookie(String user, String password) {
 
         LOGGER.info("start get qq cookie.user:{},password:{}", user, password);
 
-        WebDriver webDriver = new PhantomJSDriver();
+        Set<Cookie> cookieSet = new HashSet<Cookie>();
 
-        webDriver.get(QQ_ZONE_LOGIN_URL);
+        WebDriver webDriver = null;
 
-        webDriver.switchTo().frame("login_frame");
-
-        webDriver.findElement(By.id("switcher_plogin")).click();
-
-        WebElement account_input = webDriver.findElement(By.id("u"));//账号输入狂
-
-        WebElement password_input = webDriver.findElement(By.id("p"));//密码输入框
-
-        WebElement login_button = webDriver.findElement(By.id("login_button"));//登陆按钮
-
-        account_input.clear();
-
-        password_input.clear();
-
-        account_input.sendKeys(user);//QQ账号
-
-        password_input.sendKeys(password);//QQ密码
-
-        login_button.click();
         try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            // ingore
+            webDriver = new PhantomJSDriver();
+
+            webDriver.get(QQ_ZONE_LOGIN_URL);
+
+            webDriver.switchTo().frame("login_frame");
+
+            webDriver.findElement(By.id("switcher_plogin")).click();
+
+            WebElement account_input = webDriver.findElement(By.id("u"));//账号输入狂
+
+            WebElement password_input = webDriver.findElement(By.id("p"));//密码输入框
+
+            WebElement login_button = webDriver.findElement(By.id("login_button"));//登陆按钮
+
+            account_input.clear();
+
+            password_input.clear();
+
+            account_input.sendKeys(user);//QQ账号
+
+            password_input.sendKeys(password);//QQ密码
+
+            login_button.click();
+
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                // ingore
+            }
+            cookieSet = webDriver.manage().getCookies();//获取cookies信息
+        } catch (Exception e) {
+            LOGGER.error("qq login exception.user:" + user + "  password:" + password, e);
+        } finally {
+            if (null != webDriver) {
+                webDriver.quit();
+            }
         }
-
-        Set<Cookie> cookieSet = webDriver.manage().getCookies();//获取cookies信息
-
-        webDriver.quit();
-
         return cookieSet;
     }
 }
