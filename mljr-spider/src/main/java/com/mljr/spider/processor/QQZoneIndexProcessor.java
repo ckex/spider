@@ -19,7 +19,7 @@ import java.util.List;
 public class QQZoneIndexProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("qqzone.index")
-            .setSleepTime(3000).setRetrySleepTime(3000).setRetryTimes(3);
+            .setSleepTime(10000).setRetrySleepTime(10000).setRetryTimes(3);
 
     @Override
     boolean onProcess(Page page) {
