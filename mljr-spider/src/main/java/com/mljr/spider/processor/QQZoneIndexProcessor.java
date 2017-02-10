@@ -58,6 +58,7 @@ public class QQZoneIndexProcessor extends AbstractPageProcessor {
                 }
 
             } else if (code == 4001) {//未登陆
+                logger.warn("qq shuoshuo no login.qq_result_code:{},url:{}",code,page.getRequest().getUrl());
                 String url = String.format(QQUtils.QQ_INDEX_URL, hostuin, start);
                 page.addTargetRequest(new Request(url));
             } else if (code == 5008) { //无权限
