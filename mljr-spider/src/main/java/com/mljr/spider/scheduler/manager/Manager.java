@@ -420,10 +420,10 @@ public class Manager extends AbstractMessage {
         Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline)
 				.setDownloader(new QQSeleniumDownloader())
-				.thread(MAX_SIZE).setExitWhenComplete(false);
+				.thread(1).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(QQZONE_INDEX_LOG_NAME);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_QQZONE_INDEX_QUEUE_ID));
+		spider.setExecutorService(newThreadPool(2, 2, RMQ_QQZONE_INDEX_QUEUE_ID));
 		final AbstractScheduler scheduler = new QQZoneIndexScheduler(spider, RMQ_QQZONE_INDEX_QUEUE_ID);
 		spider.setScheduler(scheduler);
 		spider.runAsync();
