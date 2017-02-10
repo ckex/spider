@@ -2,6 +2,7 @@ package com.mljr.spider.processor;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.mljr.utils.QQUtils;
+import com.mljr.utils.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -19,7 +20,7 @@ import java.util.List;
 public class QQZoneIndexProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("qqzone.index")
-            .setSleepTime(10000).setRetrySleepTime(10000).setRetryTimes(3);
+            .setSleepTime(5000).setRetrySleepTime(5000).setRetryTimes(3);
 
     @Override
     boolean onProcess(Page page) {
@@ -27,6 +28,9 @@ public class QQZoneIndexProcessor extends AbstractPageProcessor {
             if (StringUtils.isBlank(page.getRawText())) {
                 logger.info("qq shuoshuo download page content is empty.url:{}", page.getRequest().getUrl());
                 return true;
+            }
+            if (RandomUtils.randomPrint(500)) {
+                logger.info("qq shuoshuo download page content:{}", page.getRawText());
             }
             Integer start = Integer.parseInt(getKeyByRequestUrl(page.getRequest().getUrl(), "start"));
             String hostuin = getKeyByRequestUrl(page.getRequest().getUrl(), "hostuin");

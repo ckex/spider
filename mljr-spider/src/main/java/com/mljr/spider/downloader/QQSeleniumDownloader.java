@@ -32,14 +32,14 @@ public class QQSeleniumDownloader extends AbstractDownloader {
     public Page download(Request request, Task task) {
         Map<String, Object> paramsMap = getRequestParams();
         String url = request.getUrl().replace(QQUtils.QQ_LOGIN, paramsMap.get(QQUtils.QQ_LOGIN).toString()).replace(QQUtils.QQ_P_SKY, paramsMap.get(QQUtils.QQ_P_SKY).toString());
-        LOGGER.info("downloading page {}", request.getUrl());
+        LOGGER.info("downloading page {}", url);
         String pageSource = "";
         WebDriver webDriver = new PhantomJSDriver();
         try {
             List<Cookie> cookieList = (List<Cookie>) paramsMap.get(QQUtils.QQ_COOKIE);
             cookieList.forEach(cookie -> webDriver.manage().addCookie(cookie));
             webDriver.get(url);
-            (new WebDriverWait(webDriver, 100)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(webDriver, 20000)).until(new ExpectedCondition<Boolean>() {
                 @Override
                 public Boolean apply(WebDriver driver) {
                     return driver.getPageSource().indexOf("_Callback(") >= 0;
@@ -53,6 +53,7 @@ public class QQSeleniumDownloader extends AbstractDownloader {
                 webDriver.quit();
             }
         }
+        request.setUrl(url);
         Page page = new Page();
         page.setRawText(pageSource);
         page.setUrl(new PlainText(request.getUrl()));
