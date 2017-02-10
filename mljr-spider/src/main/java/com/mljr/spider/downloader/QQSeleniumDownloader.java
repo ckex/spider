@@ -1,5 +1,6 @@
 package com.mljr.spider.downloader;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mljr.entity.QQCookie;
@@ -32,12 +33,13 @@ public class QQSeleniumDownloader extends AbstractDownloader {
         Map<String, Object> paramsMap = getRequestParams();
         String url = request.getUrl().replace(QQUtils.QQ_LOGIN, paramsMap.get(QQUtils.QQ_LOGIN).toString()).replace(QQUtils.QQ_P_SKY, paramsMap.get(QQUtils.QQ_P_SKY).toString());
         LOGGER.info("downloading page {}", request.getUrl());
-        WebDriver webDriver = new PhantomJSDriver();
-        List<Cookie> cookieList = (List<Cookie>) paramsMap.get(QQUtils.QQ_COOKIE);
-        cookieList.forEach(cookie -> webDriver.manage().addCookie(cookie));
         String pageSource = "";
-        webDriver.get(url);
+        WebDriver webDriver = new PhantomJSDriver();
         try {
+            List<Cookie> cookieList = (List<Cookie>) paramsMap.get(QQUtils.QQ_COOKIE);
+            LOGGER.info("qq shuoshuo redis cookie:" + JSON.toJSONString(cookieList));
+            cookieList.forEach(cookie -> webDriver.manage().addCookie(cookie));
+            webDriver.get(url);
             (new WebDriverWait(webDriver, 10)).until(new ExpectedCondition<Boolean>() {
                 @Override
                 public Boolean apply(WebDriver driver) {
@@ -49,7 +51,9 @@ public class QQSeleniumDownloader extends AbstractDownloader {
             LOGGER.error("qq page down timeout.", e);
         } finally {
             LOGGER.info("qq selenium downloader quit");
-            webDriver.quit();
+            if (null != webDriver) {
+                webDriver.quit();
+            }
         }
         Page page = new Page();
         page.setRawText(pageSource);
