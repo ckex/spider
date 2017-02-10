@@ -77,15 +77,13 @@ public class Manager extends AbstractMessage {
 		startLBSAMapGeo();
 		startLBSBaiduGeo();
 		startBlackIdCard();
+		startQQZoneIndex();
 		startJdItemPrice();
 
 		//判断天眼查是否开启
 		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
 			startTianyancha();
 		}
-
-		startQQZoneIndex();
-
 	}
 
 	// 赛格GPS数据
