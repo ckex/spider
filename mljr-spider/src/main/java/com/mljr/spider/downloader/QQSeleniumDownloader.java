@@ -29,9 +29,9 @@ public class QQSeleniumDownloader extends AbstractDownloader {
 
     @Override
     public Page download(Request request, Task task) {
-        LOGGER.info("downloading page {}", request.getUrl());
         Map<String, Object> paramsMap = getRequestParams();
         String url = request.getUrl().replace(QQUtils.QQ_LOGIN, paramsMap.get(QQUtils.QQ_LOGIN).toString()).replace(QQUtils.QQ_P_SKY, paramsMap.get(QQUtils.QQ_P_SKY).toString());
+        LOGGER.info("downloading page {}", request.getUrl());
         WebDriver webDriver = new PhantomJSDriver();
         List<Cookie> cookieList = (List<Cookie>) paramsMap.get(QQUtils.QQ_COOKIE);
         cookieList.forEach(cookie -> webDriver.manage().addCookie(cookie));
@@ -48,6 +48,7 @@ public class QQSeleniumDownloader extends AbstractDownloader {
         } catch (Exception e) {
             LOGGER.error("qq page down timeout.", e);
         } finally {
+            LOGGER.info("qq selenium downloader quit");
             webDriver.quit();
         }
         Page page = new Page();

@@ -62,28 +62,28 @@ public class Manager extends AbstractMessage {
 
 	public void run() throws Exception {
 		System.out.println(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss:SSS") + ",Runing ...");
-		startSaiGeGPS();
-		startGuishuShowji();
-		startIP138();
-		startHuoche114();
-		startJuheMobile();
-		startBaiduMobile();
-		startSogouMobile();
-		startGuabuBankCard();
-		startHuoChePiaoBankCard();
-		startCha67BankCard();
-		startYinHangKaBankCard();
-		startChaYHKBankCard();
-		startLBSAMapGeo();
-		startLBSBaiduGeo();
-		startBlackIdCard();
+//		startSaiGeGPS();
+//		startGuishuShowji();
+//		startIP138();
+//		startHuoche114();
+//		startJuheMobile();
+//		startBaiduMobile();
+//		startSogouMobile();
+//		startGuabuBankCard();
+//		startHuoChePiaoBankCard();
+//		startCha67BankCard();
+//		startYinHangKaBankCard();
+//		startChaYHKBankCard();
+//		startLBSAMapGeo();
+//		startLBSBaiduGeo();
+//		startBlackIdCard();
 		startQQZoneIndex();
-		startJdItemPrice();
-
-		//判断天眼查是否开启
-		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
-			startTianyancha();
-		}
+//		startJdItemPrice();
+//
+//		//判断天眼查是否开启
+//		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
+//			startTianyancha();
+//		}
 	}
 
 	// 赛格GPS数据
@@ -422,7 +422,7 @@ public class Manager extends AbstractMessage {
 				.setDownloader(new QQSeleniumDownloader())
 				.thread(MAX_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(QQZONE_INDEX_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_QQZONE_INDEX)));
+		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_QQZONE_INDEX_QUEUE_ID));
 		final AbstractScheduler scheduler = new QQZoneIndexScheduler(spider, RMQ_QQZONE_INDEX_QUEUE_ID);
 		spider.setScheduler(scheduler);

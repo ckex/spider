@@ -24,6 +24,7 @@ public class QQZoneIndexProcessor extends AbstractPageProcessor {
     @Override
     boolean onProcess(Page page) {
         try {
+            logger.info("download qq page content:"+page.getRawText());
             if (StringUtils.isBlank(page.getRawText()))
                 return true;
             Integer start = Integer.parseInt(getKeyByRequestUrl(page.getRequest().getUrl(), "start"));
@@ -36,6 +37,7 @@ public class QQZoneIndexProcessor extends AbstractPageProcessor {
             }
             double code = Math.abs(Double.parseDouble(treeMap.get("code").toString()));
             if (code == 0) { //成功
+                logger.info("qq shuoshuo success.url{}",page.getRequest().getUrl());
                 LinkedTreeMap<String, Object> dataTreeMap = (LinkedTreeMap<String, Object>) treeMap.get("data");
                 List<Object> friendDataList = (List<Object>) dataTreeMap.get("friend_data");
                 StringBuilder builder = new StringBuilder("<html><head></head><title></title><body>");
