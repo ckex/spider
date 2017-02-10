@@ -422,7 +422,7 @@ public class Manager extends AbstractMessage {
 				.setDownloader(new QQSeleniumDownloader())
 				.thread(MAX_SIZE).setExitWhenComplete(false);
 		SpiderListener listener = new DownloaderSpiderListener(QQZONE_INDEX_LOG_NAME);
-		spider.setSpiderListeners(Lists.newArrayList(listener, new StatusCodeListener(DomainConstant.DOMAIN_QQZONE_INDEX)));
+		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_QQZONE_INDEX_QUEUE_ID));
 		final AbstractScheduler scheduler = new QQZoneIndexScheduler(spider, RMQ_QQZONE_INDEX_QUEUE_ID);
 		spider.setScheduler(scheduler);

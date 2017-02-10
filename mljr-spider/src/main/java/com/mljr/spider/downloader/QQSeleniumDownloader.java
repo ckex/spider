@@ -1,5 +1,6 @@
 package com.mljr.spider.downloader;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mljr.entity.QQCookie;
@@ -29,16 +30,16 @@ public class QQSeleniumDownloader extends AbstractDownloader {
 
     @Override
     public Page download(Request request, Task task) {
-        LOGGER.info("downloading page {}", request.getUrl());
         Map<String, Object> paramsMap = getRequestParams();
         String url = request.getUrl().replace(QQUtils.QQ_LOGIN, paramsMap.get(QQUtils.QQ_LOGIN).toString()).replace(QQUtils.QQ_P_SKY, paramsMap.get(QQUtils.QQ_P_SKY).toString());
-        WebDriver webDriver = new PhantomJSDriver();
-        List<Cookie> cookieList = (List<Cookie>) paramsMap.get(QQUtils.QQ_COOKIE);
-        cookieList.forEach(cookie -> webDriver.manage().addCookie(cookie));
+        LOGGER.info("downloading page {}", request.getUrl());
         String pageSource = "";
-        webDriver.get(url);
+        WebDriver webDriver = new PhantomJSDriver();
         try {
-            (new WebDriverWait(webDriver, 10)).until(new ExpectedCondition<Boolean>() {
+            List<Cookie> cookieList = (List<Cookie>) paramsMap.get(QQUtils.QQ_COOKIE);
+            cookieList.forEach(cookie -> webDriver.manage().addCookie(cookie));
+            webDriver.get(url);
+            (new WebDriverWait(webDriver, 100)).until(new ExpectedCondition<Boolean>() {
                 @Override
                 public Boolean apply(WebDriver driver) {
                     return driver.getPageSource().indexOf("_Callback(") >= 0;
@@ -46,9 +47,11 @@ public class QQSeleniumDownloader extends AbstractDownloader {
             });
             pageSource = webDriver.getPageSource();
         } catch (Exception e) {
-            LOGGER.error("qq page down timeout.", e);
+            LOGGER.error("qq page down exception.", e);
         } finally {
-            webDriver.quit();
+            if (null != webDriver) {
+                webDriver.quit();
+            }
         }
         Page page = new Page();
         page.setRawText(pageSource);
@@ -73,7 +76,9 @@ public class QQSeleniumDownloader extends AbstractDownloader {
             QQCookie qqCookie = QQUtils.getRedisCookie(login_qq);
             if (null != qqCookie) {
                 qqCookie.getCookies().forEach(cCookie -> {
-                    cookieList.add(QQUtils.convert(cCookie));
+                    if (cCookie.getDomain().startsWith(".")) { //规范
+                        cookieList.add(QQUtils.convert(cCookie));
+                    }
                     if (cCookie.getName().equalsIgnoreCase(QQUtils.QQ_P_SKY)) {
                         g_tk[0] = QQUtils.getG_TK(cCookie.getValue());
                     }
