@@ -20,7 +20,7 @@ import java.util.List;
 public class QQZoneIndexProcessor extends AbstractPageProcessor {
 
     private Site site = Site.me().setDomain("qqzone.index")
-            .setSleepTime(5000).setRetrySleepTime(5000).setRetryTimes(3);
+            .setSleepTime(2000).setRetrySleepTime(3000).setRetryTimes(3);
 
     @Override
     boolean onProcess(Page page) {
@@ -60,6 +60,7 @@ public class QQZoneIndexProcessor extends AbstractPageProcessor {
                 page.putField("", builder.toString());
                 //分页
                 if (start <= QQUtils.QQ_DEFAULT_PAGE && (null != friendDataList && friendDataList.size() > 0)) {
+                    logger.warn("qq shuoshuo page url:{}", page.getRequest().getUrl());
                     String page_url = String.format(QQUtils.QQ_INDEX_URL, hostuin, start + 1);
                     page.addTargetRequest(new Request(page_url));
                 }
