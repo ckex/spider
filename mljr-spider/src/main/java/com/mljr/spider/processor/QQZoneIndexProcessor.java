@@ -29,7 +29,7 @@ public class QQZoneIndexProcessor extends AbstractPageProcessor {
                 logger.info("qq shuoshuo download page content is empty.url:{}", page.getRequest().getUrl());
                 return true;
             }
-            if (RandomUtils.randomPrint(500)) {
+            if (RandomUtils.randomPrint(10)) {
                 logger.info("qq shuoshuo download page content:{}", page.getRawText());
             }
             Integer start = Integer.parseInt(getKeyByRequestUrl(page.getRequest().getUrl(), "start"));
