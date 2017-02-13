@@ -14,8 +14,14 @@ public class JdItemPriceProcessor extends AbstractPageProcessor {
 
     @Override
     boolean onProcess(Page page) {
-        String price = page.getJson().jsonPath("$[0].p").get();
-        page.putField("price",price);
+        try{
+            String price = page.getJson().jsonPath("$[0].p").get();
+            page.putField("price",price);
+        }catch (Exception e){
+            logger.error("jd-item-price error ",e);
+            logger.error("jd-item-price error "+page.getJson().get());
+        }
+
         return true;
     }
 
