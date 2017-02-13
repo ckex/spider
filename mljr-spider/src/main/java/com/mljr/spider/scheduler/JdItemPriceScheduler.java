@@ -1,5 +1,6 @@
 package com.mljr.spider.scheduler;
 
+import com.google.common.base.CharMatcher;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage.PullMsgTask;
 import us.codecraft.webmagic.Request;
@@ -51,6 +52,8 @@ public class JdItemPriceScheduler extends AbstractScheduler {
 
     @Override
     Request buildRequst(String message) {
-        return new Request("https://p.3.cn/prices/mgets?skuIds=J_" + message);
+        String url = "https://p.3.cn/prices/mgets?skuIds=J_" + message;
+        url = CharMatcher.whitespace().replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+        return new Request(url);
     }
 }
