@@ -405,11 +405,10 @@ public class Manager extends AbstractMessage {
 		AbstractPageProcessor processor = fac.create(new JdItemPriceProcessor());
 		final Spider spider = Spider.create(processor)
 				.addPipeline(new JdItemPriceMysqlPipeline())
-				.thread(CORE_SIZE + MAX_SIZE);
+				.thread(1);
 		spider.setSpiderListeners(Lists.newArrayList(new DownloaderSpiderListener(JD_ITEM_PRICE_LISTENER_LOG_NAME),
 				new StatusCodeListener(processor.getSite().getDomain())
 		));
-		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_JD_ITEM_PRICE_QUEUE_ID));
 		spider.setScheduler(new JdItemPriceScheduler(spider, RMQ_JD_ITEM_PRICE_QUEUE_ID));
 		spider.runAsync();
 		logger.info("Start JdItemPriceProcessor finished. " + spider.toString());
