@@ -67,7 +67,7 @@ public class SyncScheduler {
         logger.debug(merchantInfoTask.toString());
     }
 
-    @Scheduled(cron = "40/5 * * * * ?")
+//    @Scheduled(cron = "40/5 * * * * ?")
     private void startLbsTask() {
         lbsTask.run();
         logger.debug(lbsTask.toString());
