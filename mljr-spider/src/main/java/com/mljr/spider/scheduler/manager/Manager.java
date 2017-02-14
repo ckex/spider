@@ -26,6 +26,7 @@ import org.apache.http.nio.reactor.IOReactorException;
 import org.jsoup.Jsoup;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
+import us.codecraft.webmagic.downloader.PhantomJSDownloader;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
@@ -413,6 +414,7 @@ public class Manager extends AbstractMessage {
 		spider.setSpiderListeners(Lists.newArrayList(new DownloaderSpiderListener(JD_ITEM_PRICE_LISTENER_LOG_NAME),
 				new StatusCodeListener(processor.getSite().getDomain())
 		));
+		spider.setDownloader(new PhantomJSDownloader());
 		spider.setScheduler(new JdItemPriceScheduler(spider, RMQ_JD_ITEM_PRICE_QUEUE_ID));
 		spider.runAsync();
 		logger.info("Start JdItemPriceProcessor finished. " + spider.toString());
