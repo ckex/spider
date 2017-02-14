@@ -55,13 +55,13 @@ public class SyncScheduler {
         logger.debug(gpsTask.toString());
     }
 
-    @Scheduled(cron = "20/5 * * * * ?")
+//    @Scheduled(cron = "20/5 * * * * ?")
     private void startBankCardLocationTask() {
         bankCardLocationTask.run();
         logger.debug(bankCardLocationTask.toString());
     }
 
-    @Scheduled(cron = "30/5 * * * * ?")
+//    @Scheduled(cron = "30/5 * * * * ?")
     private void startMerchantInfoTask() {
         merchantInfoTask.run();
         logger.debug(merchantInfoTask.toString());
@@ -80,7 +80,7 @@ public class SyncScheduler {
         logger.debug(gxSkyTask.toString());
     }
 
-    @Scheduled(cron = "0/10 * * * * ?")
+//    @Scheduled(cron = "0/10 * * * * ?")
     private void startQqNumberTask() {
         qqNumberTask.run();
         logger.debug(qqNumberTask.toString());
