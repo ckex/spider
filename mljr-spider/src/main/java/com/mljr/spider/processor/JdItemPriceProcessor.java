@@ -3,43 +3,37 @@
  */
 package com.mljr.spider.processor;
 
-import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
+import us.codecraft.webmagic.processor.PageProcessor;
 
-import java.util.Map;
 
+public class JdItemPriceProcessor implements PageProcessor {
+    protected transient Logger logger = LoggerFactory.getLogger(AbstractPageProcessor.class);
 
-public class JdItemPriceProcessor extends AbstractPageProcessor {
-
-    private static Site site = Site.me().setDomain("item.jd.com").setSleepTime(10 * 1000).setRetrySleepTime(2000).setRetryTimes(3).setUserAgent(
+    private static Site site = Site.me().setDomain("item.jd.com").setCharset("utf-8").setSleepTime(30 * 1000).setRetrySleepTime(2000).setRetryTimes(3).setUserAgent(
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-    @Override
     boolean onProcess(Page page) {
-        String htmlStr = page.getHtml().get();
-        try {
-            if (htmlStr.contains("{") && htmlStr.contains("}")) {
-                htmlStr = htmlStr.substring(htmlStr.indexOf("{"), (htmlStr.indexOf("}") + 1));
-            }
-            Map map = new Gson().fromJson(htmlStr, Map.class);
-            if (map.get("error") == null) {
-                page.putField("price", map.get("p"));
-
-            } else {
-                page.setSkip(true);
-                logger.error("jd-item-price error {}", htmlStr);
-            }
-
-        } catch (Exception e) {
+        String jsonStr = page.getJson().get();
+        if (!jsonStr.contains("error")) {
+            page.putField("data", jsonStr);
+        } else {
             page.setSkip(true);
-            logger.error("jd-item-price error {}  {} ", e, htmlStr);
+            logger.error("jd-item-price error {}", jsonStr);
         }
-
         return true;
     }
 
-    public JdItemPriceProcessor() {
-        super(site);
+    @Override
+    public void process(Page page) {
+        onProcess(page);
+    }
+
+    @Override
+    public Site getSite() {
+        return site;
     }
 }

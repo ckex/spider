@@ -15,22 +15,18 @@ import com.mljr.spider.listener.StatusCodeListener;
 import com.mljr.spider.processor.*;
 import com.mljr.spider.scheduler.*;
 import com.mljr.spider.storage.HttpPipeline;
-import com.mljr.spider.storage.JdItemPriceMysqlPipeline;
+import com.mljr.spider.storage.JdItemPricePipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
-import com.mljr.utils.IpUtils;
 import com.ucloud.umq.common.ServiceConfig;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.http.nio.reactor.IOReactorException;
-import org.jsoup.Jsoup;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
-import us.codecraft.webmagic.downloader.PhantomJSDownloader;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
-import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -82,10 +78,7 @@ public class Manager extends AbstractMessage {
 		startLBSBaiduGeo();
 		startBlackIdCard();
 		startQQZoneIndex();
-
-        if(testJdApiConnect()){
-            startJdItemPrice();
-        }
+		startJdItemPrice();
 
 		//判断天眼查是否开启
 		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
@@ -407,33 +400,16 @@ public class Manager extends AbstractMessage {
 
 	// 京东手机价格监控
 	private void startJdItemPrice() throws Exception {
-		AbstractPageProcessor processor = fac.create(new JdItemPriceProcessor());
+		JdItemPriceProcessor processor = new JdItemPriceProcessor();
 		final Spider spider = Spider.create(processor)
-				.addPipeline(new JdItemPriceMysqlPipeline())
+				.addPipeline(new JdItemPricePipeline())
 				.thread(1);
 		spider.setSpiderListeners(Lists.newArrayList(new DownloaderSpiderListener(JD_ITEM_PRICE_LISTENER_LOG_NAME),
 				new StatusCodeListener(processor.getSite().getDomain())
 		));
-		spider.setDownloader(new PhantomJSDownloader());
 		spider.setScheduler(new JdItemPriceScheduler(spider, RMQ_JD_ITEM_PRICE_QUEUE_ID));
 		spider.runAsync();
 		logger.info("Start JdItemPriceProcessor finished. " + spider.toString());
-	}
-
-    // 测试京东API是否可用
-	public boolean testJdApiConnect(){
-		try {
-			String jsonStr = Jsoup.connect("https://p.3.cn/prices/mgets?skuIds=J_1593516")
-					.ignoreContentType(true).execute().body();
-			if(jsonStr.contains("error")){
-                logger.error("{} can not connect jd api ",IpUtils.getHostName());
-				return false;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-            return false;
-		}
-		return true;
 	}
 
 	//QQ空间首页　
