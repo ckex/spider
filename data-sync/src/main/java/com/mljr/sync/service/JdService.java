@@ -11,10 +11,7 @@ import com.mljr.spider.dao.SrcDmPhonePriceDao;
 import com.mljr.spider.model.SrcDmPhonePriceDo;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
-import com.ucloud.umq.common.ServiceConfig;
-import common.page.util.PageList;
 import common.page.util.PageQuery;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +19,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @author Ckex zha </br>
- *         2016年11月29日,下午4:08:29
- */
 @Service
 public class JdService {
 
     protected static transient Logger logger = LoggerFactory.getLogger(JdService.class);
+
+    public final static String urlPattern = "https://p.3.cn/prices/mgets?type=1&area=1_72_2799_0&pdtk=&pduid=1486445598531372370158&pdpin=&pdbp=0&skuIds=%s&_=1487069258413";
 
     @Autowired
     SrcDmPhonePriceDao srcDmPhonePriceDao;
@@ -40,9 +35,9 @@ public class JdService {
         builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
 
         try {
-            for (String url : getItemIds()) {
-                RabbitmqClient.publishMessage(channel, ServiceConfig.getJdExchange(),
-                        null, builder.build(), url.getBytes(Charsets.UTF_8));
+            for (String url : getUrls()) {
+                RabbitmqClient.publishMessage(channel, "",
+                        "jd-item-price", builder.build(), url.getBytes(Charsets.UTF_8));
             }
         } catch (Exception e) {
             logger.error("sync jindong item url error!", e);
@@ -53,16 +48,25 @@ public class JdService {
         }
     }
 
-    public List<String> getItemIds() {
-        PageList<SrcDmPhonePriceDo> list = srcDmPhonePriceDao.listByPage(new PageQuery(0, 1000), null);
-        if (CollectionUtils.isEmpty(list)) {
-            return Lists.newArrayList();
+    public List<String> getUrls() {
+        List<SrcDmPhonePriceDo> list = srcDmPhonePriceDao.listByPage(new PageQuery(0, 1000), null);
+        StringBuilder accum = new StringBuilder();
+        List<String> urls = Lists.newArrayList();
+        int i = 0;
+        for (SrcDmPhonePriceDo src : list) {
+            accum.append("J_").append(src.getJdId()).append(",");
+            ++i;
+            if (i % 100 == 0) {
+                String skuIds = accum.substring(0, accum.length() - 1);
+                urls.add(String.format(urlPattern, skuIds));
+                accum = new StringBuilder();
+            }
         }
-        List<String> itemIds = Lists.newArrayList();
-        for (SrcDmPhonePriceDo priceDo : list) {
-            itemIds.add(priceDo.getJdId());
+        if (accum.length() > 0) {
+            String skuIds = accum.substring(0, accum.length() - 1);
+            urls.add(String.format(urlPattern, skuIds));
         }
-        return itemIds;
+        return urls;
     }
 
 }

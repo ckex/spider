@@ -11,7 +11,6 @@ import java.util.concurrent.BlockingQueue;
 
 public class JdItemPriceScheduler extends AbstractScheduler {
 
-
     public JdItemPriceScheduler(Spider spider, PullMsgTask task) throws Exception {
         super(spider, task);
     }
@@ -52,8 +51,7 @@ public class JdItemPriceScheduler extends AbstractScheduler {
 
     @Override
     Request buildRequst(String message) {
-        String url = "https://p.3.cn/prices/mgets?skuIds=J_" + message;
-        url = CharMatcher.whitespace().replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+        String url = CharMatcher.whitespace().replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(message, ""), "");
         return new Request(url);
     }
 }
