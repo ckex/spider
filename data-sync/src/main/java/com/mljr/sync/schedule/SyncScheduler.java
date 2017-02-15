@@ -43,6 +43,9 @@ public class SyncScheduler {
     @Autowired
     private AbstractTask jdTask;
 
+    @Autowired
+    private AbstractTask jdConsumeTask;
+
     @Scheduled(cron = "0/2 * * * * ?")
     private void startMobileTask() {
         mobileTask.run();
@@ -86,11 +89,16 @@ public class SyncScheduler {
         logger.debug(qqNumberTask.toString());
     }
 
-    // 每天0点,8点,16点执行
-    @Scheduled(cron = "0 0 0,8,16 * * ?")
+    @Scheduled(cron = "0 0 2 * * ?")
     private void startJdTask() {
         jdTask.run();
         logger.debug(jdTask.toString());
+    }
+
+    @Scheduled(cron = "0 0/1 * * * ?")
+    private void startJdConsumeTask() {
+        jdConsumeTask.run();
+        logger.debug(jdConsumeTask.toString());
     }
 
 }
