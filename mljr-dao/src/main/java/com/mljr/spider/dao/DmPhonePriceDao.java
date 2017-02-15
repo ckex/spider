@@ -4,7 +4,7 @@ import com.mljr.spider.dao.dynamic.datasource.DataSource;
 import com.mljr.spider.model.DmPhonePriceDo;
 import common.page.util.PageList;
 import common.page.util.PageQuery;
-@DataSource("mljrdev")
+@DataSource("rc")
 public interface DmPhonePriceDao {
 
     DmPhonePriceDo load(Long id);
