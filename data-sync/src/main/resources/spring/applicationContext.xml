@@ -33,9 +33,6 @@
 		</property>
 	</bean>
 
-	<bean class="com.mljr.sync.task.JdConsumeTask" init-method="execute">
-	</bean>
-
 	<!-- <bean id="abstractTaskFactory" class="com.mljr.sync.task.AbstractTaskFactory">
 		<lookup-method name="createMobileTask" bean="mobileTask" />
 		<lookup-method name="createGPSTask" bean="GPSTask" />

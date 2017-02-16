@@ -60,7 +60,7 @@
 
     <select id="listFromDMById" resultType="java.lang.String" parameterType="java.util.HashMap" useCache="false">
         select distinct(substr(bank_card_no, 1, 11)) as bank_card_11_digits
-        from rc.dm_total_applications
+        from rc.dm_total_applications_new
         where length(bank_card_no) >= 11 and substr(bank_card_no, 1, 11) != '建设银行'
         and contract_id>#{id}
         order by contract_id
