@@ -35,7 +35,7 @@ public class BankCardLocationService {
 
     private static final String SPIDER_KEY = Joiner.on("-").join(BasicConstant.SPIDER_BANK_CARD_LOCATION,BasicConstant.LAST_ID);
 
-    private static final String DM_KEY = Joiner.on("-").join(BasicConstant.DM_TOTAL_APPLICATIONS,BasicConstant.LAST_ID);
+    private static final String DM_KEY = Joiner.on("-").join(BasicConstant.DM_TOTAL_APPLICATIONS_NEW,BasicConstant.LAST_ID);
 
     private static final String BANK_CARD_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.SPIDER_BANK_CARD_LOCATION,BasicConstant.EXIST_IDS);
 
