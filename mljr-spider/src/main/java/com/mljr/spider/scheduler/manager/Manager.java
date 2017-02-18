@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mljr.spider.scheduler.manager;
 
@@ -15,7 +15,7 @@ import com.mljr.spider.listener.StatusCodeListener;
 import com.mljr.spider.processor.*;
 import com.mljr.spider.scheduler.*;
 import com.mljr.spider.storage.HttpPipeline;
-import com.mljr.spider.storage.JdItemPriceMysqlPipeline;
+import com.mljr.spider.storage.JdItemPricePipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
 import com.ucloud.umq.common.ServiceConfig;
@@ -49,7 +49,7 @@ public class Manager extends AbstractMessage {
 			throw new RuntimeException("Instantiation bean exception." + ExceptionUtils.getStackTrace(e));
 		}
 	}
-	
+
 	private final ProcessFactory fac = p -> {
 		p.addPageProcessListener(new ProcessListener());
 		return p;
@@ -400,15 +400,15 @@ public class Manager extends AbstractMessage {
 
 	// 京东手机价格监控
 	private void startJdItemPrice() throws Exception {
-		AbstractPageProcessor processor = fac.create(new JdItemPriceProcessor());
+		JdItemPriceProcessor processor = new JdItemPriceProcessor();
 		final Spider spider = Spider.create(processor)
-				.addPipeline(new JdItemPriceMysqlPipeline())
+				.addPipeline(new JdItemPricePipeline())
 				.thread(1);
-		spider.setSpiderListeners(Lists.newArrayList(new DownloaderSpiderListener(JD_ITEM_PRICE_LISTENER_LOG_NAME)
-				));
-//		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE, RMQ_JD_ITEM_PRICE_QUEUE_ID));
+		spider.setSpiderListeners(Lists.newArrayList(new DownloaderSpiderListener(JD_ITEM_PRICE_LISTENER_LOG_NAME),
+				new StatusCodeListener(processor.getSite().getDomain())
+		));
 		spider.setScheduler(new JdItemPriceScheduler(spider, RMQ_JD_ITEM_PRICE_QUEUE_ID));
-		spider.run();
+		spider.runAsync();
 		logger.info("Start JdItemPriceProcessor finished. " + spider.toString());
 	}
 

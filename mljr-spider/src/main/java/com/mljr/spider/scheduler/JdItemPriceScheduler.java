@@ -1,5 +1,6 @@
 package com.mljr.spider.scheduler;
 
+import com.google.common.base.CharMatcher;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage.PullMsgTask;
 import us.codecraft.webmagic.Request;
@@ -9,7 +10,6 @@ import us.codecraft.webmagic.Task;
 import java.util.concurrent.BlockingQueue;
 
 public class JdItemPriceScheduler extends AbstractScheduler {
-
 
     public JdItemPriceScheduler(Spider spider, PullMsgTask task) throws Exception {
         super(spider, task);
@@ -51,6 +51,7 @@ public class JdItemPriceScheduler extends AbstractScheduler {
 
     @Override
     Request buildRequst(String message) {
-        return new Request("https://p.3.cn/prices/mgets?skuIds=J_" + message);
+        String url = CharMatcher.whitespace().replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(message, ""), "");
+        return new Request(url);
     }
 }
