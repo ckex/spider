@@ -36,8 +36,9 @@ public class LoginController {
 
     @RequestMapping("/chinaMobile/getAllInfos")
     public ModelAndView getAllInfos(@RequestParam String telno,
-                                    @RequestParam String password) throws Exception {
-        Map<String, String> cookies = chinaMobileService.loginAndGetCookies(telno, password);
+                                    @RequestParam String password,
+                                    @RequestParam String dtm) throws Exception {
+        Map<String, String> cookies = chinaMobileService.loginAndGetCookies(telno, password, dtm);
 
 
         ModelAndView mav = new ModelAndView("info");

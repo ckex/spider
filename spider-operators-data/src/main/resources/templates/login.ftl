@@ -27,9 +27,18 @@
                 <div class="control-group">
 
                     <!-- Text input-->
+                    <label class="control-label" for="input01">服务密码</label>
+                    <div class="controls">
+                        <input name="password" type="password" class="input-xlarge"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+
+                    <!-- Text input-->
                     <label class="control-label" for="input01">短信验证码</label>
                     <div class="controls">
-                        <input name="password" type="text" class="input-xlarge"/>
+                        <input name="dtm" type="text" class="input-xlarge"/>
                         <button type="button" onclick="sendCode()" class="btn btn-primary">发送短信验证码</button>
                     </div>
                 </div>

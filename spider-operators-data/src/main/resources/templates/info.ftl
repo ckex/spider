@@ -14,22 +14,22 @@
 <div class="container" style="width: 1140px">
     <div class="row">
         <p>01 用户在运营商信息</p>
-        <div>${accountInfo}</div>
+        <div>${accountInfo?html}</div>
 
         <p>02 套餐信息</p>
-        <div>${planInfo}</div>
+        <div>${planInfo?html}</div>
         
         <p>03 用户话费信息</p>
-        <div>${costInfo}</div>
+        <div>${costInfo?html}</div>
 
         <p>04 网络流量信息</p>
-        <div>${flowBill}</div>
+        <div>${flowBill?html}</div>
 
         <p>05 短信使用信息</p>
-        <div>${smsBill}</div>
+        <div>${smsBill?html}</div>
 
         <p>06 通话详单</p>
-        <div>${callBill}</div>
+        <div>${callBill?html}</div>
 
     </div>
 </div>

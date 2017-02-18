@@ -61,12 +61,12 @@ public class ChinaMobileService {
         return cookies;
     }
 
-    public Map<String, String> loginAndGetCookies(String telno, String password) {
+    public Map<String, String> loginAndGetCookies(String telno, String password, String dtm) {
         String _telno = JsUtils.enString(telno);
-        String _dtm = JsUtils.enString(password);
-        String loginUrl = "https://sh.ac.10086.cn/loginjt?act=2&telno=%s&password=%s&authLevel=1&dtm&ctype=1&decode=1&source=wsyyt";
-        //                 https://sh.ac.10086.cn/loginjt?act=2&telno=%s&password=39EC2E305EE6744CF3308D16947A9CAF&authLevel=1&dtm&ctype=1&decode=1&source=wsyyt
-        String jumpUrl = getJumpUrl(String.format(loginUrl, _telno, _dtm));
+        String _password = JsUtils.enString(password);
+        String _dtm = JsUtils.enString(dtm);
+        String loginUrl = "https://sh.ac.10086.cn/loginjt?act=2&telno=%s&password=%s&authLevel=5&dtm=%s&ctype=1&decode=1&source=wsyyt";
+        String jumpUrl = getJumpUrl(String.format(loginUrl, _telno, _password, _dtm));
         System.out.println(jumpUrl);
         return getCookies(jumpUrl);
     }
