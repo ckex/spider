@@ -32,25 +32,25 @@
     </dependency>
 
     <dependency>
-      <groupId>us.codecraft</groupId>
-      <artifactId>webmagic-extension</artifactId>
+      <groupId>com.ckex</groupId>
+      <artifactId>mljr-common</artifactId>
+      <version>${project.version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-log4j12</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
       </exclusions>
-    </dependency>
 
-    <dependency>
-      <groupId>com.ckex</groupId>
-      <artifactId>mljr-common</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <artifactId>spring-boot-starter-freemarker</artifactId>
     </dependency>
 
   </dependencies>
