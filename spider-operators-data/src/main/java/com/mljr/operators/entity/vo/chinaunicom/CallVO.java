@@ -15,6 +15,8 @@ public class CallVO implements Serializable {
 
     private int totalPages=0;//总页数
 
+    private String queryDate;//查询日期
+
     private List<CallDetailVO> callDetail;
 
     public int getPageNo() {
@@ -39,6 +41,14 @@ public class CallVO implements Serializable {
 
     public void setCallDetail(List<CallDetailVO> callDetail) {
         this.callDetail = callDetail;
+    }
+
+    public String getQueryDate() {
+        return queryDate;
+    }
+
+    public void setQueryDate(String queryDate) {
+        this.queryDate = queryDate;
     }
 
     public static class CallDetailVO {

@@ -2,7 +2,6 @@ package com.mljr.operators.service.chinaunicom.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mljr.operators.convert.ChinaUnicomConvert;
 import com.mljr.operators.entity.dto.chinaunicom.*;
 import com.mljr.operators.entity.vo.chinaunicom.BillVO;
@@ -13,12 +12,6 @@ import com.mljr.operators.service.chinaunicom.IChinaUnicomService;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +20,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author gaoxi
@@ -38,9 +29,10 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
 
     protected static final Logger logger = LoggerFactory.getLogger(AbstractChinaUnicomServiceImpl.class);
 
-    protected static final String LOGIN_URL = "https://uac.10010.com/portal/mallLogin.jsp?redirectURL=http://www.10010.com";
-
-    protected static final String USER_INFO_INDEX = "http://iservice.10010.com/e4/query/basic/personal_xx_iframe.html";
+    /**
+     * 登陆URL
+     */
+    protected static final String LOGIN_URL = "http://iservice.10010.com/e4/index.html";
 
     /**
      * 获取用户基本信息+套餐信息
@@ -67,10 +59,10 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
      */
     protected static final String SMS_URL = "http://iservice.10010.com/e3/static/query/sms?_=%s&pageSize=100&pageNo=%s&begindate=%s&enddate=%s";
 
+    /**
+     * user agent
+     */
     protected static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0";
-
-    //自助服务
-    private static final String SELF_SERVICE_PAGE = "body > div.center980.contentBg > div:nth-child(1) > div.navIndex.navMar > div.navIndexC > div.nav > ul > li:nth-child(2) > a";
 
     @Override
     public UserInfoVO queryUserInfo(String cookies) throws Exception {
@@ -93,8 +85,8 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
     }
 
     @Override
-    public List<BillVO> queryHistoryBill(String cookies, int billYear, int billMonth) throws Exception {
-        List<BillVO> list = Lists.newArrayList();
+    public BillVO queryHistoryBill(String cookies, int billYear, int billMonth) throws Exception {
+        BillVO entity = new BillVO();
         LocalDate localDate = LocalDate.of(billYear, billMonth, 1);
         String month = localDate.getMonthValue() >= 10 ? localDate.getMonthValue() + "" : "0" + localDate.getMonthValue();
         String billDate = localDate.getYear() + "" + month;
@@ -104,7 +96,8 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
             if (null != respStr) {
                 BillDTO billDTO = JSON.parseObject(respStr, BillDTO.class);
                 if (null != billDTO) {
-                    list = ChinaUnicomConvert.convert(billDTO);
+                    entity.setBillDetail(ChinaUnicomConvert.convert(billDTO));
+                    entity.setQueryDate(billYear + "" + billMonth);
                 }
             }
         } catch (IOException e) {
@@ -112,7 +105,7 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
         } catch (Exception e) {
             throw new Exception("query history bill failure.url:" + url, e);
         }
-        return list;
+        return entity;
     }
 
     @Override
@@ -152,6 +145,7 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
                         });
                         entity.setCallDetail(detailList);
                     }
+                    entity.setQueryDate(callYear + "" + callMonth);
                     entity.setPageNo(callDTO.getPageMap().getPageNo());
                     entity.setTotalPages(callDTO.getPageMap().getTotalPages());
                 }
@@ -184,6 +178,7 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
                     }
                     entity.setTotalPages(smsdto.getPageMap().getTotalPages());
                     entity.setPageNo(smsdto.getPageMap().getPageNo());
+                    entity.setQueryDate(smsYear + "" + smsMonth);
                 }
             }
         } catch (IOException e) {
@@ -209,87 +204,5 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
             return response.body();
         }
         return null;
-    }
-
-
-    private Map<String, String> doLogin(LoginDTO loginDTO) {
-        Map<String, String> cookies = Maps.newHashMap();
-        WebDriver webDriver = null;
-        try {
-            webDriver = new PhantomJSDriver();
-            webDriver.get(LOGIN_URL);
-            WebElement webElement = loadComplete(webDriver, "login_iframe", 30);
-            if (webElement != null) {
-                webDriver.switchTo().frame(webElement);
-
-                WebElement account_input = webDriver.findElement(By.id("userName"));//账号输入狂
-
-                WebElement password_input = webDriver.findElement(By.id("userPwd"));//密码输入框
-
-                account_input.clear();
-
-                password_input.clear();
-
-                account_input.sendKeys(loginDTO.getMobile());
-
-                password_input.sendKeys(loginDTO.getPassword());
-
-                WebElement login_button = webDriver.findElement(By.id("login1"));//登陆按钮
-
-                login_button.click();
-
-                if (loginComplete(webDriver, SELF_SERVICE_PAGE, 30)) {
-
-                    webDriver.get(USER_INFO_INDEX);
-
-                    if (loginComplete(webDriver, "#menu_query > span", 30)) {
-                        Thread.sleep(10000);
-                        webDriver.manage().getCookies().stream().forEach(cookie -> cookies.put(cookie.getName(), cookie.getValue()));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            logger.error(String.format("chinaUnicom get cookies failure.mobile:{%s} password:{%s}", loginDTO.getMobile(), loginDTO.getPassword()), e);
-        } finally {
-            if (webDriver != null) {
-                webDriver.quit();
-            }
-        }
-        return cookies;
-    }
-
-
-    protected Map<String, String> getCookies(LoginDTO loginDTO) {
-        return doLogin(loginDTO);
-    }
-
-    protected WebElement loadComplete(WebDriver webDriver, final String className, int timeOutInSeconds) {
-        WebElement webElement = null;
-        try {
-            webElement = (new WebDriverWait(webDriver, timeOutInSeconds)).until(new ExpectedCondition<WebElement>() {
-                @Override
-                public WebElement apply(WebDriver driver) {
-                    return webDriver.findElement(By.className(className));
-                }
-            });
-        } catch (Exception e) {
-            logger.error(String.format("from url:{%s} find element {%s} failure.", webDriver.getCurrentUrl(), className), e);
-        }
-        return webElement;
-    }
-
-    protected boolean loginComplete(WebDriver webDriver, final String name, int timeOutInSeconds) {
-        try {
-            (new WebDriverWait(webDriver, timeOutInSeconds)).until(new ExpectedCondition<WebElement>() {
-                @Override
-                public WebElement apply(WebDriver driver) {
-                    return webDriver.findElement(By.cssSelector(name));
-                }
-            });
-            return true;
-        } catch (Exception e) {
-            logger.error(String.format("from url:{%s} find element {%s} failure.", webDriver.getCurrentUrl(), name), e);
-        }
-        return false;
     }
 }

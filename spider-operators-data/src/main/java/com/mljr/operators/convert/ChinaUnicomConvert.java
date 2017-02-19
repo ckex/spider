@@ -62,8 +62,8 @@ public class ChinaUnicomConvert {
         return entity;
     }
 
-    public static List<BillVO> convert(BillDTO billDTO) {
-        List<BillVO> list = Lists.newArrayList();
+    public static List<BillVO.BillDetailVO> convert(BillDTO billDTO) {
+        List<BillVO.BillDetailVO> list = Lists.newArrayList();
         if (null != billDTO.getResult()
                 && null != billDTO.getResult().getBillInfo()
                 && billDTO.getResult().getBillInfo().size() > 0) {
@@ -75,8 +75,8 @@ public class ChinaUnicomConvert {
         return list;
     }
 
-    public static BillVO convert(BillDTO.BillInfo billInfo) {
-        BillVO entity = new BillVO();
+    public static BillVO.BillDetailVO convert(BillDTO.BillInfo billInfo) {
+        BillVO.BillDetailVO entity = new BillVO.BillDetailVO();
         entity.setFeeName(billInfo.getIntegrateitem());
         entity.setFee(billInfo.getFee());
         return entity;

@@ -15,6 +15,8 @@ public class SMSVO implements Serializable {
 
     private int totalPages=0;//总页数
 
+    private String queryDate;//查询月份
+
     private List<SMSDetailVO> smsDetails;
 
     public int getPageNo() {
@@ -39,6 +41,14 @@ public class SMSVO implements Serializable {
 
     public void setSmsDetails(List<SMSDetailVO> smsDetails) {
         this.smsDetails = smsDetails;
+    }
+
+    public String getQueryDate() {
+        return queryDate;
+    }
+
+    public void setQueryDate(String queryDate) {
+        this.queryDate = queryDate;
     }
 
     public static class SMSDetailVO {

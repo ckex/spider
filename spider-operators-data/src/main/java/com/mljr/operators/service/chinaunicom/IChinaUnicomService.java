@@ -1,5 +1,6 @@
 package com.mljr.operators.service.chinaunicom;
 
+import com.mljr.operators.entity.dto.chinaunicom.LoginDTO;
 import com.mljr.operators.entity.vo.chinaunicom.BillVO;
 import com.mljr.operators.entity.vo.chinaunicom.CallVO;
 import com.mljr.operators.entity.vo.chinaunicom.SMSVO;
@@ -12,6 +13,14 @@ import java.util.List;
  * @Time 2017/2/13
  */
 public interface IChinaUnicomService {
+
+    /**
+     * 获取cookie
+     *
+     * @param loginDTO login数据
+     * @return 返回login后的cookies
+     */
+    String getCookies(LoginDTO loginDTO);
 
     /**
      * 获取运营商基本信息
@@ -30,7 +39,7 @@ public interface IChinaUnicomService {
      * @return
      * @throws Exception
      */
-    List<BillVO> queryHistoryBill(String cookies, int billYear, int billMonth) throws Exception;
+    BillVO queryHistoryBill(String cookies, int billYear, int billMonth) throws Exception;
 
     /**
      * 获取话费月额
