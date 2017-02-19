@@ -96,8 +96,9 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
             if (null != respStr) {
                 BillDTO billDTO = JSON.parseObject(respStr, BillDTO.class);
                 if (null != billDTO) {
+                    String queryMonth = billMonth >= 10 ? billMonth + "" : "0" + billMonth;
                     entity.setBillDetail(ChinaUnicomConvert.convert(billDTO));
-                    entity.setQueryDate(billYear + "" + billMonth);
+                    entity.setQueryDate(billYear + "" + queryMonth);
                 }
             }
         } catch (IOException e) {
@@ -145,7 +146,8 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
                         });
                         entity.setCallDetail(detailList);
                     }
-                    entity.setQueryDate(callYear + "" + callMonth);
+                    String month = callMonth >= 10 ? callMonth + "" : "0" + callMonth;
+                    entity.setQueryDate(callYear + "" + month);
                     entity.setPageNo(callDTO.getPageMap().getPageNo());
                     entity.setTotalPages(callDTO.getPageMap().getTotalPages());
                 }
@@ -176,9 +178,10 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
                         });
                         entity.setSmsDetails(detailList);
                     }
+                    String month = smsMonth >= 10 ? smsMonth + "" : "0" + smsMonth;
                     entity.setTotalPages(smsdto.getPageMap().getTotalPages());
                     entity.setPageNo(smsdto.getPageMap().getPageNo());
-                    entity.setQueryDate(smsYear + "" + smsMonth);
+                    entity.setQueryDate(smsYear + "" + month);
                 }
             }
         } catch (IOException e) {
