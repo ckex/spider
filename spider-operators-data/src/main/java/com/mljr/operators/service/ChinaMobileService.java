@@ -84,42 +84,36 @@ public class ChinaMobileService {
 
     // 01 用户在运营商信息
     public String getAccountInfo(Map<String, String> cookies) throws Exception {
-        System.out.println("==============  01 用户在运营商信息 start ===============");
         String url = "http://www.sh.10086.cn/sh/wsyyt/action?act=my.getUserName";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }
 
     // 02 套餐信息
     public String getPlanInfo(Map<String, String> cookies) throws Exception {
-        System.out.println("==============  02 套餐信息 start ===============");
         String url = "http://www.sh.10086.cn/sh/wsyyt/action?act=my.getMusType";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }
 
     // 03 用户话费信息
     public String getCostInfo(Map<String, String> cookies) throws Exception {
-        System.out.println("==============  03 用户话费信息 start ===============");
         String url = "http://www.sh.10086.cn/sh/wsyyt/busi/historySearch.do?method=FiveBillAllNewAjax&dateTime=2016年12月&tab=tab2_15&isPriceTaxSeparate=null&showType=0&r=1487313589994";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }
 
     // 04 网络流量信息
     public String getFlowBill(Map<String, String> cookies) throws Exception {
-        System.out.println("==============  04 网络流量信息 start ===============");
         String url = "http://www.sh.10086.cn/sh/wsyyt/busi/historySearch.do?method=getFiveBillDetailAjax&billType=NEW_GPRS_NEW&startDate=2016-12-01&endDate=2016-12-31&filterfield=输入对方号码：&filterValue=&searchStr=-1&index=0&r=1487232359541&isCardNo=0&gprsType=";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }
 
     // 05 短信使用信息
     public String getSmsBill(Map<String, String> cookies) throws Exception {
-        System.out.println("==============  05 短信使用信息 start ===============");
         String url = "http://www.sh.10086.cn/sh/wsyyt/busi/historySearch.do?method=getFiveBillDetailAjax&billType=NEW_SMS&startDate=2016-12-01&endDate=2016-12-31&filterfield=输入对方号码：&filterValue=&searchStr=-1&index=0&r=1487232359541&isCardNo=0&gprsType=";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }
 
     // 06 通话详单
     public String getCallBill(Map<String, String> cookies) throws Exception {
-        System.out.println("==============  06 通话详单 start ===============");
         String url = "http://www.sh.10086.cn/sh/wsyyt/busi/historySearch.do?method=getFiveBillDetailAjax&billType=NEW_GSM&startDate=2016-12-01&endDate=2016-12-31&filterfield=输入对方号码：&filterValue=&searchStr=-1&index=0&r=1487232359541&isCardNo=0&gprsType=";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }

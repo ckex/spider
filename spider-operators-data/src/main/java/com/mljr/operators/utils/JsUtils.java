@@ -12,7 +12,7 @@ import java.io.FileReader;
  */
 public class JsUtils {
 
-    public static String jsFileName = "/Users/songchi/IdeaProjects/MLJR/spider/spider-operators-data/src/main/resources/static/js/des.js";
+    public static String jsFileName = ClassLoader.getSystemClassLoader().getResource("static/js/des.js").getPath();
 
     public static String invoke(String jsFileName, String functionName, Object... args) {
         ScriptEngineManager manager = new ScriptEngineManager();
@@ -46,5 +46,4 @@ public class JsUtils {
     public static String getJumpUrl(LoginResponse response) {
         return invoke(jsFileName, "getJumpUrl", response.getUid(), response.getArtifact(), response.getTransactionID());
     }
-
 }
