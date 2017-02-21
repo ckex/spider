@@ -5,23 +5,24 @@ import com.mljr.operators.entity.LoginResponse;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Created by songchi on 17/2/10.
  */
 public class JsUtils {
 
-    public static String jsFileName = ClassLoader.getSystemClassLoader().getResource("static/js/des.js").getPath();
-
-    public static String invoke(String jsFileName, String functionName, Object... args) {
+    public String invoke(String functionName, Object... args) {
+        InputStream in = this.getClass().getResourceAsStream("/static/js/des.js");
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("javascript");
 
-        FileReader reader = null;   // 执行指定脚本
+        BufferedReader reader = null;   // 执行指定脚本
         String ret = "";
         try {
-            reader = new FileReader(jsFileName);
+            reader = new BufferedReader(new InputStreamReader(in));
             engine.eval(reader);
 
             if (engine instanceof Invocable) {
@@ -40,10 +41,12 @@ public class JsUtils {
     }
 
     public static String enString(String data) {
-        return invoke(jsFileName, "enString", data);
+        JsUtils jsUtils = new JsUtils();
+        return jsUtils.invoke("enString", data);
     }
 
     public static String getJumpUrl(LoginResponse response) {
-        return invoke(jsFileName, "getJumpUrl", response.getUid(), response.getArtifact(), response.getTransactionID());
+        JsUtils jsUtils = new JsUtils();
+        return jsUtils.invoke("getJumpUrl", response.getUid(), response.getArtifact(), response.getTransactionID());
     }
 }

@@ -30,7 +30,6 @@ public class LoginController {
         if (StringUtils.isBlank(telno) || telno.length() != 11) {
             return "请输入正确的手机号";
         }
-        chinaMobileService.getSmsCode(StringUtils.trim(telno));
         return chinaMobileService.getSmsCode(StringUtils.trim(telno));
     }
 
