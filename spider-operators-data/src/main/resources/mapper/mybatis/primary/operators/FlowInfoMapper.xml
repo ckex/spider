@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mljr.operators.dao.primary.operators.IFlowInfoDAO">
+    <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.FlowInfo">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="USER_INFO_ID" property="userInfoId" jdbcType="BIGINT"/>
+        <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="HOME_AREA" property="homeArea" jdbcType="VARCHAR"/>
+        <result column="NET_TYPE" property="netType" jdbcType="CHAR"/>
+        <result column="SVC_NAME" property="svcName" jdbcType="VARCHAR"/>
+        <result column="FORWARD_TYPE" property="forwardType" jdbcType="BIT"/>
+        <result column="RECEIVE_BYTES" property="receiveBytes" jdbcType="DECIMAL"/>
+        <result column="SEND_BYTES" property="sendBytes" jdbcType="DECIMAL"/>
+        <result column="TOTAL_BYTES" property="totalBytes" jdbcType="DECIMAL"/>
+        <result column="FEE" property="fee" jdbcType="DECIMAL"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, USER_INFO_ID, START_TIME, HOME_AREA, NET_TYPE, SVC_NAME, FORWARD_TYPE, RECEIVE_BYTES, 
+    SEND_BYTES, TOTAL_BYTES, FEE, CREATE_TIME, UPDATE_TIME
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_flow_info
+        where ID = #{id,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.FlowInfo">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_flow_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userInfoId != null">
+                USER_INFO_ID,
+            </if>
+            <if test="startTime != null">
+                START_TIME,
+            </if>
+            <if test="homeArea != null">
+                HOME_AREA,
+            </if>
+            <if test="netType != null">
+                NET_TYPE,
+            </if>
+            <if test="svcName != null">
+                SVC_NAME,
+            </if>
+            <if test="forwardType != null">
+                FORWARD_TYPE,
+            </if>
+            <if test="receiveBytes != null">
+                RECEIVE_BYTES,
+            </if>
+            <if test="sendBytes != null">
+                SEND_BYTES,
+            </if>
+            <if test="totalBytes != null">
+                TOTAL_BYTES,
+            </if>
+            <if test="fee != null">
+                FEE,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userInfoId != null">
+                #{userInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="homeArea != null">
+                #{homeArea,jdbcType=VARCHAR},
+            </if>
+            <if test="netType != null">
+                #{netType,jdbcType=CHAR},
+            </if>
+            <if test="svcName != null">
+                #{svcName,jdbcType=VARCHAR},
+            </if>
+            <if test="forwardType != null">
+                #{forwardType,jdbcType=BIT},
+            </if>
+            <if test="receiveBytes != null">
+                #{receiveBytes,jdbcType=DECIMAL},
+            </if>
+            <if test="sendBytes != null">
+                #{sendBytes,jdbcType=DECIMAL},
+            </if>
+            <if test="totalBytes != null">
+                #{totalBytes,jdbcType=DECIMAL},
+            </if>
+            <if test="fee != null">
+                #{fee,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                now(),
+            </if>
+            <if test="updateTime != null">
+                now(),
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.FlowInfo">
+        update t_flow_info
+        <set>
+            <if test="userInfoId != null">
+                USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="startTime != null">
+                START_TIME = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="homeArea != null">
+                HOME_AREA = #{homeArea,jdbcType=VARCHAR},
+            </if>
+            <if test="netType != null">
+                NET_TYPE = #{netType,jdbcType=CHAR},
+            </if>
+            <if test="svcName != null">
+                SVC_NAME = #{svcName,jdbcType=VARCHAR},
+            </if>
+            <if test="forwardType != null">
+                FORWARD_TYPE = #{forwardType,jdbcType=BIT},
+            </if>
+            <if test="receiveBytes != null">
+                RECEIVE_BYTES = #{receiveBytes,jdbcType=DECIMAL},
+            </if>
+            <if test="sendBytes != null">
+                SEND_BYTES = #{sendBytes,jdbcType=DECIMAL},
+            </if>
+            <if test="totalBytes != null">
+                TOTAL_BYTES = #{totalBytes,jdbcType=DECIMAL},
+            </if>
+            <if test="fee != null">
+                FEE = #{fee,jdbcType=DECIMAL},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = now(),
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
