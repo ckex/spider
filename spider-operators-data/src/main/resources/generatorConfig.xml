@@ -4,9 +4,6 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 
-    <!-- 指定数据连接驱动jar地址 -->
-    <classPathEntry location="/Users/songchi/IdeaProjects/my/mymbg/src/main/resources/connector/mysql-connector-java-5.1.38.jar"/>
-
     <!-- 一个数据库一个context -->
     <context id="mljrdev">
 
