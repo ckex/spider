@@ -1,10 +1,11 @@
 package com.mljr.operators.dao.primary.operators;
 
 import com.mljr.operators.entity.model.operators.CallInfo;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-public interface ICallInfoDAO {
+public interface CallInfoMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(CallInfo record);
 
     int insertSelective(CallInfo record);
 
@@ -12,4 +13,5 @@ public interface ICallInfoDAO {
 
     int updateByPrimaryKeySelective(CallInfo record);
 
+    int updateByPrimaryKey(CallInfo record);
 }
