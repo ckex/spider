@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component("gpsTask")
-public class GpsTask extends AbstractTask {
+public class GPSTask extends AbstractTask {
 
     @Override
     void execute() {
