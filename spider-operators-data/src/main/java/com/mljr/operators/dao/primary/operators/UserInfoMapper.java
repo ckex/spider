@@ -1,11 +1,11 @@
 package com.mljr.operators.dao.primary.operators;
 
 import com.mljr.operators.entity.model.operators.UserInfo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-@Mapper
-public interface IUserInfoDAO {
+public interface UserInfoMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(UserInfo record);
 
     int insertSelective(UserInfo record);
 
@@ -13,5 +13,5 @@ public interface IUserInfoDAO {
 
     int updateByPrimaryKeySelective(UserInfo record);
 
-    UserInfo getByMobile(@Param("mobile") String mobile);
+    int updateByPrimaryKey(UserInfo record);
 }
