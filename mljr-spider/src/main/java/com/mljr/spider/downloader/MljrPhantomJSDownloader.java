@@ -1,6 +1,5 @@
 package com.mljr.spider.downloader;
 
-import ch.qos.logback.core.util.Loader;
 import org.apache.http.annotation.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +27,9 @@ public class MljrPhantomJSDownloader extends AbstractDownloader {
     private static String crawlJsPath;
     private static String phantomJsCommand = "phantomjs"; // default
 
+    public static final String JS_PATH = System.getProperty("user.home") + System.getProperty("file.separator")
+            + "get_page.js";
+
     private int retryNum;
     private int threadNum;
 
@@ -50,10 +52,7 @@ public class MljrPhantomJSDownloader extends AbstractDownloader {
     }
 
     private void initPhantomjsCrawlPath() {
-        String jsPath = Loader.getResourceBySelfClassLoader("crawl.js").getPath();
-        System.out.println("########### " + jsPath);
-        logger.debug("########### " + jsPath);
-        MljrPhantomJSDownloader.crawlJsPath = jsPath;
+        MljrPhantomJSDownloader.crawlJsPath = JS_PATH;
     }
 
     @Override
@@ -104,7 +103,6 @@ public class MljrPhantomJSDownloader extends AbstractDownloader {
             while ((line = br.readLine()) != null) {
                 stringBuffer.append(line).append("\n");
             }
-            logger.debug("###"+stringBuffer.toString());
             return stringBuffer.toString();
         } catch (IOException e) {
             e.printStackTrace();
