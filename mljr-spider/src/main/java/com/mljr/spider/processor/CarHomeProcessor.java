@@ -1,6 +1,7 @@
 package com.mljr.spider.processor;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.selector.Html;
@@ -47,13 +48,15 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
             int color_num = html.xpath(li_num).all().size();
             String car_color="";
             String colorPath =String.format("#tr_2003 > td:nth-child(%d) > div > ul > li:nth-child(1) > a",i+1);
-            if((!"null".equals(html.css(colorPath,"title"))||( html.css(colorPath,"title")) != null)){
-                car_color+=html.css(colorPath,"title")+",";
+            String color_name = html.css(colorPath,"title").toString();
+            if(StringUtils.isNotBlank(color_name)){
+                car_color+=color_name+",";
             }
             for(int j=2;j<=color_num;++j){
                 String colorPath2 = String.format("#tr_2003 > td:nth-child(%d) > div > ul > li:nth-child(%d) > span",i+1,j);
-                if((!"null".equals(html.css(colorPath2,"title"))||( html.css(colorPath2,"title")) != null)){
-                    car_color+=html.css(colorPath2,"title")+",";
+               String color_names = html.css(colorPath2,"title").toString();
+                if(StringUtils.isNotBlank(color_names)){
+                    car_color+=color_names+",";
                 }
             }
             //设置车的颜色
