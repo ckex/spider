@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mljr.operators.dao.primary.operators.IBillInfoDAO">
+    <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.BillInfo">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="USER_INFO_ID" property="userInfoId" jdbcType="BIGINT"/>
+        <result column="BILL_DATE" property="billDate" jdbcType="INTEGER"/>
+        <result column="FEE_NAME" property="feeName" jdbcType="VARCHAR"/>
+        <result column="FEE" property="fee" jdbcType="VARCHAR"/>
+        <result column="PARTENT_ID" property="partentId" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, USER_INFO_ID, BILL_DATE, FEE_NAME, FEE, PARTENT_ID, CREATE_TIME, UPDATE_TIME
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bill_info
+        where ID = #{id,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.BillInfo">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_bill_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userInfoId != null">
+                USER_INFO_ID,
+            </if>
+            <if test="billDate != null">
+                BILL_DATE,
+            </if>
+            <if test="feeName != null">
+                FEE_NAME,
+            </if>
+            <if test="fee != null">
+                FEE,
+            </if>
+            <if test="partentId != null">
+                PARTENT_ID,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userInfoId != null">
+                #{userInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="billDate != null">
+                #{billDate,jdbcType=INTEGER},
+            </if>
+            <if test="feeName != null">
+                #{feeName,jdbcType=VARCHAR},
+            </if>
+            <if test="fee != null">
+                #{fee,jdbcType=VARCHAR},
+            </if>
+            <if test="partentId != null">
+                #{partentId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                now(),
+            </if>
+            <if test="updateTime != null">
+                now(),
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.BillInfo">
+        update t_bill_info
+        <set>
+            <if test="userInfoId != null">
+                USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="billDate != null">
+                BILL_DATE = #{billDate,jdbcType=INTEGER},
+            </if>
+            <if test="feeName != null">
+                FEE_NAME = #{feeName,jdbcType=VARCHAR},
+            </if>
+            <if test="fee != null">
+                FEE = #{fee,jdbcType=VARCHAR},
+            </if>
+            <if test="partentId != null">
+                PARTENT_ID = #{partentId,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = now(),
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

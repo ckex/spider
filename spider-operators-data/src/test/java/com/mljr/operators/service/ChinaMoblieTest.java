@@ -1,4 +1,4 @@
-package com.mljr.operators.chinaMobile;
+package com.mljr.operators.service;
 
 import com.mljr.operators.service.ChinaMobileService;
 import org.junit.Test;
