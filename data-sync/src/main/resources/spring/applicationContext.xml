@@ -33,13 +33,4 @@
 		</property>
 	</bean>
 
-	<!-- <bean id="abstractTaskFactory" class="com.mljr.sync.task.AbstractTaskFactory">
-		<lookup-method name="createMobileTask" bean="mobileTask" />
-		<lookup-method name="createGPSTask" bean="GPSTask" />
-		<lookup-method name="createBankCardLocationTask" bean="bankCardLocationTask" />
-		<lookup-method name="createMerchantInfoTask" bean="merchantInfoTask" />
-		<lookup-method name="createLbsTask" bean="lbsTask" />
-		<lookup-method name="createGxSkyTask" bean="gxSkyTask" />
-		<lookup-method name="createBitautoTask" bean="bitautoTask" />
-	</bean> -->
 </beans>
