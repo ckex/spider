@@ -172,4 +172,18 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="insertByBatch">
+    INSERT INTO t_call_info (USER_INFO_ID, CALL_DATE, CALL_NUMBER,
+    CALL_TYPE, LAND_TYPE, CALL_LONG_HOUR,
+    CALL_FEE, CALL_LOCAL_ADDRESS, CALL_REMOTE_ADDRESS,
+    CREATE_TIME, UPDATE_TIME) VALUES
+    <foreach collection="list" item="item" separator=",">
+      (#{userInfoId,jdbcType=BIGINT}, #{item.callDate,jdbcType=TIMESTAMP}, #{item.callNumber,jdbcType=VARCHAR},
+      #{item.callType,jdbcType=VARCHAR}, #{item.landType,jdbcType=VARCHAR}, #{item.callLongHour,jdbcType=VARCHAR},
+      #{item.callFee,jdbcType=DECIMAL}, #{item.callLocalAddress,jdbcType=VARCHAR},
+      #{item.callRemoteAddress,jdbcType=VARCHAR},
+      now(),now())
+    </foreach>
+  </insert>
 </mapper>
