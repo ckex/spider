@@ -4,6 +4,7 @@
 package com.mljr.sync.schedule;
 
 import com.mljr.sync.task.AbstractTask;
+import com.mljr.sync.task.CarHomeNetTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,8 @@ public class SyncScheduler {
 
     @Autowired
     private AbstractTask jdConsumeTask;
-
+    @Autowired
+    private CarHomeNetTask carHomeNetTask;
     @Scheduled(cron = "0/2 * * * * ?")
     private void startMobileTask() {
         mobileTask.run();
@@ -99,6 +101,12 @@ public class SyncScheduler {
     private void startJdConsumeTask() {
         jdConsumeTask.run();
         logger.debug(jdConsumeTask.toString());
+    }
+    //启动汽车之家,每隔一分钟
+    @Scheduled(cron = "0 0/1 * * * ?")
+    private void startCarHomeNetTask(){
+        carHomeNetTask.run();
+        logger.debug(carHomeNetTask.toString());
     }
 
 }

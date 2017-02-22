@@ -16,9 +16,7 @@ import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy
 
-import static ch.qos.logback.classic.Level.DEBUG
-import static ch.qos.logback.classic.Level.INFO
-import static ch.qos.logback.classic.Level.WARN
+import static ch.qos.logback.classic.Level.*
 
 scan("300 seconds")
 def LOG_HOME = System.getenv("OUTPUT_HOME")
@@ -82,7 +80,10 @@ def IDCARD_DATA_HOME =System.getenv("IDCARD_DATA_HOME")
 if (!IDCARD_DATA_HOME) {
   IDCARD_DATA_HOME = BASIC_DATA_PATH+"idCard"
 }
-
+def CARHOEM_DATA_HOME=System.getenv("CARHOEM_DATA_HOME")
+if (!CARHOEM_DATA_HOME) {
+  CARHOEM_DATA_HOME = BASIC_DATA_PATH+"carHome"
+}
 def DOWNLOADER_LISTENER_HOME =System.getenv("DOWNLOADER_LISTENER_HOME")
 if (!DOWNLOADER_LISTENER_HOME) {
   DOWNLOADER_LISTENER_HOME = "/data/listener"
@@ -542,6 +543,37 @@ appender("QQZONE-SHUOSHUO-ERR", RollingFileAppender) {
     maxHistory = 300
   }
 }
+//汽车之家日志数据 car_home_net_log_data
+appender("CAR_HOME_NET_LOG_DATA", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${CARHOEM_DATA_HOME}/carHome-info-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
+appender("CAR_HOME_NET_LISTEREN_ERR", RollingFileAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${DOWNLOADER_LISTENER_HOME}/carHome-info-%d{yyyy-MM-dd-HH}.%i.log"
+    timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
+      maxFileSize = "100MB"
+    }
+    maxHistory = 300
+  }
+}
 logger("com.alibaba.druid.filter.stat.StatFilter", INFO)
 logger("com.alibaba.druid.pool.DruidDataSource", INFO)
 logger("com.alibaba.druid", INFO)
@@ -596,4 +628,6 @@ logger("lbs-baidu-regeo-data", INFO, ["LBS-BAIDU-REGEO-DATA"], false)
 logger("black_idCard_log_data", INFO, ["BLACK_IDCARD_LOG_DATA"], false)
 logger("blackidcard-downloader", INFO, ["BLACK_IDCARD_LISTEREN_ERR"], false)
 logger("qqzone-downloader", INFO, ["QQZONE-SHUOSHUO-ERR"], false)
+logger("car_home_net_log_data", INFO, ["CAR_HOME_NET_LOG_DATA"], false)
+logger("carhome-downloader", INFO, ["CAR_HOME_NET_LISTEREN_ERR"], false)
 root(DEBUG, ["A1", "STDOUT"])
