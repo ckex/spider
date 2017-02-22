@@ -34,7 +34,7 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         logger.info("start...");
-        startLBSTask();
+        //startLBSTask();
         Manager manager = new Manager();
         manager.run();
         ZkScheduler zkScheduler =new ZkScheduler();
@@ -47,13 +47,13 @@ public class Main {
         }
     }
 
-    private static void startLBSTask() {
+    /*private static void startLBSTask() {
         try {
             //每小时检查一次失效的Key
             executor.scheduleWithFixedDelay(new LBSTask(), 0, 1, TimeUnit.HOURS);
         } catch (Exception e) {
             logger.error("start lbs task failure.", e);
         }
-    }
+    }*/
 
 }

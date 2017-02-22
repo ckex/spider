@@ -61,7 +61,7 @@ public class Manager extends AbstractMessage {
 
 	public void run() throws Exception {
 		System.out.println(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss:SSS") + ",Runing ...");
-		startSaiGeGPS();
+		/*startSaiGeGPS();
 		startGuishuShowji();
 		startIP138();
 		startHuoche114();
@@ -77,14 +77,13 @@ public class Manager extends AbstractMessage {
 		startLBSBaiduGeo();
 		startBlackIdCard();
 		startQQZoneIndex();
-		startJdItemPrice();
+		startJdItemPrice();*/
 		startCarHomeNet();
-		startAutohomeTargetUrls();
-
+		/*startAutohomeTargetUrls();*/
 		//判断天眼查是否开启
-		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
+		/*if("1".equals(ServiceConfig.isStartTianYanChaOff())){
 			startTianyancha();
-		}
+		}*/
 	}
 
 	// 赛格GPS数据

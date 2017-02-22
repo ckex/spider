@@ -52,6 +52,7 @@ public abstract class AbstractMessage {
 	protected static final String BLACK_IDCARD_LOG_NAME="black_idCard_log_data";
 	/*汽车之家的日志入口*/
 	protected static final String CAR_HOME_NET_LOG_NAME="car_home_net_log_data";
+
 	// RabbitMQ
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";
 	protected static final String RMQ_BAIDU_MOBILE_QUEUE_ID = "mobile-baidu";

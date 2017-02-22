@@ -52,7 +52,7 @@ public class SyncScheduler {
     @Autowired
     private AbstractTask autohomeFlagTask;
 
-    @Scheduled(cron = "0/2 * * * * ?")
+    /*@Scheduled(cron = "0/2 * * * * ?")
     private void startMobileTask() {
         mobileTask.run();
         logger.debug(mobileTask.toString());
@@ -105,18 +105,18 @@ public class SyncScheduler {
     private void startJdConsumeTask() {
         jdConsumeTask.run();
         logger.debug(jdConsumeTask.toString());
-    }
+    }*/
     //启动汽车之家,每隔一分钟
     @Scheduled(cron = "0 0/1 * * * ?")
     private void startCarHomeNetTask(){
         carHomeNetTask.run();
         logger.debug(carHomeNetTask.toString());
     }
-
+/*
     @Scheduled(cron = "0 0 0 1/7 * ?")
     private void startAutohomeFlagTask() {
         autohomeFlagTask.run();
         logger.debug(autohomeFlagTask.toString());
-    }
+    }*/
 
 }

@@ -26,4 +26,5 @@ public abstract class AbstractTaskFactory {
 
 	public abstract QqNumberTask createQqNumberTask();
 
+
 }
