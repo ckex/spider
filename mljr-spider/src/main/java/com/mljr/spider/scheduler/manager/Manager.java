@@ -6,6 +6,7 @@ package com.mljr.spider.scheduler.manager;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.constant.DomainConstant;
+import com.mljr.spider.downloader.MljrPhantomJSDownloader;
 import com.mljr.spider.downloader.QQSeleniumDownloader;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
@@ -14,10 +15,7 @@ import com.mljr.spider.listener.ProcessListener;
 import com.mljr.spider.listener.StatusCodeListener;
 import com.mljr.spider.processor.*;
 import com.mljr.spider.scheduler.*;
-import com.mljr.spider.storage.HttpPipeline;
-import com.mljr.spider.storage.JdItemPricePipeline;
-import com.mljr.spider.storage.LocalFilePipeline;
-import com.mljr.spider.storage.LogPipeline;
+import com.mljr.spider.storage.*;
 import com.ucloud.umq.common.ServiceConfig;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -79,7 +77,7 @@ public class Manager extends AbstractMessage {
 		startBlackIdCard();
 		startQQZoneIndex();
 		startJdItemPrice();
-
+		startCarHomeNet();
 		//判断天眼查是否开启
 		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
 			startTianyancha();
@@ -429,5 +427,23 @@ public class Manager extends AbstractMessage {
 		spider.runAsync();
 		logger.info("Start startQQZoneIndex finished. " + spider.toString());
 	}
+	//汽车之家数据信息
+	private  void startCarHomeNet() throws  Exception{
+		AbstractPageProcessor processor = fac.create(new CarHomeProcessor());
+		LogPipeline pipeline = new LogPipeline(CAR_HOME_NET_LOG_NAME);
+		MljrPhantomJSDownloader phantomDownloader = new MljrPhantomJSDownloader().setRetryNum(1);
+		final Spider spider = Spider.create(processor).setDownloader(phantomDownloader)
+				.addPipeline(new CarHomeNetInfoPipeline()).thread(5)
+				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(CARHOME_LISTENER_LOG_NAME);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(3, 3, RMQ_LBS_CAR_HOME_ID));
+		final AbstractScheduler scheduler = new CarHomeScheduler(spider, RMQ_LBS_CAR_HOME_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start CarHomeProcessor finished. " + spider.toString());
+
+	}
+
 
 }
