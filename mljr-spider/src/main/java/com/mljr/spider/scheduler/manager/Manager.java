@@ -6,6 +6,7 @@ package com.mljr.spider.scheduler.manager;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.constant.DomainConstant;
+import com.mljr.spider.downloader.MljrPhantomJSDownloader;
 import com.mljr.spider.downloader.QQSeleniumDownloader;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
@@ -77,6 +78,7 @@ public class Manager extends AbstractMessage {
 		startBlackIdCard();
 		startQQZoneIndex();
 		startJdItemPrice();
+		startCarHomeNet();
 		startAutohomeTargetUrls();
 
 		//判断天眼查是否开启
@@ -428,6 +430,24 @@ public class Manager extends AbstractMessage {
 		spider.runAsync();
 		logger.info("Start startQQZoneIndex finished. " + spider.toString());
 	}
+	//汽车之家数据信息
+	private  void startCarHomeNet() throws  Exception{
+		AbstractPageProcessor processor = fac.create(new CarHomeProcessor());
+		LogPipeline pipeline = new LogPipeline(CAR_HOME_NET_LOG_NAME);
+		MljrPhantomJSDownloader phantomDownloader = new MljrPhantomJSDownloader().setRetryNum(1);
+		final Spider spider = Spider.create(processor).setDownloader(phantomDownloader)
+				.addPipeline(new CarHomeNetInfoPipeline()).thread(5)
+				.setExitWhenComplete(false);
+		SpiderListener listener = new DownloaderSpiderListener(CARHOME_LISTENER_LOG_NAME);
+		spider.setSpiderListeners(Lists.newArrayList(listener));
+		spider.setExecutorService(newThreadPool(3, 3, RMQ_LBS_CAR_HOME_ID));
+		final AbstractScheduler scheduler = new CarHomeScheduler(spider, RMQ_LBS_CAR_HOME_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start CarHomeProcessor finished. " + spider.toString());
+
+	}
+
 
 	private void startAutohomeTargetUrls() throws Exception {
 		PageProcessor processor = new AutohomeTargetUrlsProcessor();

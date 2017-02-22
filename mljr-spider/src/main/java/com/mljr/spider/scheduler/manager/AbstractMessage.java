@@ -50,7 +50,8 @@ public abstract class AbstractMessage {
 	protected static final String LBS_BAIDU_REGEO_LOG_NAME="lbs-baidu-regeo-data";
 	/*身份证黑名单日志入口*/
 	protected static final String BLACK_IDCARD_LOG_NAME="black_idCard_log_data";
-
+	/*汽车之家的日志入口*/
+	protected static final String CAR_HOME_NET_LOG_NAME="car_home_net_log_data";
 	// RabbitMQ
 	protected static final String RMQ_JUHE_MOBILE_QUEUE_ID = "mobile-juhe";
 	protected static final String RMQ_BAIDU_MOBILE_QUEUE_ID = "mobile-baidu";
@@ -78,7 +79,8 @@ public abstract class AbstractMessage {
 
 	//身份证黑名单
 	protected static final String RMQ_LBS_BLACK_IDCARD_ID="bl-gxsky";
-
+	//汽车之家
+	protected static final String RMQ_LBS_CAR_HOME_ID="autohome_target_urls";
 	protected static final String RMQ_JD_ITEM_PRICE_QUEUE_ID="jd-item-price";
 
 	protected static final String AUTOHOME_FALG_QUEUE_ID ="autohome_flag";
@@ -108,6 +110,8 @@ public abstract class AbstractMessage {
 	//身份证黑名单
 	protected static final String GXSKY_BLACKID_CARD_LOG_NAME = "blackidcard-downloader";
 	protected static final String BITAUTO_LISTENER_LOG_NAME = "bitauto-downloader";
+	//汽车之家
+	protected static final String CARHOME_LISTENER_LOG_NAME = "carhome-downloader";
 	protected static final String JD_ITEM_PRICE_LISTENER_LOG_NAME = "jd-item-price-downloader";
 
 	//QQZone

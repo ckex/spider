@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Mapper.car_home_merge_info">
+    <resultMap id="CarHomeBodyInfoResult" type="com.mljr.spider.model.CarBodyInfoDo">
+        <!-- 这里的字段是model成属性对应都到数据中的字段-->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="vehicle_brand" jdbcType="VARCHAR" property="vehicleBrand" />
+        <result column="vehicle_model_year" jdbcType="VARCHAR" property="vehicleModelYear" />
+        <result column="vehicle_category" jdbcType="VARCHAR" property="vehicleCategory" />
+        <result column="vehicle_factory" jdbcType="VARCHAR" property="vehicleFactory" />
+        <result column="origin_country" jdbcType="VARCHAR" property="originCountry" />
+        <result column="vehicle_model" jdbcType="VARCHAR" property="vehicleModel" />
+        <result column="displacement" jdbcType="VARCHAR" property="displacement" />
+        <result column="environmental_standard" jdbcType="VARCHAR" property="environmentalStandard" />
+        <result column="fuel_type" jdbcType="VARCHAR" property="fuelType" />
+        <result column="engine_model" jdbcType="VARCHAR" property="engineModel" />
+        <result column="engine_horse_power" jdbcType="VARCHAR" property="engineHorsePower" />
+        <result column="drive_model" jdbcType="VARCHAR" property="driveModel" />
+        <result column="gearbox" jdbcType="VARCHAR" property="gearbox" />
+        <result column="seat_number" jdbcType="VARCHAR" property="seatNumber" />
+        <result column="configure" jdbcType="VARCHAR" property="configure" />
+        <result column="exterior_color" jdbcType="VARCHAR" property="exteriorColor" />
+        <result column="official_guide_price" jdbcType="VARCHAR" property="officialGuidePrice" />
+        <result column="announcement_type" jdbcType="VARCHAR" property="announcementType" />
+        <result column="whole_curb_weight" jdbcType="VARCHAR" property="wholeCurbWeight" />
+        <result column="wheel_base" jdbcType="VARCHAR" property="wheelBase" />
+        <result column="car_body_length" jdbcType="VARCHAR" property="carBodyLength" />
+        <result column="car_body_width" jdbcType="VARCHAR" property="carBodyWidth" />
+        <result column="car_body_height" jdbcType="VARCHAR" property="carBodyHeight" />
+        <result column="carriage_length" jdbcType="VARCHAR" property="carriageLength" />
+        <result column="carriage_width" jdbcType="VARCHAR" property="carriageWidth" />
+        <result column="carriage_height" jdbcType="VARCHAR" property="carriageHeight" />
+        <result column="seat_arrangement" jdbcType="VARCHAR" property="seatArrangement" />
+        <result column="tonnage_level" jdbcType="VARCHAR" property="tonnageLevel" />
+        <result column="vehicle_body_structure" jdbcType="VARCHAR" property="vehicleBodyStructure" />
+        <result column="sunroof" jdbcType="VARCHAR" property="sunroof" />
+        <result column="open_sunroof" jdbcType="VARCHAR" property="openSunRoof" />
+        <result column="electric_adjust_seat" jdbcType="VARCHAR" property="electricAdjustSeat" />
+        <result column="leather_seat" jdbcType="VARCHAR" property="leatherSeat" />
+        <result column="car_body_stedy_control" jdbcType="VARCHAR" property="carBodyStedyControl" />
+        <result column="headlamp_type" jdbcType="VARCHAR" property="headlampType" />
+        <result column="navigation_system" jdbcType="VARCHAR" property="navigationSystem" />
+        <result column="cruise_control" jdbcType="VARCHAR" property="cruiseControl" />
+        <result column="park_distance_control" jdbcType="VARCHAR" property="parkDistanceControl" />
+        <result column="automatic_air_conditioner" jdbcType="VARCHAR" property="automaticAirConditioner" />
+        <result column="multifunction_steer_wheel" jdbcType="VARCHAR" property="multifunctionSteerWheel" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <insert id="create" parameterType="com.mljr.spider.model.CarBodyInfoDo">
+      insert into car_info (vehicle_brand, vehicle_model_year, vehicle_category,
+      vehicle_factory,vehicle_model ,origin_country, displacement,
+      environmental_standard, fuel_type, engine_model,
+      engine_horse_power, drive_model, gearbox,
+      seat_number, configure, exterior_color,
+      official_guide_price, announcement_type, whole_curb_weight,
+      wheel_base, car_body_length, car_body_width,
+      car_body_height, carriage_length, carriage_width,
+      carriage_height, seat_arrangement, tonnage_level,
+      vehicle_body_structure, sunroof,open_sunroof, electric_adjust_seat,
+      leather_seat, car_body_stedy_control, headlamp_type,
+      navigation_system, cruise_control, park_distance_control,
+      automatic_air_conditioner, multifunction_steer_wheel,
+      create_time, update_time)
+    values (#{vehicleBrand,jdbcType=VARCHAR}, #{vehicleModelYear,jdbcType=VARCHAR}, #{vehicleCategory,jdbcType=VARCHAR},
+      #{vehicleFactory,jdbcType=VARCHAR}, #{originCountry,jdbcType=VARCHAR}, #{vehicleModel,jdbcType=VARCHAR}, #{displacement,jdbcType=VARCHAR},
+      #{environmentalStandard,jdbcType=VARCHAR}, #{fuelType,jdbcType=VARCHAR}, #{engineModel,jdbcType=VARCHAR},
+      #{engineHorsePower,jdbcType=VARCHAR}, #{driveModel,jdbcType=VARCHAR}, #{gearbox,jdbcType=VARCHAR},
+      #{seatNumber,jdbcType=VARCHAR}, #{configure,jdbcType=VARCHAR}, #{exteriorColor,jdbcType=VARCHAR},
+      #{officialGuidePrice,jdbcType=VARCHAR}, #{announcementType,jdbcType=VARCHAR}, #{wholeCurbWeight,jdbcType=VARCHAR},
+      #{wheelBase,jdbcType=VARCHAR}, #{carBodyLength,jdbcType=VARCHAR}, #{carBodyWidth,jdbcType=VARCHAR},
+      #{carBodyHeight,jdbcType=VARCHAR}, #{carriageLength,jdbcType=VARCHAR}, #{carriageWidth,jdbcType=VARCHAR},
+      #{carriageHeight,jdbcType=VARCHAR}, #{seatArrangement,jdbcType=VARCHAR}, #{tonnageLevel,jdbcType=VARCHAR},
+      #{vehicleBodyStructure,jdbcType=VARCHAR}, #{sunroof,jdbcType=VARCHAR}, #{openSunRoof,jdbcType=VARCHAR}, #{electricAdjustSeat,jdbcType=VARCHAR},
+      #{leatherSeat,jdbcType=VARCHAR}, #{carBodyStedyControl,jdbcType=VARCHAR}, #{headlampType,jdbcType=VARCHAR},
+      #{navigationSystem,jdbcType=VARCHAR}, #{cruiseControl,jdbcType=VARCHAR}, #{parkDistanceControl,jdbcType=VARCHAR},
+      #{automaticAirConditioner,jdbcType=VARCHAR}, #{multifunctionSteerWheel,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <select id="listByPageCount" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        select count(*) from car_info
+    </select>
+    <select id="listByPage" resultMap="CarHomeBodyInfoResult" parameterType="java.util.HashMap">
+        SELECT  *  FROM   car_info                 WHERE 1             ORDER BY  id
+        LIMIT #{startIndex},#{pageSize}
+    </select>
+
+
+</mapper>
