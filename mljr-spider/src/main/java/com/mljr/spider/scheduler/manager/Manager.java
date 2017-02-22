@@ -14,10 +14,7 @@ import com.mljr.spider.listener.ProcessListener;
 import com.mljr.spider.listener.StatusCodeListener;
 import com.mljr.spider.processor.*;
 import com.mljr.spider.scheduler.*;
-import com.mljr.spider.storage.HttpPipeline;
-import com.mljr.spider.storage.JdItemPricePipeline;
-import com.mljr.spider.storage.LocalFilePipeline;
-import com.mljr.spider.storage.LogPipeline;
+import com.mljr.spider.storage.*;
 import com.ucloud.umq.common.ServiceConfig;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -26,6 +23,7 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
+import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.Date;
 
@@ -79,6 +77,7 @@ public class Manager extends AbstractMessage {
 		startBlackIdCard();
 		startQQZoneIndex();
 		startJdItemPrice();
+		startAutohomeTargetUrls();
 
 		//判断天眼查是否开启
 		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
@@ -428,6 +427,18 @@ public class Manager extends AbstractMessage {
 		spider.setScheduler(scheduler);
 		spider.runAsync();
 		logger.info("Start startQQZoneIndex finished. " + spider.toString());
+	}
+
+	private void startAutohomeTargetUrls() throws Exception {
+		PageProcessor processor = new AutohomeTargetUrlsProcessor();
+		final Spider spider = Spider.create(processor)
+				.addPipeline(new AutohomeTargetUrlsPipeline()).thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setExecutorService(DEFAULT_THREAD_POOL);
+		final AbstractScheduler scheduler = new AutohomeTargetUrlsScheduler(spider, AUTOHOME_FALG_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start AutohomeTargetUrls finished. " + spider.toString());
 	}
 
 }

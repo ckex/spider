@@ -81,6 +81,8 @@ public abstract class AbstractMessage {
 
 	protected static final String RMQ_JD_ITEM_PRICE_QUEUE_ID="jd-item-price";
 
+	protected static final String AUTOHOME_FALG_QUEUE_ID ="autohome_flag";
+
 	// Downloader error listener
 	protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";
 	protected static final String QICHACHA_LISTENER_LOG_NAME = "qichacha-downloader";
