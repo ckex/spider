@@ -24,6 +24,7 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.pipeline.Pipeline;
+import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.Date;
 
@@ -78,6 +79,8 @@ public class Manager extends AbstractMessage {
 		startQQZoneIndex();
 		startJdItemPrice();
 		startCarHomeNet();
+		startAutohomeTargetUrls();
+
 		//判断天眼查是否开启
 		if("1".equals(ServiceConfig.isStartTianYanChaOff())){
 			startTianyancha();
@@ -445,5 +448,17 @@ public class Manager extends AbstractMessage {
 
 	}
 
+
+	private void startAutohomeTargetUrls() throws Exception {
+		PageProcessor processor = new AutohomeTargetUrlsProcessor();
+		final Spider spider = Spider.create(processor)
+				.addPipeline(new AutohomeTargetUrlsPipeline()).thread(MAX_SIZE + CORE_SIZE)
+				.setExitWhenComplete(false);
+		spider.setExecutorService(DEFAULT_THREAD_POOL);
+		final AbstractScheduler scheduler = new AutohomeTargetUrlsScheduler(spider, AUTOHOME_FALG_QUEUE_ID);
+		spider.setScheduler(scheduler);
+		spider.runAsync();
+		logger.info("Start AutohomeTargetUrls finished. " + spider.toString());
+	}
 
 }

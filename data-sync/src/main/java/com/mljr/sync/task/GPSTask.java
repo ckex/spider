@@ -1,34 +1,31 @@
 /**
- * 
+ *
  */
 package com.mljr.sync.task;
 
-import com.mljr.sync.service.GPSService;
+import com.mljr.sync.service.CommonService;
+import com.ucloud.umq.common.ServiceConfig;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Component("gpsTask")
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class GPSTask extends AbstractTask {
+public class GpsTask extends AbstractTask {
 
-	@Autowired
-	private GPSService gpsService;
-
-	public GPSTask() {
-		super();
-	}
-
-	@Override
-	void execute() {
-		try {
-			gpsService.sendFlag();
-		} catch (Exception ex) {
-			if (logger.isDebugEnabled()) {
-				ex.printStackTrace();
-			}
-			logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-		}
-	}
+    @Override
+    void execute() {
+        try {
+            String flag = "gps-" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
+            CommonService.sendFlag(ServiceConfig.getGPSExchange(),
+                    ServiceConfig.getGPSRoutingKey(), flag);
+        } catch (Exception ex) {
+            if (logger.isDebugEnabled()) {
+                ex.printStackTrace();
+            }
+            logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
+        }
+    }
 
 }

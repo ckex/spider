@@ -48,6 +48,10 @@ public class SyncScheduler {
     private AbstractTask jdConsumeTask;
     @Autowired
     private CarHomeNetTask carHomeNetTask;
+
+    @Autowired
+    private AbstractTask autohomeFlagTask;
+
     @Scheduled(cron = "0/2 * * * * ?")
     private void startMobileTask() {
         mobileTask.run();
@@ -107,6 +111,12 @@ public class SyncScheduler {
     private void startCarHomeNetTask(){
         carHomeNetTask.run();
         logger.debug(carHomeNetTask.toString());
+    }
+
+    @Scheduled(cron = "0 0 0 1/7 * ?")
+    private void startAutohomeFlagTask() {
+        autohomeFlagTask.run();
+        logger.debug(autohomeFlagTask.toString());
     }
 
 }

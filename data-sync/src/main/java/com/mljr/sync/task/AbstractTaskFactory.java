@@ -12,7 +12,7 @@ public abstract class AbstractTaskFactory {
 
 	public abstract MobileTask createMobileTask();
 
-	public abstract GPSTask createGPSTask();
+	public abstract GpsTask createGPSTask();
 
 	public abstract BankCardLocationTask createBankCardLocationTask();
 
