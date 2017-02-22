@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mljr.operators.dao.primary.operators.ISMSInfoDAO">
+    <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.SMSInfo">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="USER_INFO_ID" property="userInfoId" jdbcType="BIGINT"/>
+        <result column="SEND_TIME" property="sendTime" jdbcType="TIMESTAMP"/>
+        <result column="SEND_NUM" property="sendNum" jdbcType="VARCHAR"/>
+        <result column="SMS_TYPE" property="smsType" jdbcType="VARCHAR"/>
+        <result column="BUSINESS_TYPE" property="businessType" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, USER_INFO_ID, SEND_TIME, SEND_NUM, SMS_TYPE, BUSINESS_TYPE, CREATE_TIME, UPDATE_TIME
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sms_info
+        where ID = #{id,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.SMSInfo">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sms_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userInfoId != null">
+                USER_INFO_ID,
+            </if>
+            <if test="sendTime != null">
+                SEND_TIME,
+            </if>
+            <if test="sendNum != null">
+                SEND_NUM,
+            </if>
+            <if test="smsType != null">
+                SMS_TYPE,
+            </if>
+            <if test="businessType != null">
+                BUSINESS_TYPE,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userInfoId != null">
+                #{userInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="sendTime != null">
+                #{sendTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sendNum != null">
+                #{sendNum,jdbcType=VARCHAR},
+            </if>
+            <if test="smsType != null">
+                #{smsType,jdbcType=VARCHAR},
+            </if>
+            <if test="businessType != null">
+                #{businessType,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                now(),
+            </if>
+            <if test="updateTime != null">
+                now(),
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.SMSInfo">
+        update t_sms_info
+        <set>
+            <if test="userInfoId != null">
+                USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="sendTime != null">
+                SEND_TIME = #{sendTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sendNum != null">
+                SEND_NUM = #{sendNum,jdbcType=VARCHAR},
+            </if>
+            <if test="smsType != null">
+                SMS_TYPE = #{smsType,jdbcType=VARCHAR},
+            </if>
+            <if test="businessType != null">
+                BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = now(),
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
