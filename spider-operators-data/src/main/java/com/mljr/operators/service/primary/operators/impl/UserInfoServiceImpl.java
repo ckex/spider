@@ -22,6 +22,6 @@ public class UserInfoServiceImpl implements IUserInfoService {
         if (StringUtils.isBlank(mobile)) {
             return null;
         }
-        return userInfoMapper.selectByPrimaryKey(1L);
+        return userInfoMapper.getByMobile("18521705531");
     }
 }
