@@ -39,7 +39,7 @@ public class QQSeleniumDownloader extends AbstractDownloader {
             List<Cookie> cookieList = (List<Cookie>) paramsMap.get(QQUtils.QQ_COOKIE);
             cookieList.forEach(cookie -> webDriver.manage().addCookie(cookie));
             webDriver.get(url);
-            (new WebDriverWait(webDriver, 20000)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(webDriver, 30)).until(new ExpectedCondition<Boolean>() {
                 @Override
                 public Boolean apply(WebDriver driver) {
                     return driver.getPageSource().indexOf("_Callback(") >= 0;
