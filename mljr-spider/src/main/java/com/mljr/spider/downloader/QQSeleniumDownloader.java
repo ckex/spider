@@ -1,6 +1,5 @@
 package com.mljr.spider.downloader;
 
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mljr.entity.QQCookie;
