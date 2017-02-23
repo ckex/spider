@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.mljr.operators.entity.LoginResponse;
-import com.mljr.operators.utils.JsUtils;
+import com.mljr.operators.common.utils.JsUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
