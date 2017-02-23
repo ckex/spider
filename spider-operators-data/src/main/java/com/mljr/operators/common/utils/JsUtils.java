@@ -1,4 +1,4 @@
-package com.mljr.operators.utils;
+package com.mljr.operators.common.utils;
 
 import com.mljr.operators.entity.LoginResponse;
 
