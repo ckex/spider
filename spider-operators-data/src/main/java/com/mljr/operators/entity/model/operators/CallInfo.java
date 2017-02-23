@@ -24,6 +24,10 @@ public class CallInfo {
 
     private String callRemoteAddress;
 
+    private String discountPackage;
+
+    private String firstCall;
+
     private Date createTime;
 
     private Date updateTime;
@@ -106,6 +110,22 @@ public class CallInfo {
 
     public void setCallRemoteAddress(String callRemoteAddress) {
         this.callRemoteAddress = callRemoteAddress == null ? null : callRemoteAddress.trim();
+    }
+
+    public String getDiscountPackage() {
+        return discountPackage;
+    }
+
+    public void setDiscountPackage(String discountPackage) {
+        this.discountPackage = discountPackage == null ? null : discountPackage.trim();
+    }
+
+    public String getFirstCall() {
+        return firstCall;
+    }
+
+    public void setFirstCall(String firstCall) {
+        this.firstCall = firstCall == null ? null : firstCall.trim();
     }
 
     public Date getCreateTime() {

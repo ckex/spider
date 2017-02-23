@@ -1,199 +1,200 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mljr.operators.dao.primary.operators.CallInfoMapper">
-	<resultMap id="BaseResultMap"
-		type="com.mljr.operators.entity.model.operators.CallInfo">
-		<id column="ID" jdbcType="BIGINT" property="id" />
-		<result column="USER_INFO_ID" jdbcType="BIGINT" property="userInfoId" />
-		<result column="CALL_DATE" jdbcType="TIMESTAMP" property="callDate" />
-		<result column="CALL_NUMBER" jdbcType="VARCHAR" property="callNumber" />
-		<result column="CALL_TYPE" jdbcType="VARCHAR" property="callType" />
-		<result column="LAND_TYPE" jdbcType="VARCHAR" property="landType" />
-		<result column="CALL_LONG_HOUR" jdbcType="VARCHAR" property="callLongHour" />
-		<result column="CALL_FEE" jdbcType="DECIMAL" property="callFee" />
-		<result column="CALL_LOCAL_ADDRESS" jdbcType="VARCHAR"
-			property="callLocalAddress" />
-		<result column="CALL_REMOTE_ADDRESS" jdbcType="VARCHAR"
-			property="callRemoteAddress" />
-		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
-		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
-	</resultMap>
-	<sql id="Base_Column_List">
-		ID, USER_INFO_ID, CALL_DATE, CALL_NUMBER, CALL_TYPE, LAND_TYPE,
-		CALL_LONG_HOUR, CALL_FEE,
-		CALL_LOCAL_ADDRESS, CALL_REMOTE_ADDRESS, CREATE_TIME, UPDATE_TIME
-	</sql>
-	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
-		resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List" />
-		from t_call_info
-		where ID = #{id,jdbcType=BIGINT}
-	</select>
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-		delete from t_call_info
-		where ID = #{id,jdbcType=BIGINT}
-	</delete>
-	<insert id="insert" parameterType="com.mljr.operators.entity.model.operators.CallInfo">
-		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-		insert into t_call_info (USER_INFO_ID, CALL_DATE, CALL_NUMBER,
-		CALL_TYPE, LAND_TYPE, CALL_LONG_HOUR,
-		CALL_FEE, CALL_LOCAL_ADDRESS, CALL_REMOTE_ADDRESS,
-		CREATE_TIME, UPDATE_TIME)
-		values (#{userInfoId,jdbcType=BIGINT}, #{callDate,jdbcType=TIMESTAMP},
-		#{callNumber,jdbcType=VARCHAR},
-		#{callType,jdbcType=VARCHAR}, #{landType,jdbcType=VARCHAR}, #{callLongHour,jdbcType=VARCHAR},
-		#{callFee,jdbcType=DECIMAL}, #{callLocalAddress,jdbcType=VARCHAR},
-		#{callRemoteAddress,jdbcType=VARCHAR},
-		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
-	</insert>
-	<insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.CallInfo">
-		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-		insert into t_call_info
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="userInfoId != null">
-				USER_INFO_ID,
-			</if>
-			<if test="callDate != null">
-				CALL_DATE,
-			</if>
-			<if test="callNumber != null">
-				CALL_NUMBER,
-			</if>
-			<if test="callType != null">
-				CALL_TYPE,
-			</if>
-			<if test="landType != null">
-				LAND_TYPE,
-			</if>
-			<if test="callLongHour != null">
-				CALL_LONG_HOUR,
-			</if>
-			<if test="callFee != null">
-				CALL_FEE,
-			</if>
-			<if test="callLocalAddress != null">
-				CALL_LOCAL_ADDRESS,
-			</if>
-			<if test="callRemoteAddress != null">
-				CALL_REMOTE_ADDRESS,
-			</if>
-			<if test="createTime != null">
-				CREATE_TIME,
-			</if>
-			<if test="updateTime != null">
-				UPDATE_TIME,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="userInfoId != null">
-				#{userInfoId,jdbcType=BIGINT},
-			</if>
-			<if test="callDate != null">
-				#{callDate,jdbcType=TIMESTAMP},
-			</if>
-			<if test="callNumber != null">
-				#{callNumber,jdbcType=VARCHAR},
-			</if>
-			<if test="callType != null">
-				#{callType,jdbcType=VARCHAR},
-			</if>
-			<if test="landType != null">
-				#{landType,jdbcType=VARCHAR},
-			</if>
-			<if test="callLongHour != null">
-				#{callLongHour,jdbcType=VARCHAR},
-			</if>
-			<if test="callFee != null">
-				#{callFee,jdbcType=DECIMAL},
-			</if>
-			<if test="callLocalAddress != null">
-				#{callLocalAddress,jdbcType=VARCHAR},
-			</if>
-			<if test="callRemoteAddress != null">
-				#{callRemoteAddress,jdbcType=VARCHAR},
-			</if>
-			<if test="createTime != null">
-				#{createTime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="updateTime != null">
-				#{updateTime,jdbcType=TIMESTAMP},
-			</if>
-		</trim>
-	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.CallInfo">
-		update t_call_info
-		<set>
-			<if test="userInfoId != null">
-				USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
-			</if>
-			<if test="callDate != null">
-				CALL_DATE = #{callDate,jdbcType=TIMESTAMP},
-			</if>
-			<if test="callNumber != null">
-				CALL_NUMBER = #{callNumber,jdbcType=VARCHAR},
-			</if>
-			<if test="callType != null">
-				CALL_TYPE = #{callType,jdbcType=VARCHAR},
-			</if>
-			<if test="landType != null">
-				LAND_TYPE = #{landType,jdbcType=VARCHAR},
-			</if>
-			<if test="callLongHour != null">
-				CALL_LONG_HOUR = #{callLongHour,jdbcType=VARCHAR},
-			</if>
-			<if test="callFee != null">
-				CALL_FEE = #{callFee,jdbcType=DECIMAL},
-			</if>
-			<if test="callLocalAddress != null">
-				CALL_LOCAL_ADDRESS = #{callLocalAddress,jdbcType=VARCHAR},
-			</if>
-			<if test="callRemoteAddress != null">
-				CALL_REMOTE_ADDRESS = #{callRemoteAddress,jdbcType=VARCHAR},
-			</if>
-			<if test="createTime != null">
-				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="updateTime != null">
-				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
-			</if>
-		</set>
-		where ID = #{id,jdbcType=BIGINT}
-	</update>
-	<update id="updateByPrimaryKey" parameterType="com.mljr.operators.entity.model.operators.CallInfo">
-		update t_call_info
-		set USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
-		CALL_DATE = #{callDate,jdbcType=TIMESTAMP},
-		CALL_NUMBER = #{callNumber,jdbcType=VARCHAR},
-		CALL_TYPE = #{callType,jdbcType=VARCHAR},
-		LAND_TYPE = #{landType,jdbcType=VARCHAR},
-		CALL_LONG_HOUR = #{callLongHour,jdbcType=VARCHAR},
-		CALL_FEE = #{callFee,jdbcType=DECIMAL},
-		CALL_LOCAL_ADDRESS = #{callLocalAddress,jdbcType=VARCHAR},
-		CALL_REMOTE_ADDRESS = #{callRemoteAddress,jdbcType=VARCHAR},
-		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
-		where ID = #{id,jdbcType=BIGINT}
-	</update>
-
-	<insert id="insertByBatch">
-		INSERT INTO t_call_info (USER_INFO_ID, CALL_DATE, CALL_NUMBER,
-		CALL_TYPE, LAND_TYPE, CALL_LONG_HOUR,
-		CALL_FEE, CALL_LOCAL_ADDRESS, CALL_REMOTE_ADDRESS,
-		CREATE_TIME, UPDATE_TIME) VALUES
-		<foreach collection="list" item="item" separator=",">
-			(#{userInfoId,jdbcType=BIGINT}, #{item.callDate,jdbcType=TIMESTAMP},
-			#{item.callNumber,jdbcType=VARCHAR},
-			#{item.callType,jdbcType=VARCHAR}, #{item.landType,jdbcType=VARCHAR},
-			#{item.callLongHour,jdbcType=VARCHAR},
-			#{item.callFee,jdbcType=DECIMAL},
-			#{item.callLocalAddress,jdbcType=VARCHAR},
-			#{item.callRemoteAddress,jdbcType=VARCHAR},
-			now(),now())
-		</foreach>
-	</insert>
+<mapper namespace="mapper.mybatis.primary.operators.CallInfoMapper">
+  <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.CallInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="USER_INFO_ID" jdbcType="BIGINT" property="userInfoId" />
+    <result column="CALL_DATE" jdbcType="TIMESTAMP" property="callDate" />
+    <result column="CALL_NUMBER" jdbcType="VARCHAR" property="callNumber" />
+    <result column="CALL_TYPE" jdbcType="VARCHAR" property="callType" />
+    <result column="LAND_TYPE" jdbcType="VARCHAR" property="landType" />
+    <result column="CALL_LONG_HOUR" jdbcType="VARCHAR" property="callLongHour" />
+    <result column="CALL_FEE" jdbcType="DECIMAL" property="callFee" />
+    <result column="CALL_LOCAL_ADDRESS" jdbcType="VARCHAR" property="callLocalAddress" />
+    <result column="CALL_REMOTE_ADDRESS" jdbcType="VARCHAR" property="callRemoteAddress" />
+    <result column="DISCOUNT_PACKAGE" jdbcType="VARCHAR" property="discountPackage" />
+    <result column="FIRST_CALL" jdbcType="VARCHAR" property="firstCall" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USER_INFO_ID, CALL_DATE, CALL_NUMBER, CALL_TYPE, LAND_TYPE, CALL_LONG_HOUR, CALL_FEE, 
+    CALL_LOCAL_ADDRESS, CALL_REMOTE_ADDRESS, DISCOUNT_PACKAGE, FIRST_CALL, CREATE_TIME, 
+    UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_call_info
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_call_info
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mljr.operators.entity.model.operators.CallInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_call_info (USER_INFO_ID, CALL_DATE, CALL_NUMBER, 
+      CALL_TYPE, LAND_TYPE, CALL_LONG_HOUR, 
+      CALL_FEE, CALL_LOCAL_ADDRESS, CALL_REMOTE_ADDRESS, 
+      DISCOUNT_PACKAGE, FIRST_CALL, CREATE_TIME, 
+      UPDATE_TIME)
+    values (#{userInfoId,jdbcType=BIGINT}, #{callDate,jdbcType=TIMESTAMP}, #{callNumber,jdbcType=VARCHAR}, 
+      #{callType,jdbcType=VARCHAR}, #{landType,jdbcType=VARCHAR}, #{callLongHour,jdbcType=VARCHAR}, 
+      #{callFee,jdbcType=DECIMAL}, #{callLocalAddress,jdbcType=VARCHAR}, #{callRemoteAddress,jdbcType=VARCHAR}, 
+      #{discountPackage,jdbcType=VARCHAR}, #{firstCall,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.CallInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_call_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userInfoId != null">
+        USER_INFO_ID,
+      </if>
+      <if test="callDate != null">
+        CALL_DATE,
+      </if>
+      <if test="callNumber != null">
+        CALL_NUMBER,
+      </if>
+      <if test="callType != null">
+        CALL_TYPE,
+      </if>
+      <if test="landType != null">
+        LAND_TYPE,
+      </if>
+      <if test="callLongHour != null">
+        CALL_LONG_HOUR,
+      </if>
+      <if test="callFee != null">
+        CALL_FEE,
+      </if>
+      <if test="callLocalAddress != null">
+        CALL_LOCAL_ADDRESS,
+      </if>
+      <if test="callRemoteAddress != null">
+        CALL_REMOTE_ADDRESS,
+      </if>
+      <if test="discountPackage != null">
+        DISCOUNT_PACKAGE,
+      </if>
+      <if test="firstCall != null">
+        FIRST_CALL,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userInfoId != null">
+        #{userInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="callDate != null">
+        #{callDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callNumber != null">
+        #{callNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="callType != null">
+        #{callType,jdbcType=VARCHAR},
+      </if>
+      <if test="landType != null">
+        #{landType,jdbcType=VARCHAR},
+      </if>
+      <if test="callLongHour != null">
+        #{callLongHour,jdbcType=VARCHAR},
+      </if>
+      <if test="callFee != null">
+        #{callFee,jdbcType=DECIMAL},
+      </if>
+      <if test="callLocalAddress != null">
+        #{callLocalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="callRemoteAddress != null">
+        #{callRemoteAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="discountPackage != null">
+        #{discountPackage,jdbcType=VARCHAR},
+      </if>
+      <if test="firstCall != null">
+        #{firstCall,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.CallInfo">
+    update t_call_info
+    <set>
+      <if test="userInfoId != null">
+        USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="callDate != null">
+        CALL_DATE = #{callDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callNumber != null">
+        CALL_NUMBER = #{callNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="callType != null">
+        CALL_TYPE = #{callType,jdbcType=VARCHAR},
+      </if>
+      <if test="landType != null">
+        LAND_TYPE = #{landType,jdbcType=VARCHAR},
+      </if>
+      <if test="callLongHour != null">
+        CALL_LONG_HOUR = #{callLongHour,jdbcType=VARCHAR},
+      </if>
+      <if test="callFee != null">
+        CALL_FEE = #{callFee,jdbcType=DECIMAL},
+      </if>
+      <if test="callLocalAddress != null">
+        CALL_LOCAL_ADDRESS = #{callLocalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="callRemoteAddress != null">
+        CALL_REMOTE_ADDRESS = #{callRemoteAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="discountPackage != null">
+        DISCOUNT_PACKAGE = #{discountPackage,jdbcType=VARCHAR},
+      </if>
+      <if test="firstCall != null">
+        FIRST_CALL = #{firstCall,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mljr.operators.entity.model.operators.CallInfo">
+    update t_call_info
+    set USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
+      CALL_DATE = #{callDate,jdbcType=TIMESTAMP},
+      CALL_NUMBER = #{callNumber,jdbcType=VARCHAR},
+      CALL_TYPE = #{callType,jdbcType=VARCHAR},
+      LAND_TYPE = #{landType,jdbcType=VARCHAR},
+      CALL_LONG_HOUR = #{callLongHour,jdbcType=VARCHAR},
+      CALL_FEE = #{callFee,jdbcType=DECIMAL},
+      CALL_LOCAL_ADDRESS = #{callLocalAddress,jdbcType=VARCHAR},
+      CALL_REMOTE_ADDRESS = #{callRemoteAddress,jdbcType=VARCHAR},
+      DISCOUNT_PACKAGE = #{discountPackage,jdbcType=VARCHAR},
+      FIRST_CALL = #{firstCall,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
 </mapper>
