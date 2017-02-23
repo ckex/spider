@@ -26,6 +26,10 @@ public class FlowInfo {
 
     private BigDecimal fee;
 
+    private String onlinePattern;
+
+    private String duration;
+
     private Date createTime;
 
     private Date updateTime;
@@ -116,6 +120,22 @@ public class FlowInfo {
 
     public void setFee(BigDecimal fee) {
         this.fee = fee;
+    }
+
+    public String getOnlinePattern() {
+        return onlinePattern;
+    }
+
+    public void setOnlinePattern(String onlinePattern) {
+        this.onlinePattern = onlinePattern == null ? null : onlinePattern.trim();
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration == null ? null : duration.trim();
     }
 
     public Date getCreateTime() {
