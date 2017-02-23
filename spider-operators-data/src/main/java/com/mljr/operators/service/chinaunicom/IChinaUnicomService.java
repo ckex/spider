@@ -1,12 +1,6 @@
 package com.mljr.operators.service.chinaunicom;
 
-import com.mljr.operators.entity.dto.chinaunicom.LoginDTO;
-import com.mljr.operators.entity.vo.chinaunicom.BillVO;
-import com.mljr.operators.entity.vo.chinaunicom.CallVO;
-import com.mljr.operators.entity.vo.chinaunicom.SMSVO;
-import com.mljr.operators.entity.vo.chinaunicom.UserInfoVO;
-
-import java.util.List;
+import com.mljr.operators.entity.dto.chinaunicom.*;
 
 /**
  * @author gaoxi
@@ -28,7 +22,7 @@ public interface IChinaUnicomService {
      * @param cookies cookies信息
      * @return
      */
-    UserInfoVO queryUserInfo(String cookies) throws Exception;
+    PersonInfoDTO queryUserInfo(String cookies);
 
     /**
      * 查询最近6个月的历史账单信息
@@ -37,9 +31,8 @@ public interface IChinaUnicomService {
      * @param billYear  year eg:2017
      * @param billMonth month eg:01
      * @return
-     * @throws Exception
      */
-    BillVO queryHistoryBill(String cookies, int billYear, int billMonth) throws Exception;
+    BillDTO queryHistoryBill(String cookies, int billYear, int billMonth);
 
     /**
      * 获取话费月额
@@ -47,7 +40,7 @@ public interface IChinaUnicomService {
      * @param cookies cookies
      * @return
      */
-    String queryAcctBalance(String cookies) throws Exception;
+    RemainingDTO queryAcctBalance(String cookies);
 
     /**
      * 查询通话详情
@@ -57,9 +50,8 @@ public interface IChinaUnicomService {
      * @param callMonth month eg:1
      * @param pageNo    当前页
      * @return
-     * @throws Exception
      */
-    CallVO queryCallDetail(String cookies, int callYear, int callMonth, int pageNo) throws Exception;
+    CallDTO queryCallDetail(String cookies, int callYear, int callMonth, int pageNo);
 
     /**
      * 查询短信详情
@@ -69,7 +61,6 @@ public interface IChinaUnicomService {
      * @param smsMonth month eg:1
      * @param pageNo   当前页
      * @return
-     * @throws Exception
      */
-    SMSVO querySMS(String cookies, int smsYear, int smsMonth, int pageNo) throws Exception;
+    SMSDTO querySMS(String cookies, int smsYear, int smsMonth, int pageNo);
 }

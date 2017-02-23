@@ -1,8 +1,8 @@
-package com.mljr.operators.service;
+package com.mljr.operators.service.primary.operators;
 
 import com.google.common.collect.Lists;
 import com.mljr.operators.entity.model.operators.CallInfo;
-import com.mljr.operators.service.primary.operators.ICallInfoService;
+import com.mljr.operators.service.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
