@@ -23,24 +23,22 @@ import net.jodah.lyra.util.Duration;
  */
 public class ConnectionFactory {
 
-	private final ConnectionOptions options;
+  private final ConnectionOptions options;
 
-	private ConnectionFactory() {
-		super();
-		this.options = new ConnectionOptions().withHost(ServiceConfig.getRmqHost()).withPort(ServiceConfig.getRmqPort())
-				.withUsername(ServiceConfig.getRmqUsername()).withPassword(ServiceConfig.getRmqPassword())
-				.withVirtualHost(ServiceConfig.getRmqVhost());
-	}
+  private ConnectionFactory() {
+    super();
+    this.options = new ConnectionOptions().withHost(ServiceConfig.getRmqHost()).withPort(ServiceConfig.getRmqPort())
+        .withUsername(ServiceConfig.getRmqUsername()).withPassword(ServiceConfig.getRmqPassword()).withVirtualHost(ServiceConfig.getRmqVhost());
+  }
 
-	protected static Connection newConnection() throws IOException, TimeoutException {
-		Config config = new Config().withRecoveryPolicy(RecoveryPolicies.recoverAlways())
-				.withRetryPolicy(new RetryPolicy().withMaxAttempts(15).withInterval(Duration.seconds(5))
-						.withMaxDuration(Duration.minutes(8)));
-		Connection connection = Connections.create(FactoryHolder.FA.options, config);
-		return connection;
-	}
+  protected static Connection newConnection() throws IOException, TimeoutException {
+    Config config = new Config().withRecoveryPolicy(RecoveryPolicies.recoverAlways())
+        .withRetryPolicy(new RetryPolicy().withMaxAttempts(15).withInterval(Duration.seconds(5)).withMaxDuration(Duration.minutes(8)));
+    Connection connection = Connections.create(FactoryHolder.FA.options, config);
+    return connection;
+  }
 
-	private static final class FactoryHolder {
-		private static final ConnectionFactory FA = new ConnectionFactory();
-	}
+  private static final class FactoryHolder {
+    private static final ConnectionFactory FA = new ConnectionFactory();
+  }
 }

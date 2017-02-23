@@ -12,7 +12,7 @@ import java.util.Map;
 @DataSource("db139")
 public interface YybgrkContactListDao {
 
-	List<Map> listById(long lastId, int limit);
+  List<Map> listById(long lastId, int limit);
 
-	List<Map> listHistoryById(long lastId, int limit);
+  List<Map> listHistoryById(long lastId, int limit);
 }

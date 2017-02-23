@@ -8,14 +8,14 @@ import common.page.util.PageQuery;
 @DataSource("mljrdev")
 public interface SrcDmPhonePriceDao {
 
-    SrcDmPhonePriceDo load(String itemUrl);
+  SrcDmPhonePriceDo load(String itemUrl);
 
-    boolean delete(Long id);
+  boolean delete(Long id);
 
-    SrcDmPhonePriceDo create(SrcDmPhonePriceDo record);
+  SrcDmPhonePriceDo create(SrcDmPhonePriceDo record);
 
-    boolean update(SrcDmPhonePriceDo record);
+  boolean update(SrcDmPhonePriceDo record);
 
-    PageList<SrcDmPhonePriceDo>  listByPage(PageQuery pageQuery, Integer count);
+  PageList<SrcDmPhonePriceDo> listByPage(PageQuery pageQuery, Integer count);
 
 }

@@ -10,19 +10,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JdConsumeTask extends AbstractTask {
-    @Autowired
-    private JdConsumeService jdConsumeService;
+  @Autowired
+  private JdConsumeService jdConsumeService;
 
-    @Override
-    void execute() {
-        try {
-            jdConsumeService.consume();
-        } catch (Exception ex) {
-            if (logger.isDebugEnabled()) {
-                ex.printStackTrace();
-            }
-            logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-        }
+  @Override
+  void execute() {
+    try {
+      jdConsumeService.consume();
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
     }
+  }
 
 }

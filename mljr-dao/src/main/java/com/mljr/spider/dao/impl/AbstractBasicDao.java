@@ -10,16 +10,16 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractBasicDao extends SqlSessionDaoSupport {
 
-	protected static transient Logger logger = LoggerFactory.getLogger(AbstractBasicDao.class);
+  protected static transient Logger logger = LoggerFactory.getLogger(AbstractBasicDao.class);
 
-	@Resource(name = "sqlSessionFactory")
-	@Override
-	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-		super.setSqlSessionFactory(sqlSessionFactory);
-	}
+  @Resource(name = "sqlSessionFactory")
+  @Override
+  public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+    super.setSqlSessionFactory(sqlSessionFactory);
+  }
 
-	protected SqlSession getSqlSessionTemplate() {
-		return getSqlSession();
-	}
+  protected SqlSession getSqlSessionTemplate() {
+    return getSqlSession();
+  }
 
 }

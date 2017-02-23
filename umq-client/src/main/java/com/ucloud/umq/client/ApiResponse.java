@@ -8,53 +8,53 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Created by alpha on 8/8/16.
  */
 public class ApiResponse {
-    @JsonProperty("RetCode")
-    private int RetCode;
+  @JsonProperty("RetCode")
+  private int RetCode;
 
-    @JsonProperty("Message")
-    private String Message;
+  @JsonProperty("Message")
+  private String Message;
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @JsonProperty("Action")
-    private String Action;
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  @JsonProperty("Action")
+  private String Action;
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @JsonProperty("DataSet")
-    private String DataSet;
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  @JsonProperty("DataSet")
+  private String DataSet;
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @JsonProperty("TotalCount")
-    private int TotalCount;
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  @JsonProperty("TotalCount")
+  private int TotalCount;
 
-    public int getRetCode() {
-        return RetCode;
-    }
+  public int getRetCode() {
+    return RetCode;
+  }
 
-    public void setRetCode(int retCode) {
-        RetCode = retCode;
-    }
+  public void setRetCode(int retCode) {
+    RetCode = retCode;
+  }
 
-    public String getAction() {
-        return Action;
-    }
+  public String getAction() {
+    return Action;
+  }
 
-    public void setAction(String action) {
-        Action = action;
-    }
+  public void setAction(String action) {
+    Action = action;
+  }
 
-    public String getMessage() {
-        return Message;
-    }
+  public String getMessage() {
+    return Message;
+  }
 
-    public void setMessage(String message) {
-        Message = message;
-    }
+  public void setMessage(String message) {
+    Message = message;
+  }
 
-    public int getTotalCount() {
-        return TotalCount;
-    }
+  public int getTotalCount() {
+    return TotalCount;
+  }
 
-    public void setTotalCount(int totalCount) {
-        TotalCount = totalCount;
-    }
+  public void setTotalCount(int totalCount) {
+    TotalCount = totalCount;
+  }
 }

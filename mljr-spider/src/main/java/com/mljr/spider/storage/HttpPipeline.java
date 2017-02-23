@@ -39,167 +39,166 @@ import us.codecraft.webmagic.pipeline.Pipeline;
  */
 public class HttpPipeline implements Pipeline {
 
-	protected static transient Logger logger = LoggerFactory.getLogger(HttpPipeline.class);
+  protected static transient Logger logger = LoggerFactory.getLogger(HttpPipeline.class);
 
-	private static final Counter COUNTER = new Counter();
+  private static final Counter COUNTER = new Counter();
 
-	private static class Counter {
-		private AtomicLong num = new AtomicLong(0);
-		private AtomicLong failure = new AtomicLong(0);
+  private static class Counter {
+    private AtomicLong num = new AtomicLong(0);
+    private AtomicLong failure = new AtomicLong(0);
 
-		@Override
-		public String toString() {
-			return "Counter [all=" + num + ", failure=" + failure + ", failure rate=" + failure.get() / num.get() + "]";
-		}
+    @Override
+    public String toString() {
+      return "Counter [all=" + num + ", failure=" + failure + ", failure rate=" + failure.get() / num.get() + "]";
+    }
 
-	}
+  }
 
-	private final String url;
-	private final Pipeline standbyPipeline;
-	private final AsyncHttpClient httpclient;
+  private final String url;
+  private final Pipeline standbyPipeline;
+  private final AsyncHttpClient httpclient;
 
-	public HttpPipeline(String url, AsyncHttpClient httpclient, Pipeline standbyPipeline) {
-		super();
-		this.url = url;
-		this.httpclient = httpclient;
-		this.standbyPipeline = standbyPipeline;
-	}
+  public HttpPipeline(String url, AsyncHttpClient httpclient, Pipeline standbyPipeline) {
+    super();
+    this.url = url;
+    this.httpclient = httpclient;
+    this.standbyPipeline = standbyPipeline;
+  }
 
-	@Override
-	public void process(ResultItems resultItems, Task task) {
-		final ResultItems items = resultItems;
-		final Task t = task;
-		Map<String, Object> result = resultItems.getAll();
-		StringBuilder sb = new StringBuilder();
-		for (Object obj : result.values()) {
-			sb.append(obj);
-		}
-		String html = sb.toString();
-		if (StringUtils.isBlank(html) || html.length() < 10) {
-			logger.warn("Invalid result:" + html);
-			return;
-		}
+  @Override
+  public void process(ResultItems resultItems, Task task) {
+    final ResultItems items = resultItems;
+    final Task t = task;
+    Map<String, Object> result = resultItems.getAll();
+    StringBuilder sb = new StringBuilder();
+    for (Object obj : result.values()) {
+      sb.append(obj);
+    }
+    String html = sb.toString();
+    if (StringUtils.isBlank(html) || html.length() < 10) {
+      logger.warn("Invalid result:" + html);
+      return;
+    }
 
-		byte[] body = html.getBytes(Charset.forName("UTF-8"));
-		HttpPost post = buildPost(body);
+    byte[] body = html.getBytes(Charset.forName("UTF-8"));
+    HttpPost post = buildPost(body);
 
-		final AtomicBoolean flag = new AtomicBoolean(true);
-		final Stopwatch watch = Stopwatch.createStarted();
+    final AtomicBoolean flag = new AtomicBoolean(true);
+    final Stopwatch watch = Stopwatch.createStarted();
 
-		if (post == null && flag.compareAndSet(true, false)) {
-			standbyPipeline.process(items, t); // 记录到文件
-			return;
-		}
+    if (post == null && flag.compareAndSet(true, false)) {
+      standbyPipeline.process(items, t); // 记录到文件
+      return;
+    }
 
-		final long length = body.length;
-		final long gzipLen = post.getEntity().getContentLength();
+    final long length = body.length;
+    final long gzipLen = post.getEntity().getContentLength();
 
-		sentContent(post, new FutureCallback<HttpResponse>() {
+    sentContent(post, new FutureCallback<HttpResponse>() {
 
-			@Override
-			public void completed(HttpResponse result) {
-				try {
-					watch.stop();
-					int code = result.getStatusLine().getStatusCode();
-					String response = EntityUtils.toString(result.getEntity());
-					if (code != 200 || !Result.isSucc(response)) {
-						boolean isWrite = flag.compareAndSet(true, false);
-						if (isWrite) {
-							COUNTER.failure.incrementAndGet();
-							standbyPipeline.process(items, t);
-						}
-						logger.error(String.format("HTTP code:%s,isWrite:%s,time:%s,len:%s, gzipLen:%s, %s, %s", code,isWrite,
-								watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen, COUNTER.toString(), response));
-						return;
-					}
-					if (logger.isDebugEnabled()) {
-						logger.debug(String.format("HTTP code:%s,time:%s,len:%s, gzipLen:%s, %s, %s", code,
-								watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen, COUNTER.toString(), response));
-					}
-				} catch (Exception e) {
-					if (logger.isDebugEnabled()) {
-						e.printStackTrace();
-					}
-					logger.error(ExceptionUtils.getStackTrace(e));
-				} finally {
-					try {
-						EntityUtils.consume(result.getEntity());
-					} catch (IOException e) {
-					}
-				}
-			}
+      @Override
+      public void completed(HttpResponse result) {
+        try {
+          watch.stop();
+          int code = result.getStatusLine().getStatusCode();
+          String response = EntityUtils.toString(result.getEntity());
+          if (code != 200 || !Result.isSucc(response)) {
+            boolean isWrite = flag.compareAndSet(true, false);
+            if (isWrite) {
+              COUNTER.failure.incrementAndGet();
+              standbyPipeline.process(items, t);
+            }
+            logger.error(String.format("HTTP code:%s,isWrite:%s,time:%s,len:%s, gzipLen:%s, %s, %s", code, isWrite,
+                watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen, COUNTER.toString(), response));
+            return;
+          }
+          if (logger.isDebugEnabled()) {
+            logger.debug(String.format("HTTP code:%s,time:%s,len:%s, gzipLen:%s, %s, %s", code, watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen,
+                COUNTER.toString(), response));
+          }
+        } catch (Exception e) {
+          if (logger.isDebugEnabled()) {
+            e.printStackTrace();
+          }
+          logger.error(ExceptionUtils.getStackTrace(e));
+        } finally {
+          try {
+            EntityUtils.consume(result.getEntity());
+          } catch (IOException e) {
+          }
+        }
+      }
 
-			@Override
-			public void failed(Exception ex) {
-				boolean isWrite = flag.compareAndSet(true, false);
-				logger.debug("useTime=" + watch.elapsed(TimeUnit.MILLISECONDS) + ", isWrite=" + isWrite + ", "
-						+ COUNTER.toString());
-				watch.stop();
-				if (isWrite) {
-					COUNTER.failure.incrementAndGet();
-					standbyPipeline.process(items, t); // 记录到文件
-				}
-			}
+      @Override
+      public void failed(Exception ex) {
+        boolean isWrite = flag.compareAndSet(true, false);
+        logger.debug("useTime=" + watch.elapsed(TimeUnit.MILLISECONDS) + ", isWrite=" + isWrite + ", " + COUNTER.toString());
+        watch.stop();
+        if (isWrite) {
+          COUNTER.failure.incrementAndGet();
+          standbyPipeline.process(items, t); // 记录到文件
+        }
+      }
 
-			@Override
-			public void cancelled() {
-				boolean isWrite = flag.compareAndSet(true, false);
-				if (isWrite) {
-					COUNTER.failure.incrementAndGet();
-					standbyPipeline.process(items, t); // 记录到文件
-				}
-			}
+      @Override
+      public void cancelled() {
+        boolean isWrite = flag.compareAndSet(true, false);
+        if (isWrite) {
+          COUNTER.failure.incrementAndGet();
+          standbyPipeline.process(items, t); // 记录到文件
+        }
+      }
 
-		});
+    });
 
-	}
+  }
 
-	private void sentContent(HttpPost post, FutureCallback<HttpResponse> callback) {
-		COUNTER.num.incrementAndGet();
-		httpclient.post(post, callback, 3000);
-	}
+  private void sentContent(HttpPost post, FutureCallback<HttpResponse> callback) {
+    COUNTER.num.incrementAndGet();
+    httpclient.post(post, callback, 3000);
+  }
 
-	private HttpPost buildPost(byte[] body) {
-		ContentType contentType = ContentType.create("text/html", Consts.UTF_8);
-		HttpPost post = new HttpPost(url);
-		post.addHeader("Content-Encoding", "gzip");
+  private HttpPost buildPost(byte[] body) {
+    ContentType contentType = ContentType.create("text/html", Consts.UTF_8);
+    HttpPost post = new HttpPost(url);
+    post.addHeader("Content-Encoding", "gzip");
 
-		ByteArrayOutputStream originalContent = new ByteArrayOutputStream();
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		GZIPOutputStream gzipOut = null;
-		try {
-			originalContent.write(body);
-			gzipOut = new GZIPOutputStream(baos);
-			originalContent.writeTo(gzipOut);
-			gzipOut.finish();
-			post.setEntity(new ByteArrayEntity(baos.toByteArray(), contentType));
-			return post;
-		} catch (IOException e) {
-			if (logger.isDebugEnabled()) {
-				e.printStackTrace();
-			}
-			logger.error("build http post error. " + ExceptionUtils.getStackTrace(e));
-			return null; // Exception .
-		} finally {
-			try {
-				if (gzipOut != null) {
-					gzipOut.close();
-				}
-			} catch (IOException e) {
-			}
-			try {
-				if (baos != null) {
-					baos.close();
-				}
-			} catch (IOException e) {
-			}
-			try {
-				if (originalContent != null) {
-					originalContent.close();
-				}
-			} catch (IOException e) {
-			}
-		}
-	}
+    ByteArrayOutputStream originalContent = new ByteArrayOutputStream();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    GZIPOutputStream gzipOut = null;
+    try {
+      originalContent.write(body);
+      gzipOut = new GZIPOutputStream(baos);
+      originalContent.writeTo(gzipOut);
+      gzipOut.finish();
+      post.setEntity(new ByteArrayEntity(baos.toByteArray(), contentType));
+      return post;
+    } catch (IOException e) {
+      if (logger.isDebugEnabled()) {
+        e.printStackTrace();
+      }
+      logger.error("build http post error. " + ExceptionUtils.getStackTrace(e));
+      return null; // Exception .
+    } finally {
+      try {
+        if (gzipOut != null) {
+          gzipOut.close();
+        }
+      } catch (IOException e) {
+      }
+      try {
+        if (baos != null) {
+          baos.close();
+        }
+      } catch (IOException e) {
+      }
+      try {
+        if (originalContent != null) {
+          originalContent.close();
+        }
+      } catch (IOException e) {
+      }
+    }
+  }
 
 }

@@ -16,43 +16,43 @@ import com.rabbitmq.client.Channel;
  */
 public class Rmq {
 
-	private Channel channel;
+  private Channel channel;
 
-	public Rmq() {
-		super();
-		this.channel = getChannel();
-	}
+  public Rmq() {
+    super();
+    this.channel = getChannel();
+  }
 
-	private Channel getChannel() {
-		try {
-			return RabbitmqClient.newChannel();
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Create rabbitmq channel error. ", e);
-		}
+  private Channel getChannel() {
+    try {
+      return RabbitmqClient.newChannel();
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException("Create rabbitmq channel error. ", e);
+    }
 
-	}
+  }
 
-	public boolean publish(Function<Channel, Boolean> function) {
-		checkChannel();
-		return function.apply(channel);
-	}
+  public boolean publish(Function<Channel, Boolean> function) {
+    checkChannel();
+    return function.apply(channel);
+  }
 
-	private synchronized void checkChannel() {
-		if (!channel.isOpen()) {
-			closed();
-			this.channel = getChannel();
-		}
-	}
+  private synchronized void checkChannel() {
+    if (!channel.isOpen()) {
+      closed();
+      this.channel = getChannel();
+    }
+  }
 
-	public synchronized void closed() {
-		if (channel != null) {
-			try {
-				channel.close();
-			} catch (IOException | TimeoutException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+  public synchronized void closed() {
+    if (channel != null) {
+      try {
+        channel.close();
+      } catch (IOException | TimeoutException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 
 }

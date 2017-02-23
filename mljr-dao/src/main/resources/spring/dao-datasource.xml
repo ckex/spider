@@ -1,248 +1,247 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 
 
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
-       default-autowire="byName">
+	default-autowire="byName">
 
 
-  <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
-    <property name="slowSqlMillis" value="100" />
-    <property name="logSlowSql" value="true" />
-    <property name="mergeSql" value="true" />
-  </bean>
+	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<property name="slowSqlMillis" value="100" />
+		<property name="logSlowSql" value="true" />
+		<property name="mergeSql" value="true" />
+	</bean>
 
-  <bean id="log-filter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
-    <property name="statementExecutableSqlLogEnable" value="true" />
-  </bean>
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+		<property name="statementExecutableSqlLogEnable" value="true" />
+	</bean>
 
-  <bean id="dataSourceRW" class="com.alibaba.druid.pool.DruidDataSource"
-    init-method="init" destroy-method="close">
-    <!-- 基本属性 url、user、password -->
-    <property name="url" value="${jdbc.rw.url}" />
-    <property name="username" value="${jdbc.rw.username}" />
-    <property name="password" value="${jdbc.rw.password}" />
-    <!-- 配置初始化大小、最小、最大 -->
-    <property name="initialSize" value="5" />
-    <property name="minIdle" value="5" />
-    <property name="maxActive" value="200" />
-    <!-- 配置获取连接等待超时的时间 -->
-    <property name="maxWait" value="60000" />
-    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-    <property name="timeBetweenEvictionRunsMillis" value="60000" />
-    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-    <property name="minEvictableIdleTimeMillis" value="300000" />
-    <property name="validationQuery" value="SELECT 'x'" />
-    <property name="testWhileIdle" value="true" />
-    <property name="testOnBorrow" value="false" />
-    <property name="testOnReturn" value="false" />
-    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-    <property name="poolPreparedStatements" value="true" />
-    <property name="maxPoolPreparedStatementPerConnectionSize"
-      value="20" />
-    <!-- 配置监控统计拦截的filters -->
-    <property name="proxyFilters">
-      <list>
-        <ref bean="stat-filter" />
-        <ref bean="log-filter" />
-      </list>
-    </property>
-    <property name="filters">
-      <value>stat,slf4j</value>
-    </property>
-    <property name="useGlobalDataSourceStat" value="true" />
-  </bean>
+	<bean id="dataSourceRW" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${jdbc.rw.url}" />
+		<property name="username" value="${jdbc.rw.username}" />
+		<property name="password" value="${jdbc.rw.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="200" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 配置监控统计拦截的filters -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<ref bean="log-filter" />
+			</list>
+		</property>
+		<property name="filters">
+			<value>stat,slf4j</value>
+		</property>
+		<property name="useGlobalDataSourceStat" value="true" />
+	</bean>
 
-  <bean id="dataSourceR1" class="com.alibaba.druid.pool.DruidDataSource"
-    init-method="init" destroy-method="close">
-    <!-- 基本属性 url、user、password -->
-    <property name="url" value="${jdbc.r1.url}" />
-    <property name="username" value="${jdbc.r1.username}" />
-    <property name="password" value="${jdbc.r1.password}" />
-    <!-- 配置初始化大小、最小、最大 -->
-    <property name="initialSize" value="5" />
-    <property name="minIdle" value="5" />
-    <property name="maxActive" value="200" />
-    <!-- 配置获取连接等待超时的时间 -->
-    <property name="maxWait" value="60000" />
-    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-    <property name="timeBetweenEvictionRunsMillis" value="60000" />
-    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-    <property name="minEvictableIdleTimeMillis" value="300000" />
-    <property name="validationQuery" value="SELECT 'x'" />
-    <property name="testWhileIdle" value="true" />
-    <property name="testOnBorrow" value="false" />
-    <property name="testOnReturn" value="false" />
-    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-    <property name="poolPreparedStatements" value="true" />
-    <property name="maxPoolPreparedStatementPerConnectionSize"
-      value="20" />
-    <!-- 配置监控统计拦截的filters -->
-    <property name="proxyFilters">
-      <list>
-        <ref bean="stat-filter" />
-        <ref bean="log-filter" />
-      </list>
-    </property>
-    <property name="filters">
-      <value>stat,slf4j</value>
-    </property>
-    <property name="useGlobalDataSourceStat" value="true" />
-  </bean>
+	<bean id="dataSourceR1" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${jdbc.r1.url}" />
+		<property name="username" value="${jdbc.r1.username}" />
+		<property name="password" value="${jdbc.r1.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="200" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 配置监控统计拦截的filters -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<ref bean="log-filter" />
+			</list>
+		</property>
+		<property name="filters">
+			<value>stat,slf4j</value>
+		</property>
+		<property name="useGlobalDataSourceStat" value="true" />
+	</bean>
 
-   <bean id="dataSourceRC" class="com.alibaba.druid.pool.DruidDataSource"
-    init-method="init" destroy-method="close">
-    <!-- 基本属性 url、user、password -->
-    <property name="url" value="${jdbc.rc.url}" />
-    <property name="username" value="${jdbc.rc.username}" />
-    <property name="password" value="${jdbc.rc.password}" />
-    <!-- 配置初始化大小、最小、最大 -->
-    <property name="initialSize" value="5" />
-    <property name="minIdle" value="5" />
-    <property name="maxActive" value="200" />
-    <!-- 配置获取连接等待超时的时间 -->
-    <property name="maxWait" value="60000" />
-    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-    <property name="timeBetweenEvictionRunsMillis" value="60000" />
-    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-    <property name="minEvictableIdleTimeMillis" value="300000" />
-    <property name="validationQuery" value="SELECT 'x'" />
-    <property name="testWhileIdle" value="true" />
-    <property name="testOnBorrow" value="false" />
-    <property name="testOnReturn" value="false" />
-    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-    <property name="poolPreparedStatements" value="true" />
-    <property name="maxPoolPreparedStatementPerConnectionSize"
-      value="20" />
-    <!-- 配置监控统计拦截的filters -->
-    <property name="proxyFilters">
-      <list>
-        <ref bean="stat-filter" />
-        <ref bean="log-filter" />
-      </list>
-    </property>
-    <property name="filters">
-      <value>stat,slf4j</value>
-    </property>
-    <property name="useGlobalDataSourceStat" value="true" />
-  </bean>
+	<bean id="dataSourceRC" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${jdbc.rc.url}" />
+		<property name="username" value="${jdbc.rc.username}" />
+		<property name="password" value="${jdbc.rc.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="200" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 配置监控统计拦截的filters -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<ref bean="log-filter" />
+			</list>
+		</property>
+		<property name="filters">
+			<value>stat,slf4j</value>
+		</property>
+		<property name="useGlobalDataSourceStat" value="true" />
+	</bean>
 
-  <bean id="dataSource_db139" class="com.alibaba.druid.pool.DruidDataSource"
-        init-method="init" destroy-method="close">
-    <!-- 基本属性 url、user、password -->
-    <property name="url" value="${jdbc.db139.url}" />
-    <property name="username" value="${jdbc.db139.username}" />
-    <property name="password" value="${jdbc.db139.password}" />
-    <!-- 配置初始化大小、最小、最大 -->
-    <property name="initialSize" value="5" />
-    <property name="minIdle" value="5" />
-    <property name="maxActive" value="200" />
-    <!-- 配置获取连接等待超时的时间 -->
-    <property name="maxWait" value="60000" />
-    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-    <property name="timeBetweenEvictionRunsMillis" value="60000" />
-    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-    <property name="minEvictableIdleTimeMillis" value="300000" />
-    <property name="validationQuery" value="SELECT 'x'" />
-    <property name="testWhileIdle" value="true" />
-    <property name="testOnBorrow" value="false" />
-    <property name="testOnReturn" value="false" />
-    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-    <property name="poolPreparedStatements" value="true" />
-    <property name="maxPoolPreparedStatementPerConnectionSize"
-              value="20" />
-    <!-- 配置监控统计拦截的filters -->
-    <property name="proxyFilters">
-      <list>
-        <ref bean="stat-filter" />
-        <ref bean="log-filter" />
-      </list>
-    </property>
-    <property name="filters">
-      <value>stat,slf4j</value>
-    </property>
-    <property name="useGlobalDataSourceStat" value="true" />
-  </bean>
+	<bean id="dataSource_db139" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${jdbc.db139.url}" />
+		<property name="username" value="${jdbc.db139.username}" />
+		<property name="password" value="${jdbc.db139.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="200" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 配置监控统计拦截的filters -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<ref bean="log-filter" />
+			</list>
+		</property>
+		<property name="filters">
+			<value>stat,slf4j</value>
+		</property>
+		<property name="useGlobalDataSourceStat" value="true" />
+	</bean>
 
-  <bean id="dataSource_mljrdev" class="com.alibaba.druid.pool.DruidDataSource"
-        init-method="init" destroy-method="close">
-    <!-- 基本属性 url、user、password -->
-    <property name="url" value="${jdbc.mljrdev.url}" />
-    <property name="username" value="${jdbc.mljrdev.username}" />
-    <property name="password" value="${jdbc.mljrdev.password}" />
-    <!-- 配置初始化大小、最小、最大 -->
-    <property name="initialSize" value="5" />
-    <property name="minIdle" value="5" />
-    <property name="maxActive" value="200" />
-    <!-- 配置获取连接等待超时的时间 -->
-    <property name="maxWait" value="60000" />
-    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-    <property name="timeBetweenEvictionRunsMillis" value="60000" />
-    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-    <property name="minEvictableIdleTimeMillis" value="300000" />
-    <property name="validationQuery" value="SELECT 'x'" />
-    <property name="testWhileIdle" value="true" />
-    <property name="testOnBorrow" value="false" />
-    <property name="testOnReturn" value="false" />
-    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-    <property name="poolPreparedStatements" value="true" />
-    <property name="maxPoolPreparedStatementPerConnectionSize"
-              value="20" />
-    <!-- 配置监控统计拦截的filters -->
-    <property name="proxyFilters">
-      <list>
-        <ref bean="stat-filter" />
-        <ref bean="log-filter" />
-      </list>
-    </property>
-    <property name="filters">
-      <value>stat,slf4j</value>
-    </property>
-    <property name="useGlobalDataSourceStat" value="true" />
-  </bean>
-  
-  <bean id="dynamicDataSource"
-    class="com.mljr.spider.dao.dynamic.datasource.DynamicDataSource">
-    <property name="targetDataSources">
-      <map key-type="java.lang.String">
-        <!-- read and write -->
-        <entry key="rw" value-ref="dataSourceRW" />
-        <!-- read1 -->
-        <entry key="r1" value-ref="dataSourceR1" />
-        <!-- 风控分析库 -->
-        <entry key="rc" value-ref="dataSourceRC" />
+	<bean id="dataSource_mljrdev" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${jdbc.mljrdev.url}" />
+		<property name="username" value="${jdbc.mljrdev.username}" />
+		<property name="password" value="${jdbc.mljrdev.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="200" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 配置监控统计拦截的filters -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<ref bean="log-filter" />
+			</list>
+		</property>
+		<property name="filters">
+			<value>stat,slf4j</value>
+		</property>
+		<property name="useGlobalDataSourceStat" value="true" />
+	</bean>
 
-        <entry key="db139" value-ref="dataSource_db139" />
+	<bean id="dynamicDataSource"
+		class="com.mljr.spider.dao.dynamic.datasource.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<!-- read and write -->
+				<entry key="rw" value-ref="dataSourceRW" />
+				<!-- read1 -->
+				<entry key="r1" value-ref="dataSourceR1" />
+				<!-- 风控分析库 -->
+				<entry key="rc" value-ref="dataSourceRC" />
 
-        <entry key="mljrdev" value-ref="dataSource_mljrdev" />
-      </map>
-    </property>
-    <property name="defaultTargetDataSource" ref="dataSourceRW" />
-  </bean>
+				<entry key="db139" value-ref="dataSource_db139" />
 
-  <!-- 使用JDBC事物 -->
-  <bean id="transactionManager"
-    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-    <property name="dataSource" ref="dynamicDataSource" />
-  </bean>
+				<entry key="mljrdev" value-ref="dataSource_mljrdev" />
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="dataSourceRW" />
+	</bean>
 
-  <!-- 声明使用注解式事务 -->
-  <tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- 使用JDBC事物 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dynamicDataSource" />
+	</bean>
 
-  <!-- ========================================针对myBatis的配置项============================== -->
-  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-    <property name="dataSource" ref="dynamicDataSource" />
-    <property name="configLocation" value="classpath:resource/sqlMapConfig.xml"></property>
-    <property name="mapperLocations" value="classpath:mapper/mybatis/mysql/*.xml"></property>
-  </bean>
+	<!-- 声明使用注解式事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
-  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-    <property name="dataSource" ref="dynamicDataSource" />
-  </bean>
-  
+	<!-- ========================================针对myBatis的配置项============================== -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dynamicDataSource" />
+		<property name="configLocation" value="classpath:resource/sqlMapConfig.xml"></property>
+		<property name="mapperLocations" value="classpath:mapper/mybatis/mysql/*.xml"></property>
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dynamicDataSource" />
+	</bean>
+
 </beans>

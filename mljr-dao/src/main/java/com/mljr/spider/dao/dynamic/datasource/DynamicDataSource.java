@@ -12,13 +12,13 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
 
-	public DynamicDataSource() {
-		super();
-	}
+  public DynamicDataSource() {
+    super();
+  }
 
-	@Override
-	protected Object determineCurrentLookupKey() {
-		return DynamicDataSourceHolder.getDataSouce();
-	}
+  @Override
+  protected Object determineCurrentLookupKey() {
+    return DynamicDataSourceHolder.getDataSouce();
+  }
 
 }

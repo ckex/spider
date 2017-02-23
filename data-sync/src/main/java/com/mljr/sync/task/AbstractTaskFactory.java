@@ -10,20 +10,20 @@ package com.mljr.sync.task;
  */
 public abstract class AbstractTaskFactory {
 
-	public abstract MobileTask createMobileTask();
+  public abstract MobileTask createMobileTask();
 
-	public abstract GPSTask createGPSTask();
+  public abstract GPSTask createGPSTask();
 
-	public abstract BankCardLocationTask createBankCardLocationTask();
+  public abstract BankCardLocationTask createBankCardLocationTask();
 
-	public abstract MerchantInfoTask createMerchantInfoTask();
+  public abstract MerchantInfoTask createMerchantInfoTask();
 
-	public abstract LbsTask createLbsTask();
+  public abstract LbsTask createLbsTask();
 
-	public abstract GxSkyTask createGxSkyTask();
+  public abstract GxSkyTask createGxSkyTask();
 
-	public abstract BitautoTask createBitautoTask();
+  public abstract BitautoTask createBitautoTask();
 
-	public abstract QqNumberTask createQqNumberTask();
+  public abstract QqNumberTask createQqNumberTask();
 
 }

@@ -16,52 +16,52 @@ import us.codecraft.webmagic.Task;
  */
 public class AutohomeTargetUrlsScheduler extends AbstractScheduler {
 
-    public static final String START_URL = "http://car.autohome.com.cn/AsLeftMenu/As_LeftListNew.ashx?typeId=2&brandId=0&fctId=0&seriesId=0";
+  public static final String START_URL = "http://car.autohome.com.cn/AsLeftMenu/As_LeftListNew.ashx?typeId=2&brandId=0&fctId=0&seriesId=0";
 
-    public AutohomeTargetUrlsScheduler(Spider spider, PullMsgTask task) throws Exception {
-        super(spider, task);
-    }
+  public AutohomeTargetUrlsScheduler(Spider spider, PullMsgTask task) throws Exception {
+    super(spider, task);
+  }
 
-    public AutohomeTargetUrlsScheduler(Spider spider, String queueId) throws Exception {
-        super(spider, queueId);
-    }
+  public AutohomeTargetUrlsScheduler(Spider spider, String queueId) throws Exception {
+    super(spider, queueId);
+  }
 
-    @Override
-    public void push(Request request, Task task) {
-        put(request);
-    }
+  @Override
+  public void push(Request request, Task task) {
+    put(request);
+  }
 
-    @Override
-    public Request poll(Task task) {
-        return take();
-    }
+  @Override
+  public Request poll(Task task) {
+    return take();
+  }
 
-    @Override
-    public int getLeftRequestsCount(Task task) {
-        return 0;
-    }
+  @Override
+  public int getLeftRequestsCount(Task task) {
+    return 0;
+  }
 
-    @Override
-    public int getTotalRequestsCount(Task task) {
-        return 0;
-    }
+  @Override
+  public int getTotalRequestsCount(Task task) {
+    return 0;
+  }
 
-    @Override
-    public boolean pushTask(Spider spider, UMQMessage message) {
-        boolean begin = StringUtils.startsWithIgnoreCase(message.message, "autohome");
-        if (begin) {
-            push(buildRequst(message.message), spider);
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("process msg  {}", message);
-        }
-        // skip
-        return true;
+  @Override
+  public boolean pushTask(Spider spider, UMQMessage message) {
+    boolean begin = StringUtils.startsWithIgnoreCase(message.message, "autohome");
+    if (begin) {
+      push(buildRequst(message.message), spider);
     }
+    if (logger.isDebugEnabled()) {
+      logger.debug("process msg  {}", message);
+    }
+    // skip
+    return true;
+  }
 
-    @Override
-    Request buildRequst(String message) {
-        return new Request(START_URL);
-    }
+  @Override
+  Request buildRequst(String message) {
+    return new Request(START_URL);
+  }
 
 }

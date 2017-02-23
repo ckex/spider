@@ -28,9 +28,10 @@
 	</modules>
 
 	<properties>
-		<checkstyle.config.location>eclipse-java-google-style.xml</checkstyle.config.location>
+		<checkstyle.config.location>/google_checks.xml</checkstyle.config.location>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<autoconfig.plugin.version>1.2</autoconfig.plugin.version>
 		<antx.conf>${path}</antx.conf>
 		<output.dir>${outputDir}</output.dir>
 		<output.file.name>${projectName}</output.file.name>
@@ -54,7 +55,7 @@
 		<tess4j.version>3.2.1</tess4j.version>
 		<spring-boot.version>1.2.4.RELEASE</spring-boot.version>
 		<webmagic.version>0.6.1-SNAPSHOT</webmagic.version>
-        <tbschedule.version>3.3.3.2</tbschedule.version>
+		<tbschedule.version>3.3.3.2</tbschedule.version>
 		<zookeeper.version>3.5.1-alpha</zookeeper.version>
 		<selenium.version>3.0.1</selenium.version>
 		<htmlunit.driver.version>2.23.2</htmlunit.driver.version>
@@ -63,9 +64,9 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-			  <groupId>ckex</groupId>
-			  <artifactId>tprofiler</artifactId>
-			  <version>1.0.1</version>
+				<groupId>ckex</groupId>
+				<artifactId>tprofiler</artifactId>
+				<version>1.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.errorprone</groupId>
@@ -365,9 +366,9 @@
 				<version>${dom4j.version}</version>
 			</dependency>
 			<dependency>
-			  <groupId>xml-apis</groupId>
-			  <artifactId>xml-apis</artifactId>
-		      <version>1.4.01</version>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis</artifactId>
+				<version>1.4.01</version>
 			</dependency>
 			<!-- OCR start -->
 			<dependency>
@@ -430,7 +431,7 @@
 				<artifactId>htmlunit-driver</artifactId>
 				<version>${htmlunit.driver.version}</version>
 			</dependency>
-			<!-- selenium end-->
+			<!-- selenium end -->
 
 		</dependencies>
 	</dependencyManagement>
@@ -439,13 +440,13 @@
 
 	<dependencies>
 		<dependency>
-			  <groupId>xml-apis</groupId>
-			  <artifactId>xml-apis</artifactId>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi</artifactId>
-		    <version>3.15</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.15</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.uadetector</groupId>
@@ -658,8 +659,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		  <groupId>ckex</groupId>
-		  <artifactId>tprofiler</artifactId>
+			<groupId>ckex</groupId>
+			<artifactId>tprofiler</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -755,7 +756,7 @@
 			</build>
 		</profile>
 
-		<!-- 生产环境 spider-->
+		<!-- 生产环境 spider -->
 		<profile>
 			<id>spider-production</id>
 			<properties>
@@ -794,7 +795,7 @@
 			</build>
 		</profile>
 
-		<!-- 生产环境 datasync-->
+		<!-- 生产环境 datasync -->
 		<profile>
 			<id>datasync-production</id>
 			<properties>
@@ -916,6 +917,26 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<configLocation>google_checks.xml</configLocation>
+							<encoding>UTF-8</encoding>
+							<consoleOutput>true</consoleOutput>
+							<failsOnError>true</failsOnError>
+							<linkXRef>true</linkXRef>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- <plugin> <groupId>org.scala-tools</groupId> <artifactId>maven-scala-plugin</artifactId> 
 				<executions> <execution> <id>scala-compile-first</id> <phase>process-resources</phase> 
 				<goals> <goal>add-source</goal> <goal>compile</goal> </goals> </execution> 
@@ -1022,39 +1043,25 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
 		</plugins>
 	</reporting>
-	
-	<!-- <repositories>
-		<repository>
-			<id>nexus-mljr</id>
-           <url>http://maven.youjie.com/content/groups/public</url>
-           <releases><enabled>true</enabled></releases>
-           <snapshots><enabled>true</enabled></snapshots>
-		</repository>
-		<repository>
-           <id>aliyun</id>
-           <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-           <releases><enabled>true</enabled></releases>
-           <snapshots><enabled>true</enabled></snapshots>
-         </repository>
-	</repositories>
-	
-	<pluginRepositories>
-		<pluginRepository>
-			<id>nexus-mljr</id>
-           	<url>http://maven.youjie.com/content/groups/public</url>
-           	<releases><enabled>true</enabled></releases>
-           	<snapshots><enabled>true</enabled></snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>aliyun</id>
-           	<url>http://maven.aliyun.com/nexus/content/groups/public</url>
-           	<releases><enabled>true</enabled></releases>
-           	<snapshots><enabled>true</enabled></snapshots>
-		</pluginRepository>	
-	</pluginRepositories> -->
-  
+
+	<!-- <repositories> <repository> <id>nexus-mljr</id> <url>http://maven.youjie.com/content/groups/public</url> 
+		<releases><enabled>true</enabled></releases> <snapshots><enabled>true</enabled></snapshots> 
+		</repository> <repository> <id>aliyun</id> <url>http://maven.aliyun.com/nexus/content/groups/public</url> 
+		<releases><enabled>true</enabled></releases> <snapshots><enabled>true</enabled></snapshots> 
+		</repository> </repositories> <pluginRepositories> <pluginRepository> <id>nexus-mljr</id> 
+		<url>http://maven.youjie.com/content/groups/public</url> <releases><enabled>true</enabled></releases> 
+		<snapshots><enabled>true</enabled></snapshots> </pluginRepository> <pluginRepository> 
+		<id>aliyun</id> <url>http://maven.aliyun.com/nexus/content/groups/public</url> 
+		<releases><enabled>true</enabled></releases> <snapshots><enabled>true</enabled></snapshots> 
+		</pluginRepository> </pluginRepositories> -->
+
 	<distributionManagement>
 		<repository>
 			<id>mljr-releases</id>

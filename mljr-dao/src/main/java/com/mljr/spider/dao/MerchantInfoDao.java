@@ -13,7 +13,7 @@ import java.util.List;
 @DataSource("rc")
 public interface MerchantInfoDao {
 
-	List<MerchantInfoDo> listById(String lastId, int limit);
+  List<MerchantInfoDo> listById(String lastId, int limit);
 
-	List<HashMap> listAddressById(String lastId, int limit);
+  List<HashMap> listAddressById(String lastId, int limit);
 }

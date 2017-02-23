@@ -16,40 +16,40 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 public class RedisClient {
 
-	private JedisPool pool = null;
+  private JedisPool pool = null;
 
-	public RedisClient(String host, int port, int timeout, int maxTotal, int maxIdle, int maxWaitMillis) {
-		super();
-		JedisPoolConfig config = new JedisPoolConfig();
-		config.setMaxTotal(maxTotal);
-		config.setMaxIdle(maxIdle);
-		config.setTestOnBorrow(true);
-		config.setMaxWaitMillis(maxWaitMillis);
-		this.pool = new JedisPool(config, host, port, timeout);
-	}
+  public RedisClient(String host, int port, int timeout, int maxTotal, int maxIdle, int maxWaitMillis) {
+    super();
+    JedisPoolConfig config = new JedisPoolConfig();
+    config.setMaxTotal(maxTotal);
+    config.setMaxIdle(maxIdle);
+    config.setTestOnBorrow(true);
+    config.setMaxWaitMillis(maxWaitMillis);
+    this.pool = new JedisPool(config, host, port, timeout);
+  }
 
-	private Jedis getResource() {
-		Jedis jedis = pool.getResource();
-		if (jedis == null) {
-			throw new RuntimeException("Get jedis can't be null.");
-		}
-		return jedis;
-	}
+  private Jedis getResource() {
+    Jedis jedis = pool.getResource();
+    if (jedis == null) {
+      throw new RuntimeException("Get jedis can't be null.");
+    }
+    return jedis;
+  }
 
-	public <T> T use(Function<? super Jedis, T> function) {
-		Jedis jedis = null;
-		T result = null;
-		try {
-			jedis = getResource();
-			result = function.apply(jedis);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			if (jedis != null) {
-				jedis.close();
-			}
-		}
-		return result;
-	}
+  public <T> T use(Function<? super Jedis, T> function) {
+    Jedis jedis = null;
+    T result = null;
+    try {
+      jedis = getResource();
+      result = function.apply(jedis);
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    } finally {
+      if (jedis != null) {
+        jedis.close();
+      }
+    }
+    return result;
+  }
 
 }

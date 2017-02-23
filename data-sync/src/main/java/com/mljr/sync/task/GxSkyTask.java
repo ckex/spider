@@ -8,25 +8,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class GxSkyTask  extends AbstractTask{
+// @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class GxSkyTask extends AbstractTask {
 
-    @Autowired
-    private GxSkyTaskService gxSkyTaskService;
+  @Autowired
+  private GxSkyTaskService gxSkyTaskService;
 
-    public  GxSkyTask(){
-        super();
+  public GxSkyTask() {
+    super();
+  }
+
+  @Override
+  void execute() {
+    try {
+      gxSkyTaskService.sendFlag();
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
     }
-    @Override
-    void execute() {
-        try {
-            gxSkyTaskService.sendFlag();
-        } catch (Exception ex) {
-            if (logger.isDebugEnabled()) {
-                ex.printStackTrace();
-            }
-            logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-        }
-    }
+  }
 }
 

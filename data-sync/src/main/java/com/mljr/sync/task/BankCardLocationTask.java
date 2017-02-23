@@ -9,26 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+// @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class BankCardLocationTask extends AbstractTask {
 
-	@Autowired
-	private BankCardLocationService bankCardLocationService;
+  @Autowired
+  private BankCardLocationService bankCardLocationService;
 
-	public BankCardLocationTask() {
-		super();
-	}
+  public BankCardLocationTask() {
+    super();
+  }
 
-	@Override
-	void execute() {
-		try {
-			bankCardLocationService.syncBankCard();
-		} catch (Exception ex) {
-			if (logger.isDebugEnabled()) {
-				ex.printStackTrace();
-			}
-			logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-		}
-	}
+  @Override
+  void execute() {
+    try {
+      bankCardLocationService.syncBankCard();
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
+    }
+  }
 
 }

@@ -17,16 +17,16 @@ import redis.clients.jedis.Jedis;
  */
 public class RedisClientTests extends AbstractIMljrDaoTest {
 
-	@Test
-	public void testGet() {
-		String result = redisClient.use(new Function<Jedis, String>() {
+  @Test
+  public void testGet() {
+    String result = redisClient.use(new Function<Jedis, String>() {
 
-			@Override
-			public String apply(Jedis jedis) {
-				return jedis.get("test");
-			}
-		});
-		logger.debug("result===> " + result);
-	}
+      @Override
+      public String apply(Jedis jedis) {
+        return jedis.get("test");
+      }
+    });
+    logger.debug("result===> " + result);
+  }
 
 }

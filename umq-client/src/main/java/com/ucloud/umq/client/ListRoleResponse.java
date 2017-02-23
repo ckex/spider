@@ -10,17 +10,16 @@ import java.util.List;
  * Created by alpha on 8/10/16.
  */
 public class ListRoleResponse extends ApiResponse {
-    @JsonProperty("DataSet")
-    private List<Role> DataSet;
+  @JsonProperty("DataSet")
+  private List<Role> DataSet;
 
-    public List<Role> getDataSet() {
-        return DataSet;
-    }
+  public List<Role> getDataSet() {
+    return DataSet;
+  }
 
-    public void setDataSet(List<Role> dataSet) {
-        DataSet = dataSet;
-    }
+  public void setDataSet(List<Role> dataSet) {
+    DataSet = dataSet;
+  }
 }
-
 
 

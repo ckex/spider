@@ -28,42 +28,39 @@ import us.codecraft.webmagic.pipeline.FilePipeline;
  */
 public class LocalFilePipeline extends FilePipeline {
 
-	protected transient Logger logger = LoggerFactory.getLogger(getClass());
+  protected transient Logger logger = LoggerFactory.getLogger(getClass());
 
-	public LocalFilePipeline(String path) {
-		super(path);
-	}
+  public LocalFilePipeline(String path) {
+    super(path);
+  }
 
-	@Override
-	public void process(ResultItems resultItems, Task task) {
-		String path = buildPath(task.getUUID());
-		try {
-			PrintWriter printWriter = new PrintWriter(
-					new OutputStreamWriter(
-							new FileOutputStream(
-									getFile(path + DigestUtils.md5Hex(resultItems.getRequest().getUrl()) + ".html")),
-							"UTF-8"));
-			printWriter.println("url:\t" + resultItems.getRequest().getUrl());
-			for (Map.Entry<String, Object> entry : resultItems.getAll().entrySet()) {
-				if (entry.getValue() instanceof Iterable) {
-					Iterable value = (Iterable) entry.getValue();
-					printWriter.println(entry.getKey() + ":");
-					for (Object o : value) {
-						printWriter.println(o);
-					}
-				} else {
-					printWriter.println(entry.getKey() + ":\t" + entry.getValue());
-				}
-			}
-			printWriter.close();
-		} catch (IOException e) {
-			logger.warn("write file error", e);
-		}
-	}
+  @Override
+  public void process(ResultItems resultItems, Task task) {
+    String path = buildPath(task.getUUID());
+    try {
+      PrintWriter printWriter = new PrintWriter(
+          new OutputStreamWriter(new FileOutputStream(getFile(path + DigestUtils.md5Hex(resultItems.getRequest().getUrl()) + ".html")), "UTF-8"));
+      printWriter.println("url:\t" + resultItems.getRequest().getUrl());
+      for (Map.Entry<String, Object> entry : resultItems.getAll().entrySet()) {
+        if (entry.getValue() instanceof Iterable) {
+          Iterable value = (Iterable) entry.getValue();
+          printWriter.println(entry.getKey() + ":");
+          for (Object o : value) {
+            printWriter.println(o);
+          }
+        } else {
+          printWriter.println(entry.getKey() + ":\t" + entry.getValue());
+        }
+      }
+      printWriter.close();
+    } catch (IOException e) {
+      logger.warn("write file error", e);
+    }
+  }
 
-	private String buildPath(String uuid) {
-		String hourStr = DateFormatUtils.format(new Date(), "yyyy-MM-dd-HH");
-		return this.path + PATH_SEPERATOR + hourStr + PATH_SEPERATOR + uuid + PATH_SEPERATOR;
-	}
+  private String buildPath(String uuid) {
+    String hourStr = DateFormatUtils.format(new Date(), "yyyy-MM-dd-HH");
+    return this.path + PATH_SEPERATOR + hourStr + PATH_SEPERATOR + uuid + PATH_SEPERATOR;
+  }
 
 }

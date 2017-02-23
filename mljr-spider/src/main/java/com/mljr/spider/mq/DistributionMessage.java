@@ -25,88 +25,87 @@ import com.mljr.spider.scheduler.manager.AbstractMessage.PullMsgTask;
  */
 public class DistributionMessage {
 
-	protected transient Logger logger = LoggerFactory.getLogger(getClass());
+  protected transient Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final int THREAD_SIZE = 1; // must 1
-	protected final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(THREAD_SIZE,
-			new ThreadFactory() {
+  private final int THREAD_SIZE = 1; // must 1
+  protected final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(THREAD_SIZE, new ThreadFactory() {
 
-				@Override
-				public Thread newThread(Runnable r) {
-					return new Thread(r, "distribution-message");
-				}
-			});
+    @Override
+    public Thread newThread(Runnable r) {
+      return new Thread(r, "distribution-message");
+    }
+  });
 
-	private final Map<String, BlockingQueue<UMQMessage>> queues = new HashMap<>();
+  private final Map<String, BlockingQueue<UMQMessage>> queues = new HashMap<>();
 
-	private final PullMsgTask pullMsgTask;
+  private final PullMsgTask pullMsgTask;
 
-	public synchronized void addQueue(String key, BlockingQueue<UMQMessage> queue) {
-		if (queues.containsKey(key)) {
-			throw new IllegalArgumentException("key already :" + key);
-		}
-		queues.put(key, queue);
-	}
+  public synchronized void addQueue(String key, BlockingQueue<UMQMessage> queue) {
+    if (queues.containsKey(key)) {
+      throw new IllegalArgumentException("key already :" + key);
+    }
+    queues.put(key, queue);
+  }
 
-	public DistributionMessage(PullMsgTask pullMsgTask) {
-		super();
-		this.pullMsgTask = pullMsgTask;
-	}
+  public DistributionMessage(PullMsgTask pullMsgTask) {
+    super();
+    this.pullMsgTask = pullMsgTask;
+  }
 
-	public void start() {
-		startTask(pullMsgTask);
-	}
+  public void start() {
+    startTask(pullMsgTask);
+  }
 
-	private void startTask(final PullMsgTask task) {
-		final AtomicInteger id = new AtomicInteger(0);
-		startTask(new Runnable() {
+  private void startTask(final PullMsgTask task) {
+    final AtomicInteger id = new AtomicInteger(0);
+    startTask(new Runnable() {
 
-			@Override
-			public void run() {
-				logger.debug("start pull msg task. ");
-				if (queues.isEmpty()) {
-					logger.info(" queues is empty. ");
-					return;
-				}
-				for (;;) {
-					String message = task.pullMsg();
-					if (StringUtils.isBlank(message)) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("message is empty.");
-						}
-						break;
-					}
-					UMQMessage msg = new UMQMessage(String.valueOf(Math.abs(id.incrementAndGet())), message);
-					sentMsg(msg);
-				}
-			}
-		});
+      @Override
+      public void run() {
+        logger.debug("start pull msg task. ");
+        if (queues.isEmpty()) {
+          logger.info(" queues is empty. ");
+          return;
+        }
+        for (;;) {
+          String message = task.pullMsg();
+          if (StringUtils.isBlank(message)) {
+            if (logger.isDebugEnabled()) {
+              logger.debug("message is empty.");
+            }
+            break;
+          }
+          UMQMessage msg = new UMQMessage(String.valueOf(Math.abs(id.incrementAndGet())), message);
+          sentMsg(msg);
+        }
+      }
+    });
 
-	}
+  }
 
-	private void sentMsg(UMQMessage msg) {
-		for (String key : queues.keySet()) {
-			try {
-				queues.get(key).put(msg);
-				if (logger.isDebugEnabled()) {
-					if (Math.random() * 100 < 1) {
-						logger.debug(key + " ==> " + msg.toString());
-					}
-				}
-			} catch (InterruptedException ex) {
-				logger.error(key + " put message error. " + ExceptionUtils.getStackTrace(ex));
-			}
-		}
-	}
+  private void sentMsg(UMQMessage msg) {
+    for (String key : queues.keySet()) {
+      try {
+        queues.get(key).put(msg);
+        if (logger.isDebugEnabled()) {
+          if (Math.random() * 100 < 1) {
+            logger.debug(key + " ==> " + msg.toString());
+          }
+        }
+      } catch (InterruptedException ex) {
+        logger.error(key + " put message error. " + ExceptionUtils.getStackTrace(ex));
+      }
+    }
+  }
 
-	private AtomicBoolean stat = new AtomicBoolean(false);
+  private AtomicBoolean stat = new AtomicBoolean(false);
 
-	private synchronized void startTask(Runnable r) {
-		if (stat.get()) {
-			throw new RuntimeException("Task is running.");
-		}
-		executor.scheduleWithFixedDelay(r, 0, 1, TimeUnit.SECONDS);
-		stat.set(true);
-	}
+  private synchronized void startTask(Runnable r) {
+    if (stat.get()) {
+      throw new RuntimeException("Task is running.");
+    }
+    executor.scheduleWithFixedDelay(r, 0, 1, TimeUnit.SECONDS);
+    stat.set(true);
+  }
 
 }

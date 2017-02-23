@@ -12,22 +12,22 @@ import com.ucloud.umq.action.MessageData;
  */
 public class UMQMessage {
 
-	public final String messageId;
-	public final String message;
+  public final String messageId;
+  public final String message;
 
-	public UMQMessage(String messageId, String message) {
-		super();
-		this.messageId = messageId;
-		this.message = message;
-	}
+  public UMQMessage(String messageId, String message) {
+    super();
+    this.messageId = messageId;
+    this.message = message;
+  }
 
-	public UMQMessage(MessageData msgData) {
-		this(msgData.getMsgId(), msgData.getMsgBody());
-	}
+  public UMQMessage(MessageData msgData) {
+    this(msgData.getMsgId(), msgData.getMsgBody());
+  }
 
-	@Override
-	public String toString() {
-		return "UMQMessage [messageId=" + messageId + ", message=" + message + "]";
-	}
+  @Override
+  public String toString() {
+    return "UMQMessage [messageId=" + messageId + ", message=" + message + "]";
+  }
 
 }

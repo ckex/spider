@@ -12,6 +12,6 @@ import java.util.Map;
 @DataSource("rc")
 public interface CustomerInfoDao {
 
-	List<Map> listById(String lastId, int limit);
+  List<Map> listById(String lastId, int limit);
 
 }

@@ -19,22 +19,22 @@ import us.codecraft.webmagic.pipeline.Pipeline;
  */
 public class LogPipeline implements Pipeline {
 
-	private static final Logger LOG = LoggerFactory.getLogger(LogPipeline.class);
-	private final Logger logger; // = LoggerFactory.getLogger("gps-data");
+  private static final Logger LOG = LoggerFactory.getLogger(LogPipeline.class);
+  private final Logger logger; // = LoggerFactory.getLogger("gps-data");
 
-	public LogPipeline(String name) {
-		logger = LoggerFactory.getLogger(name);
-	}
+  public LogPipeline(String name) {
+    logger = LoggerFactory.getLogger(name);
+  }
 
-	@Override
-	public void process(ResultItems resultItems, Task task) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("backup result--->" + resultItems.toString());
-		}
-		Map<String, Object> result = resultItems.getAll();
-		for (Object obj : result.values()) {
-			logger.info(obj.toString());
-		}
-	}
+  @Override
+  public void process(ResultItems resultItems, Task task) {
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("backup result--->" + resultItems.toString());
+    }
+    Map<String, Object> result = resultItems.getAll();
+    for (Object obj : result.values()) {
+      logger.info(obj.toString());
+    }
+  }
 
 }

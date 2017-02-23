@@ -9,26 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+// @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class BitautoTask extends AbstractTask {
 
-	@Autowired
-	private BitautoService bitautoService;
+  @Autowired
+  private BitautoService bitautoService;
 
-	public BitautoTask() {
-		super();
-	}
+  public BitautoTask() {
+    super();
+  }
 
-	@Override
-	void execute() {
-		try {
-			bitautoService.syncCarinfo();
-		} catch (Exception ex) {
-			if (logger.isDebugEnabled()) {
-				ex.printStackTrace();
-			}
-			logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-		}
-	}
+  @Override
+  void execute() {
+    try {
+      bitautoService.syncCarinfo();
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
+    }
+  }
 
 }

@@ -16,20 +16,20 @@ import us.codecraft.webmagic.SpiderListener;
  */
 public class DownloaderSpiderListener implements SpiderListener {
 
-	protected transient final Logger logger;
+  protected transient final Logger logger;
 
-	public DownloaderSpiderListener(String logName) {
-		super();
-		this.logger = LoggerFactory.getLogger(logName);
-	}
+  public DownloaderSpiderListener(String logName) {
+    super();
+    this.logger = LoggerFactory.getLogger(logName);
+  }
 
-	@Override
-	public void onSuccess(Request request) {
-		// nothing.
-	}
+  @Override
+  public void onSuccess(Request request) {
+    // nothing.
+  }
 
-	@Override
-	public void onError(Request request) {
-		logger.error(request.toString());
-	}
+  @Override
+  public void onError(Request request) {
+    logger.error(request.toString());
+  }
 }

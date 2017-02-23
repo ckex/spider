@@ -8,56 +8,56 @@ import java.util.List;
  */
 public class QQCookie implements Serializable {
 
-    private static final long serialVersionUID = 3539754193877470622L;
+  private static final long serialVersionUID = 3539754193877470622L;
 
-    private String user;//账号
+  private String user;// 账号
 
-    private String password;//密码
+  private String password;// 密码
 
-    private List<CCookie> cookies;//cookies
+  private List<CCookie> cookies;// cookies
 
-    private long timestamp = System.currentTimeMillis();
+  private long timestamp = System.currentTimeMillis();
 
-    public QQCookie() {
+  public QQCookie() {
 
-    }
+  }
 
-    public QQCookie(String user, String password, List<CCookie> cookies, long timestamp) {
-        this.user = user;
-        this.password = password;
-        this.cookies = cookies;
-        this.timestamp = timestamp;
-    }
+  public QQCookie(String user, String password, List<CCookie> cookies, long timestamp) {
+    this.user = user;
+    this.password = password;
+    this.cookies = cookies;
+    this.timestamp = timestamp;
+  }
 
-    public String getUser() {
-        return user;
-    }
+  public String getUser() {
+    return user;
+  }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
+  public void setUser(String user) {
+    this.user = user;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public List<CCookie> getCookies() {
-        return cookies;
-    }
+  public List<CCookie> getCookies() {
+    return cookies;
+  }
 
-    public void setCookies(List<CCookie> cookies) {
-        this.cookies = cookies;
-    }
+  public void setCookies(List<CCookie> cookies) {
+    this.cookies = cookies;
+  }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
+  public long getTimestamp() {
+    return timestamp;
+  }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
+  public void setTimestamp(long timestamp) {
+    this.timestamp = timestamp;
+  }
 }

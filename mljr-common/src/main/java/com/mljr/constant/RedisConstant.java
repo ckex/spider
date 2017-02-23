@@ -5,8 +5,7 @@ package com.mljr.constant;
  */
 public class RedisConstant {
 
-    private RedisConstant() {
-    }
+  private RedisConstant() {}
 
-    public static final String QQ_GROUPS_KEY="qq-groups";
+  public static final String QQ_GROUPS_KEY = "qq-groups";
 }

@@ -10,30 +10,30 @@ package com.mljr.spider.request;
  */
 public class RestfulReqeust extends AbstractRequest {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private String params;
+  private String params;
 
-	public RestfulReqeust() {
-		super();
-	}
+  public RestfulReqeust() {
+    super();
+  }
 
-	public RestfulReqeust(String url) {
-		super(url);
-	}
+  public RestfulReqeust(String url) {
+    super(url);
+  }
 
-	public RestfulReqeust(String url, String params) {
-		super(url);
-		this.params = params;
-	}
+  public RestfulReqeust(String url, String params) {
+    super(url);
+    this.params = params;
+  }
 
-	public String getParams() {
-		return params;
-	}
+  public String getParams() {
+    return params;
+  }
 
-	@Override
-	public String toString() {
-		return "RestfulReqeust [params=" + params + "]" + super.toString();
-	}
+  @Override
+  public String toString() {
+    return "RestfulReqeust [params=" + params + "]" + super.toString();
+  }
 
 }

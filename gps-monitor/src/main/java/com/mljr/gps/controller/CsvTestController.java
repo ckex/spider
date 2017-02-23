@@ -16,21 +16,16 @@ import java.io.IOException;
  */
 @RestController
 public class CsvTestController {
-    @RequestMapping(value = "/media", method = RequestMethod.GET)
-    public ResponseEntity<InputStreamResource> downloadFile()
-            throws IOException {
-        FileSystemResource file = new FileSystemResource("/Users/songchi/get_page.js");
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getFilename()));
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
+  @RequestMapping(value = "/media", method = RequestMethod.GET)
+  public ResponseEntity<InputStreamResource> downloadFile() throws IOException {
+    FileSystemResource file = new FileSystemResource("/Users/songchi/get_page.js");
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+    headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getFilename()));
+    headers.add("Pragma", "no-cache");
+    headers.add("Expires", "0");
 
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentLength(file.contentLength())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(new InputStreamResource(file.getInputStream()));
-    }
+    return ResponseEntity.ok().headers(headers).contentLength(file.contentLength()).contentType(MediaType.parseMediaType("application/octet-stream"))
+        .body(new InputStreamResource(file.getInputStream()));
+  }
 }

@@ -20,59 +20,59 @@ import java.util.Map;
 @RestController
 public class GpsResendController {
 
-    @Autowired
-    private GpsResendService gpsResendService;
+  @Autowired
+  private GpsResendService gpsResendService;
 
-    @RequestMapping("/")
-    public ModelAndView index() {
-        return new ModelAndView("index");
-    }
+  @RequestMapping("/")
+  public ModelAndView index() {
+    return new ModelAndView("index");
+  }
 
-    @RequestMapping("/dirs")
-    public ModelAndView listDirs() {
-        ModelAndView mav = new ModelAndView("dirs");
-        List<String> list = Arrays.asList(gpsResendService.listDirs());
-        Collections.sort(list);
-        List<List<String>> dataList = Lists.partition(list, 3);
-        mav.addObject("dataList", dataList);
-        return mav;
-    }
+  @RequestMapping("/dirs")
+  public ModelAndView listDirs() {
+    ModelAndView mav = new ModelAndView("dirs");
+    List<String> list = Arrays.asList(gpsResendService.listDirs());
+    Collections.sort(list);
+    List<List<String>> dataList = Lists.partition(list, 3);
+    mav.addObject("dataList", dataList);
+    return mav;
+  }
 
-    @RequestMapping("/files/{subDir}")
-    public ModelAndView listFiles(@PathVariable("subDir") String subDir) {
+  @RequestMapping("/files/{subDir}")
+  public ModelAndView listFiles(@PathVariable("subDir") String subDir) {
 
-        ModelAndView mav = new ModelAndView("files");
-        List<String> list = Arrays.asList(gpsResendService.listFilesByDir(subDir));
-        Collections.sort(list);
-        List<List<String>> dataList = Lists.partition(list, 3);
-        mav.addObject("dataList", dataList);
-        mav.addObject("subDir", subDir);
-        return mav;
-    }
+    ModelAndView mav = new ModelAndView("files");
+    List<String> list = Arrays.asList(gpsResendService.listFilesByDir(subDir));
+    Collections.sort(list);
+    List<List<String>> dataList = Lists.partition(list, 3);
+    mav.addObject("dataList", dataList);
+    mav.addObject("subDir", subDir);
+    return mav;
+  }
 
-    //
-    @RequestMapping("/history")
-    public ModelAndView listHistoryFiles() {
-        ModelAndView mav = new ModelAndView("historyFiles");
-        List<String> list = Arrays.asList(gpsResendService.listHistoryFiles());
-        Collections.sort(list);
-        List<List<String>> dataList = Lists.partition(list, 3);
-        mav.addObject("dataList", dataList);
-        return mav;
-    }
+  //
+  @RequestMapping("/history")
+  public ModelAndView listHistoryFiles() {
+    ModelAndView mav = new ModelAndView("historyFiles");
+    List<String> list = Arrays.asList(gpsResendService.listHistoryFiles());
+    Collections.sort(list);
+    List<List<String>> dataList = Lists.partition(list, 3);
+    mav.addObject("dataList", dataList);
+    return mav;
+  }
 
-    @RequestMapping(value = "/resend/{subDir}/{fileName}")
-    public Map<String, Object> resend(@PathVariable("subDir") String subDir, @PathVariable("fileName") String fileName) {
-        String fullName = GpsResendService.GPS_FILE_DIR + "/" + subDir + "/" + fileName + ".json";
-        return gpsResendService.resend(fullName);
-    }
+  @RequestMapping(value = "/resend/{subDir}/{fileName}")
+  public Map<String, Object> resend(@PathVariable("subDir") String subDir, @PathVariable("fileName") String fileName) {
+    String fullName = GpsResendService.GPS_FILE_DIR + "/" + subDir + "/" + fileName + ".json";
+    return gpsResendService.resend(fullName);
+  }
 
-    @RequestMapping(value = "/resendHistory/{fileName}")
-    @ResponseBody
-    public Map<String, Object> resendHistory(@PathVariable("fileName") String fileName) {
-        String fullName = GpsResendService.GPS_HISTORY_FILE_DIR + "/" + fileName + ".log";
-        return gpsResendService.resend(fullName);
-    }
+  @RequestMapping(value = "/resendHistory/{fileName}")
+  @ResponseBody
+  public Map<String, Object> resendHistory(@PathVariable("fileName") String fileName) {
+    String fullName = GpsResendService.GPS_HISTORY_FILE_DIR + "/" + fileName + ".log";
+    return gpsResendService.resend(fullName);
+  }
 
 
 }

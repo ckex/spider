@@ -13,16 +13,16 @@
 	<property name="BASIC_DATA_PATH" value="/data/backup/" />
 	<property name="SAIGE_DATA_HOME" value="${BASIC_DATA_PATH}saige" />
 	<property name="JUHE_DATA_HOME" value="${BASIC_DATA_PATH}juhe" />
-	<property name="GUA_DATA_HOME" value="${BASIC_DATA_PATH}guabu"/>
-	<property name="HCP_DATA_HOME" value="${BASIC_DATA_PATH}hcp"/>
-	<property name="CHA67_DATA_HOME" value="${BASIC_DATA_PATH}cha67"/>
-	<property name="YHK388_DATA_HOME" value="${BASIC_DATA_PATH}yhk388"/>
-	<property name="CHAYHK_DATA_HOME" value="${BASIC_DATA_PATH}chayhk"/>
-	<property name="AMAP_DATA_HOME" value="${BASIC_DATA_PATH}amap"/>
-	<property name="BAIDU_DATA_HOME" value="${BASIC_DATA_PATH}baidu"/>
-	<property name="TIANYANCHA_DATA_HOME" value="${BASIC_DATA_PATH}tianyancha"/>
-	<property name="IDCARD_DATA_HOME" value="${BASIC_DATA_PATH}idCard"/>
-	<property name="CARHOEM_DATA_HOME" value="${BASIC_DATA_PATH}carHome"/>
+	<property name="GUA_DATA_HOME" value="${BASIC_DATA_PATH}guabu" />
+	<property name="HCP_DATA_HOME" value="${BASIC_DATA_PATH}hcp" />
+	<property name="CHA67_DATA_HOME" value="${BASIC_DATA_PATH}cha67" />
+	<property name="YHK388_DATA_HOME" value="${BASIC_DATA_PATH}yhk388" />
+	<property name="CHAYHK_DATA_HOME" value="${BASIC_DATA_PATH}chayhk" />
+	<property name="AMAP_DATA_HOME" value="${BASIC_DATA_PATH}amap" />
+	<property name="BAIDU_DATA_HOME" value="${BASIC_DATA_PATH}baidu" />
+	<property name="TIANYANCHA_DATA_HOME" value="${BASIC_DATA_PATH}tianyancha" />
+	<property name="IDCARD_DATA_HOME" value="${BASIC_DATA_PATH}idCard" />
+	<property name="CARHOEM_DATA_HOME" value="${BASIC_DATA_PATH}carHome" />
 	<property name="DOWNLOADER_LISTENER_HOME" value="/data/listener" />
 	<contextName>${APP_NAME}</contextName>
 
@@ -30,7 +30,8 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>DEBUG</level>
@@ -52,7 +53,8 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -74,7 +76,8 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -91,12 +94,13 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<appender name="BAIDU-MOBILE-ERR"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -113,12 +117,13 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<appender name="SOGOU-MOBILE-ERR"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -135,12 +140,13 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<appender name="SAIGE-GPS-ERR"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -157,12 +163,13 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<appender name="QICHACHA-ERR"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -179,12 +186,13 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<appender name="IP138-MOBILE-ERR"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -201,12 +209,13 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<appender name="HUOCHE114-MOBILE-ERR"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -223,12 +232,13 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<appender name="GUISHU-MOBILE-ERR"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -247,10 +257,11 @@
 	</appender>
 
 	<appender name="GUABU-BC-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -260,7 +271,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/guabu-bc-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -269,10 +280,11 @@
 	</appender>
 
 	<appender name="HCP-BC-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -282,7 +294,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/hcp-bc-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -291,10 +303,11 @@
 	</appender>
 
 	<appender name="CHA67-BC-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -304,7 +317,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/cha67-bc-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -313,10 +326,11 @@
 	</appender>
 
 	<appender name="YHK388-BC-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -326,7 +340,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/yhk388-bc-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -335,10 +349,11 @@
 	</appender>
 
 	<appender name="CHAYHK-BC-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -348,7 +363,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/chayhk-bc-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -357,10 +372,11 @@
 	</appender>
 
 	<appender name="LBS-AMAP-GEO-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -370,7 +386,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/lbs-amap-geo-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -379,10 +395,11 @@
 	</appender>
 
 	<appender name="LBS-AMAP-REGEO-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -392,7 +409,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/lbs-amap-regeo-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -401,10 +418,11 @@
 	</appender>
 
 	<appender name="LBS-BAIDU-GEO-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -414,7 +432,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/lbs-baidu-geo-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -423,10 +441,11 @@
 	</appender>
 
 	<appender name="LBS-BAIDU-REGEO-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -436,7 +455,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/lbs-baidu-regeo-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -444,9 +463,9 @@
 		</rollingPolicy>
 	</appender>
 
-	<!--身份证黑名单监听"-->
+	<!--身份证黑名单监听" -->
 	<appender name="BLACK_IDCARD_LISTEREN_ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
 		</encoder>
@@ -458,14 +477,14 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/IDCARD-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<appender name="GPS-DATA"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
@@ -487,7 +506,7 @@
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<appender name="JUHE-MOBILE-DATA"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
@@ -511,7 +530,7 @@
 	</appender>
 
 	<appender name="GUABU-BC-DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -524,7 +543,7 @@
 			<fileNamePattern>${GUA_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -533,7 +552,7 @@
 	</appender>
 
 	<appender name="HCP-BC-DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -546,7 +565,7 @@
 			<fileNamePattern>${HCP_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -555,7 +574,7 @@
 	</appender>
 
 	<appender name="CHA67-BC-DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -568,7 +587,7 @@
 			<fileNamePattern>${CHA67_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -577,7 +596,7 @@
 	</appender>
 
 	<appender name="YHK388-BC-DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -590,7 +609,7 @@
 			<fileNamePattern>${YHK388_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -599,7 +618,7 @@
 	</appender>
 
 	<appender name="CHAYHK-BC-DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -612,7 +631,7 @@
 			<fileNamePattern>${CHAYHK_DATA_HOME}/BC-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -621,7 +640,7 @@
 	</appender>
 
 	<appender name="LBS-AMAP-GEO-DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -634,7 +653,7 @@
 			<fileNamePattern>${AMAP_DATA_HOME}/GEO-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -643,7 +662,7 @@
 	</appender>
 
 	<appender name="LBS-AMAP-REGEO-DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -656,7 +675,7 @@
 			<fileNamePattern>${AMAP_DATA_HOME}/REGEO-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -665,7 +684,7 @@
 	</appender>
 
 	<appender name="LBS-BAIDU-GEO-DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -678,7 +697,7 @@
 			<fileNamePattern>${BAIDU_DATA_HOME}/GEO-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -687,7 +706,7 @@
 	</appender>
 
 	<appender name="LBS-BAIDU-REGEO-DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -700,7 +719,7 @@
 			<fileNamePattern>${BAIDU_DATA_HOME}/REGEO-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -709,10 +728,11 @@
 	</appender>
 
 	<appender name="TIANYANCHA-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -722,7 +742,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/tianyancha-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -731,7 +751,7 @@
 	</appender>
 
 	<appender name="BLACK_IDCARD_LOG_DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -744,7 +764,7 @@
 			<fileNamePattern>${IDCARD_DATA_HOME}/REGEO-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -753,10 +773,11 @@
 	</appender>
 
 	<appender name="QQZONE-SHUOSHUO-ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
+				%logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -766,7 +787,7 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/qqzone-shuoshuo-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -775,7 +796,7 @@
 	</appender>
 	<!--汽车之家错误日志监听 -->
 	<appender name="CAR_HOME_NET_LISTEREN_ERR"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
 		</encoder>
@@ -787,16 +808,16 @@
 			<fileNamePattern>${DOWNLOADER_LISTENER_HOME}/carHome-info-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<maxHistory>300</maxHistory>
 		</rollingPolicy>
 	</appender>
-	<!--汽车之家日志监听-->
+	<!--汽车之家日志监听 -->
 	<appender name="CAR_HOME_NET_LOG_DATA"
-			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
 			<pattern>%msg%n</pattern>
@@ -809,7 +830,7 @@
 			<fileNamePattern>${CARHOEM_DATA_HOME}/carHome-info-%d{yyyy-MM-dd-HH}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
-					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- or whenever the file size reaches 100MB -->
 				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
@@ -843,30 +864,31 @@
 	<logger name="com.mljr.spider.scheduler.manager" level="DEBUG" />
 	<logger name="com.mljr.spider.scheduler" level="DEBUG" />
 	<logger name="com.mljr.spider" level="DEBUG" />
-	
+
 	<logger name="qichacha-downloader" level="INFO" additivity="false">
-	    <appender-ref ref="QICHACHA-ERR" />
+		<appender-ref ref="QICHACHA-ERR" />
 	</logger>
 	<logger name="ip138-mobile-downloader" level="INFO" additivity="false">
-	    <appender-ref ref="IP138-MOBILE-ERR" />
+		<appender-ref ref="IP138-MOBILE-ERR" />
 	</logger>
-	<logger name="huoche114-mobile-downloader" level="INFO" additivity="false">
-	    <appender-ref ref="HUOCHE114-MOBILE-ERR" />
+	<logger name="huoche114-mobile-downloader" level="INFO"
+		additivity="false">
+		<appender-ref ref="HUOCHE114-MOBILE-ERR" />
 	</logger>
 	<logger name="guishu-mobile-downloader" level="INFO" additivity="false">
-	    <appender-ref ref="GUISHU-MOBILE-ERR" />
+		<appender-ref ref="GUISHU-MOBILE-ERR" />
 	</logger>
 	<logger name="juhe-mobile-downloader" level="INFO" additivity="false">
-	    <appender-ref ref="JUHE-MOBILE-ERR" />
+		<appender-ref ref="JUHE-MOBILE-ERR" />
 	</logger>
 	<logger name="baidu-mobile-downloader" level="INFO" additivity="false">
-	    <appender-ref ref="BAIDU-MOBILE-ERR" />
+		<appender-ref ref="BAIDU-MOBILE-ERR" />
 	</logger>
 	<logger name="sogou-mobile-downloader" level="INFO" additivity="false">
-	    <appender-ref ref="SOGOU-MOBILE-ERR" />
+		<appender-ref ref="SOGOU-MOBILE-ERR" />
 	</logger>
 	<logger name="saige-gps-downloader" level="INFO" additivity="false">
-	    <appender-ref ref="SAIGE-GPS-ERR" />
+		<appender-ref ref="SAIGE-GPS-ERR" />
 	</logger>
 	<logger name="gps-data" level="INFO" additivity="false">
 		<appender-ref ref="GPS-DATA" />
@@ -911,66 +933,68 @@
 		<appender-ref ref="LBS-BAIDU-REGEO-DATA" />
 	</logger>
 
-	<!--身份证黑名单-->
+	<!--身份证黑名单 -->
 	<logger name="black_idCard_log_data" level="INFO" additivity="false">
-		<appender-ref ref="BLACK_IDCARD_LOG_DATA"/>
+		<appender-ref ref="BLACK_IDCARD_LOG_DATA" />
 	</logger>
-	<!--汽车之家日志-->
+	<!--汽车之家日志 -->
 	<logger name="car_home_net_log_data" level="INFO" additivity="false">
-		<appender-ref ref="CAR_HOME_NET_LOG_DATA"/>
+		<appender-ref ref="CAR_HOME_NET_LOG_DATA" />
 	</logger>
 
 	<logger name="guabu-bc-downloader" level="INFO" additivity="false">
-		<appender-ref ref="GUABU-BC-ERR"/>
+		<appender-ref ref="GUABU-BC-ERR" />
 	</logger>
 
 	<logger name="hcp-bc-downloader" level="INFO" additivity="false">
-		<appender-ref ref="HCP-BC-ERR"/>
+		<appender-ref ref="HCP-BC-ERR" />
 	</logger>
 
 	<logger name="cha67-bc-downloader" level="INFO" additivity="false">
-		<appender-ref ref="CHA67-BC-ERR"/>
+		<appender-ref ref="CHA67-BC-ERR" />
 	</logger>
 
 	<logger name="yhk388-bc-downloader" level="INFO" additivity="false">
-		<appender-ref ref="YHK388-BC-ERR"/>
+		<appender-ref ref="YHK388-BC-ERR" />
 	</logger>
 
 	<logger name="chayhk-bc-downloader" level="INFO" additivity="false">
-		<appender-ref ref="CHAYHK-BC-ERR"/>
+		<appender-ref ref="CHAYHK-BC-ERR" />
 	</logger>
 
 	<logger name="lbs-amap-geo-downloader" level="INFO" additivity="false">
-		<appender-ref ref="LBS-AMAP-GEO-ERR"/>
+		<appender-ref ref="LBS-AMAP-GEO-ERR" />
 	</logger>
 
-	<logger name="lbs-amap-regeo-downloader" level="INFO" additivity="false">
-		<appender-ref ref="LBS-AMAP-REGEO-ERR"/>
+	<logger name="lbs-amap-regeo-downloader" level="INFO"
+		additivity="false">
+		<appender-ref ref="LBS-AMAP-REGEO-ERR" />
 	</logger>
 
 	<logger name="lbs-baidu-geo-downloader" level="INFO" additivity="false">
-		<appender-ref ref="LBS-BAIDU-GEO-ERR"/>
+		<appender-ref ref="LBS-BAIDU-GEO-ERR" />
 	</logger>
 
-	<logger name="lbs-baidu-regeo-downloader" level="INFO" additivity="false">
-		<appender-ref ref="LBS-BAIDU-REGEO-ERR"/>
+	<logger name="lbs-baidu-regeo-downloader" level="INFO"
+		additivity="false">
+		<appender-ref ref="LBS-BAIDU-REGEO-ERR" />
 	</logger>
 
 	<logger name="tianyancha-downloader" level="INFO" additivity="false">
-		<appender-ref ref="TIANYANCHA-ERR"/>
+		<appender-ref ref="TIANYANCHA-ERR" />
 	</logger>
 
 	<logger name="qqzone-downloader" level="INFO" additivity="false">
-		<appender-ref ref="QQZONE-SHUOSHUO-ERR"/>
+		<appender-ref ref="QQZONE-SHUOSHUO-ERR" />
 	</logger>
 
-	<!--身份证黑名单监听-->
+	<!--身份证黑名单监听 -->
 	<logger name="blackidcard-downloader" level="INFO" additivity="false">
-		<appender-ref ref="BLACK_IDCARD_LISTEREN_ERR"/>
+		<appender-ref ref="BLACK_IDCARD_LISTEREN_ERR" />
 	</logger>
-	<!--汽车之家监听-->
+	<!--汽车之家监听 -->
 	<logger name="carhome-downloader" level="INFO" additivity="false">
-		<appender-ref ref="CAR_HOME_NET_LISTEREN_ERR"/>
+		<appender-ref ref="CAR_HOME_NET_LISTEREN_ERR" />
 	</logger>
 	<root level="DEBUG">
 		<appender-ref ref="A1" />
