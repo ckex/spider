@@ -1,5 +1,6 @@
 package com.mljr.operators.entity.model.operators;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SMSInfo {
@@ -14,6 +15,12 @@ public class SMSInfo {
     private String smsType;
 
     private String businessType;
+
+    private String location;
+
+    private String smsPackage;
+
+    private BigDecimal fee;
 
     private Date createTime;
 
@@ -65,6 +72,30 @@ public class SMSInfo {
 
     public void setBusinessType(String businessType) {
         this.businessType = businessType == null ? null : businessType.trim();
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
+    }
+
+    public String getSmsPackage() {
+        return smsPackage;
+    }
+
+    public void setSmsPackage(String smsPackage) {
+        this.smsPackage = smsPackage == null ? null : smsPackage.trim();
+    }
+
+    public BigDecimal getFee() {
+        return fee;
+    }
+
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
     }
 
     public Date getCreateTime() {

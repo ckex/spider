@@ -9,6 +9,8 @@ public class PackageInfo {
 
     private String productName;
 
+    private String brandName;
+
     private Date createTime;
 
     private Date updateTime;
@@ -35,6 +37,14 @@ public class PackageInfo {
 
     public void setProductName(String productName) {
         this.productName = productName == null ? null : productName.trim();
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName == null ? null : brandName.trim();
     }
 
     public Date getCreateTime() {
