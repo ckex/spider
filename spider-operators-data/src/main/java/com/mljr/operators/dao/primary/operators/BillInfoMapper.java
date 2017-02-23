@@ -1,19 +1,10 @@
 package com.mljr.operators.dao.primary.operators;
 
+import com.mljr.operators.dao.BaseMapper;
 import com.mljr.operators.entity.model.operators.BillInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface BillInfoMapper {
-    int deleteByPrimaryKey(Long id);
+public interface BillInfoMapper extends BaseMapper<BillInfo, Long> {
 
-    int insert(BillInfo record);
-
-    int insertSelective(BillInfo record);
-
-    BillInfo selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(BillInfo record);
-
-    int updateByPrimaryKey(BillInfo record);
 }
