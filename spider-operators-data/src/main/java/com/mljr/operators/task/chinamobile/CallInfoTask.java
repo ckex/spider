@@ -90,7 +90,7 @@ public class CallInfoTask implements Runnable {
 
 
         } catch (Exception e) {
-            logger.error("FlowInfoTask error", e);
+            logger.error("CallInfoTask error", e);
 
         }
     }

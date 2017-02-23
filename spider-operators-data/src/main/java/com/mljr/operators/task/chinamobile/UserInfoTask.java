@@ -43,14 +43,6 @@ public class UserInfoTask implements Runnable {
         }
     }
 
-    public static void main(String[] args) {
-        String jsonStr = "{\"error\":{\"code\":0,\"hint\":\"\",\"message\":\"\"},\"value\":{\"loginName\":\"*池\",\"loginMobil\":\"13681668945\"}}";
-        UserInfoResponse response =new Gson().fromJson(jsonStr,UserInfoResponse.class);
-        System.out.println(response.getValue().getLoginMobil());
-
-        System.out.println(response.getError().getCode());
-    }
-
     class UserInfoResponse {
 
         /**

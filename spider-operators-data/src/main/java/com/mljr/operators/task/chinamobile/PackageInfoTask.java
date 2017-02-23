@@ -55,7 +55,7 @@ public class PackageInfoTask implements Runnable {
 
 
         } catch (Exception e) {
-            logger.error("FlowInfoTask error", e);
+            logger.error("PackageInfoTask error", e);
 
         }
     }
