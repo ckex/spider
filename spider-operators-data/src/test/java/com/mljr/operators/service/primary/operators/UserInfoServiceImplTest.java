@@ -1,7 +1,7 @@
-package com.mljr.operators.service;
+package com.mljr.operators.service.primary.operators;
 
 import com.mljr.operators.entity.model.operators.UserInfo;
-import com.mljr.operators.service.primary.operators.IUserInfoService;
+import com.mljr.operators.service.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
