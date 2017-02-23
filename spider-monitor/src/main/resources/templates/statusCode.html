@@ -1,89 +1,94 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>状态码监控</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
-          href="../../css/bootstrap.min.css"/>
-    <style>
-        .success_rate{
-            color:red;
-            font-weight:900;
-        }
-        .expire_warn{
-            color: #f89406;
-            font-weight: bold;
-        }
-    </style>
+<title>状态码监控</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
+	href="../../css/bootstrap.min.css" />
+<style>
+.success_rate {
+	color: red;
+	font-weight: 900;
+}
+
+.expire_warn {
+	color: #f89406;
+	font-weight: bold;
+}
+</style>
 </head>
 <body>
-<div class="container" style="width: 1140px">
-    <div class="row">
-        <table class="table">
-            <tr>
-                <th>网站</th>
-                <th>服务器</th>
-                <th>时间</th>
-                <th>请求总数</th>
-                <th>解析成功数</th>
-                <th>成功率</th>
-                <th>解析成功率</th>
-                <th>200</th>
-                <th>301</th>
-                <th>302</th>
-                <th>304</th>
-                <th>307</th>
-                <th>401</th>
-                <th>403</th>
-                <th>404</th>
-                <th>500</th>
-                <th>501</th>
-                <th>504</th>
-                <th>所有状态码</th>
-            </tr>
-            <tr th:each="data : ${dataList}">
+	<div class="container" style="width: 1140px">
+		<div class="row">
+			<table class="table">
+				<tr>
+					<th>网站</th>
+					<th>服务器</th>
+					<th>时间</th>
+					<th>请求总数</th>
+					<th>解析成功数</th>
+					<th>成功率</th>
+					<th>解析成功率</th>
+					<th>200</th>
+					<th>301</th>
+					<th>302</th>
+					<th>304</th>
+					<th>307</th>
+					<th>401</th>
+					<th>403</th>
+					<th>404</th>
+					<th>500</th>
+					<th>501</th>
+					<th>504</th>
+					<th>所有状态码</th>
+				</tr>
+				<tr th:each="data : ${dataList}">
 
-                <td><a th:href="@{'/detail/' + ${data.serverIp} +'/'+${data.domain}}+'/other'" th:text="${data.domain}"></a></td>
-                <td th:text="${data.serverIp}"></td>
-                <td th:text="${data.time}" th:class="${data.diffTime >= 2}?expire_warn"></td>
-                <td th:text="${data.totalRequests}"></td>
-                <td th:text="${data.freq200-data.freqParseFail}"></td>
-                <td th:text="${data.successRate}+' %'" th:class="${data.successRate lt 100}?success_rate"></td>
-                <td th:text="${data.parseSuccessRate}+' %'" th:class="${data.parseSuccessRate lt 100}?success_rate"></td>
-                <td th:text="${data.freq200}"></td>
-                <td th:text="${data.freq301}"></td>
-                <td th:text="${data.freq302}"></td>
-                <td th:text="${data.freq304}"></td>
-                <td th:text="${data.freq307}"></td>
-                <td th:text="${data.freq401}"></td>
-                <td th:text="${data.freq403}"></td>
-                <td th:text="${data.freq404}"></td>
-                <td th:text="${data.freq500}"></td>
-                <td th:text="${data.freq501}"></td>
-                <td th:text="${data.freq504}"></td>
-                <td th:text="${data.statusCodes}"></td>
-            </tr>
-            <tr>
-                <td colspan="3">总计</td>
-                <td th:text="${totolCount.totalRequests}"></td>
-                <td th:text="${totolCount.freq200-totolCount.freqParseFail}"></td>
-                <td></td>
-                <td></td>
-                <td th:text="${totolCount.freq200}"></td>
-                <td th:text="${totolCount.freq301}"></td>
-                <td th:text="${totolCount.freq302}"></td>
-                <td th:text="${totolCount.freq304}"></td>
-                <td th:text="${totolCount.freq307}"></td>
-                <td th:text="${totolCount.freq401}"></td>
-                <td th:text="${totolCount.freq403}"></td>
-                <td th:text="${totolCount.freq404}"></td>
-                <td th:text="${totolCount.freq500}"></td>
-                <td th:text="${totolCount.freq501}"></td>
-                <td th:text="${totolCount.freq504}"></td>
-            </tr>
+					<td><a
+						th:href="@{'/detail/' + ${data.serverIp} +'/'+${data.domain}}+'/other'"
+						th:text="${data.domain}"></a></td>
+					<td th:text="${data.serverIp}"></td>
+					<td th:text="${data.time}"
+						th:class="${data.diffTime >= 2}?expire_warn"></td>
+					<td th:text="${data.totalRequests}"></td>
+					<td th:text="${data.freq200-data.freqParseFail}"></td>
+					<td th:text="${data.successRate}+' %'"
+						th:class="${data.successRate lt 100}?success_rate"></td>
+					<td th:text="${data.parseSuccessRate}+' %'"
+						th:class="${data.parseSuccessRate lt 100}?success_rate"></td>
+					<td th:text="${data.freq200}"></td>
+					<td th:text="${data.freq301}"></td>
+					<td th:text="${data.freq302}"></td>
+					<td th:text="${data.freq304}"></td>
+					<td th:text="${data.freq307}"></td>
+					<td th:text="${data.freq401}"></td>
+					<td th:text="${data.freq403}"></td>
+					<td th:text="${data.freq404}"></td>
+					<td th:text="${data.freq500}"></td>
+					<td th:text="${data.freq501}"></td>
+					<td th:text="${data.freq504}"></td>
+					<td th:text="${data.statusCodes}"></td>
+				</tr>
+				<tr>
+					<td colspan="3">总计</td>
+					<td th:text="${totolCount.totalRequests}"></td>
+					<td th:text="${totolCount.freq200-totolCount.freqParseFail}"></td>
+					<td></td>
+					<td></td>
+					<td th:text="${totolCount.freq200}"></td>
+					<td th:text="${totolCount.freq301}"></td>
+					<td th:text="${totolCount.freq302}"></td>
+					<td th:text="${totolCount.freq304}"></td>
+					<td th:text="${totolCount.freq307}"></td>
+					<td th:text="${totolCount.freq401}"></td>
+					<td th:text="${totolCount.freq403}"></td>
+					<td th:text="${totolCount.freq404}"></td>
+					<td th:text="${totolCount.freq500}"></td>
+					<td th:text="${totolCount.freq501}"></td>
+					<td th:text="${totolCount.freq504}"></td>
+				</tr>
 
-        </table>
-    </div>
-</div>
+			</table>
+		</div>
+	</div>
 </body>
 </html>

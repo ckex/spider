@@ -14,12 +14,12 @@ import java.util.Map;
 @Repository("customerInfoDao")
 public class CustomerInfoDaoImpl extends AbstractBasicDao implements CustomerInfoDao {
 
-    @Override
-    public List<Map> listById(String lastId, int limit) {
-        SearchMap map =  new SearchMap();
-        map.add( "id",lastId);
-        map.add( "limit",limit);
-        return getSqlSessionTemplate().selectList("Mapper.customer_info.listById",map);
-    }
+  @Override
+  public List<Map> listById(String lastId, int limit) {
+    SearchMap map = new SearchMap();
+    map.add("id", lastId);
+    map.add("limit", limit);
+    return getSqlSessionTemplate().selectList("Mapper.customer_info.listById", map);
+  }
 
 }

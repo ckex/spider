@@ -15,23 +15,23 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Main {
 
-	private transient Logger logger = LoggerFactory.getLogger(Main.class);
+  private transient Logger logger = LoggerFactory.getLogger(Main.class);
 
-	public static ApplicationContext ctx;
+  public static ApplicationContext ctx;
 
-	public Main() {
-		super();
-		ctx = new ClassPathXmlApplicationContext(new String[] { "classpath*:/spring/dao.xml",
-				"classpath*:/spring/dao-datasource.xml", "classpath*:/spring/applicationContext.xml" });
-		logger.debug("started . ");
-	}
+  public Main() {
+    super();
+    ctx = new ClassPathXmlApplicationContext(
+        new String[] {"classpath*:/spring/dao.xml", "classpath*:/spring/dao-datasource.xml", "classpath*:/spring/applicationContext.xml"});
+    logger.debug("started . ");
+  }
 
-	/**
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception {
-		new Main();
-	}
+  /**
+   * @param args
+   * @throws Exception
+   */
+  public static void main(String[] args) throws Exception {
+    new Main();
+  }
 
 }

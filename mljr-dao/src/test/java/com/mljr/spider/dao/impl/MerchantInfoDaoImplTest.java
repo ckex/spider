@@ -18,33 +18,33 @@ import java.util.List;
  */
 public class MerchantInfoDaoImplTest extends AbstractIMljrDaoTest {
 
-	@Test
-	public void testListById() throws Exception {
-		List<MerchantInfoDo> list = merchantInfoDao.listById("70000000000", 10);
-		logger.info("result ===> " + list);
-		logger.info("---------------------------------------------------华丽分割线。");
-		long id = 1;
-		List<YyUserAddressBookDo> list2 = yyUserAddressBookDao.listById(id, 10);
-		for (YyUserAddressBookDo yyUserAddressBookDo : list2) {
-			logger.debug(yyUserAddressBookDo.toString());
-		}
-	}
+  @Test
+  public void testListById() throws Exception {
+    List<MerchantInfoDo> list = merchantInfoDao.listById("70000000000", 10);
+    logger.info("result ===> " + list);
+    logger.info("---------------------------------------------------华丽分割线。");
+    long id = 1;
+    List<YyUserAddressBookDo> list2 = yyUserAddressBookDao.listById(id, 10);
+    for (YyUserAddressBookDo yyUserAddressBookDo : list2) {
+      logger.debug(yyUserAddressBookDo.toString());
+    }
+  }
 
-	@Test
-	public void testListById2() throws Exception {
-		long id = 1;
-		List<YyUserAddressBookDo> list2 = yyUserAddressBookDao.listById(id, 10);
-		for (YyUserAddressBookDo yyUserAddressBookDo : list2) {
-			logger.debug(yyUserAddressBookDo.toString());
-		}
-		logger.info("---------------------------------------------------华丽分割线。");
-		List<MerchantInfoDo> list = merchantInfoDao.listById("70000000000", 10);
-		logger.info("result ===> " + list);
-	}
+  @Test
+  public void testListById2() throws Exception {
+    long id = 1;
+    List<YyUserAddressBookDo> list2 = yyUserAddressBookDao.listById(id, 10);
+    for (YyUserAddressBookDo yyUserAddressBookDo : list2) {
+      logger.debug(yyUserAddressBookDo.toString());
+    }
+    logger.info("---------------------------------------------------华丽分割线。");
+    List<MerchantInfoDo> list = merchantInfoDao.listById("70000000000", 10);
+    logger.info("result ===> " + list);
+  }
 
-	@Test
-	public void testListAddress() throws Exception {
-		System.out.println(merchantInfoDao.listAddressById("000",10));
+  @Test
+  public void testListAddress() throws Exception {
+    System.out.println(merchantInfoDao.listAddressById("000", 10));
 
-	}
+  }
 }

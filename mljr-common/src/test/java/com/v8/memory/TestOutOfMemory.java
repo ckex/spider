@@ -13,22 +13,22 @@ import java.util.List;
  */
 public class TestOutOfMemory {
 
-	/**
-	 * 
-	 */
-	public TestOutOfMemory() {
-		// TODO Auto-generated constructor stub
-	}
+  /**
+   * 
+   */
+  public TestOutOfMemory() {
+    // TODO Auto-generated constructor stub
+  }
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		List<Object> res = new ArrayList<>();
-		while (true) {
-			res.add(new byte[1024]);
-		}
+  /**
+   * @param args
+   */
+  public static void main(String[] args) {
+    List<Object> res = new ArrayList<>();
+    while (true) {
+      res.add(new byte[1024]);
+    }
 
-	}
+  }
 
 }

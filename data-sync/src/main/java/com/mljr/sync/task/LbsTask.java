@@ -9,26 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+// @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class LbsTask extends AbstractTask {
 
-	@Autowired
-	private LbsService lbsService;
+  @Autowired
+  private LbsService lbsService;
 
-	public LbsTask() {
-		super();
-	}
+  public LbsTask() {
+    super();
+  }
 
-	@Override
-	void execute() {
-		try {
-			lbsService.syncLbsInfo();
-		} catch (Exception ex) {
-			if (logger.isDebugEnabled()) {
-				ex.printStackTrace();
-			}
-			logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-		}
-	}
+  @Override
+  void execute() {
+    try {
+      lbsService.syncLbsInfo();
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
+    }
+  }
 
 }

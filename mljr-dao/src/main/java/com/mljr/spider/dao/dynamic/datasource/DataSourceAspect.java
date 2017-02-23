@@ -26,45 +26,43 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class DataSourceAspect {
 
-	protected static transient Logger logger = LoggerFactory.getLogger(DataSourceAspect.class);
+  protected static transient Logger logger = LoggerFactory.getLogger(DataSourceAspect.class);
 
-	@Pointcut("execution(* com.mljr.spider.dao.impl.*.*(..))")
-	public void aspect() {
-	}
+  @Pointcut("execution(* com.mljr.spider.dao.impl.*.*(..))")
+  public void aspect() {}
 
-	@Before("aspect()")
-	public void before(JoinPoint point) {
-		Object target = point.getTarget();
-		String method = point.getSignature().getName();
+  @Before("aspect()")
+  public void before(JoinPoint point) {
+    Object target = point.getTarget();
+    String method = point.getSignature().getName();
 
-		Class<?>[] classz = target.getClass().getInterfaces();
+    Class<?>[] classz = target.getClass().getInterfaces();
 
-		Class<?>[] parameterTypes = ((MethodSignature) point.getSignature()).getMethod().getParameterTypes();
+    Class<?>[] parameterTypes = ((MethodSignature) point.getSignature()).getMethod().getParameterTypes();
 
-		try {
-			for (Class<?> clz : classz) {
-				Method mthd = clz.getMethod(method, parameterTypes);
-				if (mthd != null && mthd.isAnnotationPresent(DataSource.class)) {
-					DataSource data = mthd.getAnnotation(DataSource.class);
-					putDataSource(data);
-					break;
-				} else if (clz.isAnnotationPresent(DataSource.class)) {
-					DataSource data = classz[0].getAnnotation(DataSource.class);
-					putDataSource(data);
-					break;
-				}
-			}
-		} catch (Exception ex) {
-			logger.error(ExceptionUtils.getStackTrace(ex));
-		}
-	}
+    try {
+      for (Class<?> clz : classz) {
+        Method mthd = clz.getMethod(method, parameterTypes);
+        if (mthd != null && mthd.isAnnotationPresent(DataSource.class)) {
+          DataSource data = mthd.getAnnotation(DataSource.class);
+          putDataSource(data);
+          break;
+        } else if (clz.isAnnotationPresent(DataSource.class)) {
+          DataSource data = classz[0].getAnnotation(DataSource.class);
+          putDataSource(data);
+          break;
+        }
+      }
+    } catch (Exception ex) {
+      logger.error(ExceptionUtils.getStackTrace(ex));
+    }
+  }
 
-	private void putDataSource(DataSource data) {
-		DynamicDataSourceHolder.putDataSource(data.value());
-		if (logger.isDebugEnabled()) {
-			logger.debug(
-					Thread.currentThread().getName() + "<-->" + Thread.currentThread().getId() + "<-->" + data.value());
-		}
-	}
+  private void putDataSource(DataSource data) {
+    DynamicDataSourceHolder.putDataSource(data.value());
+    if (logger.isDebugEnabled()) {
+      logger.debug(Thread.currentThread().getName() + "<-->" + Thread.currentThread().getId() + "<-->" + data.value());
+    }
+  }
 
 }

@@ -14,17 +14,17 @@ import us.codecraft.webmagic.Page;
  */
 public class ProcessListener extends AbstractMonitorCache implements PageListener {
 
-	public ProcessListener() {
-		super();
-	}
+  public ProcessListener() {
+    super();
+  }
 
-	@Override
-	public void afterProcess(boolean isSuccess, String domain, Page page) {
-		if (isSuccess) {
-			return; // nothing.
-		}
-		Setter setter = val -> val.setFreqParseFail(1 + val.getFreqParseFail());
-		updateValue(new LocalCacheKey(domain), setter);
-	}
+  @Override
+  public void afterProcess(boolean isSuccess, String domain, Page page) {
+    if (isSuccess) {
+      return; // nothing.
+    }
+    Setter setter = val -> val.setFreqParseFail(1 + val.getFreqParseFail());
+    updateValue(new LocalCacheKey(domain), setter);
+  }
 
 }

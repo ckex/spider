@@ -10,17 +10,16 @@ import java.util.List;
  * Created by alpha on 8/10/16.
  */
 public class ListQueueResponse extends ApiResponse {
-    @JsonProperty("DataSet")
-    private List<Queue> DataSet;
+  @JsonProperty("DataSet")
+  private List<Queue> DataSet;
 
-    public List<Queue> getDataSet() {
-        return DataSet;
-    }
+  public List<Queue> getDataSet() {
+    return DataSet;
+  }
 
-    public void setDataSet(List<Queue> dataSet) {
-        DataSet = dataSet;
-    }
+  public void setDataSet(List<Queue> dataSet) {
+    DataSet = dataSet;
+  }
 }
-
 
 

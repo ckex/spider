@@ -15,26 +15,26 @@ import com.mljr.sync.service.MobileService;
  *
  */
 @Component
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+// @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class MobileTask extends AbstractTask {
 
-	@Autowired
-	private MobileService mobileService;
+  @Autowired
+  private MobileService mobileService;
 
-	public MobileTask() {
-		super();
-	}
+  public MobileTask() {
+    super();
+  }
 
-	@Override
-	void execute() {
-		try {
-			mobileService.syncMobile();
-		} catch (Exception ex) {
-			if (logger.isDebugEnabled()) {
-				ex.printStackTrace();
-			}
-			logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-		}
-	}
+  @Override
+  void execute() {
+    try {
+      mobileService.syncMobile();
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
+    }
+  }
 
 }

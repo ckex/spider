@@ -11,18 +11,18 @@ import common.page.util.PageQuery;
 @DataSource("rc")
 public interface SpiderBankCardLocationDao {
 
-	SpiderBankCardLocationDo load(java.lang.String bank_card_11_digits);
+  SpiderBankCardLocationDo load(java.lang.String bank_card_11_digits);
 
-	boolean delete(java.lang.String bank_card_11_digits);
+  boolean delete(java.lang.String bank_card_11_digits);
 
-	SpiderBankCardLocationDo create(SpiderBankCardLocationDo record);
+  SpiderBankCardLocationDo create(SpiderBankCardLocationDo record);
 
-	boolean update(SpiderBankCardLocationDo record);
+  boolean update(SpiderBankCardLocationDo record);
 
-	PageList<SpiderBankCardLocationDo> listByPage(PageQuery pageQuery, Integer count);
+  PageList<SpiderBankCardLocationDo> listByPage(PageQuery pageQuery, Integer count);
 
 
-	List<String> listById(String lastId, int limit);
+  List<String> listById(String lastId, int limit);
 
-	List<String> listFromDMById(String lastId, int limit);
+  List<String> listFromDMById(String lastId, int limit);
 }

@@ -14,32 +14,32 @@ import com.ucloud.umq.common.ServiceConfig;
  */
 public class GrpcClient {
 
-	protected transient Logger logger = LoggerFactory.getLogger(getClass());
+  protected transient Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final String rpcHost;
-	private final int rpcPort;
+  private final String rpcHost;
+  private final int rpcPort;
 
-	private final GrpcQueueClient client;
+  private final GrpcQueueClient client;
 
-	private GrpcClient() {
-		super();
-		logger.info("INSTANCE GRPC CLIENT.");
-		this.rpcHost = ServiceConfig.getRpcHost();
-		this.rpcPort = ServiceConfig.getRpcPort();
-		logger.info("GRPC INFO " + rpcHost + ":" + rpcPort);
-		this.client = new GrpcQueueClient(rpcHost, rpcPort);
-	}
+  private GrpcClient() {
+    super();
+    logger.info("INSTANCE GRPC CLIENT.");
+    this.rpcHost = ServiceConfig.getRpcHost();
+    this.rpcPort = ServiceConfig.getRpcPort();
+    logger.info("GRPC INFO " + rpcHost + ":" + rpcPort);
+    this.client = new GrpcQueueClient(rpcHost, rpcPort);
+  }
 
-	public static final GrpcClient getInstance() {
-		return GrpcClientHolder.INSTANCE;
-	}
+  public static final GrpcClient getInstance() {
+    return GrpcClientHolder.INSTANCE;
+  }
 
-	private static class GrpcClientHolder {
-		private static final GrpcClient INSTANCE = new GrpcClient();
-	}
+  private static class GrpcClientHolder {
+    private static final GrpcClient INSTANCE = new GrpcClient();
+  }
 
-	public String pullMsg(String queueId) {
-		// logger.debug("get queue ===> "+queueId);
-		return client.pullMsg(queueId);
-	}
+  public String pullMsg(String queueId) {
+    // logger.debug("get queue ===> "+queueId);
+    return client.pullMsg(queueId);
+  }
 }

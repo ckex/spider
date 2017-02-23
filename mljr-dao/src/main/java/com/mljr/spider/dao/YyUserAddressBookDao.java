@@ -15,15 +15,15 @@ import common.page.util.PageQuery;
 @DataSource("rw")
 public interface YyUserAddressBookDao {
 
-	YyUserAddressBookDo load(Long id);
+  YyUserAddressBookDo load(Long id);
 
-	boolean delete(Long id);
+  boolean delete(Long id);
 
-	YyUserAddressBookDo create(YyUserAddressBookDo record);
+  YyUserAddressBookDo create(YyUserAddressBookDo record);
 
-	boolean update(YyUserAddressBookDo record);
+  boolean update(YyUserAddressBookDo record);
 
-	PageList<YyUserAddressBookDo> listByPage(PageQuery pageQuery, Integer count);
+  PageList<YyUserAddressBookDo> listByPage(PageQuery pageQuery, Integer count);
 
-	List<YyUserAddressBookDo> listById(long lastId,int limit);
+  List<YyUserAddressBookDo> listById(long lastId, int limit);
 }

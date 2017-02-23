@@ -4,17 +4,18 @@ import com.mljr.spider.dao.dynamic.datasource.DataSource;
 import com.mljr.spider.model.DmPhonePriceDo;
 import common.page.util.PageList;
 import common.page.util.PageQuery;
+
 @DataSource("rc")
 public interface DmPhonePriceDao {
 
-    DmPhonePriceDo load(Long id);
+  DmPhonePriceDo load(Long id);
 
-    boolean delete(Long id); 
+  boolean delete(Long id);
 
-    DmPhonePriceDo create(DmPhonePriceDo record);
+  DmPhonePriceDo create(DmPhonePriceDo record);
 
-    boolean update(DmPhonePriceDo record);
+  boolean update(DmPhonePriceDo record);
 
-    PageList<DmPhonePriceDo>  listByPage(PageQuery pageQuery, Integer count);
+  PageList<DmPhonePriceDo> listByPage(PageQuery pageQuery, Integer count);
 
 }

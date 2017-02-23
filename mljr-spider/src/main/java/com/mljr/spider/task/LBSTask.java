@@ -17,143 +17,142 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by xi.gao
- * Date:2016/12/16
+ * Created by xi.gao Date:2016/12/16
  */
 public class LBSTask implements Runnable {
 
-    private static final String ADDRESS = "三林地铁站";
+  private static final String ADDRESS = "三林地铁站";
 
-    private static final String CITY = "上海市";
+  private static final String CITY = "上海市";
 
-    private static final int SUCCESS_CODE = 200;
+  private static final int SUCCESS_CODE = 200;
 
-    protected static final Logger logger = LoggerFactory.getLogger(LBSTask.class);
+  protected static final Logger logger = LoggerFactory.getLogger(LBSTask.class);
 
-    @Override
-    public void run() {
+  @Override
+  public void run() {
 
-        try {
-            logger.info("=====start check lbs baidu key=====");
-            baiduLBSRequest();
-        } catch (IOException e) {
-            logger.error("lbs baidu request key failure.", e);
-        } catch (Exception ex) {
-            logger.error("lbs baidu request key failure.", ex);
-        }finally {
-            logger.info("=====end check lbs baidu key=====");
-        }
-
-        try {
-            logger.info("=====start check lbs amap key=====");
-            amapLBSRequest();
-        } catch (IOException e) {
-            logger.error("lbs amap request key failure.", e);
-        } catch (Exception ex) {
-            logger.error("lbs amap request key failure.", ex);
-        }finally {
-            logger.info("=====end check lbs amap key=====");
-        }
-
-
+    try {
+      logger.info("=====start check lbs baidu key=====");
+      baiduLBSRequest();
+    } catch (IOException e) {
+      logger.error("lbs baidu request key failure.", e);
+    } catch (Exception ex) {
+      logger.error("lbs baidu request key failure.", ex);
+    } finally {
+      logger.info("=====end check lbs baidu key=====");
     }
 
-    /**
-     * 百度Key
-     *
-     * @throws IOException
-     */
-    private void baiduLBSRequest() throws IOException {
+    try {
+      logger.info("=====start check lbs amap key=====");
+      amapLBSRequest();
+    } catch (IOException e) {
+      logger.error("lbs amap request key failure.", e);
+    } catch (Exception ex) {
+      logger.error("lbs amap request key failure.", ex);
+    } finally {
+      logger.info("=====end check lbs amap key=====");
+    }
 
-        final ConcurrentHashMap<String, Boolean> map = KeyCacheUtils.getAllKey(KeyCacheUtils.LBSKEY.BAIDU);
 
-        if (null != map) {
+  }
 
-            for (Map.Entry<String, Boolean> entry : map.entrySet()) {
+  /**
+   * 百度Key
+   *
+   * @throws IOException
+   */
+  private void baiduLBSRequest() throws IOException {
 
-                if (!entry.getValue().booleanValue()) {  //表示Key当天无效
+    final ConcurrentHashMap<String, Boolean> map = KeyCacheUtils.getAllKey(KeyCacheUtils.LBSKEY.BAIDU);
 
-                    String url = String.format(KeyCacheUtils.DEFAUT_LBS_BAIDU_URL, entry.getKey(), ADDRESS, CITY);
+    if (null != map) {
 
-                    String json = getResponseData(url);
+      for (Map.Entry<String, Boolean> entry : map.entrySet()) {
 
-                    if (null != json) {
+        if (!entry.getValue().booleanValue()) { // 表示Key当天无效
 
-                        JSONObject jsonObject = JSON.parseObject(json);
+          String url = String.format(KeyCacheUtils.DEFAUT_LBS_BAIDU_URL, entry.getKey(), ADDRESS, CITY);
 
-                        Integer status = jsonObject.getInteger("status");
+          String json = getResponseData(url);
 
-                        if (null != status && 0== status.intValue()) { //表示key有效了
+          if (null != json) {
 
-                            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.BAIDU, entry.getKey(), Boolean.TRUE);
+            JSONObject jsonObject = JSON.parseObject(json);
 
-                            try {
-                                Thread.sleep(3000);
-                            } catch (InterruptedException e) {
-                                //
-                            }
-                        }
-                    }
-                }
+            Integer status = jsonObject.getInteger("status");
+
+            if (null != status && 0 == status.intValue()) { // 表示key有效了
+
+              KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.BAIDU, entry.getKey(), Boolean.TRUE);
+
+              try {
+                Thread.sleep(3000);
+              } catch (InterruptedException e) {
+                //
+              }
             }
+          }
         }
+      }
     }
+  }
 
-    /**
-     * 高德Key
-     *
-     * @throws IOException
-     */
-    private void amapLBSRequest() throws IOException {
+  /**
+   * 高德Key
+   *
+   * @throws IOException
+   */
+  private void amapLBSRequest() throws IOException {
 
-        final ConcurrentHashMap<String, Boolean> map = KeyCacheUtils.getAllKey(KeyCacheUtils.LBSKEY.AMAP);
+    final ConcurrentHashMap<String, Boolean> map = KeyCacheUtils.getAllKey(KeyCacheUtils.LBSKEY.AMAP);
 
-        if (null != map) {
+    if (null != map) {
 
-            for (Map.Entry<String, Boolean> entry : map.entrySet()) {
+      for (Map.Entry<String, Boolean> entry : map.entrySet()) {
 
-                if (!entry.getValue().booleanValue()) {  //表示Key当天无效
+        if (!entry.getValue().booleanValue()) { // 表示Key当天无效
 
-                    String url = String.format(KeyCacheUtils.DEFAUT_LBS_AMAP_URL, entry.getKey(), ADDRESS, CITY);
+          String url = String.format(KeyCacheUtils.DEFAUT_LBS_AMAP_URL, entry.getKey(), ADDRESS, CITY);
 
-                    String json = getResponseData(url);
+          String json = getResponseData(url);
 
-                    if (null != json) {
+          if (null != json) {
 
-                        JSONObject jsonObject = JSON.parseObject(json);
+            JSONObject jsonObject = JSON.parseObject(json);
 
-                        String infocode = jsonObject.getString("infocode");
+            String infocode = jsonObject.getString("infocode");
 
-                        if (StringUtils.isNotEmpty(infocode) && "10000".equalsIgnoreCase(infocode)) {
-                            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.AMAP, entry.getKey(), Boolean.TRUE);
-                            try {
-                                Thread.sleep(3000);
-                            } catch (InterruptedException e) {
-                                //
-                            }
-                        }
-                    }
-                }
+            if (StringUtils.isNotEmpty(infocode) && "10000".equalsIgnoreCase(infocode)) {
+              KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.AMAP, entry.getKey(), Boolean.TRUE);
+              try {
+                Thread.sleep(3000);
+              } catch (InterruptedException e) {
+                //
+              }
             }
+          }
         }
+      }
     }
+  }
 
-    /**
-     * 获取请求数据
-     *
-     * @param url url
-     * @return 返回json数据
-     * @throws IOException
-     */
-    private String getResponseData(String url) throws IOException {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet(url);
-        CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
-        if (SUCCESS_CODE == httpResponse.getStatusLine().getStatusCode())
-            return EntityUtils.toString(httpResponse.getEntity());
-        if (logger.isDebugEnabled()) {
-            logger.debug("lbs geo key request failure.url:{} response:{}", url, httpResponse.toString());
-        }
-        return null;
+  /**
+   * 获取请求数据
+   *
+   * @param url url
+   * @return 返回json数据
+   * @throws IOException
+   */
+  private String getResponseData(String url) throws IOException {
+    CloseableHttpClient httpClient = HttpClients.createDefault();
+    HttpGet httpGet = new HttpGet(url);
+    CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+    if (SUCCESS_CODE == httpResponse.getStatusLine().getStatusCode())
+      return EntityUtils.toString(httpResponse.getEntity());
+    if (logger.isDebugEnabled()) {
+      logger.debug("lbs geo key request failure.url:{} response:{}", url, httpResponse.toString());
     }
+    return null;
+  }
 }

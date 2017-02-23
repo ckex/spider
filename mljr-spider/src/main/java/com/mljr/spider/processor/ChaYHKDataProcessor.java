@@ -12,52 +12,49 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by xi.gao
- * Date:2016/12/5
+ * Created by xi.gao Date:2016/12/5
  */
 public class ChaYHKDataProcessor extends AbstractPageProcessor {
 
-    private static Site site = Site.me().setDomain("cha.yinhangkadata.com")
-            .setSleepTime(10000).setRetrySleepTime(7500).setRetryTimes(3)
-            .addCookie("ASPSESSIONIDCAATTCQA", "LHEGLFIDENPGIJOLIFNHOIFB")//此字段必填
-            .setUserAgent(
-                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
+  private static Site site = Site.me().setDomain("cha.yinhangkadata.com").setSleepTime(10000).setRetrySleepTime(7500).setRetryTimes(3)
+      .addCookie("ASPSESSIONIDCAATTCQA", "LHEGLFIDENPGIJOLIFNHOIFB")// 此字段必填
+      .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-    @Override
-    boolean onProcess(Page page) {
-        Html html = page.getHtml();
-        if (null == html) {
-            logger.warn("cha.yinghangkadata.com result is empty " + page.getRequest().toString());
-            return true;
-        }
-
-        Selectable divSelectable = html.xpath("//div[@class='home_show']/p");
-
-        if (!divSelectable.match()) {
-            logger.warn("cha.yinghangkadata.com response data is not match." + page.getRequest().toString());
-            return true;
-        }
-
-        List<Selectable> selectableList = divSelectable.nodes();
-
-        if (null == selectableList || selectableList.size() == 0) {
-            logger.warn("cha.yinghangkadata.com parse nodes is not exists." + page.getRequest().toString());
-            return true;
-        }
-
-        Map<String, Object> map = Maps.newHashMap();
-        for (Selectable selectable : selectableList) {
-            map.put(selectable.xpath("//p/tidyText()").get(), selectable.xpath("//p/tidyText()").get());
-        }
-        JSONTransferVO transferVO = new JSONTransferVO();
-        transferVO.setUrl(page.getUrl().get());
-        transferVO.setContext(map);
-        page.putField("", JSON.toJSON(transferVO));
-        return true;
+  @Override
+  boolean onProcess(Page page) {
+    Html html = page.getHtml();
+    if (null == html) {
+      logger.warn("cha.yinghangkadata.com result is empty " + page.getRequest().toString());
+      return true;
     }
 
-    public ChaYHKDataProcessor() {
-        super(site);
+    Selectable divSelectable = html.xpath("//div[@class='home_show']/p");
+
+    if (!divSelectable.match()) {
+      logger.warn("cha.yinghangkadata.com response data is not match." + page.getRequest().toString());
+      return true;
     }
+
+    List<Selectable> selectableList = divSelectable.nodes();
+
+    if (null == selectableList || selectableList.size() == 0) {
+      logger.warn("cha.yinghangkadata.com parse nodes is not exists." + page.getRequest().toString());
+      return true;
+    }
+
+    Map<String, Object> map = Maps.newHashMap();
+    for (Selectable selectable : selectableList) {
+      map.put(selectable.xpath("//p/tidyText()").get(), selectable.xpath("//p/tidyText()").get());
+    }
+    JSONTransferVO transferVO = new JSONTransferVO();
+    transferVO.setUrl(page.getUrl().get());
+    transferVO.setContext(map);
+    page.putField("", JSON.toJSON(transferVO));
+    return true;
+  }
+
+  public ChaYHKDataProcessor() {
+    super(site);
+  }
 
 }

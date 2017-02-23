@@ -13,36 +13,33 @@ import us.codecraft.webmagic.utils.HttpConstant;
 import java.util.Map;
 
 /**
- * Created by xi.gao
- * Date:2016/12/5
+ * Created by xi.gao Date:2016/12/5
  */
 public class ChaYHKDataProcessorTest {
 
-    private static final String URL = "http://cha.yinhangkadata.com/";
+  private static final String URL = "http://cha.yinhangkadata.com/";
 
-    private static final String PATH = "/data/test_html";
+  private static final String PATH = "/data/test_html";
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        Request request = new Request(URL);
+    Request request = new Request(URL);
 
-        request.setMethod(HttpConstant.Method.POST);
+    request.setMethod(HttpConstant.Method.POST);
 
-        NameValuePair[] values = new NameValuePair[1];
+    NameValuePair[] values = new NameValuePair[1];
 
-        values[0] = new BasicNameValuePair("card", "6222021001085329875");
+    values[0] = new BasicNameValuePair("card", "6222021001085329875");
 
-        Map<String, Object> nameValuePair = Maps.newHashMap();
+    Map<String, Object> nameValuePair = Maps.newHashMap();
 
-        nameValuePair.put("nameValuePair", values);
+    nameValuePair.put("nameValuePair", values);
 
-        request.setExtras(nameValuePair);
+    request.setExtras(nameValuePair);
 
-        Spider spider = Spider.create(new ChaYHKDataProcessor())
-                .setDownloader(new HttpClientDownloader())
-                .addPipeline(new LocalFilePipeline(PATH)).addPipeline(new ConsolePipeline())
-                .addRequest(request);
-        spider.runAsync();
+    Spider spider = Spider.create(new ChaYHKDataProcessor()).setDownloader(new HttpClientDownloader()).addPipeline(new LocalFilePipeline(PATH))
+        .addPipeline(new ConsolePipeline()).addRequest(request);
+    spider.runAsync();
 
-    }
+  }
 }

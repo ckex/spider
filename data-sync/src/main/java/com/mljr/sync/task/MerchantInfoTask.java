@@ -9,26 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+// @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class MerchantInfoTask extends AbstractTask {
 
-	@Autowired
-	private MerchantInfoService merchantInfoService;
+  @Autowired
+  private MerchantInfoService merchantInfoService;
 
-	public MerchantInfoTask() {
-		super();
-	}
+  public MerchantInfoTask() {
+    super();
+  }
 
-	@Override
-	void execute() {
-		try {
-			merchantInfoService.syncMerchantInfo();
-		} catch (Exception ex) {
-			if (logger.isDebugEnabled()) {
-				ex.printStackTrace();
-			}
-			logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-		}
-	}
+  @Override
+  void execute() {
+    try {
+      merchantInfoService.syncMerchantInfo();
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
+    }
+  }
 
 }

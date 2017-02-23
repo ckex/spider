@@ -31,124 +31,123 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class QqNumberService {
 
-    protected static transient Logger logger = LoggerFactory.getLogger(QqNumberService.class);
+  protected static transient Logger logger = LoggerFactory.getLogger(QqNumberService.class);
 
-    private static final int LIMIT = 500;
+  private static final int LIMIT = 500;
 
 
-    private static final String QQ_NUMBER_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.QQ_NUMBER, BasicConstant.EXIST_IDS);
+  private static final String QQ_NUMBER_EXIST_IDS_KEY = Joiner.on("-").join(BasicConstant.QQ_NUMBER, BasicConstant.EXIST_IDS);
 
-    @Autowired
-    private RedisClient client;
+  @Autowired
+  private RedisClient client;
 
-    @Autowired
-    CustomerInfoDao customerInfoDao;
+  @Autowired
+  CustomerInfoDao customerInfoDao;
 
-    public void syncQqNumber() throws Exception {
+  public void syncQqNumber() throws Exception {
 
-//        final Channel channel = RabbitmqClient.newChannel();
-    	final Rmq rmq = new Rmq();
+    // final Channel channel = RabbitmqClient.newChannel();
+    final Rmq rmq = new Rmq();
+    try {
+      Function<Map, Boolean> function = new Function<Map, Boolean>() {
+
+        @Override
+        public Boolean apply(Map map) {
+          // return sentQqNumber(channel, map);
+          return sentQqNumber(rmq, map);
+
+        }
+      };
+      syncQqNumber(function);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } finally {
+      rmq.closed();
+    }
+  }
+
+  private boolean sentQqNumber(Rmq rmq, Map qqMap) {
+    if (qqMap == null || StringUtils.isBlank((String) qqMap.get("qq"))) {
+      return true;
+    }
+    String jsonString = JSON.toJSONString(qqMap);
+    BasicProperties.Builder builder = new BasicProperties.Builder();
+    builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
+    return rmq.publish(new java.util.function.Function<Channel, Boolean>() {
+
+      @Override
+      public Boolean apply(Channel t) {
         try {
-            Function<Map, Boolean> function = new Function<Map, Boolean>() {
-
-                @Override
-                public Boolean apply(Map map) {
-//                    return sentQqNumber(channel, map);
-                    return sentQqNumber(rmq, map);
-                	
-                }
-            };
-            syncQqNumber(function);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-        	rmq.closed();
+          RabbitmqClient.publishMessage(t, ServiceConfig.getQqNumberExchange(), ServiceConfig.getQqNumberRoutingKey(), builder.build(),
+              jsonString.getBytes(Charsets.UTF_8));
+          try {
+            TimeUnit.MILLISECONDS.sleep(10);
+          } catch (InterruptedException e) {
+          }
+          return true;
+        } catch (IOException e) {
+          if (logger.isDebugEnabled()) {
+            e.printStackTrace();
+          }
+          logger.error(ExceptionUtils.getStackTrace(e));
+          return false;
         }
-    }
+      }
+    });
 
-	private boolean sentQqNumber(Rmq rmq, Map qqMap) {
-		if (qqMap == null || StringUtils.isBlank((String) qqMap.get("qq"))) {
-			return true;
-		}
-		String jsonString = JSON.toJSONString(qqMap);
-		BasicProperties.Builder builder = new BasicProperties.Builder();
-		builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
-		return rmq.publish(new java.util.function.Function<Channel, Boolean>() {
+  }
 
-			@Override
-			public Boolean apply(Channel t) {
-				try {
-					RabbitmqClient.publishMessage(t, ServiceConfig.getQqNumberExchange(),
-							ServiceConfig.getQqNumberRoutingKey(), builder.build(),
-							jsonString.getBytes(Charsets.UTF_8));
-					try {
-						TimeUnit.MILLISECONDS.sleep(10);
-					} catch (InterruptedException e) {
-					}
-					return true;
-				} catch (IOException e) {
-					if (logger.isDebugEnabled()) {
-						e.printStackTrace();
-					}
-					logger.error(ExceptionUtils.getStackTrace(e));
-					return false;
-				}
-			}
-		});
-
-	}
-
-    private void syncQqNumber(Function<Map, Boolean> function) {
-        String key = Joiner.on("-").join(BasicConstant.QQ_NUMBER, BasicConstant.LAST_ID);
-        List<Map> qqMaps = listData(key);
-        if (qqMaps != null && !qqMaps.isEmpty()) {
-            for (Map qqMap : qqMaps) {
-                String qqNumber = (String) qqMap.get("qq");
-                String id = (String) qqMap.get("id");
-                if (CommonService.isExist(client, QQ_NUMBER_EXIST_IDS_KEY, qqNumber)) {
-                    logger.warn("exist qq number  ========>  " + qqNumber);
-                    setLastId(key, id);
-                    continue;
-                }
-                if (function.apply(qqMap)) {
-                    setLastId(key, id);
-                    continue;
-                }
-                logger.error("sync qq number error!");
-                break;
-            }
+  private void syncQqNumber(Function<Map, Boolean> function) {
+    String key = Joiner.on("-").join(BasicConstant.QQ_NUMBER, BasicConstant.LAST_ID);
+    List<Map> qqMaps = listData(key);
+    if (qqMaps != null && !qqMaps.isEmpty()) {
+      for (Map qqMap : qqMaps) {
+        String qqNumber = (String) qqMap.get("qq");
+        String id = (String) qqMap.get("id");
+        if (CommonService.isExist(client, QQ_NUMBER_EXIST_IDS_KEY, qqNumber)) {
+          logger.warn("exist qq number  ========>  " + qqNumber);
+          setLastId(key, id);
+          continue;
         }
-
-    }
-
-    private List<Map> listData(String key) {
-        String lastId = getLastId(key);
-        return customerInfoDao.listById(lastId, LIMIT);
-    }
-
-    private void setLastId(final String key, final String id) {
-        client.use(new Function<Jedis, String>() {
-
-            @Override
-            public String apply(Jedis jedis) {
-                jedis.set(key, id);
-                return null;
-            }
-        });
-    }
-
-    private String getLastId(final String table) {
-        String result = client.use(new Function<Jedis, String>() {
-
-            @Override
-            public String apply(Jedis jedis) {
-                return jedis.get(table);
-            }
-        });
-        if (StringUtils.isBlank(result)) {
-            return "0";
+        if (function.apply(qqMap)) {
+          setLastId(key, id);
+          continue;
         }
-        return result;
+        logger.error("sync qq number error!");
+        break;
+      }
     }
+
+  }
+
+  private List<Map> listData(String key) {
+    String lastId = getLastId(key);
+    return customerInfoDao.listById(lastId, LIMIT);
+  }
+
+  private void setLastId(final String key, final String id) {
+    client.use(new Function<Jedis, String>() {
+
+      @Override
+      public String apply(Jedis jedis) {
+        jedis.set(key, id);
+        return null;
+      }
+    });
+  }
+
+  private String getLastId(final String table) {
+    String result = client.use(new Function<Jedis, String>() {
+
+      @Override
+      public String apply(Jedis jedis) {
+        return jedis.get(table);
+      }
+    });
+    if (StringUtils.isBlank(result)) {
+      return "0";
+    }
+    return result;
+  }
 
 }

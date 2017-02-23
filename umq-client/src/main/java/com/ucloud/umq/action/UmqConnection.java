@@ -8,27 +8,27 @@ import com.ucloud.umq.common.ServiceConfig;
  * Created by alpha on 8/8/16.
  */
 public class UmqConnection {
-    private volatile static UcloudApiClient instance;
+  private volatile static UcloudApiClient instance;
 
-    public static void NewConnection(String publicKey, String privateKey) {
-//        System.out.println("publicKey " + publicKey);
-//        System.out.println("privateKey " + privateKey);
+  public static void NewConnection(String publicKey, String privateKey) {
+    // System.out.println("publicKey " + publicKey);
+    // System.out.println("privateKey " + privateKey);
+    if (instance == null) {
+      synchronized (UmqConnection.class) {
         if (instance == null) {
-            synchronized (UmqConnection.class) {
-                if (instance == null) {
-                    if (instance == null) {
-                        instance = new UcloudApiClient(ServiceConfig.getApiUri(), publicKey, privateKey);
-                    }
-                }
-            }
+          if (instance == null) {
+            instance = new UcloudApiClient(ServiceConfig.getApiUri(), publicKey, privateKey);
+          }
         }
+      }
     }
+  }
 
-    // singleton
-    protected static UcloudApiClient getClient() {
-        if (instance == null) {
-            throw new IllegalArgumentException();
-        }
-        return instance;
+  // singleton
+  protected static UcloudApiClient getClient() {
+    if (instance == null) {
+      throw new IllegalArgumentException();
     }
+    return instance;
+  }
 }

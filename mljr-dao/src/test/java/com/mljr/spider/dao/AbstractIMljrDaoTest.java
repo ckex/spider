@@ -15,40 +15,40 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
  *         2016年11月7日,下午2:06:29
  *
  */
-@ContextConfiguration(locations = { "classpath*:/spring/dao.xml", "classpath*:/spring/dao-datasource.xml" })
+@ContextConfiguration(locations = {"classpath*:/spring/dao.xml", "classpath*:/spring/dao-datasource.xml"})
 public class AbstractIMljrDaoTest extends AbstractJUnit4SpringContextTests {
 
-	protected static transient Logger logger = LoggerFactory.getLogger(AbstractIMljrDaoTest.class);
+  protected static transient Logger logger = LoggerFactory.getLogger(AbstractIMljrDaoTest.class);
 
-	public AbstractIMljrDaoTest() {
-		super();
-	}
+  public AbstractIMljrDaoTest() {
+    super();
+  }
 
-	@Autowired
-	protected YyUserAddressBookDao yyUserAddressBookDao;
+  @Autowired
+  protected YyUserAddressBookDao yyUserAddressBookDao;
 
-	@Autowired
-	protected RedisClient redisClient;
+  @Autowired
+  protected RedisClient redisClient;
 
-	@Autowired
-	protected SpiderBankCardLocationDao spiderBankCardLocationDao;
+  @Autowired
+  protected SpiderBankCardLocationDao spiderBankCardLocationDao;
 
-	@Autowired
-	protected MerchantInfoDao merchantInfoDao;
+  @Autowired
+  protected MerchantInfoDao merchantInfoDao;
 
-	@Autowired
-	protected YyUserCallRecordHistoryDao yyUserCallRecordHistoryDao;
+  @Autowired
+  protected YyUserCallRecordHistoryDao yyUserCallRecordHistoryDao;
 
-	@Autowired
-	protected YyUserAddressBookHistoryDao yyUserAddressBookHistoryDao;
+  @Autowired
+  protected YyUserAddressBookHistoryDao yyUserAddressBookHistoryDao;
 
-	@Autowired
-	protected YybgrkContactListDao yybgrkContactListDao;
+  @Autowired
+  protected YybgrkContactListDao yybgrkContactListDao;
 
-	@Autowired
-	protected DmPhonePriceDao dmPhonePriceDao;
+  @Autowired
+  protected DmPhonePriceDao dmPhonePriceDao;
 
-	@Autowired
-	protected SrcDmPhonePriceDao srcDmPhonePriceDao;
+  @Autowired
+  protected SrcDmPhonePriceDao srcDmPhonePriceDao;
 
 }

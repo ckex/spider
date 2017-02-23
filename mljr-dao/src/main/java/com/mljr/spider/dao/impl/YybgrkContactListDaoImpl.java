@@ -12,19 +12,19 @@ import java.util.Map;
  */
 @Repository("yybgrkContactListDao")
 public class YybgrkContactListDaoImpl extends AbstractBasicDao implements YybgrkContactListDao {
-    @Override
-    public List<Map> listById(long lastId, int limit) {
-        SearchMap map =  new SearchMap();
-        map.add( "id",lastId);
-        map.add( "limit",limit);
-        return getSqlSessionTemplate().selectList("Mapper.yybgrk_contact_list.listById",map);
-    }
+  @Override
+  public List<Map> listById(long lastId, int limit) {
+    SearchMap map = new SearchMap();
+    map.add("id", lastId);
+    map.add("limit", limit);
+    return getSqlSessionTemplate().selectList("Mapper.yybgrk_contact_list.listById", map);
+  }
 
-    @Override
-    public List<Map> listHistoryById(long lastId, int limit) {
-        SearchMap map =  new SearchMap();
-        map.add( "id",lastId);
-        map.add( "limit",limit);
-        return getSqlSessionTemplate().selectList("Mapper.yybgrk_contact_list.listHistoryById",map);
-    }
+  @Override
+  public List<Map> listHistoryById(long lastId, int limit) {
+    SearchMap map = new SearchMap();
+    map.add("id", lastId);
+    map.add("limit", limit);
+    return getSqlSessionTemplate().selectList("Mapper.yybgrk_contact_list.listHistoryById", map);
+  }
 }

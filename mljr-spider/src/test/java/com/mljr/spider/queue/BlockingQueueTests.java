@@ -19,39 +19,37 @@ import us.codecraft.webmagic.Request;
  */
 public class BlockingQueueTests {
 
-	// static BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
-	static ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<String>();
+  // static BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
+  static ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<String>();
 
-	protected static final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5,
-			new ThreadFactory() {
+  protected static final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5, new ThreadFactory() {
 
-				@Override
-				public Thread newThread(Runnable r) {
-					return new Thread(r, "Test");
-				}
-			});
+    @Override
+    public Thread newThread(Runnable r) {
+      return new Thread(r, "Test");
+    }
+  });
 
-	public BlockingQueueTests() {
-	}
+  public BlockingQueueTests() {}
 
-	public static void main(String[] args) {
-		for (int i = 0; i < 5; i++) {
-			executor.scheduleWithFixedDelay(new Runnable() {
+  public static void main(String[] args) {
+    for (int i = 0; i < 5; i++) {
+      executor.scheduleWithFixedDelay(new Runnable() {
 
-				@Override
-				public void run() {
-					System.out.println(Thread.currentThread().getName() + " - start.");
-					take();
-				}
+        @Override
+        public void run() {
+          System.out.println(Thread.currentThread().getName() + " - start.");
+          take();
+        }
 
-			}, 0, 1, TimeUnit.SECONDS);
-		}
-	}
+      }, 0, 1, TimeUnit.SECONDS);
+    }
+  }
 
-	private static void take() {
-		String value = queue.poll();
-		System.out.println(Thread.currentThread().getName() + " - " + value);
+  private static void take() {
+    String value = queue.poll();
+    System.out.println(Thread.currentThread().getName() + " - " + value);
 
-	}
+  }
 
 }

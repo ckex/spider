@@ -22,19 +22,19 @@ import java.util.List;
 @Repository("merchantInfoDao")
 public class MerchantInfoDaoImpl extends AbstractBasicDao implements MerchantInfoDao {
 
-    @Override
-    public List<MerchantInfoDo> listById(String lastId, int limit) {
-        SearchMap map =  new SearchMap();
-        map.add( "id",lastId);
-        map.add( "limit",limit);
-        return getSqlSessionTemplate().selectList("Mapper.merchant_info.listById",map);
-    }
+  @Override
+  public List<MerchantInfoDo> listById(String lastId, int limit) {
+    SearchMap map = new SearchMap();
+    map.add("id", lastId);
+    map.add("limit", limit);
+    return getSqlSessionTemplate().selectList("Mapper.merchant_info.listById", map);
+  }
 
-    @Override
-    public List<HashMap> listAddressById(String lastId, int limit) {
-        SearchMap map =  new SearchMap();
-        map.add( "id",lastId);
-        map.add( "limit",limit);
-        return getSqlSessionTemplate().selectList("Mapper.merchant_info.listAddressById",map);
-    }
+  @Override
+  public List<HashMap> listAddressById(String lastId, int limit) {
+    SearchMap map = new SearchMap();
+    map.add("id", lastId);
+    map.add("limit", limit);
+    return getSqlSessionTemplate().selectList("Mapper.merchant_info.listAddressById", map);
+  }
 }

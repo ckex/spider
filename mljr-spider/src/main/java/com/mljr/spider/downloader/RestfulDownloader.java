@@ -17,7 +17,8 @@ import us.codecraft.webmagic.utils.HttpConstant;
 import com.mljr.spider.request.RestfulReqeust;
 
 /**
- * @author Ckex zha </br> 2016年11月7日,下午6:15:37
+ * @author Ckex zha </br>
+ *         2016年11月7日,下午6:15:37
  *
  */
 public class RestfulDownloader extends HttpClientDownloader {

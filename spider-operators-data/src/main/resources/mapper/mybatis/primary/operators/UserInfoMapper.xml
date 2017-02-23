@@ -1,133 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mljr.operators.dao.primary.operators.UserInfoMapper">
-  <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.UserInfo">
-    <id column="ID" jdbcType="BIGINT" property="id" />
-    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
-    <result column="PWD" jdbcType="VARCHAR" property="pwd" />
-    <result column="PROVINCE_CODE" jdbcType="VARCHAR" property="provinceCode" />
-    <result column="CITY_CODE" jdbcType="VARCHAR" property="cityCode" />
-    <result column="TYPE" jdbcType="CHAR" property="type" />
-    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    ID, MOBILE, PWD, PROVINCE_CODE, CITY_CODE, TYPE, CREATE_TIME, UPDATE_TIME
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_user_info
-    where ID = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_user_info
-    where ID = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.mljr.operators.entity.model.operators.UserInfo">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_user_info (MOBILE, PWD, PROVINCE_CODE, 
-      CITY_CODE, TYPE, CREATE_TIME, 
-      UPDATE_TIME)
-    values (#{mobile,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, 
-      #{cityCode,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.UserInfo">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_user_info
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="mobile != null">
-        MOBILE,
-      </if>
-      <if test="pwd != null">
-        PWD,
-      </if>
-      <if test="provinceCode != null">
-        PROVINCE_CODE,
-      </if>
-      <if test="cityCode != null">
-        CITY_CODE,
-      </if>
-      <if test="type != null">
-        TYPE,
-      </if>
-      <if test="createTime != null">
-        CREATE_TIME,
-      </if>
-      <if test="updateTime != null">
-        UPDATE_TIME,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="mobile != null">
-        #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="pwd != null">
-        #{pwd,jdbcType=VARCHAR},
-      </if>
-      <if test="provinceCode != null">
-        #{provinceCode,jdbcType=VARCHAR},
-      </if>
-      <if test="cityCode != null">
-        #{cityCode,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=CHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.UserInfo">
-    update t_user_info
-    <set>
-      <if test="mobile != null">
-        MOBILE = #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="pwd != null">
-        PWD = #{pwd,jdbcType=VARCHAR},
-      </if>
-      <if test="provinceCode != null">
-        PROVINCE_CODE = #{provinceCode,jdbcType=VARCHAR},
-      </if>
-      <if test="cityCode != null">
-        CITY_CODE = #{cityCode,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        TYPE = #{type,jdbcType=CHAR},
-      </if>
-      <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.mljr.operators.entity.model.operators.UserInfo">
-    update t_user_info
-    set MOBILE = #{mobile,jdbcType=VARCHAR},
-      PWD = #{pwd,jdbcType=VARCHAR},
-      PROVINCE_CODE = #{provinceCode,jdbcType=VARCHAR},
-      CITY_CODE = #{cityCode,jdbcType=VARCHAR},
-      TYPE = #{type,jdbcType=CHAR},
-      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
-    where ID = #{id,jdbcType=BIGINT}
-  </update>
+	<resultMap id="BaseResultMap"
+		type="com.mljr.operators.entity.model.operators.UserInfo">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+		<result column="PWD" jdbcType="VARCHAR" property="pwd" />
+		<result column="PROVINCE_CODE" jdbcType="VARCHAR" property="provinceCode" />
+		<result column="CITY_CODE" jdbcType="VARCHAR" property="cityCode" />
+		<result column="TYPE" jdbcType="CHAR" property="type" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, MOBILE, PWD, PROVINCE_CODE, CITY_CODE, TYPE, CREATE_TIME, UPDATE_TIME
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_user_info
+		where ID = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from t_user_info
+		where ID = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.mljr.operators.entity.model.operators.UserInfo">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_user_info (MOBILE, PWD, PROVINCE_CODE,
+		CITY_CODE, TYPE, CREATE_TIME,
+		UPDATE_TIME)
+		values (#{mobile,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR},
+		#{provinceCode,jdbcType=VARCHAR},
+		#{cityCode,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.UserInfo">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_user_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mobile != null">
+				MOBILE,
+			</if>
+			<if test="pwd != null">
+				PWD,
+			</if>
+			<if test="provinceCode != null">
+				PROVINCE_CODE,
+			</if>
+			<if test="cityCode != null">
+				CITY_CODE,
+			</if>
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="pwd != null">
+				#{pwd,jdbcType=VARCHAR},
+			</if>
+			<if test="provinceCode != null">
+				#{provinceCode,jdbcType=VARCHAR},
+			</if>
+			<if test="cityCode != null">
+				#{cityCode,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=CHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.UserInfo">
+		update t_user_info
+		<set>
+			<if test="mobile != null">
+				MOBILE = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="pwd != null">
+				PWD = #{pwd,jdbcType=VARCHAR},
+			</if>
+			<if test="provinceCode != null">
+				PROVINCE_CODE = #{provinceCode,jdbcType=VARCHAR},
+			</if>
+			<if test="cityCode != null">
+				CITY_CODE = #{cityCode,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				TYPE = #{type,jdbcType=CHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.mljr.operators.entity.model.operators.UserInfo">
+		update t_user_info
+		set MOBILE = #{mobile,jdbcType=VARCHAR},
+		PWD = #{pwd,jdbcType=VARCHAR},
+		PROVINCE_CODE = #{provinceCode,jdbcType=VARCHAR},
+		CITY_CODE = #{cityCode,jdbcType=VARCHAR},
+		TYPE = #{type,jdbcType=CHAR},
+		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		where ID = #{id,jdbcType=BIGINT}
+	</update>
 
-  <select id="getByMobile" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"/> FROM t_user_info WHERE MOBILE=#{mobile}
-  </select>
+	<select id="getByMobile" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_user_info WHERE MOBILE=#{mobile}
+	</select>
 
 </mapper>

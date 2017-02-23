@@ -15,50 +15,55 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class YyUserAddressBookHistoryDaoImplTest extends AbstractIMljrDaoTest {
 
-    @Before
-    public void testSetup() {
-       // YyUserAddressBookHistoryDo record = new YyUserAddressBookHistoryDo();
-       // record.setId(id);
-       // record.setSellerId(sellerId);
-       // record = yyUserAddressBookHistoryDao.create(record);
-    }
-    @After
-    public void testTeardown() {
-       // yyUserAddressBookHistoryDao.delete(id,sellerId);
-    }
-    @Test
-    public void testLoad() {
-       // YyUserAddressBookHistoryDo load = yyUserAddressBookHistoryDao.load(id,sellerId);
-       // Assert.assertNotNull(load);
-       // Assert.assertEquals("feiyingtest", load.getXxxx());
-       // logger.debug(load.toString());
-    }
-    @Test
-    public void testUpdate() {
-       // YyUserAddressBookHistoryDo record = new YyUserAddressBookHistoryDo();
-       // record.setId(id);
-       // record.setSellerId(sellerId);
-       // record.setXxxx("hellofeiying");
-       // yyUserAddressBookHistoryDao.update(record);
+  @Before
+  public void testSetup() {
+    // YyUserAddressBookHistoryDo record = new YyUserAddressBookHistoryDo();
+    // record.setId(id);
+    // record.setSellerId(sellerId);
+    // record = yyUserAddressBookHistoryDao.create(record);
+  }
 
-       // YyUserAddressBookHistoryDo load = yyUserAddressBookHistoryDao.load(id,sellerId);
-       // Assert.assertNotNull(load);
-       // Assert.assertEquals("hellofeiying", load.getXxxx());
-       // logger.debug(load.toString());
-    }
-    @Test
-    public void testListByPage() {
-        // common.page.util.PageQuery pageQuery = new common.page.util.PageQuery(0,10);
-        // Integer count = null;
-        // common.page.util.PageList<YyUserAddressBookHistoryDo> result =         yyUserAddressBookHistoryDao.listByPage(sellerId,pageQuery,count);
-        // Assert.assertNotNull(result);
-         // for (YyUserAddressBookHistoryDo bean : result) {
-         //     logger.debug(bean.toString());
-         // }
-    }
+  @After
+  public void testTeardown() {
+    // yyUserAddressBookHistoryDao.delete(id,sellerId);
+  }
 
-    @Test
-    public void testListById() throws Exception {
-        System.out.println(yyUserAddressBookHistoryDao.listById(0,7));
-    }
+  @Test
+  public void testLoad() {
+    // YyUserAddressBookHistoryDo load = yyUserAddressBookHistoryDao.load(id,sellerId);
+    // Assert.assertNotNull(load);
+    // Assert.assertEquals("feiyingtest", load.getXxxx());
+    // logger.debug(load.toString());
+  }
+
+  @Test
+  public void testUpdate() {
+    // YyUserAddressBookHistoryDo record = new YyUserAddressBookHistoryDo();
+    // record.setId(id);
+    // record.setSellerId(sellerId);
+    // record.setXxxx("hellofeiying");
+    // yyUserAddressBookHistoryDao.update(record);
+
+    // YyUserAddressBookHistoryDo load = yyUserAddressBookHistoryDao.load(id,sellerId);
+    // Assert.assertNotNull(load);
+    // Assert.assertEquals("hellofeiying", load.getXxxx());
+    // logger.debug(load.toString());
+  }
+
+  @Test
+  public void testListByPage() {
+    // common.page.util.PageQuery pageQuery = new common.page.util.PageQuery(0,10);
+    // Integer count = null;
+    // common.page.util.PageList<YyUserAddressBookHistoryDo> result =
+    // yyUserAddressBookHistoryDao.listByPage(sellerId,pageQuery,count);
+    // Assert.assertNotNull(result);
+    // for (YyUserAddressBookHistoryDo bean : result) {
+    // logger.debug(bean.toString());
+    // }
+  }
+
+  @Test
+  public void testListById() throws Exception {
+    System.out.println(yyUserAddressBookHistoryDao.listById(0, 7));
+  }
 }

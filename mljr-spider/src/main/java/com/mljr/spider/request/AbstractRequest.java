@@ -12,18 +12,18 @@ import us.codecraft.webmagic.Request;
  */
 public abstract class AbstractRequest extends Request {
 
-	private static final long serialVersionUID = -3710386893157330970L;
+  private static final long serialVersionUID = -3710386893157330970L;
 
-	public static final String POST = "POST";
+  public static final String POST = "POST";
 
-	public static final String GET = "GET";
+  public static final String GET = "GET";
 
-	public AbstractRequest() {
-		super();
-	}
+  public AbstractRequest() {
+    super();
+  }
 
-	public AbstractRequest(String url) {
-		super(url);
-	}
+  public AbstractRequest(String url) {
+    super(url);
+  }
 
 }

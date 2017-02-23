@@ -14,68 +14,64 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 /**
- * Created by xi.gao
- * Date:2016/12/6
- * 高德地图:根据地址信息得出经纬度
+ * Created by xi.gao Date:2016/12/6 高德地图:根据地址信息得出经纬度
  */
 public class LBSAMapGeoProcessor extends AbstractPageProcessor {
 
-    private static Site site = Site.me().setDomain("lbs.amap.com")
-            .setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)
-            .setUserAgent(
-                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
+  private static Site site = Site.me().setDomain("lbs.amap.com").setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)
+      .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-    private static final String SUCCESS = "1";
+  private static final String SUCCESS = "1";
 
-    private static final String DAILY_QUERY_OVER_LIMIT = "10003";//当日限制标记
+  private static final String DAILY_QUERY_OVER_LIMIT = "10003";// 当日限制标记
 
-    @Override
-    boolean onProcess(Page page) {
-        String json = page.getJson().get();
+  @Override
+  boolean onProcess(Page page) {
+    String json = page.getJson().get();
 
-        JSONObject jsonObject = JSON.parseObject(json);
+    JSONObject jsonObject = JSON.parseObject(json);
 
-        String resultStatus = jsonObject.getString("status");
+    String resultStatus = jsonObject.getString("status");
 
-        String infocode = jsonObject.getString("infocode");
+    String infocode = jsonObject.getString("infocode");
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("lbs amap geo request.page:{},json:{}", page.getRequest().toString(), json);
-        }
-
-        //判断密钥是否超出请求限制
-        if (StringUtils.isNotEmpty(infocode) && DAILY_QUERY_OVER_LIMIT.equalsIgnoreCase(infocode)) {
-
-            String amap_key = getKeyByRequestUrl(page.getUrl().get());
-
-            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.AMAP, amap_key, Boolean.FALSE);
-
-            return true;
-        }
-
-        if (StringUtils.isNotEmpty(resultStatus) && SUCCESS.equalsIgnoreCase(resultStatus)) {
-
-            JSONTransferVO transferVO = new JSONTransferVO();
-
-            transferVO.setUrl(page.getUrl().get());
-
-            transferVO.setContext(jsonObject);
-
-            page.putField("", JSON.toJSON(transferVO));
-        }
-        return true;
+    if (logger.isDebugEnabled()) {
+      logger.debug("lbs amap geo request.page:{},json:{}", page.getRequest().toString(), json);
     }
 
-    public LBSAMapGeoProcessor() {
-        super(site);
+    // 判断密钥是否超出请求限制
+    if (StringUtils.isNotEmpty(infocode) && DAILY_QUERY_OVER_LIMIT.equalsIgnoreCase(infocode)) {
+
+      String amap_key = getKeyByRequestUrl(page.getUrl().get());
+
+      KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.AMAP, amap_key, Boolean.FALSE);
+
+      return true;
     }
 
-    private String getKeyByRequestUrl(String url) {
-        List<NameValuePair> params = URLEncodedUtils.parse(url, Charset.forName(UTF_8));
-        for (NameValuePair nameValuePair : params) {
-            if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "key"))
-                return nameValuePair.getValue().trim();
-        }
-        return null;
+    if (StringUtils.isNotEmpty(resultStatus) && SUCCESS.equalsIgnoreCase(resultStatus)) {
+
+      JSONTransferVO transferVO = new JSONTransferVO();
+
+      transferVO.setUrl(page.getUrl().get());
+
+      transferVO.setContext(jsonObject);
+
+      page.putField("", JSON.toJSON(transferVO));
     }
+    return true;
+  }
+
+  public LBSAMapGeoProcessor() {
+    super(site);
+  }
+
+  private String getKeyByRequestUrl(String url) {
+    List<NameValuePair> params = URLEncodedUtils.parse(url, Charset.forName(UTF_8));
+    for (NameValuePair nameValuePair : params) {
+      if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "key"))
+        return nameValuePair.getValue().trim();
+    }
+    return null;
+  }
 }

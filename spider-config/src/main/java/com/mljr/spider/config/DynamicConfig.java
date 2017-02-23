@@ -12,7 +12,6 @@ import us.codecraft.webmagic.Site;
  */
 public class DynamicConfig extends Site {
 
-	public DynamicConfig() {
-	}
+  public DynamicConfig() {}
 
 }
