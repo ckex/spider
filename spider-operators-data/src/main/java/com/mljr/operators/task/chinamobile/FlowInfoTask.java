@@ -109,9 +109,4 @@ public class FlowInfoTask implements Runnable {
             throw new RuntimeException("流量单位处理错误  " + totalBytes);
         }
     }
-
-    public static void main(String[] args) {
-        FlowInfoTask task = new FlowInfoTask();
-        task.run();
-    }
 }

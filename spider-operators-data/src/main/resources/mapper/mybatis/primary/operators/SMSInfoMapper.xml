@@ -161,4 +161,26 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="insertByBatch">
+    insert into t_sms_info (USER_INFO_ID, SEND_TIME, SEND_NUM,
+    SMS_TYPE, BUSINESS_TYPE, LOCATION,
+    SMS_PACKAGE, FEE, CREATE_TIME,
+    UPDATE_TIME)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      #{item.userInfoId,jdbcType=BIGINT},
+      #{item.sendTime,jdbcType=TIMESTAMP},
+      #{item.sendNum,jdbcType=VARCHAR},
+      #{item.smsType,jdbcType=VARCHAR},
+      #{item.businessType,jdbcType=VARCHAR},
+      #{item.location,jdbcType=VARCHAR},
+      #{item.smsPackage,jdbcType=VARCHAR},
+      #{item.fee,jdbcType=DECIMAL},
+      now(),
+      now()
+      )
+    </foreach>
+  </insert>
 </mapper>
