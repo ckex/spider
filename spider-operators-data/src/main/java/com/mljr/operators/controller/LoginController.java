@@ -42,7 +42,7 @@ public class LoginController {
                                     @RequestParam String password,
                                     @RequestParam String dtm) throws Exception {
         Map<String, String> cookies = chinaMobileService.loginAndGetCookies(telno, password, dtm);
-        chinaMobileScheduler.setParams(777L,cookies);
+        chinaMobileScheduler.setParams(3387L,cookies);
         chinaMobileScheduler.start();
         return "success";
     }

@@ -27,7 +27,7 @@ public class UserInfoTask implements Runnable {
     @Override
     public void run() {
         try {
-            String userInfoStr = chinaMobileService.getAccountInfo(cookies);
+            String userInfoStr = chinaMobileService.getUserInfo(cookies);
             userInfoStr = "{\"error\":{\"code\":0,\"hint\":\"\",\"message\":\"\"},\"value\":{\"loginName\":\"*池\",\"loginMobil\":\"13681668945\"}}";
             UserInfoResponse response =new Gson().fromJson(userInfoStr,UserInfoResponse.class);
             if(response.getError().getCode()==0){

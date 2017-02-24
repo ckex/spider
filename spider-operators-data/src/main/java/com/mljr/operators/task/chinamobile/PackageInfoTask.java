@@ -25,16 +25,20 @@ public class PackageInfoTask implements Runnable {
     @Autowired
     private PackageInfoMapper packageInfoMapper;
 
-    private Map<String, String> cookies;
+    public Long userInfoId;
 
-//    public FlowInfoTask(Map<String, String> cookies) {
-//        this.cookies = cookies;
-//    }
+    public Map<String, String> cookies;
+
+    public void setParams(Long userInfoId, Map<String, String> cookies) {
+        this.userInfoId = userInfoId;
+        this.cookies = cookies;
+    }
+
 
     @Override
     public void run() {
         try {
-            String data = "{\"error\":{\"code\":0,\"hint\":\"\",\"message\":\"\"},\"value\":{\"plan_name\":\"预付费4G飞享套餐48元档\",\"brand_name\":\"全球通\",\"tel_no\":\"13681668945\"}}";
+            String data = chinaMobileService.getPackageInfo(cookies);
             PackInfoResponse response = new Gson().fromJson(data, PackInfoResponse.class);
 
             if (response.getError().getCode() == 0) {
@@ -43,7 +47,7 @@ public class PackageInfoTask implements Runnable {
                 PackageInfo packageInfo = new PackageInfo();
                 packageInfo.setCreateTime(new Date());
                 packageInfo.setUpdateTime(new Date());
-                packageInfo.setUserInfoId(2181L);
+                packageInfo.setUserInfoId(userInfoId);
 
                 packageInfo.setProductName(productName);
                 packageInfo.setBrandName(brandName);

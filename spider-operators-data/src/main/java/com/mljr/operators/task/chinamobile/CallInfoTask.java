@@ -6,62 +6,28 @@ import com.mljr.operators.dao.primary.operators.CallInfoMapper;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.CallInfo;
 import com.mljr.operators.service.ChinaMobileService;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by songchi on 17/2/23.
  */
 @Component
-public class CallInfoTask implements Runnable {
+public class CallInfoTask extends AbstractTask {
 
-    protected static final Logger logger = LoggerFactory.getLogger(CallInfoTask.class);
     @Autowired
     private ChinaMobileService chinaMobileService;
 
     @Autowired
     private CallInfoMapper callInfoMapper;
 
-    private Map<String, String> cookies;
-
-    @Override
-    public void run() {
-        try {
-
-            for (DatePair pair : DatePair.getLatestDatePair(6)) {
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            doWork(pair);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
-            }
-
-
-        } catch (Exception e) {
-            logger.error("CallInfoTask error", e);
-
-        }
-    }
-
     public void doWork(DatePair pair) throws Exception {
-        String callInfoStr = FileUtils.readFileToString(new File("/Users/songchi/Desktop/op/callInfo.txt"));
+        String callInfoStr = chinaMobileService.getCallInfo(cookies, pair);
         String data = callInfoStr.substring(callInfoStr.indexOf("[["), callInfoStr.lastIndexOf("]]") + 2);
         List<List<String>> list = new Gson().fromJson(data, List.class);
         List<CallInfo> siList = Lists.newArrayList();
@@ -80,7 +46,7 @@ public class CallInfoTask implements Runnable {
             String firstCall = subList.get(9);
 
             CallInfo ci = new CallInfo();
-            ci.setUserInfoId(2181L);
+            ci.setUserInfoId(userInfoId);
             ci.setCreateTime(new Date());
             ci.setUpdateTime(new Date());
 
@@ -96,12 +62,7 @@ public class CallInfoTask implements Runnable {
 
             siList.add(ci);
         }
-
-        for (CallInfo callInfo : siList) {
-            callInfoMapper.insertSelective(callInfo);
-        }
-
-//            flowInfoMapper.insertByBatch(siList);
+        callInfoMapper.insertByBatch(userInfoId, siList);
     }
 
 }
