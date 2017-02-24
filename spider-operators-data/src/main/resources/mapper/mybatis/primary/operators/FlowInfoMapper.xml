@@ -207,4 +207,28 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="insertByBatch">
+    insert into t_flow_info (USER_INFO_ID, START_TIME, HOME_AREA,
+    NET_TYPE, SVC_NAME, FORWARD_TYPE,
+    RECEIVE_BYTES, SEND_BYTES, TOTAL_BYTES,
+    FEE, ONLINE_PATTERN, DURATION,
+    CREATE_TIME, UPDATE_TIME
+    ) values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.userInfoId,jdbcType=BIGINT},
+      #{item.startTime,jdbcType=TIMESTAMP},
+      #{item.homeArea,jdbcType=VARCHAR},
+      #{item.netType,jdbcType=CHAR},
+      #{item.svcName,jdbcType=VARCHAR},
+      #{item.forwardType,jdbcType=BIT},
+      #{item.receiveBytes,jdbcType=DECIMAL},
+      #{item.sendBytes,jdbcType=DECIMAL},
+      #{item.totalBytes,jdbcType=DECIMAL},
+      #{item.fee,jdbcType=DECIMAL},
+      #{item.onlinePattern,jdbcType=VARCHAR},
+      #{item.duration,jdbcType=VARCHAR},
+      now(),now())
+    </foreach>
+  </insert>
 </mapper>
