@@ -31,4 +31,12 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo,Long> implemen
         }
         return userInfoMapper.getByMobile("18521705531");
     }
+
+    @Override
+    public UserInfo selectUniqUser(String mobile, String idcard) {
+//        userInfoMapper.
+        return null;
+    }
+
+
 }
