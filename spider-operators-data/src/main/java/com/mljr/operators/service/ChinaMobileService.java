@@ -1,19 +1,16 @@
 package com.mljr.operators.service;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
-import com.mljr.operators.entity.LoginResponse;
 import com.mljr.operators.common.utils.JsUtils;
+import com.mljr.operators.entity.LoginResponse;
+import com.mljr.operators.entity.chinamobile.DatePair;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,25 +68,14 @@ public class ChinaMobileService {
         return getCookies(jumpUrl);
     }
 
-    public String getAllInfos(Map<String, String> cookies) throws Exception {
-        StringBuilder accum = new StringBuilder();
-        accum.append(this.getAccountInfo(cookies))
-                .append(this.getPlanInfo(cookies))
-                .append(this.getCostInfo(cookies))
-                .append(this.getFlowBill(cookies))
-                .append(this.getSmsBill(cookies))
-                .append(this.getCallBill(cookies));
-        return accum.toString();
-    }
-
     // 01 用户在运营商信息
-    public String getAccountInfo(Map<String, String> cookies) throws Exception {
+    public String getUserInfo(Map<String, String> cookies) throws Exception {
         String url = "http://www.sh.10086.cn/sh/wsyyt/action?act=my.getUserName";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }
 
     // 02 套餐信息
-    public String getPlanInfo(Map<String, String> cookies) throws Exception {
+    public String getPackageInfo(Map<String, String> cookies) throws Exception {
         String url = "http://www.sh.10086.cn/sh/wsyyt/action?act=my.getMusType";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }
@@ -101,33 +87,21 @@ public class ChinaMobileService {
     }
 
     // 04 网络流量信息
-    public String getFlowBill(Map<String, String> cookies) throws Exception {
-        String url = "http://www.sh.10086.cn/sh/wsyyt/busi/historySearch.do?method=getFiveBillDetailAjax&billType=NEW_GPRS_NEW&startDate=2016-12-01&endDate=2016-12-31&filterfield=输入对方号码：&filterValue=&searchStr=-1&index=0&r=1487232359541&isCardNo=0&gprsType=";
-        return Jsoup.connect(url).cookies(cookies).execute().body();
+    public String getFlowInfo(Map<String, String> cookies, DatePair pair) throws Exception {
+        String url = "http://www.sh.10086.cn/sh/wsyyt/busi/historySearch.do?method=getFiveBillDetailAjax&billType=NEW_GPRS_NEW&startDate=%s&endDate=%s&filterfield=输入对方号码：&filterValue=&searchStr=-1&index=0&r=1487232359541&isCardNo=0&gprsType=";
+        return Jsoup.connect(String.format(url, pair.getStartDate(), pair.getEndDate())).cookies(cookies).execute().body();
     }
 
     // 05 短信使用信息
-    public String getSmsBill(Map<String, String> cookies) throws Exception {
+    public String getSmsInfo(Map<String, String> cookies, DatePair pair) throws Exception {
         String url = "http://www.sh.10086.cn/sh/wsyyt/busi/historySearch.do?method=getFiveBillDetailAjax&billType=NEW_SMS&startDate=2016-12-01&endDate=2016-12-31&filterfield=输入对方号码：&filterValue=&searchStr=-1&index=0&r=1487232359541&isCardNo=0&gprsType=";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }
 
     // 06 通话详单
-    public String getCallBill(Map<String, String> cookies) throws Exception {
+    public String getCallInfo(Map<String, String> cookies, DatePair pair) throws Exception {
         String url = "http://www.sh.10086.cn/sh/wsyyt/busi/historySearch.do?method=getFiveBillDetailAjax&billType=NEW_GSM&startDate=2016-12-01&endDate=2016-12-31&filterfield=输入对方号码：&filterValue=&searchStr=-1&index=0&r=1487232359541&isCardNo=0&gprsType=";
         return Jsoup.connect(url).cookies(cookies).execute().body();
     }
 
-    public List<String> getLatest12Months() {
-        List<String> months = Lists.newArrayList();
-        for (int i = 0; i <= 11; i++) {
-            String date = LocalDate.now().minusMonths(i).format(DateTimeFormatter.ofPattern("yyyyMM"));
-            months.add(date);
-        }
-        return months;
-    }
-
-//    public String getBodyByJsoup(){
-//        Jsoup.connect("http://www.sh.10086.cn/sh/wsyyt/action?act=my.getmycredit").cookies(cookies).execute();
-//    }
 }
