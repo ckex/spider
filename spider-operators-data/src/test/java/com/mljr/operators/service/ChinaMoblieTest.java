@@ -1,9 +1,8 @@
 package com.mljr.operators.service;
 
 import com.google.common.collect.Lists;
-import com.mljr.operators.dao.primary.operators.SMSInfoMapper;
 import com.mljr.operators.entity.model.operators.SMSInfo;
-import com.mljr.operators.service.ChinaMobileService;
+import com.mljr.operators.service.primary.operators.ISMSInfoService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,16 +13,18 @@ import java.util.Map;
 /**
  * Created by songchi on 17/2/17.
  */
-public class ChinaMoblieTest extends BaseTest{
-    ChinaMobileService chinaMobileService = new ChinaMobileService();
+public class ChinaMoblieTest extends BaseTest {
 
     @Autowired
-    SMSInfoMapper smsInfoMapper;
+    ChinaMobileService chinaMobileService;
+
+    @Autowired
+    private ISMSInfoService smsInfoService;
 
     @Test
     public void getAllInfos() throws Exception {
 
-        Map<String, String> cookies = chinaMobileService.loginAndGetCookies("13681668945", "672440","438237");
+        Map<String, String> cookies = chinaMobileService.loginAndGetCookies("13681668945", "672440", "438237");
 
 
 //        System.out.println(chinaMobileService.getUserInfo(cookies));
@@ -53,8 +54,8 @@ public class ChinaMoblieTest extends BaseTest{
         info.setSendTime(new Date());
         info.setSmsType("3");
         info.setBusinessType("5");
-        List<SMSInfo> list = Lists.newArrayList(info,info,info,info);
-        smsInfoMapper.insertByBatch(list);
+        List<SMSInfo> list = Lists.newArrayList(info, info, info, info);
+        smsInfoService.insertByBatch(list);
 
     }
 }
