@@ -8,6 +8,8 @@ import com.mljr.operators.service.primary.operators.IPackageInfoDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author gaoxi
  * @time 2017/2/23
@@ -21,5 +23,10 @@ public class PackageInfoDetailServiceImpl extends BaseServiceImpl<PackageInfoDet
     @Override
     protected BaseMapper<PackageInfoDetail, Long> getMapper() {
         return packageInfoDetailMapper;
+    }
+
+    @Override
+    public void insertByBatch(Long packageInfoId, List<PackageInfoDetail> list) {
+        packageInfoDetailMapper.insertByBatch(packageInfoId, list);
     }
 }

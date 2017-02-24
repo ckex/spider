@@ -20,7 +20,7 @@ public class UserInfoServiceImplTest extends BaseTest {
 
         Assert.notNull(userInfoService);
 
-        UserInfo userInfo = userInfoService.getByMobile("18521705531");
+        UserInfo userInfo = userInfoService.selectUniqUser("18521705531","429*************34");
 
         System.out.println();
     }

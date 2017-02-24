@@ -124,4 +124,19 @@
 		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
 		where ID = #{id,jdbcType=BIGINT}
 	</update>
+
+	<insert id="insertByBatch">
+		insert into t_package_info_detail (PACKAGE_INFO_ID, DISCNT_NAME,
+		DISCNT_FEE,
+		DESCRIPTION, CREATE_TIME, UPDATE_TIME
+		)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{packageInfoId,jdbcType=BIGINT}, #{item.discntName,jdbcType=VARCHAR},
+			#{item.discntFee,jdbcType=VARCHAR},
+			#{item.description,jdbcType=VARCHAR},now(),now()
+			)
+		</foreach>
+	</insert>
+
 </mapper>

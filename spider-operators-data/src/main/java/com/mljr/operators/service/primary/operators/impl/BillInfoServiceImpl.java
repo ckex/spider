@@ -8,6 +8,8 @@ import com.mljr.operators.service.primary.operators.IBillInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author gaoxi
  * @time 2017/2/23
@@ -21,5 +23,10 @@ public class BillInfoServiceImpl extends BaseServiceImpl<BillInfo, Long> impleme
     @Override
     protected BaseMapper<BillInfo, Long> getMapper() {
         return billInfoMapper;
+    }
+
+    @Override
+    public void insertByBatch(Long userInfoId, List<BillInfo> list) {
+        billInfoMapper.insertByBatch(userInfoId, list);
     }
 }
