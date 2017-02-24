@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @time 2017/2/22
  */
 @Service
-public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo,Long> implements IUserInfoService {
+public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo, Long> implements IUserInfoService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
@@ -25,18 +25,16 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo,Long> implemen
     }
 
     @Override
-    public UserInfo getByMobile(String mobile) {
-        if (StringUtils.isBlank(mobile)) {
+    public UserInfo selectUniqUser(String mobile, String idcard) {
+        if (StringUtils.isBlank(mobile) && StringUtils.isBlank(idcard)) {
             return null;
         }
-        return userInfoMapper.getByMobile("18521705531");
+        return userInfoMapper.selectUniqUser(mobile, idcard);
     }
 
     @Override
-    public UserInfo selectUniqUser(String mobile, String idcard) {
-//        userInfoMapper.
-        return null;
+    public UserInfo insertIgnore(UserInfo userInfo) {
+        boolean flag = userInfoMapper.insertIgnore(userInfo) == 1;
+        return flag ? userInfo : null;
     }
-
-
 }

@@ -19,6 +19,10 @@ public class LoginDTO implements Serializable {
 
     private String verifyCode;//验证码
 
+    private String provinceCode;//省份
+
+    private String idcard;//身份证
+
     public String getMobile() {
         return mobile;
     }
@@ -41,6 +45,22 @@ public class LoginDTO implements Serializable {
 
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
+    }
+
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
+    }
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
     }
 
     @Override

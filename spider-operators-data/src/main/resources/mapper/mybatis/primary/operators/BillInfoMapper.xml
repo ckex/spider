@@ -129,4 +129,17 @@
 		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
 		where ID = #{id,jdbcType=BIGINT}
 	</update>
+
+	<insert id="insertByBatch">
+		insert into t_bill_info (USER_INFO_ID, BILL_DATE, FEE_NAME,
+		FEE, PARTENT_ID, CREATE_TIME,
+		UPDATE_TIME)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{userInfoId,jdbcType=BIGINT}, #{item.billDate,jdbcType=INTEGER},
+			#{item.feeName,jdbcType=VARCHAR},
+			#{item.fee,jdbcType=VARCHAR}, #{item.partentId,jdbcType=INTEGER},now(),now())
+		</foreach>
+	</insert>
+
 </mapper>

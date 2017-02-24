@@ -53,6 +53,17 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
     protected static final String SMS_URL = "http://iservice.10010.com/e3/static/query/sms?_=%s&pageSize=100&pageNo=%s&begindate=%s&enddate=%s";
 
     /**
+     * 流量详单URL
+     */
+    protected static final String FLOW_DETAIL_URL = "http://iservice.10010.com/e3/static/query/callFlow?_=%s";
+
+    /**
+     * 上网记录URL
+     */
+    protected static final String FLOW_RECORD_URL = "http://iservice.10010.com/e3/static/query/callNetPlayRecord?_=%s";
+
+
+    /**
      * user agent
      */
     protected static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0";

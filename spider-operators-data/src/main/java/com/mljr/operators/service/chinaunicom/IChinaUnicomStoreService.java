@@ -1,7 +1,6 @@
 package com.mljr.operators.service.chinaunicom;
 
-import com.mljr.operators.entity.dto.chinaunicom.BillDTO;
-import com.mljr.operators.entity.dto.chinaunicom.CallDTO;
+import com.mljr.operators.entity.dto.chinaunicom.*;
 
 /**
  * @author gaoxi
@@ -10,22 +9,63 @@ import com.mljr.operators.entity.dto.chinaunicom.CallDTO;
 public interface IChinaUnicomStoreService {
 
     /**
+     * 保存用户信息
+     *
+     * @param loginDTO
+     * @param personInfoDTO 数据传输层
+     * @return
+     */
+    boolean saveUserInfo(LoginDTO loginDTO, PersonInfoDTO personInfoDTO);
+
+    /**
+     * 保存套餐信息
+     *
+     * @param userInfoId t_user_info.id
+     * @param personInfo 套餐信息
+     * @return
+     */
+    boolean savePackageInfo(Long userInfoId, PersonInfoDTO personInfo);
+
+    /**
      * 保存流量信息
      *
-     * @param userInfoDetailId 用户信息ID t_user_info_detail.id
-     * @param callDTO          通话详情数据传输层
+     * @param userInfoId t_user_info.id
+     * @param callDTO    通话详情数据传输层
      * @return true:SUCC false:ERROR
      */
-    boolean saveCallInfo(Long userInfoDetailId, CallDTO callDTO);
+    boolean saveCallInfo(Long userInfoId, CallDTO callDTO);
 
     /**
      * 保存账单信息
      *
-     * @param userInfoDetailId 用户信息ID t_user_info_detail.id
-     * @param billDTO          账单数据
+     * @param userInfoId t_user_info.id
+     * @param billDTO    账单数据
      * @return
      */
-    boolean saveBillInfo(Long userInfoDetailId, BillDTO billDTO);
+    boolean saveBillInfo(Long userInfoId, BillDTO billDTO);
+
+    /**
+     * 保存短信信息
+     *
+     * @param userInfoId t_user_info.id
+     * @param smsdto     短信数据
+     * @return
+     */
+    boolean saveSmsInfo(Long userInfoId, SMSDTO smsdto);
+
+    /**
+     * @param userInfoId    t_user_info.id
+     * @param flowDetailDTO 流量详情数据
+     * @return
+     */
+    boolean saveFlowInfo(Long userInfoId, FlowDetailDTO flowDetailDTO);
+
+    /**
+     * @param userInfoId    t_user_info.id
+     * @param flowRecordDTO 流量记录数据
+     * @return
+     */
+    boolean saveFlowRecordInfo(Long userInfoId, FlowRecordDTO flowRecordDTO);
 
 
 }

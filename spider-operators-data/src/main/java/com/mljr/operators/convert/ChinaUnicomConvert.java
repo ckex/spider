@@ -1,16 +1,10 @@
 package com.mljr.operators.convert;
 
 import com.google.common.collect.Lists;
+import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.utils.DateUtil;
-import com.mljr.operators.entity.dto.chinaunicom.BillDTO;
-import com.mljr.operators.entity.dto.chinaunicom.CallDTO;
-import com.mljr.operators.entity.dto.chinaunicom.PersonInfoDTO;
-import com.mljr.operators.entity.dto.chinaunicom.SMSDTO;
-import com.mljr.operators.entity.model.operators.BillInfo;
-import com.mljr.operators.entity.model.operators.CallInfo;
-import com.mljr.operators.entity.vo.chinaunicom.PackageInfoVO;
-import com.mljr.operators.entity.vo.chinaunicom.SMSVO;
-import com.mljr.operators.entity.vo.chinaunicom.UserInfoVO;
+import com.mljr.operators.entity.dto.chinaunicom.*;
+import com.mljr.operators.entity.model.operators.*;
 import com.mljr.operators.exception.ConvertException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,43 +21,60 @@ public class ChinaUnicomConvert {
     private ChinaUnicomConvert() {
     }
 
-    public static UserInfoVO convert(PersonInfoDTO personInfo) {
-        UserInfoVO entity = new UserInfoVO();
-        if (personInfo.getResult() != null && personInfo.getResult().getMyDetail() != null) {
-            entity.setUserName(personInfo.getResult().getMyDetail().getCustname());
-            entity.setCityCode(personInfo.getResult().getMyDetail().getCitycode());
-            entity.setIdcard(personInfo.getResult().getMyDetail().getCertnum());
-            entity.setLevel(personInfo.getResult().getMyDetail().getCustlvl());
-            entity.setProductName(personInfo.getResult().getMyDetail().getProductname());
-        }
-        List<PackageInfoVO> packageInfoList = Lists.newArrayList();
-        if (personInfo.getPackageInfo() != null) {
-            if (personInfo.getPackageInfo().getProductInfo() != null
-                    && personInfo.getPackageInfo().getProductInfo().size() > 0) {
-                personInfo.getPackageInfo().getProductInfo().forEach(productInfo -> {
-                    if (productInfo.getPackageInfo() != null && productInfo.getPackageInfo().size() > 0) {
-                        productInfo.getPackageInfo().forEach(packageInfo -> packageInfoList.add(convert(packageInfo)));
-                    }
-                });
+    public static UserInfo convert(PersonInfoDTO personInfo) {
+        UserInfo entity = null;
+        try {
+            if (null != personInfo && personInfo.getResult() != null
+                    && personInfo.getResult().getMyDetail() != null) {
+                entity = new UserInfo();
+                entity.setUserName(personInfo.getResult().getMyDetail().getCustname());
+                entity.setCityCode(personInfo.getResult().getMyDetail().getCitycode());
+                entity.setType(String.valueOf(OperatorsEnum.CHINAUNICOM.getValue()));
+                if ("男".equals(personInfo.getResult().getMyDetail().getCustsex())) {
+                    entity.setSex(Boolean.FALSE);
+                } else {
+                    entity.setSex(Boolean.TRUE);
+                }
+                entity.setAddress(personInfo.getResult().getMyDetail().getCertaddr());
             }
+        } catch (Exception e) {
+            throw new ConvertException("convert failure.", e);
         }
-        entity.setPackageInfos(packageInfoList);
         return entity;
     }
 
-    public static PackageInfoVO convert(PersonInfoDTO.PackageInfo packageInfo) {
-        PackageInfoVO entity = new PackageInfoVO();
-        entity.setPackageName(packageInfo.getPackageName());
-        List<PackageInfoVO.DiscntInfoChinaUnicomVO> discntInfoList = Lists.newArrayList();
-        if (packageInfo.getDiscntInfo() != null && packageInfo.getDiscntInfo().size() > 0) {
-            packageInfo.getDiscntInfo().forEach(discntInfo -> discntInfoList.add(convert(discntInfo)));
+    public static List<PackageInfoDTO> packageForConvert(PersonInfoDTO personInfo) {
+        List<PackageInfoDTO> list = Lists.newArrayList();
+        try {
+            if (null != personInfo && personInfo.getPackageInfo() != null) {
+                if (null != personInfo.getPackageInfo().getProductInfo()
+                        && personInfo.getPackageInfo().getProductInfo().size() > 0) {
+                    personInfo.getPackageInfo().getProductInfo().forEach(productInfo -> list.add(convert(productInfo)));
+                }
+            }
+        } catch (Exception e) {
+            throw new ConvertException("convert failure.", e);
         }
-        entity.setDiscntInfos(discntInfoList);
-        return entity;
+        return list;
     }
 
-    public static PackageInfoVO.DiscntInfoChinaUnicomVO convert(PersonInfoDTO.DiscntInfo discntInfo) {
-        PackageInfoVO.DiscntInfoChinaUnicomVO entity = new PackageInfoVO.DiscntInfoChinaUnicomVO();
+    public static PackageInfoDTO convert(PersonInfoDTO.ProductInfo productInfo) {
+        PackageInfoDTO dtoEntity = new PackageInfoDTO();
+        {
+            PackageInfo entity = new PackageInfo();
+            entity.setProductName(productInfo.getProductName());
+            dtoEntity.setPackageInfo(entity);
+        }
+        List<PackageInfoDetail> list = Lists.newArrayList();
+        productInfo.getPackageInfo().forEach(packageInfo -> packageInfo.getDiscntInfo().forEach(discntInfo -> {
+            list.add(convert(discntInfo));
+        }));
+        dtoEntity.setDetailList(list);
+        return dtoEntity;
+    }
+
+    public static PackageInfoDetail convert(PersonInfoDTO.DiscntInfo discntInfo) {
+        PackageInfoDetail entity = new PackageInfoDetail();
         entity.setDiscntName(discntInfo.getDiscntName());
         entity.setDiscntFee(discntInfo.getDiscntFee());
         return entity;
@@ -72,12 +83,18 @@ public class ChinaUnicomConvert {
     public static List<BillInfo> convert(BillDTO billDTO) {
         List<BillInfo> list = Lists.newArrayList();
         try {
-            if (null != billDTO.getResult()
+            if (null != billDTO && null != billDTO.getResult()
                     && null != billDTO.getResult().getBillInfo()
                     && billDTO.getResult().getBillInfo().size() > 0) {
-                List<BillDTO.BillInfo> billInfoList = billDTO.getResult().getBillInfo().stream().filter(billInfo -> billInfo.getParentitemcode().equals("-1")).collect(Collectors.toList());
+                List<BillDTO.BillInfo> billInfoList = billDTO.getResult().getBillInfo()
+                        .stream().filter(billInfo -> !billInfo.getParentitemcode().equals("-1"))
+                        .collect(Collectors.toList());
                 if (null != billInfoList && billInfoList.size() > 0) {
-                    billInfoList.forEach(billInfo -> list.add(convert(billInfo)));
+                    billInfoList.forEach(billInfo -> {
+                        BillInfo entity = convert(billInfo);
+                        entity.setBillDate(Integer.parseInt(billDTO.getResult().getCycleid()));
+                        list.add(entity);
+                    });
                 }
             }
         } catch (Exception e) {
@@ -117,7 +134,11 @@ public class ChinaUnicomConvert {
         if (!StringUtils.isBlank(callDetailDTO.getCalltime())) {
             date = date + " " + callDetailDTO.getCalltime();
         }
-        entity.setCallDate(null != date ? DateUtil.stringToDate(date, DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss) : DateUtil.stringToDate("1970-01-01 00:00:00", DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
+        if (null != date) {
+            entity.setCallDate(DateUtil.stringToDate(date, DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
+        } else {
+            DateUtil.stringToDate("1970-01-01 00:00:00", DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss);
+        }
         entity.setCallNumber(callDetailDTO.getOthernum());
         entity.setCallType(callDetailDTO.getCalltypeName());
         entity.setLandType(callDetailDTO.getLandtype());
@@ -128,15 +149,33 @@ public class ChinaUnicomConvert {
         return entity;
     }
 
-    public static SMSVO.SMSDetailVO convert(SMSDTO.SMSDetailDTO smsDetailDTO) {
-        SMSVO.SMSDetailVO entity = new SMSVO.SMSDetailVO();
+    public static List<SMSInfo> convert(SMSDTO smsdto) {
+        List<SMSInfo> list = Lists.newArrayList();
+        if (null != smsdto && null != smsdto.getPageMap()
+                && null != smsdto.getPageMap().getResult()
+                && smsdto.getPageMap().getResult().size() > 0) {
+            smsdto.getPageMap().getResult().forEach(smsDetailDTO -> list.add(convert(smsDetailDTO)));
+        }
+        return list;
+    }
+
+    public static SMSInfo convert(SMSDTO.SMSDetailDTO smsDetailDTO) {
+        SMSInfo entity = new SMSInfo();
+        String date = null;
         if (!StringUtils.isBlank(smsDetailDTO.getSmsdate())) {
-            entity.setSendTime(smsDetailDTO.getSmsdate());
+            date = smsDetailDTO.getSmsdate();
         }
         if (!StringUtils.isBlank(smsDetailDTO.getSmstime())) {
-            entity.setSendTime(entity.getSendTime() + " " + smsDetailDTO.getSmstime());
+            date = date + " " + smsDetailDTO.getSmstime();
+        }
+        if (null != date) {
+            entity.setSendTime(DateUtil.stringToDate(date, DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
+        } else {
+            entity.setSendTime(DateUtil.stringToDate("1970-01-01 00:00:00", DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
         }
         entity.setSendNum(smsDetailDTO.getOthernum());
+        entity.setFee(new BigDecimal(smsDetailDTO.getAmount()));
+        entity.setLocation(smsDetailDTO.getHomearea());
         if ("1".equals(smsDetailDTO.getSmstype())) {
             entity.setSmsType("接收");
         } else if ("2".equals(smsDetailDTO.getSmstype())) {

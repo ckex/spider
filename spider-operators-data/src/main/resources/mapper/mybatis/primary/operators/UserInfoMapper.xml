@@ -172,4 +172,21 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="insertIgnore" parameterType="com.mljr.operators.entity.model.operators.UserInfo" keyProperty="id" useGeneratedKeys="true">
+    INSERT IGNORE INTO t_user_info (MOBILE, PWD, PROVINCE_CODE,
+      CITY_CODE, TYPE, USER_NAME,
+      IDCARD, SEX, ADDRESS, CREATE_TIME,
+      UPDATE_TIME)
+    values (#{mobile,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR},
+      #{cityCode,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{userName,jdbcType=VARCHAR},
+      #{idcard,jdbcType=VARCHAR}, #{sex,jdbcType=BIT}, #{address,jdbcType=VARCHAR}, now(),now())
+  </insert>
+
+  <select id="selectUniqUser" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_user_info WHERE MOBILE=#{mobile} AND IDCARD=#{idcard}
+  </select>
+
 </mapper>

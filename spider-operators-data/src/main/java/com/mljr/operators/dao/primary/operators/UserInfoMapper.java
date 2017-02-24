@@ -8,5 +8,20 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserInfoMapper extends BaseMapper<UserInfo, Long> {
 
-    UserInfo getByMobile(@Param("mobile") String mobile);
+    /**
+     * 插入 数据库存在就不新增，不存在插入
+     *
+     * @param userInfo
+     * @return
+     */
+    int insertIgnore(UserInfo userInfo);
+
+    /**
+     * 获取用户信息
+     *
+     * @param mobile 手机
+     * @param idcard 身份证
+     * @return
+     */
+    UserInfo selectUniqUser(@Param("mobile") String mobile, @Param("idcard") String idcard);
 }
