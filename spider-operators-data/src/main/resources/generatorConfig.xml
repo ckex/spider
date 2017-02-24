@@ -43,24 +43,24 @@
 
 		<!-- 生成mapxml对应client，也就是接口dao -->
 		<javaClientGenerator targetPackage="com.mljr.operators.dao.primary.operators"
-			targetProject="${entity.target.dir}" type="XMLMAPPER">
+			targetProject="MAVEN" type="XMLMAPPER">
 			<!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， tru~com.oop.eksp.user.model.[schemaName] -->
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="t_user_info" domainObjectName="UserInfo"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
+		<!--<table tableName="t_user_info" domainObjectName="UserInfo"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false">-->
+			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+		<!--</table>-->
 
-		<table tableName="t_user_info_detail" domainObjectName="UserInfoDetail"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
+		<!--<table tableName="t_user_info_detail" domainObjectName="UserInfoDetail"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false">-->
+			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+		<!--</table>-->
 
 
 		<table tableName="t_package_info" domainObjectName="PackageInfo"
@@ -70,40 +70,40 @@
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
 		</table>
 
-		<table tableName="t_package_info_detail" domainObjectName="PackageInfoDetail"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
+		<!--<table tableName="t_package_info_detail" domainObjectName="PackageInfoDetail"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false">-->
+			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+		<!--</table>-->
 
-		<table tableName="t_bill_info" domainObjectName="BillInfo"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
+		<!--<table tableName="t_bill_info" domainObjectName="BillInfo"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false">-->
+			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+		<!--</table>-->
 
-		<table tableName="t_call_info" domainObjectName="CallInfo"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
+		<!--<table tableName="t_call_info" domainObjectName="CallInfo"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false">-->
+			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+		<!--</table>-->
 
-		<table tableName="t_flow_info" domainObjectName="FlowInfo"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
+		<!--<table tableName="t_flow_info" domainObjectName="FlowInfo"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false">-->
+			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+		<!--</table>-->
 
-		<table tableName="t_sms_info" domainObjectName="SMSInfo"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
+		<!--<table tableName="t_sms_info" domainObjectName="SMSInfo"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false">-->
+			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+		<!--</table>-->
 
 	</context>
 </generatorConfiguration>

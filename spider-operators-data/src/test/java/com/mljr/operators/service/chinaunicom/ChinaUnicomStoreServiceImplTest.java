@@ -1,11 +1,15 @@
 package com.mljr.operators.service.chinaunicom;
 
-import com.mljr.operators.entity.dto.chinaunicom.PersonInfoDTO;
+import com.alibaba.fastjson.JSON;
+import com.google.common.base.Joiner;
+import com.mljr.operators.entity.dto.chinaunicom.CallDTO;
 import com.mljr.operators.service.BaseTest;
-import com.mljr.operators.service.primary.operators.IUserInfoService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * @author gaoxi
@@ -14,28 +18,38 @@ import org.springframework.util.Assert;
 public class ChinaUnicomStoreServiceImplTest extends BaseTest {
 
     @Autowired
-    private IChinaUnicomService chinaUnicomService;
+    private IChinaUnicomStoreService chinaUnicomStoreService;
 
-    @Autowired
-    private IUserInfoService userInfoService;
+    private static final String PATH_PREFIX = "chinaunicom";
 
-    private String cookies = "";
+    private static final String CALL_INFO_FILE = "callInfo.json";
 
     @Override
     public void testInit() {
         super.testInit();
-        cookies = "";
-        Assert.notNull(chinaUnicomService);
-        Assert.notNull(userInfoService);
+        Assert.notNull(chinaUnicomStoreService);
     }
 
     @Test
-    public void testStoreUserInfo() {
-        PersonInfoDTO personInfo = chinaUnicomService.queryUserInfo(cookies);
-        if (null != personInfo) {
-
-
+    public void testStoreCallInfo() {
+        String pathUrl = Joiner.on(File.separator).join(PATH_PREFIX, CALL_INFO_FILE);
+        String path = getClass().getClassLoader().getResource(pathUrl).getPath();
+        List<String> list = readFileLines(path);
+        if (null != list) {
+            CallDTO callDTO = JSON.parseObject(list.get(0), CallDTO.class);
+            boolean flag = chinaUnicomStoreService.saveCallInfo(1L, callDTO);
+            Assert.state(flag);
         }
+    }
+
+    @Test
+    public void testSaveBillInfo() {
+
+    }
+
+    @Test
+    public void testSaveFlowInfo() {
+
     }
 
 }

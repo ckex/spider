@@ -1,5 +1,6 @@
 package com.mljr.operators.controller;
 
+import com.mljr.operators.scheduler.ChinaMobileScheduler;
 import com.mljr.operators.service.ChinaMobileService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class LoginController {
     @Autowired
     private ChinaMobileService chinaMobileService;
 
+    @Autowired
+    ChinaMobileScheduler chinaMobileScheduler;
+
     @RequestMapping("/")
     public ModelAndView login() {
         return new ModelAndView("login");
@@ -34,25 +38,13 @@ public class LoginController {
     }
 
     @RequestMapping("/chinaMobile/getAllInfos")
-    public ModelAndView getAllInfos(@RequestParam String telno,
+    public String getAllInfos(@RequestParam String telno,
                                     @RequestParam String password,
                                     @RequestParam String dtm) throws Exception {
         Map<String, String> cookies = chinaMobileService.loginAndGetCookies(telno, password, dtm);
-
-
-        ModelAndView mav = new ModelAndView("info");
-        mav.addObject("accountInfo", chinaMobileService.getAccountInfo(cookies));
-
-        mav.addObject("planInfo", chinaMobileService.getPlanInfo(cookies));
-
-        mav.addObject("costInfo", chinaMobileService.getCostInfo(cookies));
-
-        mav.addObject("flowBill", chinaMobileService.getFlowBill(cookies));
-
-        mav.addObject("smsBill", chinaMobileService.getSmsBill(cookies));
-
-        mav.addObject("callBill", chinaMobileService.getCallBill(cookies));
-        return mav;
+        chinaMobileScheduler.setParams(777L,cookies);
+        chinaMobileScheduler.start();
+        return "success";
     }
 
 

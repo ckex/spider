@@ -32,18 +32,17 @@ public class CarHomeNetService {
   public void consume() throws Exception {
     final Channel channel = RabbitmqClient.newChannel();
     try {
-      // 每次从队列中拿取一条数据
-      GetResponse response = RabbitmqClient.pollMessage(channel, QUEUE_NAME, false);
-      if (response == null) {
-        logger.debug("qid=" + QUEUE_NAME + " queue is empty.waitting message");
-        return;
+      while (true) {
+        // 每次从队列中拿取一条数据
+        GetResponse response = RabbitmqClient.pollMessage(channel, QUEUE_NAME, false);
+        if (response == null) {
+          logger.debug("qid=" + QUEUE_NAME + " queue is empty.waitting message");
+          return;
+        }
+        String message = new String(response.getBody(), "UTF-8");
+        writeToDb(message);
+        channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
       }
-      String message = new String(response.getBody(), "UTF-8");
-      writeToDb(message);
-      channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
-
-    } catch (Exception e) {
-      logger.error("CarHomeNetService error: " + ", " + ExceptionUtils.getStackTrace(e));
     } finally {
       if (channel != null) {
         channel.close();

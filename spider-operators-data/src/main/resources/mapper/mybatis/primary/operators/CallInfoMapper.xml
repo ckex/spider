@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.mybatis.primary.operators.CallInfoMapper">
+<mapper namespace="com.mljr.operators.dao.primary.operators.CallInfoMapper">
   <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.CallInfo">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="USER_INFO_ID" jdbcType="BIGINT" property="userInfoId" />
@@ -197,4 +197,20 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="insertByBatch">
+    insert into t_call_info (USER_INFO_ID, CALL_DATE, CALL_NUMBER,
+      CALL_TYPE, LAND_TYPE, CALL_LONG_HOUR,
+      CALL_FEE, CALL_LOCAL_ADDRESS, CALL_REMOTE_ADDRESS,
+      DISCOUNT_PACKAGE, FIRST_CALL, CREATE_TIME,
+      UPDATE_TIME)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{userInfoDetailId,jdbcType=BIGINT}, #{item.callDate,jdbcType=TIMESTAMP}, #{item.callNumber,jdbcType=VARCHAR},
+      #{item.callType,jdbcType=VARCHAR}, #{item.landType,jdbcType=VARCHAR}, #{item.callLongHour,jdbcType=VARCHAR},
+      #{item.callFee,jdbcType=DECIMAL}, #{item.callLocalAddress,jdbcType=VARCHAR}, #{item.callRemoteAddress,jdbcType=VARCHAR},
+      #{item.discountPackage,jdbcType=VARCHAR}, #{item.firstCall,jdbcType=VARCHAR},now(),now())
+    </foreach>
+  </insert>
+
 </mapper>
