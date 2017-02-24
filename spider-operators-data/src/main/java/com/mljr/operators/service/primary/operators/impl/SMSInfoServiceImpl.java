@@ -8,6 +8,8 @@ import com.mljr.operators.service.primary.operators.ISMSInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author gaoxi
  * @time 2017/2/23
@@ -21,5 +23,10 @@ public class SMSInfoServiceImpl extends BaseServiceImpl<SMSInfo,Long> implements
     @Override
     protected BaseMapper<SMSInfo, Long> getMapper() {
         return smsInfoMapper;
+    }
+
+    @Override
+    public void insertByBatch(List<SMSInfo> list) {
+        smsInfoMapper.insertByBatch(list);
     }
 }

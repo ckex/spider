@@ -17,4 +17,6 @@ public interface IUserInfoService extends IBaseService<UserInfo,Long>{
      */
     UserInfo getByMobile(String mobile);
 
+    UserInfo selectUniqUser(String mobile, String idcard);
+
 }

@@ -48,27 +48,19 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<!--<table tableName="t_user_info" domainObjectName="UserInfo"-->
-			<!--enableCountByExample="false" enableUpdateByExample="false"-->
-			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
-			<!--selectByExampleQueryId="false">-->
-			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
-		<!--</table>-->
-
-		<!--<table tableName="t_user_info_detail" domainObjectName="UserInfoDetail"-->
-			<!--enableCountByExample="false" enableUpdateByExample="false"-->
-			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
-			<!--selectByExampleQueryId="false">-->
-			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
-		<!--</table>-->
-
-
-		<table tableName="t_package_info" domainObjectName="PackageInfo"
+		<table tableName="t_user_info" domainObjectName="UserInfo"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
 		</table>
+
+		<!--<table tableName="t_package_info" domainObjectName="PackageInfo"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false">-->
+			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+		<!--</table>-->
 
 		<!--<table tableName="t_package_info_detail" domainObjectName="PackageInfoDetail"-->
 			<!--enableCountByExample="false" enableUpdateByExample="false"-->
