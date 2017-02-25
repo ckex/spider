@@ -2,10 +2,7 @@ package com.mljr.operators.service.chinaunicom.impl;
 
 import com.mljr.operators.convert.ChinaUnicomConvert;
 import com.mljr.operators.entity.dto.chinaunicom.*;
-import com.mljr.operators.entity.model.operators.BillInfo;
-import com.mljr.operators.entity.model.operators.CallInfo;
-import com.mljr.operators.entity.model.operators.SMSInfo;
-import com.mljr.operators.entity.model.operators.UserInfo;
+import com.mljr.operators.entity.model.operators.*;
 import com.mljr.operators.exception.ConvertException;
 import com.mljr.operators.service.chinaunicom.IChinaUnicomStoreService;
 import com.mljr.operators.service.primary.operators.*;
@@ -44,6 +41,9 @@ public class ChinaUnicomStoreServiceImpl implements IChinaUnicomStoreService {
     @Autowired
     private IPackageInfoDetailService packageInfoDetailService;
 
+    @Autowired
+    private IFlowInfoService flowInfoService;
+
     @Override
     public boolean saveUserInfo(LoginDTO loginDTO, PersonInfoDTO personInfoDTO) {
         boolean flag = false;
@@ -81,9 +81,9 @@ public class ChinaUnicomStoreServiceImpl implements IChinaUnicomStoreService {
             }
             flag = true;
         } catch (ConvertException e) {
-            logger.error("get convert data failure.userInfoDetailId:{}", userInfoId, e);
+            logger.error("get convert data failure.userInfoId:{}", userInfoId, e);
         } catch (RuntimeException e) {
-            logger.error("save failure.userInfoDetailId:{}", userInfoId, e);
+            logger.error("save failure.userInfoId:{}", userInfoId, e);
         }
         return flag;
     }
@@ -98,9 +98,9 @@ public class ChinaUnicomStoreServiceImpl implements IChinaUnicomStoreService {
             }
             flag = true;
         } catch (ConvertException e) {
-            logger.error("get convert data failure.userInfoDetailId:{}", userInfoId, e);
+            logger.error("get convert data failure.userInfoId:{}", userInfoId, e);
         } catch (RuntimeException e) {
-            logger.error("save failure.userInfoDetailId:{}", userInfoId, e);
+            logger.error("save failure.userInfoId:{}", userInfoId, e);
         }
         return flag;
     }
@@ -115,9 +115,9 @@ public class ChinaUnicomStoreServiceImpl implements IChinaUnicomStoreService {
             }
             flag = true;
         } catch (ConvertException e) {
-            logger.error("get convert data failure.userInfoDetailId:{}", userInfoId, e);
+            logger.error("get convert data failure.userInfoId:{}", userInfoId, e);
         } catch (RuntimeException e) {
-            logger.error("save failure.userInfoDetailId:{}", userInfoId, e);
+            logger.error("save failure.userInfoId:{}", userInfoId, e);
         }
         return flag;
     }
@@ -133,16 +133,31 @@ public class ChinaUnicomStoreServiceImpl implements IChinaUnicomStoreService {
             }
             flag = true;
         } catch (ConvertException e) {
-            logger.error("get convert data failure.userInfoDetailId:{}", userInfoId, e);
+            logger.error("get convert data failure.userInfoId:{}", userInfoId, e);
         } catch (RuntimeException e) {
-            logger.error("save failure.userInfoDetailId:{}", userInfoId, e);
+            logger.error("save failure.userInfoId:{}", userInfoId, e);
         }
         return flag;
     }
 
     @Override
     public boolean saveFlowInfo(Long userInfoId, FlowDetailDTO flowDetailDTO) {
-        return true;
+        boolean flag = false;
+        try {
+            List<FlowInfo> list = ChinaUnicomConvert.convert(flowDetailDTO);
+            if (!list.isEmpty()) {
+                list.forEach(flowInfo -> {
+                    flowInfo.setUserInfoId(userInfoId);
+                });
+                flowInfoService.insertByBatch(list);
+            }
+            flag = true;
+        } catch (ConvertException e) {
+            logger.error("get convert data failure.userInfoId:{}", userInfoId, e);
+        } catch (RuntimeException e) {
+            logger.error("save failure.userInfoId:{}", userInfoId, e);
+        }
+        return flag;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.mljr.operators.service.chinaunicom.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.mljr.operators.common.utils.DateUtil;
 import com.mljr.operators.entity.dto.chinaunicom.*;
 import com.mljr.operators.service.chinaunicom.IChinaUnicomService;
 import org.apache.commons.lang3.StringUtils;
@@ -55,12 +56,12 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
     /**
      * 流量详单URL
      */
-    protected static final String FLOW_DETAIL_URL = "http://iservice.10010.com/e3/static/query/callFlow?_=%s";
+    protected static final String FLOW_DETAIL_URL = "http://iservice.10010.com/e3/static/query/callFlow?_=%s&pageSize=100&beginDate=%s&endDate=%s&pageNo=%s";
 
     /**
      * 上网记录URL
      */
-    protected static final String FLOW_RECORD_URL = "http://iservice.10010.com/e3/static/query/callNetPlayRecord?_=%s";
+    protected static final String FLOW_RECORD_URL = "http://iservice.10010.com/e3/static/query/callNetPlayRecord?_=%s&pageSize=100&beginDate=%s&endDate=%s&pageNo=%s";
 
 
     /**
@@ -121,6 +122,31 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
         String respStr = request(url, cookies);
         if (null != respStr) {
             return JSON.parseObject(respStr, SMSDTO.class);
+        }
+        return null;
+    }
+
+    @Override
+    public FlowDetailDTO queryCallFlow(String cookies, String date, int pageNo) {
+        String queryDate = DateUtil.dateToString(DateUtil.defaultStringToDate(date), DateUtil.PATTERN_yyyy_MM_dd);
+        pageNo = pageNo <= 0 ? 1 : pageNo;
+        String url = String.format(FLOW_DETAIL_URL, new Date(), queryDate, queryDate, pageNo);
+        String respStr = request(url, cookies);
+        if (null != respStr) {
+            return JSON.parseObject(respStr, FlowDetailDTO.class);
+        }
+        return null;
+    }
+
+    @Override
+    public FlowRecordDTO queryFlowRecord(String cookies, int year, int month, int pageNo) {
+        String startDate = LocalDate.of(year, month, 1).format(DateTimeFormatter.BASIC_ISO_DATE);
+        String endDate = LocalDate.of(year, month + 1, 1).minusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
+        pageNo = pageNo <= 0 ? 1 : pageNo;
+        String url = String.format(FLOW_RECORD_URL, new Date(), startDate, endDate, pageNo);
+        String respStr = request(url, cookies);
+        if (null != respStr) {
+            return JSON.parseObject(respStr, FlowRecordDTO.class);
         }
         return null;
     }

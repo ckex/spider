@@ -3,6 +3,7 @@ package com.mljr.operators.common.utils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -39,6 +40,15 @@ public class DateUtil {
             throw new RuntimeException("日期解析失败", e);
         }
         return date;
+    }
+
+    public static String dateToString(Date date,String format){
+        if (date == null)
+            return "";
+        if (null == format || "".equals(format))
+            format = PATTERN_yyyy_MM_dd_HH_mm_ss;
+        SimpleDateFormat form = new SimpleDateFormat(format);
+        return form.format(date);
     }
 
 }

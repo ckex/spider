@@ -8,5 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface FlowInfoMapper extends BaseMapper<FlowInfo, Long> {
+
     int insertByBatch(List<FlowInfo> list);
+
 }
