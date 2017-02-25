@@ -48,12 +48,12 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="t_user_info" domainObjectName="UserInfo"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
+		<!--<table tableName="t_user_info" domainObjectName="UserInfo"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false">-->
+			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+		<!--</table>-->
 
 		<!--<table tableName="t_package_info" domainObjectName="PackageInfo"-->
 			<!--enableCountByExample="false" enableUpdateByExample="false"-->
@@ -96,6 +96,13 @@
 			<!--selectByExampleQueryId="false">-->
 			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
 		<!--</table>-->
+
+		<table tableName="t_flow_record" domainObjectName="FlowRecord"
+			   enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
 
 	</context>
 </generatorConfiguration>
