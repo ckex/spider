@@ -44,6 +44,9 @@ public class ChinaUnicomStoreServiceImpl implements IChinaUnicomStoreService {
     @Autowired
     private IFlowInfoService flowInfoService;
 
+    @Autowired
+    private IFlowRecordService flowRecordService;
+
     @Override
     public boolean saveUserInfo(LoginDTO loginDTO, PersonInfoDTO personInfoDTO) {
         boolean flag = false;
@@ -162,6 +165,18 @@ public class ChinaUnicomStoreServiceImpl implements IChinaUnicomStoreService {
 
     @Override
     public boolean saveFlowRecordInfo(Long userInfoId, FlowRecordDTO flowRecordDTO) {
-        return true;
+        boolean flag = false;
+        try {
+            List<FlowRecord> list = ChinaUnicomConvert.convert(flowRecordDTO);
+            if (!list.isEmpty()) {
+                flowRecordService.insertByBatch(userInfoId, list);
+            }
+            flag = true;
+        } catch (ConvertException e) {
+            logger.error("get convert data failure.userInfoId:{}", userInfoId, e);
+        } catch (RuntimeException e) {
+            logger.error("save failure.userInfoId:{}", userInfoId, e);
+        }
+        return flag;
     }
 }

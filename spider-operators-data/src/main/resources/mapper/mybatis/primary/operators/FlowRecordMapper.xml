@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mljr.operators.dao.primary.operators.FlowRecordMapper">
+  <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.FlowRecord">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="USER_INFO_ID" jdbcType="BIGINT" property="userInfoId" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="BIZ_NAME" jdbcType="VARCHAR" property="bizName" />
+    <result column="FLOW_NAME" jdbcType="VARCHAR" property="flowName" />
+    <result column="FEAT_INFO" jdbcType="VARCHAR" property="featInfo" />
+    <result column="DOMAIN_NAME" jdbcType="VARCHAR" property="domainName" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USER_INFO_ID, START_TIME, BIZ_NAME, FLOW_NAME, FEAT_INFO, DOMAIN_NAME, CREATE_TIME, 
+    UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_flow_record
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_flow_record
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mljr.operators.entity.model.operators.FlowRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_flow_record (USER_INFO_ID, START_TIME, BIZ_NAME, 
+      FLOW_NAME, FEAT_INFO, DOMAIN_NAME, 
+      CREATE_TIME, UPDATE_TIME)
+    values (#{userInfoId,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP}, #{bizName,jdbcType=VARCHAR}, 
+      #{flowName,jdbcType=VARCHAR}, #{featInfo,jdbcType=VARCHAR}, #{domainName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.FlowRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_flow_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userInfoId != null">
+        USER_INFO_ID,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="bizName != null">
+        BIZ_NAME,
+      </if>
+      <if test="flowName != null">
+        FLOW_NAME,
+      </if>
+      <if test="featInfo != null">
+        FEAT_INFO,
+      </if>
+      <if test="domainName != null">
+        DOMAIN_NAME,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userInfoId != null">
+        #{userInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizName != null">
+        #{bizName,jdbcType=VARCHAR},
+      </if>
+      <if test="flowName != null">
+        #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="featInfo != null">
+        #{featInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="domainName != null">
+        #{domainName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.FlowRecord">
+    update t_flow_record
+    <set>
+      <if test="userInfoId != null">
+        USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizName != null">
+        BIZ_NAME = #{bizName,jdbcType=VARCHAR},
+      </if>
+      <if test="flowName != null">
+        FLOW_NAME = #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="featInfo != null">
+        FEAT_INFO = #{featInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="domainName != null">
+        DOMAIN_NAME = #{domainName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mljr.operators.entity.model.operators.FlowRecord">
+    update t_flow_record
+    set USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      BIZ_NAME = #{bizName,jdbcType=VARCHAR},
+      FLOW_NAME = #{flowName,jdbcType=VARCHAR},
+      FEAT_INFO = #{featInfo,jdbcType=VARCHAR},
+      DOMAIN_NAME = #{domainName,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <insert id="insertByBatch">
+    insert into t_flow_record (USER_INFO_ID, START_TIME, BIZ_NAME,
+      FLOW_NAME, FEAT_INFO, DOMAIN_NAME,
+      CREATE_TIME, UPDATE_TIME)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{userInfoId,jdbcType=BIGINT}, #{item.startTime,jdbcType=TIMESTAMP}, #{item.bizName,jdbcType=VARCHAR},
+      #{item.flowName,jdbcType=VARCHAR}, #{item.featInfo,jdbcType=VARCHAR}, #{item.domainName,jdbcType=VARCHAR},
+      now(),now())
+    </foreach>
+  </insert>
+</mapper>

@@ -231,5 +231,27 @@ public class ChinaUnicomConvert {
         return entity;
     }
 
+    public static List<FlowRecord> convert(FlowRecordDTO flowRecordDTO) {
+        List<FlowRecord> list = Lists.newArrayList();
+        try {
+            if (null != flowRecordDTO && null != flowRecordDTO.getPageMap()
+                    && null != flowRecordDTO.getPageMap().getResult() && flowRecordDTO.getPageMap().getResult().size() > 0) {
+                flowRecordDTO.getPageMap().getResult().forEach(resultBean -> list.add(convert(resultBean)));
+            }
+        } catch (Exception e) {
+            throw new ConvertException("convert failure.", e);
+        }
+        return list;
+    }
+
+    public static FlowRecord convert(FlowRecordDTO.PageMapBean.ResultBean resultBean) {
+        FlowRecord entity = new FlowRecord();
+        entity.setBizName(resultBean.getBizname());
+        entity.setStartTime(DateUtil.stringToDate(resultBean.getBegintime(), DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
+        entity.setDomainName(resultBean.getDomainname());
+        entity.setFeatInfo(resultBean.getFeatinfo());
+        entity.setFlowName(resultBean.getFlowname());
+        return entity;
+    }
 
 }
