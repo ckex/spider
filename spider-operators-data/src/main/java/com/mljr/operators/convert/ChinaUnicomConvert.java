@@ -191,4 +191,45 @@ public class ChinaUnicomConvert {
         return entity;
     }
 
+    public static List<FlowInfo> convert(FlowDetailDTO flowDetailDTO) {
+        List<FlowInfo> list = Lists.newArrayList();
+        try {
+            if (null != flowDetailDTO && null != flowDetailDTO.getPagelist()
+                    && flowDetailDTO.getPagelist().size() > 0) {
+                flowDetailDTO.getPagelist().forEach(pagelistBean -> {
+                    list.add(convert(pagelistBean));
+                });
+            }
+        } catch (Exception e) {
+            throw new ConvertException("convert failure.", e);
+        }
+        return list;
+    }
+
+    public static FlowInfo convert(FlowDetailDTO.PagelistBean pagelistBean) {
+        FlowInfo entity = new FlowInfo();
+        String date = pagelistBean.getBegindateformat() + " " + pagelistBean.getBegintimeformat();
+        entity.setStartTime(DateUtil.stringToDate(date, DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
+        entity.setHomeArea(pagelistBean.getHomearea());
+        entity.setNetType(pagelistBean.getNettypeformat());
+        if ("1".equals(pagelistBean.getForwardtype())) { //非定向流量
+            entity.setForwardType(Boolean.FALSE);
+        } else if ("0".equals(pagelistBean.getForwardtype())) {//定向流量
+            entity.setForwardType(Boolean.TRUE);
+        }
+        entity.setTotalBytes(new BigDecimal(pagelistBean.getPertotalsm()));
+        if (StringUtils.isNotBlank(pagelistBean.getReceivebytes())) {
+            double receive = Double.parseDouble(pagelistBean.getReceivebytes()) / 1024;
+            entity.setReceiveBytes(new BigDecimal(receive));
+        } else {
+            entity.setReceiveBytes(BigDecimal.ZERO);
+        }
+        entity.setSendBytes(entity.getTotalBytes().subtract(entity.getReceiveBytes()));
+        entity.setFee(new BigDecimal(pagelistBean.getTotalfee()));
+        entity.setSvcName(pagelistBean.getSvcname());
+        entity.setDuration(pagelistBean.getLonghour());
+        return entity;
+    }
+
+
 }

@@ -8,6 +8,8 @@ import com.mljr.operators.service.primary.operators.IFlowInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author gaoxi
  * @time 2017/2/23
@@ -21,5 +23,10 @@ public class FlowInfoServiceImpl extends BaseServiceImpl<FlowInfo, Long> impleme
     @Override
     protected BaseMapper<FlowInfo, Long> getMapper() {
         return flowInfoMapper;
+    }
+
+    @Override
+    public void insertByBatch(List<FlowInfo> list) {
+        flowInfoMapper.insertByBatch(list);
     }
 }

@@ -63,4 +63,24 @@ public interface IChinaUnicomService {
      * @return
      */
     SMSDTO querySMS(String cookies, int smsYear, int smsMonth, int pageNo);
+
+    /**
+     * 获取上网流量详情
+     *
+     * @param cookies cookies
+     * @param date    日期
+     * @param pageNo  分页数
+     */
+    FlowDetailDTO queryCallFlow(String cookies, String date, int pageNo);
+
+    /**
+     * 获取指定月份的手机上网记录
+     *
+     * @param cookies cookies
+     * @param year    年
+     * @param month   月
+     * @param pageNo  分页数
+     * @return
+     */
+    FlowRecordDTO queryFlowRecord(String cookies, int year, int month, int pageNo);
 }
