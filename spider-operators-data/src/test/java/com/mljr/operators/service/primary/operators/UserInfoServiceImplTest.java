@@ -1,7 +1,7 @@
-package com.mljr.operators.service;
+package com.mljr.operators.service.primary.operators;
 
 import com.mljr.operators.entity.model.operators.UserInfo;
-import com.mljr.operators.service.primary.operators.IUserInfoService;
+import com.mljr.operators.service.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -20,7 +20,7 @@ public class UserInfoServiceImplTest extends BaseTest {
 
         Assert.notNull(userInfoService);
 
-        UserInfo userInfo = userInfoService.getByMobile("18521705531");
+        UserInfo userInfo = userInfoService.selectUniqUser("18521705531","429*************34");
 
         System.out.println();
     }

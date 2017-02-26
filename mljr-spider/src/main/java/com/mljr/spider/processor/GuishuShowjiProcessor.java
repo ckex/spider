@@ -13,35 +13,35 @@ import us.codecraft.webmagic.Site;
  */
 public class GuishuShowjiProcessor extends AbstractPageProcessor {
 
-	private static Site site = Site.me().setDomain("guishu.showji.com").setSleepTime(300).setRetrySleepTime(2000).setRetryTimes(3).setUserAgent(
-			"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
+  private static Site site = Site.me().setDomain("guishu.showji.com").setSleepTime(300).setRetrySleepTime(2000).setRetryTimes(3)
+      .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-	@Override
-	boolean onProcess(Page page) {
-		if (Math.random() * 100 < 1) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("process--> " + page.getUrl());
-			}
-		}
-		page.putField("",page.getHtml());
-//		Pattern pattern = Pattern.compile("(?<=\\()(.+?)(?=\\))");
-//		String jsonp = page.getHtml().xpath("//body/text()").get();
-//		Matcher mat = pattern.matcher(jsonp);
-//		if (mat.find()) {
-//			String res = mat.group(1);
-//			Map<String, String> retMap = gson.fromJson(res, new TypeToken<Map<String, String>>() {
-//			}.getType());
-//			for (String key : retMap.keySet()) {
-//				page.putField(key, retMap.get(key));
-//			}
-//		} else {
-//			logger.error("Matcher error " + jsonp + ", " + page.getUrl());
-//		}
-		return true;
-	}
+  @Override
+  boolean onProcess(Page page) {
+    if (Math.random() * 100 < 1) {
+      if (logger.isDebugEnabled()) {
+        logger.debug("process--> " + page.getUrl());
+      }
+    }
+    page.putField("", page.getHtml());
+    // Pattern pattern = Pattern.compile("(?<=\\()(.+?)(?=\\))");
+    // String jsonp = page.getHtml().xpath("//body/text()").get();
+    // Matcher mat = pattern.matcher(jsonp);
+    // if (mat.find()) {
+    // String res = mat.group(1);
+    // Map<String, String> retMap = gson.fromJson(res, new TypeToken<Map<String, String>>() {
+    // }.getType());
+    // for (String key : retMap.keySet()) {
+    // page.putField(key, retMap.get(key));
+    // }
+    // } else {
+    // logger.error("Matcher error " + jsonp + ", " + page.getUrl());
+    // }
+    return true;
+  }
 
-	public GuishuShowjiProcessor() {
-		super(site);
-	}
+  public GuishuShowjiProcessor() {
+    super(site);
+  }
 
 }

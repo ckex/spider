@@ -1,32 +1,61 @@
 package com.mljr.operators.service;
 
-import com.mljr.operators.service.ChinaMobileService;
+import com.google.common.collect.Lists;
+import com.mljr.operators.entity.model.operators.SMSInfo;
+import com.mljr.operators.service.primary.operators.ISMSInfoService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by songchi on 17/2/17.
  */
-public class ChinaMoblieTest {
-    ChinaMobileService chinaMobileService = new ChinaMobileService();
+public class ChinaMoblieTest extends BaseTest {
+
+    @Autowired
+    ChinaMobileService chinaMobileService;
+
+    @Autowired
+    private ISMSInfoService smsInfoService;
 
     @Test
     public void getAllInfos() throws Exception {
 
-        Map<String, String> cookies = chinaMobileService.loginAndGetCookies("13681668945", "672440","438237");
+        Map<String, String> cookies = chinaMobileService.loginAndGetCookies("13681668945", "672440", "438237");
 
 
-        System.out.println(chinaMobileService.getAccountInfo(cookies));
+//        System.out.println(chinaMobileService.getUserInfo(cookies));
+//
+//        System.out.println(chinaMobileService.getPackageInfo(cookies));
+//
+//        System.out.println(chinaMobileService.getCostInfo(cookies));
+//
+//        System.out.println(chinaMobileService.getFlowInfo(cookies));
+//
+//        System.out.println(chinaMobileService.getSmsInfo(cookies));
+//
+//        System.out.println(chinaMobileService.getCallInfo(cookies));
+    }
 
-        System.out.println(chinaMobileService.getPlanInfo(cookies));
+    @Test
+    public void testName() throws Exception {
+//        System.out.println(chinaMobileService.getLatestMonths(12));
 
-        System.out.println(chinaMobileService.getCostInfo(cookies));
+    }
 
-        System.out.println(chinaMobileService.getFlowBill(cookies));
+    @Test
+    public void test2() throws Exception {
+        SMSInfo info = new SMSInfo();
+        info.setUserInfoId(9991L);
+        info.setSendNum("999");
+        info.setSendTime(new Date());
+        info.setSmsType("3");
+        info.setBusinessType("5");
+        List<SMSInfo> list = Lists.newArrayList(info, info, info, info);
+        smsInfoService.insertByBatch(list);
 
-        System.out.println(chinaMobileService.getSmsBill(cookies));
-
-        System.out.println(chinaMobileService.getCallBill(cookies));
     }
 }

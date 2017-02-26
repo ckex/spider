@@ -1,69 +1,83 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Mapper.spider_bank_card_location">
-    <resultMap id="SpiderBankCardLocationResult" type="com.mljr.spider.model.SpiderBankCardLocationDo">
-        <result column="bank_card_11_digits" property="bankCard11Digits" />
-        <result column="bank_name" property="bankName" />
-        <result column="bank_card_type" property="bankCardType" />
-        <result column="bank_card_name" property="bankCardName" />
-        <result column="bank_card_province" property="bankCardProvince" />
-        <result column="bank_card_city" property="bankCardCity" />
-    </resultMap>
+	<resultMap id="SpiderBankCardLocationResult"
+		type="com.mljr.spider.model.SpiderBankCardLocationDo">
+		<result column="bank_card_11_digits" property="bankCard11Digits" />
+		<result column="bank_name" property="bankName" />
+		<result column="bank_card_type" property="bankCardType" />
+		<result column="bank_card_name" property="bankCardName" />
+		<result column="bank_card_province" property="bankCardProvince" />
+		<result column="bank_card_city" property="bankCardCity" />
+	</resultMap>
 
-    <select id="load" resultMap="SpiderBankCardLocationResult" parameterType="java.util.HashMap">
-        select `bank_card_11_digits`, `bank_name`, `bank_card_type`, `bank_card_name`, `bank_card_province`, `bank_card_city`
-        FROM spider_bank_card_location
-        WHERE bank_card_11_digits = #{bank_card_11_digits}
-    </select>
+	<select id="load" resultMap="SpiderBankCardLocationResult"
+		parameterType="java.util.HashMap">
+		select `bank_card_11_digits`, `bank_name`, `bank_card_type`,
+		`bank_card_name`, `bank_card_province`, `bank_card_city`
+		FROM spider_bank_card_location
+		WHERE bank_card_11_digits = #{bank_card_11_digits}
+	</select>
 
-    <delete id="delete" parameterType="java.util.HashMap">
-        delete from spider_bank_card_location
-        WHERE bank_card_11_digits = #{bank_card_11_digits}
-    </delete>
+	<delete id="delete" parameterType="java.util.HashMap">
+		delete from spider_bank_card_location
+		WHERE bank_card_11_digits = #{bank_card_11_digits}
+	</delete>
 
-    <insert id="create" parameterType="com.mljr.spider.model.SpiderBankCardLocationDo">
-        insert into spider_bank_card_location (`bank_card_11_digits`, `bank_name`, `bank_card_type`, `bank_card_name`, `bank_card_province`, `bank_card_city`) 
-        values (#{bankCard11Digits}, #{bankName}, #{bankCardType}, #{bankCardName}, #{bankCardProvince}, #{bankCardCity})
-    </insert>
+	<insert id="create" parameterType="com.mljr.spider.model.SpiderBankCardLocationDo">
+		insert into spider_bank_card_location (`bank_card_11_digits`, `bank_name`,
+		`bank_card_type`, `bank_card_name`, `bank_card_province`,
+		`bank_card_city`)
+		values (#{bankCard11Digits}, #{bankName}, #{bankCardType}, #{bankCardName},
+		#{bankCardProvince}, #{bankCardCity})
+	</insert>
 
-    <update id="update" parameterType="com.mljr.spider.model.SpiderBankCardLocationDo">
-        update spider_bank_card_location
-      <set>
-          <if test="bankCard11Digits != null">`bank_card_11_digits` = #{bankCard11Digits},</if>
-          <if test="bankName != null">`bank_name` = #{bankName},</if>
-          <if test="bankCardType != null">`bank_card_type` = #{bankCardType},</if>
-          <if test="bankCardName != null">`bank_card_name` = #{bankCardName},</if>
-          <if test="bankCardProvince != null">`bank_card_province` = #{bankCardProvince},</if>
-          <if test="bankCardCity != null">`bank_card_city` = #{bankCardCity},</if>
-      </set>
-        WHERE bank_card_11_digits = #{bank_card_11_digits}
-    </update>
+	<update id="update" parameterType="com.mljr.spider.model.SpiderBankCardLocationDo">
+		update spider_bank_card_location
+		<set>
+			<if test="bankCard11Digits != null">`bank_card_11_digits` = #{bankCard11Digits},</if>
+			<if test="bankName != null">`bank_name` = #{bankName},</if>
+			<if test="bankCardType != null">`bank_card_type` = #{bankCardType},</if>
+			<if test="bankCardName != null">`bank_card_name` = #{bankCardName},</if>
+			<if test="bankCardProvince != null">`bank_card_province` = #{bankCardProvince},</if>
+			<if test="bankCardCity != null">`bank_card_city` = #{bankCardCity},</if>
+		</set>
+		WHERE bank_card_11_digits = #{bank_card_11_digits}
+	</update>
 
-    <select id="listByPage" resultMap="SpiderBankCardLocationResult" parameterType="java.util.HashMap">
-        SELECT t2.`bank_card_11_digits`, t2.`bank_name`, t2.`bank_card_type`, t2.`bank_card_name`, t2.`bank_card_province`, t2.`bank_card_city`
-        FROM (
-                 SELECT bank_card_11_digits FROM spider_bank_card_location                 WHERE 1                  ORDER BY bank_card_11_digits
-                 LIMIT #{startIndex},#{pageSize})t1,spider_bank_card_location t2 WHERE t1.bank_card_11_digits = t2.bank_card_11_digits
-    </select>
+	<select id="listByPage" resultMap="SpiderBankCardLocationResult"
+		parameterType="java.util.HashMap">
+		SELECT t2.`bank_card_11_digits`, t2.`bank_name`, t2.`bank_card_type`,
+		t2.`bank_card_name`, t2.`bank_card_province`, t2.`bank_card_city`
+		FROM (
+		SELECT bank_card_11_digits FROM spider_bank_card_location WHERE 1 ORDER BY
+		bank_card_11_digits
+		LIMIT #{startIndex},#{pageSize})t1,spider_bank_card_location t2 WHERE
+		t1.bank_card_11_digits = t2.bank_card_11_digits
+	</select>
 
-    <select id="listByPageCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
-        SELECT count(*) 
-        FROM spider_bank_card_location         WHERE 1 
-    </select>
+	<select id="listByPageCount" resultType="java.lang.Integer"
+		parameterType="java.util.HashMap">
+		SELECT count(*)
+		FROM spider_bank_card_location WHERE 1
+	</select>
 
-    <select id="listById" resultType="java.lang.String" parameterType="java.util.HashMap" useCache="false">
-        select bank_card_11_digits from spider_bank_card_location
-        where bank_card_11_digits > #{id} and
-        (bank_name = "未知" or bank_card_type = "未知" or bank_card_name = "未知" or bank_card_province = "未知" or bank_card_city = "未知")
-        order by bank_card_11_digits limit #{limit}
-    </select>
+	<select id="listById" resultType="java.lang.String"
+		parameterType="java.util.HashMap" useCache="false">
+		select bank_card_11_digits from spider_bank_card_location
+		where bank_card_11_digits > #{id} and
+		(bank_name = "未知" or bank_card_type = "未知" or bank_card_name = "未知" or
+		bank_card_province = "未知" or bank_card_city = "未知")
+		order by bank_card_11_digits limit #{limit}
+	</select>
 
-    <select id="listFromDMById" resultType="java.lang.String" parameterType="java.util.HashMap" useCache="false">
-        select distinct(substr(bank_card_no, 1, 11)) as bank_card_11_digits
-        from rc.dm_total_applications_new
-        where length(bank_card_no) >= 11 and substr(bank_card_no, 1, 11) != '建设银行'
-        and contract_id>#{id}
-        order by contract_id
-        limit #{limit}
-    </select>
+	<select id="listFromDMById" resultType="java.lang.String"
+		parameterType="java.util.HashMap" useCache="false">
+		select distinct(substr(bank_card_no, 1, 11)) as bank_card_11_digits
+		from rc.dm_total_applications_new
+		where length(bank_card_no) >= 11 and substr(bank_card_no, 1, 11) != '建设银行'
+		and contract_id>#{id}
+		order by contract_id
+		limit #{limit}
+	</select>
 </mapper>

@@ -5,11 +5,12 @@
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="USER_INFO_ID" jdbcType="BIGINT" property="userInfoId" />
     <result column="PRODUCT_NAME" jdbcType="VARCHAR" property="productName" />
+    <result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, USER_INFO_ID, PRODUCT_NAME, CREATE_TIME, UPDATE_TIME
+    ID, USER_INFO_ID, PRODUCT_NAME, BRAND_NAME, CREATE_TIME, UPDATE_TIME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -25,10 +26,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_package_info (USER_INFO_ID, PRODUCT_NAME, CREATE_TIME, 
-      UPDATE_TIME)
-    values (#{userInfoId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into t_package_info (USER_INFO_ID, PRODUCT_NAME, BRAND_NAME, 
+      CREATE_TIME, UPDATE_TIME)
+    values (#{userInfoId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.PackageInfo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -41,6 +42,9 @@
       </if>
       <if test="productName != null">
         PRODUCT_NAME,
+      </if>
+      <if test="brandName != null">
+        BRAND_NAME,
       </if>
       <if test="createTime != null">
         CREATE_TIME,
@@ -55,6 +59,9 @@
       </if>
       <if test="productName != null">
         #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null">
+        #{brandName,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -73,6 +80,9 @@
       <if test="productName != null">
         PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
       </if>
+      <if test="brandName != null">
+        BRAND_NAME = #{brandName,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -86,6 +96,7 @@
     update t_package_info
     set USER_INFO_ID = #{userInfoId,jdbcType=BIGINT},
       PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
+      BRAND_NAME = #{brandName,jdbcType=VARCHAR},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}

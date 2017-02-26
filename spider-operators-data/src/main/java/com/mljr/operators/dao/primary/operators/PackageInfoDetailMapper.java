@@ -1,19 +1,21 @@
 package com.mljr.operators.dao.primary.operators;
 
+import com.mljr.operators.dao.BaseMapper;
 import com.mljr.operators.entity.model.operators.PackageInfoDetail;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
-public interface PackageInfoDetailMapper {
-    int deleteByPrimaryKey(Long id);
+public interface PackageInfoDetailMapper extends BaseMapper<PackageInfoDetail, Long> {
 
-    int insert(PackageInfoDetail record);
+    /**
+     * 批量添加
+     *
+     * @param packageInfoId
+     * @param list
+     */
+    void insertByBatch(@Param("packageInfoId") Long packageInfoId, @Param("list") List<PackageInfoDetail> list);
 
-    int insertSelective(PackageInfoDetail record);
-
-    PackageInfoDetail selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(PackageInfoDetail record);
-
-    int updateByPrimaryKey(PackageInfoDetail record);
 }

@@ -11,23 +11,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class QqNumberTask extends AbstractTask {
 
-	@Autowired
-	private QqNumberService qqNumberService;
+  @Autowired
+  private QqNumberService qqNumberService;
 
-	public QqNumberTask() {
-		super();
-	}
+  public QqNumberTask() {
+    super();
+  }
 
-	@Override
-	void execute() {
-		try {
-			qqNumberService.syncQqNumber();
-		} catch (Exception ex) {
-			if (logger.isDebugEnabled()) {
-				ex.printStackTrace();
-			}
-			logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-		}
-	}
+  @Override
+  void execute() {
+    try {
+      qqNumberService.syncQqNumber();
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
+    }
+  }
 
 }

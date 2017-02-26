@@ -11,35 +11,36 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 
 /**
- * @author Ckex zha </br> 2016年11月7日,下午5:20:39
+ * @author Ckex zha </br>
+ *         2016年11月7日,下午5:20:39
  */
 public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
-    private static final Site site = Site.me().setDomain("saige-gps").setCharset(UTF_8);
+  private static final Site site = Site.me().setDomain("saige-gps").setCharset(UTF_8);
 
-    @Override
-    boolean onProcess(Page page) {
-        String json = page.getJson().get();
-        if (StringUtils.isBlank(json)) {
-            logger.warn("saige-gps response no data.url:" + page.getUrl().get());
-            return true;
-        }
-        JSONObject jsonObject = JSON.parseObject(json);
-        boolean success = jsonObject.getBooleanValue("success");
-        if (!success) {
-            logger.warn("saige-gps request data failure.url:" + page.getUrl().get());
-            return true;
-        }
-
-        JSONTransferVO jsonTransferVO = new JSONTransferVO();
-        jsonTransferVO.setUrl(page.getUrl().get());
-        jsonTransferVO.setContext(json);
-        page.putField("", JSON.toJSON(jsonTransferVO));
-        return true;
+  @Override
+  boolean onProcess(Page page) {
+    String json = page.getJson().get();
+    if (StringUtils.isBlank(json)) {
+      logger.warn("saige-gps response no data.url:" + page.getUrl().get());
+      return true;
+    }
+    JSONObject jsonObject = JSON.parseObject(json);
+    boolean success = jsonObject.getBooleanValue("success");
+    if (!success) {
+      logger.warn("saige-gps request data failure.url:" + page.getUrl().get());
+      return true;
     }
 
-    public SaiGeGPSProcessor() {
-        super(site);
-    }
+    JSONTransferVO jsonTransferVO = new JSONTransferVO();
+    jsonTransferVO.setUrl(page.getUrl().get());
+    jsonTransferVO.setContext(json);
+    page.putField("", JSON.toJSON(jsonTransferVO));
+    return true;
+  }
+
+  public SaiGeGPSProcessor() {
+    super(site);
+  }
 
 }

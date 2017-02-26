@@ -14,61 +14,58 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 /**
- * Created by xi.gao
- * Date:2016/12/7
+ * Created by xi.gao Date:2016/12/7
  */
 public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
 
-    private static Site site = Site.me().setDomain("lbsyun.baidu.com")
-            .setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)
-            .setUserAgent(
-                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
+  private static Site site = Site.me().setDomain("lbsyun.baidu.com").setSleepTime(1200).setRetrySleepTime(4500).setRetryTimes(3)
+      .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 
-    @Override
-    boolean onProcess(Page page) {
-        String json = page.getJson().get();
+  @Override
+  boolean onProcess(Page page) {
+    String json = page.getJson().get();
 
-        JSONObject jsonObject = JSON.parseObject(json);
+    JSONObject jsonObject = JSON.parseObject(json);
 
-        Integer status = jsonObject.getInteger("status");
+    Integer status = jsonObject.getInteger("status");
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("lbs baidu geo request.url:{},json:{}", page.getRequest().toString(), json);
-        }
-
-        //判断密钥是否超出每天的限制
-        if (null!=status && 4 == status) {
-
-            String baidu_key =getKeyByRequestUrl(page.getUrl().get());
-
-            KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.BAIDU, baidu_key, false);
-
-            return true;
-        }
-
-        if (null != status && 0 == status.intValue()) {
-
-            JSONTransferVO transferVO = new JSONTransferVO();
-
-            transferVO.setUrl(page.getUrl().get());
-
-            transferVO.setContext(jsonObject);
-
-            page.putField("", JSON.toJSON(transferVO));
-        }
-        return true;
+    if (logger.isDebugEnabled()) {
+      logger.debug("lbs baidu geo request.url:{},json:{}", page.getRequest().toString(), json);
     }
 
-    public LBSBaiduGeoProcessor() {
-        super(site);
+    // 判断密钥是否超出每天的限制
+    if (null != status && 4 == status) {
+
+      String baidu_key = getKeyByRequestUrl(page.getUrl().get());
+
+      KeyCacheUtils.setInValidKey(KeyCacheUtils.LBSKEY.BAIDU, baidu_key, false);
+
+      return true;
     }
 
-    private String getKeyByRequestUrl(String url) {
-        List<NameValuePair> params = URLEncodedUtils.parse(url, Charset.forName(UTF_8));
-        for (NameValuePair nameValuePair : params) {
-            if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "ak"))
-                return nameValuePair.getValue().trim();
-        }
-        return null;
+    if (null != status && 0 == status.intValue()) {
+
+      JSONTransferVO transferVO = new JSONTransferVO();
+
+      transferVO.setUrl(page.getUrl().get());
+
+      transferVO.setContext(jsonObject);
+
+      page.putField("", JSON.toJSON(transferVO));
     }
+    return true;
+  }
+
+  public LBSBaiduGeoProcessor() {
+    super(site);
+  }
+
+  private String getKeyByRequestUrl(String url) {
+    List<NameValuePair> params = URLEncodedUtils.parse(url, Charset.forName(UTF_8));
+    for (NameValuePair nameValuePair : params) {
+      if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "ak"))
+        return nameValuePair.getValue().trim();
+    }
+    return null;
+  }
 }

@@ -15,19 +15,19 @@ import org.slf4j.LoggerFactory;
  */
 public class DynamicDataSourceHolder {
 
-	protected static transient Logger logger = LoggerFactory.getLogger(DynamicDataSourceHolder.class);
+  protected static transient Logger logger = LoggerFactory.getLogger(DynamicDataSourceHolder.class);
 
-	private static final ThreadLocal<String> holder = new ThreadLocal<String>();
+  private static final ThreadLocal<String> holder = new ThreadLocal<String>();
 
-	public static void putDataSource(String name) {
-		holder.set(name);
-	}
+  public static void putDataSource(String name) {
+    holder.set(name);
+  }
 
-	public static String getDataSouce() {
-		String dataSourceKey = holder.get();
-		if (logger.isDebugEnabled()) {
-			logger.debug("Data source key =" + dataSourceKey);
-		}
-		return dataSourceKey;
-	}
+  public static String getDataSouce() {
+    String dataSourceKey = holder.get();
+    if (logger.isDebugEnabled()) {
+      logger.debug("Data source key =" + dataSourceKey);
+    }
+    return dataSourceKey;
+  }
 }

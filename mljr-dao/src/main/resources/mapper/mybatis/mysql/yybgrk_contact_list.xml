@@ -2,19 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Mapper.yybgrk_contact_list">
 
-    <select id="listById" resultType="java.util.HashMap" parameterType="java.util.HashMap" useCache="false">
-       SELECT id,phone_num as phoneNum FROM yybgrk.t_jxl_contact_list
-       where  id>#{id}
-       order by id
-       limit #{limit}
-    </select>
+	<select id="listById" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap" useCache="false">
+		SELECT id,phone_num as phoneNum FROM yybgrk.t_jxl_contact_list
+		where id>#{id}
+		order by id
+		limit #{limit}
+	</select>
 
-    <select id="listHistoryById" resultType="java.util.HashMap" parameterType="java.util.HashMap" useCache="false">
-        SELECT id,phone_num as phoneNum FROM yybgrk.t_jxl_contact_list_history
-        where  id>#{id}
-        order by id
-        limit #{limit}
-    </select>
+	<select id="listHistoryById" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap" useCache="false">
+		SELECT id,phone_num as phoneNum FROM yybgrk.t_jxl_contact_list_history
+		where id>#{id}
+		order by id
+		limit #{limit}
+	</select>
 
 
 

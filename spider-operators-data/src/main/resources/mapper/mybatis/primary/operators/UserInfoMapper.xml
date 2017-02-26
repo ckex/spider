@@ -8,11 +8,16 @@
     <result column="PROVINCE_CODE" jdbcType="VARCHAR" property="provinceCode" />
     <result column="CITY_CODE" jdbcType="VARCHAR" property="cityCode" />
     <result column="TYPE" jdbcType="CHAR" property="type" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="IDCARD" jdbcType="VARCHAR" property="idcard" />
+    <result column="SEX" jdbcType="BIT" property="sex" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, MOBILE, PWD, PROVINCE_CODE, CITY_CODE, TYPE, CREATE_TIME, UPDATE_TIME
+    ID, MOBILE, PWD, PROVINCE_CODE, CITY_CODE, TYPE, USER_NAME, IDCARD, SEX, ADDRESS, 
+    CREATE_TIME, UPDATE_TIME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -29,10 +34,12 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_user_info (MOBILE, PWD, PROVINCE_CODE, 
-      CITY_CODE, TYPE, CREATE_TIME, 
+      CITY_CODE, TYPE, USER_NAME, 
+      IDCARD, SEX, ADDRESS, CREATE_TIME, 
       UPDATE_TIME)
     values (#{mobile,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, 
-      #{cityCode,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{cityCode,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{idcard,jdbcType=VARCHAR}, #{sex,jdbcType=BIT}, #{address,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.UserInfo">
@@ -56,6 +63,18 @@
       <if test="type != null">
         TYPE,
       </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="idcard != null">
+        IDCARD,
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="address != null">
+        ADDRESS,
+      </if>
       <if test="createTime != null">
         CREATE_TIME,
       </if>
@@ -78,6 +97,18 @@
       </if>
       <if test="type != null">
         #{type,jdbcType=CHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=BIT},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -105,6 +136,18 @@
       <if test="type != null">
         TYPE = #{type,jdbcType=CHAR},
       </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        IDCARD = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=BIT},
+      </if>
+      <if test="address != null">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -121,13 +164,29 @@
       PROVINCE_CODE = #{provinceCode,jdbcType=VARCHAR},
       CITY_CODE = #{cityCode,jdbcType=VARCHAR},
       TYPE = #{type,jdbcType=CHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      IDCARD = #{idcard,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=BIT},
+      ADDRESS = #{address,jdbcType=VARCHAR},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="getByMobile" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"/> FROM t_user_info WHERE MOBILE=#{mobile}
+  <insert id="insertIgnore" parameterType="com.mljr.operators.entity.model.operators.UserInfo" keyProperty="id" useGeneratedKeys="true">
+    INSERT IGNORE INTO t_user_info (MOBILE, PWD, PROVINCE_CODE,
+      CITY_CODE, TYPE, USER_NAME,
+      IDCARD, SEX, ADDRESS, CREATE_TIME,
+      UPDATE_TIME)
+    values (#{mobile,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR},
+      #{cityCode,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{userName,jdbcType=VARCHAR},
+      #{idcard,jdbcType=VARCHAR}, #{sex,jdbcType=BIT}, #{address,jdbcType=VARCHAR}, now(),now())
+  </insert>
+
+  <select id="selectUniqUser" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_user_info WHERE MOBILE=#{mobile} AND IDCARD=#{idcard}
   </select>
 
 </mapper>

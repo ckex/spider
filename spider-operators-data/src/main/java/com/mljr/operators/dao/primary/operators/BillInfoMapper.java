@@ -1,19 +1,21 @@
 package com.mljr.operators.dao.primary.operators;
 
+import com.mljr.operators.dao.BaseMapper;
 import com.mljr.operators.entity.model.operators.BillInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
-public interface BillInfoMapper {
-    int deleteByPrimaryKey(Long id);
+public interface BillInfoMapper extends BaseMapper<BillInfo, Long> {
 
-    int insert(BillInfo record);
+    /**
+     * 批量添加
+     *
+     * @param userInfoId
+     * @param list
+     */
+    void insertByBatch(@Param("userInfoId") Long userInfoId, @Param("list") List<BillInfo> list);
 
-    int insertSelective(BillInfo record);
-
-    BillInfo selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(BillInfo record);
-
-    int updateByPrimaryKey(BillInfo record);
 }

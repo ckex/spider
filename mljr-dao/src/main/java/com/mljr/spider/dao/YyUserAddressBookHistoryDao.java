@@ -14,15 +14,15 @@ import java.util.List;
 @DataSource("rw")
 public interface YyUserAddressBookHistoryDao {
 
-    YyUserAddressBookHistoryDo load(Long id);
+  YyUserAddressBookHistoryDo load(Long id);
 
-    boolean delete(Long id);
+  boolean delete(Long id);
 
-    YyUserAddressBookHistoryDo create(YyUserAddressBookHistoryDo record);
+  YyUserAddressBookHistoryDo create(YyUserAddressBookHistoryDo record);
 
-    boolean update(YyUserAddressBookHistoryDo record);
+  boolean update(YyUserAddressBookHistoryDo record);
 
-    PageList<YyUserAddressBookHistoryDo>  listByPage(PageQuery pageQuery, Integer count);
+  PageList<YyUserAddressBookHistoryDo> listByPage(PageQuery pageQuery, Integer count);
 
-    List<YyUserAddressBookHistoryDo> listById(long lastId, int limit);
+  List<YyUserAddressBookHistoryDo> listById(long lastId, int limit);
 }

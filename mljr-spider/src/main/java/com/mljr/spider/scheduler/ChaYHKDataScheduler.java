@@ -16,88 +16,86 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Created by xi.gao
- * Date:2016/12/5
+ * Created by xi.gao Date:2016/12/5
  */
 public class ChaYHKDataScheduler extends AbstractScheduler {
 
-    /**
-     * 请求URL
-     */
-    private static final String URL = "http://cha.yinhangkadata.com/";
+  /**
+   * 请求URL
+   */
+  private static final String URL = "http://cha.yinhangkadata.com/";
 
-    /**
-     * form表单提交时，需要用到且是固定
-     * 另外还能重写selectRequestMethod方法
-     *
-     * @see us.codecraft.webmagic.downloader.HttpClientDownloader#selectRequestMethod
-     */
-    private static final String FORM_PARAMS_KEY = "nameValuePair";
+  /**
+   * form表单提交时，需要用到且是固定 另外还能重写selectRequestMethod方法
+   *
+   * @see us.codecraft.webmagic.downloader.HttpClientDownloader#selectRequestMethod
+   */
+  private static final String FORM_PARAMS_KEY = "nameValuePair";
 
-    /**
-     * 请求参数
-     */
-    private static final String REQUEST_PARAM_FILED = "card";
+  /**
+   * 请求参数
+   */
+  private static final String REQUEST_PARAM_FILED = "card";
 
-    public ChaYHKDataScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
-        super(spider, mqMsgQueue);
+  public ChaYHKDataScheduler(Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
+    super(spider, mqMsgQueue);
+  }
+
+  public ChaYHKDataScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
+    super(spider, task);
+  }
+
+  public ChaYHKDataScheduler(Spider spider, String qid) throws Exception {
+    super(spider, qid);
+  }
+
+
+  @Override
+  public boolean pushTask(Spider spider, UMQMessage message) {
+    if (null == message || StringUtils.isBlank(message.message)) {
+      logger.warn("cha yhk mq message is empty");
+      return false;
     }
+    push(buildRequst(message.message), spider);
+    return true;
+  }
 
-    public ChaYHKDataScheduler(Spider spider, AbstractMessage.PullMsgTask task) throws Exception {
-        super(spider, task);
-    }
+  @Override
+  Request buildRequst(String message) {
 
-    public ChaYHKDataScheduler(Spider spider, String qid) throws Exception {
-        super(spider, qid);
-    }
+    Request request = new Request(URL);
 
+    request.setMethod(HttpConstant.Method.POST);
 
-    @Override
-    public boolean pushTask(Spider spider, UMQMessage message) {
-        if(null==message || StringUtils.isBlank(message.message)){
-            logger.warn("cha yhk mq message is empty");
-            return false;
-        }
-        push(buildRequst(message.message), spider);
-        return true;
-    }
+    NameValuePair[] values = new NameValuePair[1];
 
-    @Override
-    Request buildRequst(String message) {
+    values[0] = new BasicNameValuePair(REQUEST_PARAM_FILED, StringUtil.bankCardDefaultFill(message));
 
-        Request request = new Request(URL);
+    Map<String, Object> nameValuePair = Maps.newHashMap();
 
-        request.setMethod(HttpConstant.Method.POST);
+    nameValuePair.put(FORM_PARAMS_KEY, values);
 
-        NameValuePair[] values = new NameValuePair[1];
+    request.setExtras(nameValuePair);
+    return request;
+  }
 
-        values[0] = new BasicNameValuePair(REQUEST_PARAM_FILED, StringUtil.bankCardDefaultFill(message));
+  @Override
+  public int getLeftRequestsCount(Task task) {
+    return 0;
+  }
 
-        Map<String, Object> nameValuePair = Maps.newHashMap();
+  @Override
+  public int getTotalRequestsCount(Task task) {
+    return 0;
+  }
 
-        nameValuePair.put(FORM_PARAMS_KEY, values);
+  @Override
+  public void push(Request request, Task task) {
+    put(request);
+  }
 
-        request.setExtras(nameValuePair);
-        return request;
-    }
-
-    @Override
-    public int getLeftRequestsCount(Task task) {
-        return 0;
-    }
-
-    @Override
-    public int getTotalRequestsCount(Task task) {
-        return 0;
-    }
-
-    @Override
-    public void push(Request request, Task task) {
-        put(request);
-    }
-
-    @Override
-    public Request poll(Task task) {
-        return take();
-    }
+  @Override
+  public Request poll(Task task) {
+    return take();
+  }
 }

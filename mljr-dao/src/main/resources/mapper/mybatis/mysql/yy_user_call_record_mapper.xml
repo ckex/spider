@@ -1,64 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Mapper.yy_user_call_record">
-    <resultMap id="YyUserCallRecordResult" type="com.mljr.spider.model.YyUserCallRecordDo">
-        <result column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="name" property="name" />
-        <result column="number" property="number" />
-        <result column="type" property="type" />
-        <result column="call_time" property="callTime" />
-        <result column="duration" property="duration" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-    </resultMap>
+	<resultMap id="YyUserCallRecordResult" type="com.mljr.spider.model.YyUserCallRecordDo">
+		<result column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="number" property="number" />
+		<result column="type" property="type" />
+		<result column="call_time" property="callTime" />
+		<result column="duration" property="duration" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
 
-    <select id="load" resultMap="YyUserCallRecordResult" parameterType="java.util.HashMap">
-        select `id`, `user_id`, `name`, `number`, `type`, `call_time`, `duration`, `create_time`, `update_time`
-        FROM yy_user_call_record
-        WHERE id = #{id}
-    </select>
-
-    <delete id="delete" parameterType="java.util.HashMap">
-        delete from yy_user_call_record
-        WHERE id = #{id}
-    </delete>
-
-    <insert id="create" parameterType="com.mljr.spider.model.YyUserCallRecordDo">
-        insert into yy_user_call_record (`id`, `user_id`, `name`, `number`, `type`, `call_time`, `duration`, `create_time`, `update_time`) 
-        values (#{id}, #{userId}, #{name}, #{number}, #{type}, #{callTime}, #{duration}, #{createTime}, #{updateTime})
-    </insert>
-
-    <update id="update" parameterType="com.mljr.spider.model.YyUserCallRecordDo">
-        update yy_user_call_record
-      <set>
-          <if test="id != null">`id` = #{id},</if>
-          <if test="userId != null">`user_id` = #{userId},</if>
-          <if test="name != null">`name` = #{name},</if>
-          <if test="number != null">`number` = #{number},</if>
-          <if test="type != null">`type` = #{type},</if>
-          <if test="callTime != null">`call_time` = #{callTime},</if>
-          <if test="duration != null">`duration` = #{duration},</if>
-          <if test="createTime != null">`create_time` = #{createTime},</if>
-          <if test="updateTime != null">`update_time` = #{updateTime},</if>
-      </set>
-        WHERE id = #{id}
-    </update>
-
-    <select id="listByPage" resultMap="YyUserCallRecordResult" parameterType="java.util.HashMap">
-        SELECT t2.`id`, t2.`user_id`, t2.`name`, t2.`number`, t2.`type`, t2.`call_time`, t2.`duration`, t2.`create_time`, t2.`update_time`
-        FROM (
-                 SELECT id FROM yy_user_call_record                 WHERE 1                  ORDER BY id
-                 LIMIT #{startIndex},#{pageSize})t1,yy_user_call_record t2 WHERE t1.id = t2.id
-    </select>
-
-    <select id="listByPageCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
-        SELECT count(*) 
-        FROM yy_user_call_record         WHERE 1 
-    </select>
-    
-    <select id="listById" resultMap="YyUserCallRecordResult" parameterType="java.util.HashMap" useCache="false">
-        select id,number from yy_user_address_book WHERE id > #{id} order by id limit #{limit}
+	<select id="load" resultMap="YyUserCallRecordResult"
+		parameterType="java.util.HashMap">
+		select `id`, `user_id`, `name`, `number`, `type`, `call_time`, `duration`,
+		`create_time`, `update_time`
+		FROM yy_user_call_record
+		WHERE id = #{id}
 	</select>
-    
+
+	<delete id="delete" parameterType="java.util.HashMap">
+		delete from yy_user_call_record
+		WHERE id = #{id}
+	</delete>
+
+	<insert id="create" parameterType="com.mljr.spider.model.YyUserCallRecordDo">
+		insert into yy_user_call_record (`id`, `user_id`, `name`, `number`, `type`,
+		`call_time`, `duration`, `create_time`, `update_time`)
+		values (#{id}, #{userId}, #{name}, #{number}, #{type}, #{callTime},
+		#{duration}, #{createTime}, #{updateTime})
+	</insert>
+
+	<update id="update" parameterType="com.mljr.spider.model.YyUserCallRecordDo">
+		update yy_user_call_record
+		<set>
+			<if test="id != null">`id` = #{id},</if>
+			<if test="userId != null">`user_id` = #{userId},</if>
+			<if test="name != null">`name` = #{name},</if>
+			<if test="number != null">`number` = #{number},</if>
+			<if test="type != null">`type` = #{type},</if>
+			<if test="callTime != null">`call_time` = #{callTime},</if>
+			<if test="duration != null">`duration` = #{duration},</if>
+			<if test="createTime != null">`create_time` = #{createTime},</if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<select id="listByPage" resultMap="YyUserCallRecordResult"
+		parameterType="java.util.HashMap">
+		SELECT t2.`id`, t2.`user_id`, t2.`name`, t2.`number`, t2.`type`,
+		t2.`call_time`, t2.`duration`, t2.`create_time`, t2.`update_time`
+		FROM (
+		SELECT id FROM yy_user_call_record WHERE 1 ORDER BY id
+		LIMIT #{startIndex},#{pageSize})t1,yy_user_call_record t2 WHERE t1.id =
+		t2.id
+	</select>
+
+	<select id="listByPageCount" resultType="java.lang.Integer"
+		parameterType="java.util.HashMap">
+		SELECT count(*)
+		FROM yy_user_call_record WHERE 1
+	</select>
+
+	<select id="listById" resultMap="YyUserCallRecordResult"
+		parameterType="java.util.HashMap" useCache="false">
+		select id,number from yy_user_address_book WHERE id > #{id} order by id
+		limit #{limit}
+	</select>
+
 </mapper>

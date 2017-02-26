@@ -29,97 +29,97 @@ import java.util.regex.Pattern;
 @Service
 public class GpsResendService {
 
-    protected static transient Logger logger = LoggerFactory.getLogger(GpsResendService.class);
+  protected static transient Logger logger = LoggerFactory.getLogger(GpsResendService.class);
 
-    public final static String GPS_FILE_DIR = ServiceConfig.getGpsFileDir();
+  public final static String GPS_FILE_DIR = ServiceConfig.getGpsFileDir();
 
-    public final static String GPS_HISTORY_FILE_DIR = ServiceConfig.getGpsHistoryFileDir();
+  public final static String GPS_HISTORY_FILE_DIR = ServiceConfig.getGpsHistoryFileDir();
 
-    public String[] listDirs() {
-        return new File(GPS_FILE_DIR).list(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.matches("\\d{4}\\-\\d{2}\\-\\d{2}");
-            }
-        });
-    }
+  public String[] listDirs() {
+    return new File(GPS_FILE_DIR).list(new FilenameFilter() {
+      @Override
+      public boolean accept(File dir, String name) {
+        return name.matches("\\d{4}\\-\\d{2}\\-\\d{2}");
+      }
+    });
+  }
 
-    public String[] listFilesByDir(String subDir) {
-        return new File(GPS_FILE_DIR + "/" + subDir).list(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".json") || name.endsWith(".log");
-            }
-        });
-    }
+  public String[] listFilesByDir(String subDir) {
+    return new File(GPS_FILE_DIR + "/" + subDir).list(new FilenameFilter() {
+      @Override
+      public boolean accept(File dir, String name) {
+        return name.endsWith(".json") || name.endsWith(".log");
+      }
+    });
+  }
 
-    public String[] listHistoryFiles() {
-        return new File(GPS_HISTORY_FILE_DIR).list(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".json") || name.endsWith(".log");
-            }
-        });
-    }
+  public String[] listHistoryFiles() {
+    return new File(GPS_HISTORY_FILE_DIR).list(new FilenameFilter() {
+      @Override
+      public boolean accept(File dir, String name) {
+        return name.endsWith(".json") || name.endsWith(".log");
+      }
+    });
+  }
 
-    public static Gson gson = new Gson();
+  public static Gson gson = new Gson();
 
-    Pattern pattern = Pattern.compile("\\d{4}\\-\\d{2}\\-\\d{2}\\-\\d{2}");
+  Pattern pattern = Pattern.compile("\\d{4}\\-\\d{2}\\-\\d{2}\\-\\d{2}");
 
-    public Map<String, Object> parseJsonFile(File file) {
-        Map<String, Object> returnMap = Maps.newHashMap();
-        List<String> tmpList = Lists.newArrayList();
-        try {
-            String jsonStr = FileUtils.readFileToString(file, "utf-8");
-            if (!jsonStr.startsWith("{")) {
-                jsonStr = jsonStr.substring(jsonStr.indexOf("{"));
-            }
-            List<String> list = new JsonPathSelector("$.datas[*].list[*]").selectList(jsonStr);
-            List<GpsData> datas = Lists.newArrayList();
-            for (String str : list) {
-                datas.add(JSONObject.parseObject(str, GpsData.class));
-            }
+  public Map<String, Object> parseJsonFile(File file) {
+    Map<String, Object> returnMap = Maps.newHashMap();
+    List<String> tmpList = Lists.newArrayList();
+    try {
+      String jsonStr = FileUtils.readFileToString(file, "utf-8");
+      if (!jsonStr.startsWith("{")) {
+        jsonStr = jsonStr.substring(jsonStr.indexOf("{"));
+      }
+      List<String> list = new JsonPathSelector("$.datas[*].list[*]").selectList(jsonStr);
+      List<GpsData> datas = Lists.newArrayList();
+      for (String str : list) {
+        datas.add(JSONObject.parseObject(str, GpsData.class));
+      }
 
-            List<List<GpsData>> partLists = Lists.partition(datas, 5000);
-            Matcher matcher = pattern.matcher(file.getName());
-            matcher.find();
-            String currentTime = matcher.group();
-            for (List<GpsData> gpsDatas : partLists) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("currentTime", currentTime);
-                map.put("datas", gpsDatas);
-                String json = JSONObject.toJSONString(map);
-                tmpList.add(json);
-            }
-            returnMap.put("dataList", tmpList);
-            returnMap.put("count", list.size());
-            return returnMap;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return returnMap;
-    }
-
-    public Map<String, Object> resend(String fullName) {
-        File file = new File(fullName);
-        Map<String, Object> dataMap = parseJsonFile(file);
-        List<String> dataList = (List<String>) dataMap.get("dataList");
-        Integer count = (Integer) dataMap.get("count");
-        HttpSender sender = new HttpSender();
-        if (CollectionUtils.isNotEmpty(dataList)) {
-            for (String s : dataList) {
-                sender.sendData(s);
-            }
-        }
+      List<List<GpsData>> partLists = Lists.partition(datas, 5000);
+      Matcher matcher = pattern.matcher(file.getName());
+      matcher.find();
+      String currentTime = matcher.group();
+      for (List<GpsData> gpsDatas : partLists) {
         Map<String, Object> map = new HashMap<>();
-        map.put("msg", "success");
-        map.put("fileName", file.getName());
-        map.put("all", count);
-        map.put("requests", HttpSender.COUNTER.getNum());
-        map.put("failure", HttpSender.COUNTER.getFailure());
-        HttpSender.COUNTER.clear();
-        return map;
-
+        map.put("currentTime", currentTime);
+        map.put("datas", gpsDatas);
+        String json = JSONObject.toJSONString(map);
+        tmpList.add(json);
+      }
+      returnMap.put("dataList", tmpList);
+      returnMap.put("count", list.size());
+      return returnMap;
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+    return returnMap;
+  }
+
+  public Map<String, Object> resend(String fullName) {
+    File file = new File(fullName);
+    Map<String, Object> dataMap = parseJsonFile(file);
+    List<String> dataList = (List<String>) dataMap.get("dataList");
+    Integer count = (Integer) dataMap.get("count");
+    HttpSender sender = new HttpSender();
+    if (CollectionUtils.isNotEmpty(dataList)) {
+      for (String s : dataList) {
+        sender.sendData(s);
+      }
+    }
+    Map<String, Object> map = new HashMap<>();
+    map.put("msg", "success");
+    map.put("fileName", file.getName());
+    map.put("all", count);
+    map.put("requests", HttpSender.COUNTER.getNum());
+    map.put("failure", HttpSender.COUNTER.getFailure());
+    HttpSender.COUNTER.clear();
+    return map;
+
+  }
 
 }

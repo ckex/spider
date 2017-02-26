@@ -1,5 +1,5 @@
 <assembly>
-    <!-- http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html -->
+	<!-- http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html -->
 	<id>release</id>
 	<formats>
 		<!-- 不同于dev.xml -->

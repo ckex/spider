@@ -14,22 +14,22 @@ import com.rabbitmq.client.Connection;
  */
 public class ConnectionTests {
 
-	/**
-	 * 
-	 */
-	public ConnectionTests() {
-		// TODO Auto-generated constructor stub
-	}
+  /**
+   * 
+   */
+  public ConnectionTests() {
+    // TODO Auto-generated constructor stub
+  }
 
-	/**
-	 * @param args
-	 * @throws TimeoutException
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception {
-		Connection conn = ConnectionFactory.newConnection();
-		System.out.println(conn.toString());
-		conn.close();
-	}
+  /**
+   * @param args
+   * @throws TimeoutException
+   * @throws Exception
+   */
+  public static void main(String[] args) throws Exception {
+    Connection conn = ConnectionFactory.newConnection();
+    System.out.println(conn.toString());
+    conn.close();
+  }
 
 }

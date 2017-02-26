@@ -15,6 +15,14 @@ public class UserInfo {
 
     private String type;
 
+    private String userName;
+
+    private String idcard;
+
+    private Boolean sex;
+
+    private String address;
+
     private Date createTime;
 
     private Date updateTime;
@@ -65,6 +73,38 @@ public class UserInfo {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard == null ? null : idcard.trim();
+    }
+
+    public Boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(Boolean sex) {
+        this.sex = sex;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
     }
 
     public Date getCreateTime() {

@@ -13,7 +13,8 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
 
 /**
- * @author Ckex zha </br> 2016年11月6日,下午8:36:13
+ * @author Ckex zha </br>
+ *         2016年11月6日,下午8:36:13
  *
  */
 public class BaiduMobileProcessorTests {

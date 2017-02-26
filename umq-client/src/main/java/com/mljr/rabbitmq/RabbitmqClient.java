@@ -23,42 +23,40 @@ import com.rabbitmq.client.GetResponse;
  */
 public class RabbitmqClient {
 
-	protected static transient Logger logger = LoggerFactory.getLogger(RabbitmqClient.class);
+  protected static transient Logger logger = LoggerFactory.getLogger(RabbitmqClient.class);
 
-	private final Connection rabbitConnection;
+  private final Connection rabbitConnection;
 
-	public RabbitmqClient() {
-		super();
-		try {
-			this.rabbitConnection = ConnectionFactory.newConnection();
-		} catch (IOException | TimeoutException e) {
-			e.printStackTrace();
-			logger.error(ExceptionUtils.getStackTrace(e));
-			throw new RuntimeException(e);
-		}
-	}
+  public RabbitmqClient() {
+    super();
+    try {
+      this.rabbitConnection = ConnectionFactory.newConnection();
+    } catch (IOException | TimeoutException e) {
+      e.printStackTrace();
+      logger.error(ExceptionUtils.getStackTrace(e));
+      throw new RuntimeException(e);
+    }
+  }
 
-	public static void subscribeMessage(Channel channel, String queueId, String consumerTag, boolean autoAck,
-			Consumer consumer) throws IOException {
-		String ret = channel.basicConsume(queueId, autoAck, consumerTag, consumer);
-		logger.info(queueId + " subscribe message " + ret);
-	}
+  public static void subscribeMessage(Channel channel, String queueId, String consumerTag, boolean autoAck, Consumer consumer) throws IOException {
+    String ret = channel.basicConsume(queueId, autoAck, consumerTag, consumer);
+    logger.info(queueId + " subscribe message " + ret);
+  }
 
-	public static GetResponse pollMessage(Channel channel, String queueId, boolean autoAck) throws IOException {
-		return channel.basicGet(queueId, autoAck);
-	}
+  public static GetResponse pollMessage(Channel channel, String queueId, boolean autoAck) throws IOException {
+    return channel.basicGet(queueId, autoAck);
+  }
 
-	public static Channel newChannel() throws IOException {
-		return RabbitmqClientHolder.CLIENT.rabbitConnection.createChannel();
-	}
+  public static Channel newChannel() throws IOException {
+    return RabbitmqClientHolder.CLIENT.rabbitConnection.createChannel();
+  }
 
-	public static void publishMessage(Channel channel, String exchange, String routingKey, BasicProperties props,
-			byte[] body) throws IOException {
-		channel.basicPublish(exchange, (routingKey == null ? "" : routingKey), props, body);
-	}
+  public static void publishMessage(Channel channel, String exchange, String routingKey, BasicProperties props, byte[] body) throws IOException {
+    channel.basicPublish(exchange, (routingKey == null ? "" : routingKey), props, body);
+  }
 
-	private static final class RabbitmqClientHolder {
-		private static final RabbitmqClient CLIENT = new RabbitmqClient();
-	}
+  private static final class RabbitmqClientHolder {
+    private static final RabbitmqClient CLIENT = new RabbitmqClient();
+  }
 
 }

@@ -13,17 +13,17 @@ import java.util.Date;
 @Component
 public class AutohomeFlagTask extends AbstractTask {
 
-    @Override
-    void execute() {
-        try {
-            String flag = "autohome-" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
-            CommonService.sendFlag("", "autohome_flag", flag);
-        } catch (Exception ex) {
-            if (logger.isDebugEnabled()) {
-                ex.printStackTrace();
-            }
-            logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-        }
+  @Override
+  void execute() {
+    try {
+      String flag = "autohome-" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
+      CommonService.sendFlag("", "autohome_flag", flag);
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
     }
+  }
 
 }

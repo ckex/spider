@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>gps重发</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
-          href="../../css/bootstrap.min.css"/>
+<title>gps重发</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
+	href="../../css/bootstrap.min.css" />
 </head>
 <body>
-<div class="container" style="width: 1140px">
-    <div class="row">
-        <table class="table">
-            <tr>
-                <th>目录</th>
-            </tr>
-            <tr th:each="data : ${dataList}">
-                <td th:each="d:${data}"><a th:text="${d}" th:href="@{'/files/' + ${d}}"></a></td>
-            </tr>
+	<div class="container" style="width: 1140px">
+		<div class="row">
+			<table class="table">
+				<tr>
+					<th>目录</th>
+				</tr>
+				<tr th:each="data : ${dataList}">
+					<td th:each="d:${data}"><a th:text="${d}"
+						th:href="@{'/files/' + ${d}}"></a></td>
+				</tr>
 
-        </table>
-    </div>
-</div>
+			</table>
+		</div>
+	</div>
 </body>
 </html>

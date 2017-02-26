@@ -5,7 +5,7 @@ package com.mljr.utils;
  */
 public class RandomUtils {
 
-    public  static boolean randomPrint(int random){
-        return Math.random() * random < 1;
-    }
+  public static boolean randomPrint(int random) {
+    return Math.random() * random < 1;
+  }
 }

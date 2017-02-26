@@ -11,23 +11,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class JdTask extends AbstractTask {
 
-    @Autowired
-    private JdService jdService;
+  @Autowired
+  private JdService jdService;
 
-    public JdTask() {
-        super();
-    }
+  public JdTask() {
+    super();
+  }
 
-    @Override
-    void execute() {
-        try {
-            jdService.sendUrls();
-        } catch (Exception ex) {
-            if (logger.isDebugEnabled()) {
-                ex.printStackTrace();
-            }
-            logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
-        }
+  @Override
+  void execute() {
+    try {
+      jdService.sendUrls();
+    } catch (Exception ex) {
+      if (logger.isDebugEnabled()) {
+        ex.printStackTrace();
+      }
+      logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
     }
+  }
 
 }
