@@ -34,6 +34,8 @@ public class ChinaUnicomStoreServiceImplTest extends BaseTest {
 
     private static final String FLOW_RECORD_FILE = "flowRecordInfo.json";
 
+    private static final String REMAINING_INFO_FILE="remainingInfo.json";
+
     @Override
     public void testInit() {
         super.testInit();
@@ -108,6 +110,12 @@ public class ChinaUnicomStoreServiceImplTest extends BaseTest {
             boolean flag = chinaUnicomStoreService.saveFlowRecordInfo(3L, flowRecordDTO);
             Assert.state(flag);
         }
+    }
+
+    @Test
+    public void testSaveRemainingInfo(){
+        RemainingDTO remainingDTO=parse(REMAINING_INFO_FILE,RemainingDTO.class);
+        Assert.notNull(remainingDTO);
     }
 
     private <T> T parse(String fileName, Class<T> c) {
