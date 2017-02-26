@@ -10,154 +10,142 @@ public class RemainingDTO implements Serializable {
 
     private static final long serialVersionUID = 4693775451657504251L;
 
-    private Remaining resource;
+    private ResourceBean resource;
 
-    public Remaining getResource() {
+    public ResourceBean getResource() {
         return resource;
     }
 
-    public void setResource(Remaining resource) {
+    public void setResource(ResourceBean resource) {
         this.resource = resource;
     }
 
-    public static class Remaining {
-        private String balance;
+    public static class ResourceBean {
 
-        private String acctBalance;
+        private double balance;
+        private double acctBalance;
+        private double overFlow;
+        private boolean flowFlag;
+        private double remainFlow;
+        private boolean balanceFlag;
+        private double totalFlow;
+        private boolean successFlow;
+        private boolean successVoice;
+        private boolean successBalance;
+        private boolean successCredit;
+        private boolean voiceFlag;
+        private double creditBalance;
+        private boolean creditFlag;
 
-        private String overFlow;
-
-        private Boolean flowFlag;
-
-        private String remainFlow;
-
-        private Boolean balanceFlag;
-
-        private String totalFlow;
-
-        private Boolean successFlow;
-
-        private Boolean successVoice;
-
-        private Boolean successBalance;
-
-        private Boolean successCredit;
-
-        private Boolean voiceFlag;
-
-        private String creditBalance;
-
-        private String creditFlag;
-
-        public String getBalance() {
+        public double getBalance() {
             return balance;
         }
 
-        public void setBalance(String balance) {
+        public void setBalance(double balance) {
             this.balance = balance;
         }
 
-        public String getAcctBalance() {
+        public double getAcctBalance() {
             return acctBalance;
         }
 
-        public void setAcctBalance(String acctBalance) {
+        public void setAcctBalance(double acctBalance) {
             this.acctBalance = acctBalance;
         }
 
-        public String getOverFlow() {
+        public double getOverFlow() {
             return overFlow;
         }
 
-        public void setOverFlow(String overFlow) {
+        public void setOverFlow(double overFlow) {
             this.overFlow = overFlow;
         }
 
-        public Boolean getFlowFlag() {
+        public boolean isFlowFlag() {
             return flowFlag;
         }
 
-        public void setFlowFlag(Boolean flowFlag) {
+        public void setFlowFlag(boolean flowFlag) {
             this.flowFlag = flowFlag;
         }
 
-        public String getRemainFlow() {
+        public double getRemainFlow() {
             return remainFlow;
         }
 
-        public void setRemainFlow(String remainFlow) {
+        public void setRemainFlow(double remainFlow) {
             this.remainFlow = remainFlow;
         }
 
-        public Boolean getBalanceFlag() {
+        public boolean isBalanceFlag() {
             return balanceFlag;
         }
 
-        public void setBalanceFlag(Boolean balanceFlag) {
+        public void setBalanceFlag(boolean balanceFlag) {
             this.balanceFlag = balanceFlag;
         }
 
-        public String getTotalFlow() {
+        public double getTotalFlow() {
             return totalFlow;
         }
 
-        public void setTotalFlow(String totalFlow) {
+        public void setTotalFlow(double totalFlow) {
             this.totalFlow = totalFlow;
         }
 
-        public Boolean getSuccessFlow() {
+        public boolean isSuccessFlow() {
             return successFlow;
         }
 
-        public void setSuccessFlow(Boolean successFlow) {
+        public void setSuccessFlow(boolean successFlow) {
             this.successFlow = successFlow;
         }
 
-        public Boolean getSuccessVoice() {
+        public boolean isSuccessVoice() {
             return successVoice;
         }
 
-        public void setSuccessVoice(Boolean successVoice) {
+        public void setSuccessVoice(boolean successVoice) {
             this.successVoice = successVoice;
         }
 
-        public Boolean getSuccessBalance() {
+        public boolean isSuccessBalance() {
             return successBalance;
         }
 
-        public void setSuccessBalance(Boolean successBalance) {
+        public void setSuccessBalance(boolean successBalance) {
             this.successBalance = successBalance;
         }
 
-        public Boolean getSuccessCredit() {
+        public boolean isSuccessCredit() {
             return successCredit;
         }
 
-        public void setSuccessCredit(Boolean successCredit) {
+        public void setSuccessCredit(boolean successCredit) {
             this.successCredit = successCredit;
         }
 
-        public Boolean getVoiceFlag() {
+        public boolean isVoiceFlag() {
             return voiceFlag;
         }
 
-        public void setVoiceFlag(Boolean voiceFlag) {
+        public void setVoiceFlag(boolean voiceFlag) {
             this.voiceFlag = voiceFlag;
         }
 
-        public String getCreditBalance() {
+        public double getCreditBalance() {
             return creditBalance;
         }
 
-        public void setCreditBalance(String creditBalance) {
+        public void setCreditBalance(double creditBalance) {
             this.creditBalance = creditBalance;
         }
 
-        public String getCreditFlag() {
+        public boolean isCreditFlag() {
             return creditFlag;
         }
 
-        public void setCreditFlag(String creditFlag) {
+        public void setCreditFlag(boolean creditFlag) {
             this.creditFlag = creditFlag;
         }
     }
