@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mljr.sync.task;
 
@@ -25,6 +25,5 @@ public abstract class AbstractTaskFactory {
   public abstract BitautoTask createBitautoTask();
 
   public abstract QqNumberTask createQqNumberTask();
-
 
 }
