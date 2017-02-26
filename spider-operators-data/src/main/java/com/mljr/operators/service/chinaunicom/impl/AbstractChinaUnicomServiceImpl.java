@@ -70,11 +70,11 @@ public abstract class AbstractChinaUnicomServiceImpl implements IChinaUnicomServ
     protected static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0";
 
     @Override
-    public PersonInfoDTO queryUserInfo(String cookies) {
+    public UserInfoDTO queryUserInfo(String cookies) {
         String url = String.format(USER_INFO_URL, new Date().getTime());
         String respString = request(url, cookies);
         if (null != respString) {
-            return JSON.parseObject(respString, PersonInfoDTO.class);
+            return JSON.parseObject(respString, UserInfoDTO.class);
         }
         return null;
     }

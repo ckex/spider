@@ -12,10 +12,10 @@ public interface IChinaUnicomStoreService {
      * 保存用户信息
      *
      * @param loginDTO
-     * @param personInfoDTO 数据传输层
+     * @param userInfoDTO 数据传输层
      * @return
      */
-    boolean saveUserInfo(LoginDTO loginDTO, PersonInfoDTO personInfoDTO);
+    boolean saveUserInfo(LoginDTO loginDTO, UserInfoDTO userInfoDTO);
 
     /**
      * 保存套餐信息
@@ -24,7 +24,7 @@ public interface IChinaUnicomStoreService {
      * @param personInfo 套餐信息
      * @return
      */
-    boolean savePackageInfo(Long userInfoId, PersonInfoDTO personInfo);
+    boolean savePackageInfo(Long userInfoId, UserInfoDTO personInfo);
 
     /**
      * 保存流量信息

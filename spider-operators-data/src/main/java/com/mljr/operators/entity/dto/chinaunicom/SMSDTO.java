@@ -11,31 +11,27 @@ public class SMSDTO implements Serializable {
 
     private static final long serialVersionUID = -1225547660913180719L;
 
-    private SMSPage pageMap;
-
-    private Integer mmsCount;
-
+    private String querynowdate;
+    private int mmsCount;
     private String totalfee;
-
     private String endDate;
-
+    private PageMapBean pageMap;
+    private boolean isSuccess;
     private String beginDate;
 
-    private Boolean isSuccess;
-
-    public SMSPage getPageMap() {
-        return pageMap;
+    public String getQuerynowdate() {
+        return querynowdate;
     }
 
-    public void setPageMap(SMSPage pageMap) {
-        this.pageMap = pageMap;
+    public void setQuerynowdate(String querynowdate) {
+        this.querynowdate = querynowdate;
     }
 
-    public Integer getMmsCount() {
+    public int getMmsCount() {
         return mmsCount;
     }
 
-    public void setMmsCount(Integer mmsCount) {
+    public void setMmsCount(int mmsCount) {
         this.mmsCount = mmsCount;
     }
 
@@ -55,6 +51,22 @@ public class SMSDTO implements Serializable {
         this.endDate = endDate;
     }
 
+    public PageMapBean getPageMap() {
+        return pageMap;
+    }
+
+    public void setPageMap(PageMapBean pageMap) {
+        this.pageMap = pageMap;
+    }
+
+    public boolean isIsSuccess() {
+        return isSuccess;
+    }
+
+    public void setIsSuccess(boolean isSuccess) {
+        this.isSuccess = isSuccess;
+    }
+
     public String getBeginDate() {
         return beginDate;
     }
@@ -63,167 +75,181 @@ public class SMSDTO implements Serializable {
         this.beginDate = beginDate;
     }
 
-    public Boolean getSuccess() {
-        return isSuccess;
-    }
+    public static class PageMapBean {
 
-    public void setSuccess(Boolean success) {
-        isSuccess = success;
-    }
+        private int totalCount;
+        private int pageNo;
+        private int pageSize;
+        private int totalPages;
+        private List<ResultBean> result;
+        private List<PagesBean> pages;
 
-    public static class SMSPage {
-
-        private Integer totalCount;
-
-        private Integer pageNo;
-
-        private Integer pageSize;
-
-        private Integer totalPages;
-
-        private List<SMSDetailDTO> result;
-
-        public Integer getTotalCount() {
+        public int getTotalCount() {
             return totalCount;
         }
 
-        public void setTotalCount(Integer totalCount) {
+        public void setTotalCount(int totalCount) {
             this.totalCount = totalCount;
         }
 
-        public Integer getPageNo() {
+        public int getPageNo() {
             return pageNo;
         }
 
-        public void setPageNo(Integer pageNo) {
+        public void setPageNo(int pageNo) {
             this.pageNo = pageNo;
         }
 
-        public Integer getPageSize() {
+        public int getPageSize() {
             return pageSize;
         }
 
-        public void setPageSize(Integer pageSize) {
+        public void setPageSize(int pageSize) {
             this.pageSize = pageSize;
         }
 
-        public Integer getTotalPages() {
+        public int getTotalPages() {
             return totalPages;
         }
 
-        public void setTotalPages(Integer totalPages) {
+        public void setTotalPages(int totalPages) {
             this.totalPages = totalPages;
         }
 
-        public List<SMSDetailDTO> getResult() {
+        public List<ResultBean> getResult() {
             return result;
         }
 
-        public void setResult(List<SMSDetailDTO> result) {
+        public void setResult(List<ResultBean> result) {
             this.result = result;
         }
-    }
 
-    public static class SMSDetailDTO {
-
-        private String amount;
-
-        private String fee;
-
-        private String smsdate;
-
-        private String smstime;
-
-        private String businesstype;
-
-        private String othernum;
-
-        private String smstype;
-
-        private String otherarea;
-
-        private String homearea;
-
-        private String deratefee;
-
-        public String getAmount() {
-            return amount;
+        public List<PagesBean> getPages() {
+            return pages;
         }
 
-        public void setAmount(String amount) {
-            this.amount = amount;
+        public void setPages(List<PagesBean> pages) {
+            this.pages = pages;
         }
 
-        public String getFee() {
-            return fee;
+        public static class ResultBean {
+
+            private String amount;
+            private String fee;
+            private String smsdate;
+            private String smstime;
+            private String businesstype;
+            private String othernum;
+            private String smstype;
+            private String otherarea;
+            private String homearea;
+            private String deratefee;
+
+            public String getAmount() {
+                return amount;
+            }
+
+            public void setAmount(String amount) {
+                this.amount = amount;
+            }
+
+            public String getFee() {
+                return fee;
+            }
+
+            public void setFee(String fee) {
+                this.fee = fee;
+            }
+
+            public String getSmsdate() {
+                return smsdate;
+            }
+
+            public void setSmsdate(String smsdate) {
+                this.smsdate = smsdate;
+            }
+
+            public String getSmstime() {
+                return smstime;
+            }
+
+            public void setSmstime(String smstime) {
+                this.smstime = smstime;
+            }
+
+            public String getBusinesstype() {
+                return businesstype;
+            }
+
+            public void setBusinesstype(String businesstype) {
+                this.businesstype = businesstype;
+            }
+
+            public String getOthernum() {
+                return othernum;
+            }
+
+            public void setOthernum(String othernum) {
+                this.othernum = othernum;
+            }
+
+            public String getSmstype() {
+                return smstype;
+            }
+
+            public void setSmstype(String smstype) {
+                this.smstype = smstype;
+            }
+
+            public String getOtherarea() {
+                return otherarea;
+            }
+
+            public void setOtherarea(String otherarea) {
+                this.otherarea = otherarea;
+            }
+
+            public String getHomearea() {
+                return homearea;
+            }
+
+            public void setHomearea(String homearea) {
+                this.homearea = homearea;
+            }
+
+            public String getDeratefee() {
+                return deratefee;
+            }
+
+            public void setDeratefee(String deratefee) {
+                this.deratefee = deratefee;
+            }
         }
 
-        public void setFee(String fee) {
-            this.fee = fee;
-        }
+        public static class PagesBean {
+            /**
+             * pageNo : 1
+             * curr : true
+             */
 
-        public String getSmsdate() {
-            return smsdate;
-        }
+            private int pageNo;
+            private boolean curr;
 
-        public void setSmsdate(String smsdate) {
-            this.smsdate = smsdate;
-        }
+            public int getPageNo() {
+                return pageNo;
+            }
 
-        public String getSmstime() {
-            return smstime;
-        }
+            public void setPageNo(int pageNo) {
+                this.pageNo = pageNo;
+            }
 
-        public void setSmstime(String smstime) {
-            this.smstime = smstime;
-        }
+            public boolean isCurr() {
+                return curr;
+            }
 
-        public String getBusinesstype() {
-            return businesstype;
-        }
-
-        public void setBusinesstype(String businesstype) {
-            this.businesstype = businesstype;
-        }
-
-        public String getOthernum() {
-            return othernum;
-        }
-
-        public void setOthernum(String othernum) {
-            this.othernum = othernum;
-        }
-
-        public String getSmstype() {
-            return smstype;
-        }
-
-        public void setSmstype(String smstype) {
-            this.smstype = smstype;
-        }
-
-        public String getOtherarea() {
-            return otherarea;
-        }
-
-        public void setOtherarea(String otherarea) {
-            this.otherarea = otherarea;
-        }
-
-        public String getHomearea() {
-            return homearea;
-        }
-
-        public void setHomearea(String homearea) {
-            this.homearea = homearea;
-        }
-
-        public String getDeratefee() {
-            return deratefee;
-        }
-
-        public void setDeratefee(String deratefee) {
-            this.deratefee = deratefee;
+            public void setCurr(boolean curr) {
+                this.curr = curr;
+            }
         }
     }
 }

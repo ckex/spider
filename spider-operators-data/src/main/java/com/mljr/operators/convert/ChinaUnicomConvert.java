@@ -21,7 +21,7 @@ public class ChinaUnicomConvert {
     private ChinaUnicomConvert() {
     }
 
-    public static UserInfo convert(PersonInfoDTO personInfo) {
+    public static UserInfo convert(UserInfoDTO personInfo) {
         UserInfo entity = null;
         try {
             if (null != personInfo && personInfo.getResult() != null
@@ -43,7 +43,7 @@ public class ChinaUnicomConvert {
         return entity;
     }
 
-    public static List<PackageInfoDTO> packageForConvert(PersonInfoDTO personInfo) {
+    public static List<PackageInfoDTO> packageForConvert(UserInfoDTO personInfo) {
         List<PackageInfoDTO> list = Lists.newArrayList();
         try {
             if (null != personInfo && personInfo.getPackageInfo() != null) {
@@ -58,7 +58,7 @@ public class ChinaUnicomConvert {
         return list;
     }
 
-    public static PackageInfoDTO convert(PersonInfoDTO.ProductInfo productInfo) {
+    public static PackageInfoDTO convert(UserInfoDTO.PackageInfoBeanXX.ProductInfoBean productInfo) {
         PackageInfoDTO dtoEntity = new PackageInfoDTO();
         {
             PackageInfo entity = new PackageInfo();
@@ -73,7 +73,7 @@ public class ChinaUnicomConvert {
         return dtoEntity;
     }
 
-    public static PackageInfoDetail convert(PersonInfoDTO.DiscntInfo discntInfo) {
+    public static PackageInfoDetail convert(UserInfoDTO.PackageInfoBeanXX.ProductInfoBean.PackageInfoBean.DiscntInfoBean discntInfo) {
         PackageInfoDetail entity = new PackageInfoDetail();
         entity.setDiscntName(discntInfo.getDiscntName());
         entity.setDiscntFee(discntInfo.getDiscntFee());
@@ -84,9 +84,9 @@ public class ChinaUnicomConvert {
         List<BillInfo> list = Lists.newArrayList();
         try {
             if (null != billDTO && null != billDTO.getResult()
-                    && null != billDTO.getResult().getBillInfo()
-                    && billDTO.getResult().getBillInfo().size() > 0) {
-                List<BillDTO.BillInfo> billInfoList = billDTO.getResult().getBillInfo()
+                    && null != billDTO.getResult().getBillinfo()
+                    && billDTO.getResult().getBillinfo().size() > 0) {
+                List<BillDTO.ResultBean.BillinfoBean> billInfoList = billDTO.getResult().getBillinfo()
                         .stream().filter(billInfo -> !billInfo.getParentitemcode().equals("-1"))
                         .collect(Collectors.toList());
                 if (null != billInfoList && billInfoList.size() > 0) {
@@ -103,7 +103,7 @@ public class ChinaUnicomConvert {
         return list;
     }
 
-    public static BillInfo convert(BillDTO.BillInfo billInfo) {
+    public static BillInfo convert(BillDTO.ResultBean.BillinfoBean billInfo) {
         BillInfo entity = new BillInfo();
         entity.setFeeName(billInfo.getIntegrateitem());
         entity.setFee(billInfo.getFee());
@@ -125,7 +125,7 @@ public class ChinaUnicomConvert {
         return list;
     }
 
-    public static CallInfo convert(CallDTO.CallDetailDTO callDetailDTO) {
+    public static CallInfo convert(CallDTO.PageMapBean.ResultBean callDetailDTO) {
         CallInfo entity = new CallInfo();
         String date = null;
         if (!StringUtils.isBlank(callDetailDTO.getCalldate())) {
@@ -159,7 +159,7 @@ public class ChinaUnicomConvert {
         return list;
     }
 
-    public static SMSInfo convert(SMSDTO.SMSDetailDTO smsDetailDTO) {
+    public static SMSInfo convert(SMSDTO.PageMapBean.ResultBean smsDetailDTO) {
         SMSInfo entity = new SMSInfo();
         String date = null;
         if (!StringUtils.isBlank(smsDetailDTO.getSmsdate())) {

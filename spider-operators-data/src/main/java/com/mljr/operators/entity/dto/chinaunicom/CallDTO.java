@@ -11,339 +11,309 @@ public class CallDTO implements Serializable {
 
     private static final long serialVersionUID = -643777061758304658L;
 
-    private Integer totalRecord;
+    private int totalRecord;
+    private PageMapBean pageMap;
 
-    private CallPage pageMap;
-
-    public Integer getTotalRecord() {
+    public int getTotalRecord() {
         return totalRecord;
     }
 
-    public void setTotalRecord(Integer totalRecord) {
+    public void setTotalRecord(int totalRecord) {
         this.totalRecord = totalRecord;
     }
 
-    public void setPageMap(CallPage pageMap) {
-        this.pageMap = pageMap;
-    }
-
-    public CallPage getPageMap() {
+    public PageMapBean getPageMap() {
         return pageMap;
     }
 
-    public static class CallPage {
+    public void setPageMap(PageMapBean pageMap) {
+        this.pageMap = pageMap;
+    }
 
-        private List<CallDetailDTO> result;
+    public static class PageMapBean {
 
-        private Integer totalCount;
+        private int totalPages;
+        private int pageSize;
+        private int totalCount;
+        private int pageNo;
+        private List<ResultBean> result;
 
-        private Integer pageNo;
-
-        private Integer pageSize;
-
-        private Integer totalPages;
-
-        public List<CallDetailDTO> getResult() {
-            return result;
-        }
-
-        public void setResult(List<CallDetailDTO> result) {
-            this.result = result;
-        }
-
-        public Integer getTotalCount() {
-            return totalCount;
-        }
-
-        public void setTotalCount(Integer totalCount) {
-            this.totalCount = totalCount;
-        }
-
-        public Integer getPageNo() {
-            return pageNo;
-        }
-
-        public void setPageNo(Integer pageNo) {
-            this.pageNo = pageNo;
-        }
-
-        public Integer getPageSize() {
-            return pageSize;
-        }
-
-        public void setPageSize(Integer pageSize) {
-            this.pageSize = pageSize;
-        }
-
-        public Integer getTotalPages() {
+        public int getTotalPages() {
             return totalPages;
         }
 
-        public void setTotalPages(Integer totalPages) {
+        public void setTotalPages(int totalPages) {
             this.totalPages = totalPages;
         }
-    }
 
-    public static class CallDetailDTO {
-
-        private String businesstype;
-
-        private String longtype;
-
-        private String thtype;
-
-        private String calledhome;
-
-        private String cellid;
-
-        private String thtypeName;
-
-        private String twoplusfee;
-
-        private String calllonghour;
-
-        private String calldate;
-
-        private String calltime;
-
-        private String totalfee;
-
-        private String calltype;
-
-        private String othernum;
-
-        private String otherarea;
-
-        private String romatype;
-
-        private String homearea;
-
-        private String homenum;
-
-        private String calltypeName;
-
-        private String landtype;
-
-        private String romatypeName;
-
-        private String homeareaName;
-
-        private String nativefee;
-
-        private String landfee;
-
-        private String roamfee;
-
-        private String deratefee;
-
-        private String otherfee;
-
-        public String getBusinesstype() {
-            return businesstype;
+        public int getPageSize() {
+            return pageSize;
         }
 
-        public void setBusinesstype(String businesstype) {
-            this.businesstype = businesstype;
+        public void setPageSize(int pageSize) {
+            this.pageSize = pageSize;
         }
 
-        public String getLongtype() {
-            return longtype;
+        public int getTotalCount() {
+            return totalCount;
         }
 
-        public void setLongtype(String longtype) {
-            this.longtype = longtype;
+        public void setTotalCount(int totalCount) {
+            this.totalCount = totalCount;
         }
 
-        public String getThtype() {
-            return thtype;
+        public int getPageNo() {
+            return pageNo;
         }
 
-        public void setThtype(String thtype) {
-            this.thtype = thtype;
+        public void setPageNo(int pageNo) {
+            this.pageNo = pageNo;
         }
 
-        public String getCalledhome() {
-            return calledhome;
+        public List<ResultBean> getResult() {
+            return result;
         }
 
-        public void setCalledhome(String calledhome) {
-            this.calledhome = calledhome;
+        public void setResult(List<ResultBean> result) {
+            this.result = result;
         }
 
-        public String getCellid() {
-            return cellid;
-        }
+        public static class ResultBean {
 
-        public void setCellid(String cellid) {
-            this.cellid = cellid;
-        }
+            private String othernum;
+            private String twoplusfee;
+            private String otherfee;
+            private String roamfee;
+            private String cellid;
+            private String thtype;
+            private String landtype;
+            private String businesstype;
+            private String homeareaName;
+            private String romatypeName;
+            private String totalfee;
+            private String otherarea;
+            private String thtypeName;
+            private String calledhome;
+            private String calltype;
+            private String landfee;
+            private String longtype;
+            private String calltypeName;
+            private String homenum;
+            private String calllonghour;
+            private String homearea;
+            private String nativefee;
+            private String romatype;
+            private String calltime;
+            private String calldate;
+            private String deratefee;
 
-        public String getThtypeName() {
-            return thtypeName;
-        }
+            public String getOthernum() {
+                return othernum;
+            }
 
-        public void setThtypeName(String thtypeName) {
-            this.thtypeName = thtypeName;
-        }
+            public void setOthernum(String othernum) {
+                this.othernum = othernum;
+            }
 
-        public String getTwoplusfee() {
-            return twoplusfee;
-        }
+            public String getTwoplusfee() {
+                return twoplusfee;
+            }
 
-        public void setTwoplusfee(String twoplusfee) {
-            this.twoplusfee = twoplusfee;
-        }
+            public void setTwoplusfee(String twoplusfee) {
+                this.twoplusfee = twoplusfee;
+            }
 
-        public String getCalllonghour() {
-            return calllonghour;
-        }
+            public String getOtherfee() {
+                return otherfee;
+            }
 
-        public void setCalllonghour(String calllonghour) {
-            this.calllonghour = calllonghour;
-        }
+            public void setOtherfee(String otherfee) {
+                this.otherfee = otherfee;
+            }
 
-        public String getCalldate() {
-            return calldate;
-        }
+            public String getRoamfee() {
+                return roamfee;
+            }
 
-        public void setCalldate(String calldate) {
-            this.calldate = calldate;
-        }
+            public void setRoamfee(String roamfee) {
+                this.roamfee = roamfee;
+            }
 
-        public String getCalltime() {
-            return calltime;
-        }
+            public String getCellid() {
+                return cellid;
+            }
 
-        public void setCalltime(String calltime) {
-            this.calltime = calltime;
-        }
+            public void setCellid(String cellid) {
+                this.cellid = cellid;
+            }
 
-        public String getTotalfee() {
-            return totalfee;
-        }
+            public String getThtype() {
+                return thtype;
+            }
 
-        public void setTotalfee(String totalfee) {
-            this.totalfee = totalfee;
-        }
+            public void setThtype(String thtype) {
+                this.thtype = thtype;
+            }
 
-        public String getCalltype() {
-            return calltype;
-        }
+            public String getLandtype() {
+                return landtype;
+            }
 
-        public void setCalltype(String calltype) {
-            this.calltype = calltype;
-        }
+            public void setLandtype(String landtype) {
+                this.landtype = landtype;
+            }
 
-        public String getOthernum() {
-            return othernum;
-        }
+            public String getBusinesstype() {
+                return businesstype;
+            }
 
-        public void setOthernum(String othernum) {
-            this.othernum = othernum;
-        }
+            public void setBusinesstype(String businesstype) {
+                this.businesstype = businesstype;
+            }
 
-        public String getOtherarea() {
-            return otherarea;
-        }
+            public String getHomeareaName() {
+                return homeareaName;
+            }
 
-        public void setOtherarea(String otherarea) {
-            this.otherarea = otherarea;
-        }
+            public void setHomeareaName(String homeareaName) {
+                this.homeareaName = homeareaName;
+            }
 
-        public String getRomatype() {
-            return romatype;
-        }
+            public String getRomatypeName() {
+                return romatypeName;
+            }
 
-        public void setRomatype(String romatype) {
-            this.romatype = romatype;
-        }
+            public void setRomatypeName(String romatypeName) {
+                this.romatypeName = romatypeName;
+            }
 
-        public String getHomearea() {
-            return homearea;
-        }
+            public String getTotalfee() {
+                return totalfee;
+            }
 
-        public void setHomearea(String homearea) {
-            this.homearea = homearea;
-        }
+            public void setTotalfee(String totalfee) {
+                this.totalfee = totalfee;
+            }
 
-        public String getHomenum() {
-            return homenum;
-        }
+            public String getOtherarea() {
+                return otherarea;
+            }
 
-        public void setHomenum(String homenum) {
-            this.homenum = homenum;
-        }
+            public void setOtherarea(String otherarea) {
+                this.otherarea = otherarea;
+            }
 
-        public String getCalltypeName() {
-            return calltypeName;
-        }
+            public String getThtypeName() {
+                return thtypeName;
+            }
 
-        public void setCalltypeName(String calltypeName) {
-            this.calltypeName = calltypeName;
-        }
+            public void setThtypeName(String thtypeName) {
+                this.thtypeName = thtypeName;
+            }
 
-        public String getLandtype() {
-            return landtype;
-        }
+            public String getCalledhome() {
+                return calledhome;
+            }
 
-        public void setLandtype(String landtype) {
-            this.landtype = landtype;
-        }
+            public void setCalledhome(String calledhome) {
+                this.calledhome = calledhome;
+            }
 
-        public String getRomatypeName() {
-            return romatypeName;
-        }
+            public String getCalltype() {
+                return calltype;
+            }
 
-        public void setRomatypeName(String romatypeName) {
-            this.romatypeName = romatypeName;
-        }
+            public void setCalltype(String calltype) {
+                this.calltype = calltype;
+            }
 
-        public String getHomeareaName() {
-            return homeareaName;
-        }
+            public String getLandfee() {
+                return landfee;
+            }
 
-        public void setHomeareaName(String homeareaName) {
-            this.homeareaName = homeareaName;
-        }
+            public void setLandfee(String landfee) {
+                this.landfee = landfee;
+            }
 
-        public String getNativefee() {
-            return nativefee;
-        }
+            public String getLongtype() {
+                return longtype;
+            }
 
-        public void setNativefee(String nativefee) {
-            this.nativefee = nativefee;
-        }
+            public void setLongtype(String longtype) {
+                this.longtype = longtype;
+            }
 
-        public String getLandfee() {
-            return landfee;
-        }
+            public String getCalltypeName() {
+                return calltypeName;
+            }
 
-        public void setLandfee(String landfee) {
-            this.landfee = landfee;
-        }
+            public void setCalltypeName(String calltypeName) {
+                this.calltypeName = calltypeName;
+            }
 
-        public String getRoamfee() {
-            return roamfee;
-        }
+            public String getHomenum() {
+                return homenum;
+            }
 
-        public void setRoamfee(String roamfee) {
-            this.roamfee = roamfee;
-        }
+            public void setHomenum(String homenum) {
+                this.homenum = homenum;
+            }
 
-        public String getDeratefee() {
-            return deratefee;
-        }
+            public String getCalllonghour() {
+                return calllonghour;
+            }
 
-        public void setDeratefee(String deratefee) {
-            this.deratefee = deratefee;
-        }
+            public void setCalllonghour(String calllonghour) {
+                this.calllonghour = calllonghour;
+            }
 
-        public String getOtherfee() {
-            return otherfee;
-        }
+            public String getHomearea() {
+                return homearea;
+            }
 
-        public void setOtherfee(String otherfee) {
-            this.otherfee = otherfee;
+            public void setHomearea(String homearea) {
+                this.homearea = homearea;
+            }
+
+            public String getNativefee() {
+                return nativefee;
+            }
+
+            public void setNativefee(String nativefee) {
+                this.nativefee = nativefee;
+            }
+
+            public String getRomatype() {
+                return romatype;
+            }
+
+            public void setRomatype(String romatype) {
+                this.romatype = romatype;
+            }
+
+            public String getCalltime() {
+                return calltime;
+            }
+
+            public void setCalltime(String calltime) {
+                this.calltime = calltime;
+            }
+
+            public String getCalldate() {
+                return calldate;
+            }
+
+            public void setCalldate(String calldate) {
+                this.calldate = calldate;
+            }
+
+            public String getDeratefee() {
+                return deratefee;
+            }
+
+            public void setDeratefee(String deratefee) {
+                this.deratefee = deratefee;
+            }
         }
     }
 }

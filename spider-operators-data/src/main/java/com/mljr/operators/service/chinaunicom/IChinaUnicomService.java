@@ -22,7 +22,7 @@ public interface IChinaUnicomService {
      * @param cookies cookies信息
      * @return
      */
-    PersonInfoDTO queryUserInfo(String cookies);
+    UserInfoDTO queryUserInfo(String cookies);
 
     /**
      * 查询最近6个月的历史账单信息

@@ -43,12 +43,12 @@ public class ChinaUnicomStoreServiceImplTest extends BaseTest {
     @Test
     public void testSaveUserInfo() {
         LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setIdcard("429*************34");
+        loginDTO.setIdcard("429*************37");
         loginDTO.setProvinceCode("031");
         loginDTO.setMobile("18521705533");
         loginDTO.setPassword("123456");
 
-        PersonInfoDTO personInfo = parse(USER_INFO_FILE, PersonInfoDTO.class);
+        UserInfoDTO personInfo = parse(USER_INFO_FILE, UserInfoDTO.class);
         if (null != personInfo) {
             boolean flag = chinaUnicomStoreService.saveUserInfo(loginDTO, personInfo);
             Assert.state(flag);
@@ -57,7 +57,7 @@ public class ChinaUnicomStoreServiceImplTest extends BaseTest {
 
     @Test
     public void testSavePackageInfo() {
-        PersonInfoDTO personInfo = parse(USER_INFO_FILE, PersonInfoDTO.class);
+        UserInfoDTO personInfo = parse(USER_INFO_FILE, UserInfoDTO.class);
         if (null != personInfo) {
             boolean flag = chinaUnicomStoreService.savePackageInfo(1L, personInfo);
             Assert.state(flag);

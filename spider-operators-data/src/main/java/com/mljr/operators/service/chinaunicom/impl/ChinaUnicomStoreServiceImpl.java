@@ -48,10 +48,10 @@ public class ChinaUnicomStoreServiceImpl implements IChinaUnicomStoreService {
     private IFlowRecordService flowRecordService;
 
     @Override
-    public boolean saveUserInfo(LoginDTO loginDTO, PersonInfoDTO personInfoDTO) {
+    public boolean saveUserInfo(LoginDTO loginDTO, UserInfoDTO userInfoDTO) {
         boolean flag = false;
         try {
-            UserInfo userInfo = ChinaUnicomConvert.convert(personInfoDTO);
+            UserInfo userInfo = ChinaUnicomConvert.convert(userInfoDTO);
             if (null != userInfo) {
                 userInfo.setMobile(loginDTO.getMobile());
                 userInfo.setPwd(loginDTO.getPassword());
@@ -69,7 +69,7 @@ public class ChinaUnicomStoreServiceImpl implements IChinaUnicomStoreService {
     }
 
     @Override
-    public boolean savePackageInfo(Long userInfoId, PersonInfoDTO personInfo) {
+    public boolean savePackageInfo(Long userInfoId, UserInfoDTO personInfo) {
         boolean flag = false;
         try {
             List<PackageInfoDTO> dtoList = ChinaUnicomConvert.packageForConvert(personInfo);
