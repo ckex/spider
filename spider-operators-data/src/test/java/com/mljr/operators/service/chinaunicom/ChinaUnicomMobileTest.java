@@ -30,7 +30,7 @@ public class ChinaUnicomMobileTest extends BaseTest {
 
     @Test
     public void testQueryUserInfo() {
-        PersonInfoDTO personInfo = chinaUnicomService.queryUserInfo(cookies);
+        UserInfoDTO personInfo = chinaUnicomService.queryUserInfo(cookies);
         System.out.println(JSON.toJSON(personInfo));
     }
 

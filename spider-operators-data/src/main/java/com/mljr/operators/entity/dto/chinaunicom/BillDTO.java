@@ -1,7 +1,5 @@
 package com.mljr.operators.entity.dto.chinaunicom;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,28 +13,17 @@ public class BillDTO implements Serializable {
     private static final long serialVersionUID = -7614194060583443591L;
 
     private String busiorder;
-
     private String ecsbusiorder;
-
-    private Boolean existexception;
-
-    private Boolean isnotsuccess;
-
-    private Boolean issuccess;
-
+    private boolean existexception;
+    private boolean isnotsuccess;
+    private boolean issuccess;
     private String rspcode;
-
     private String rspdesc;
-
     private String rspsign;
-
     private String rspts;
-
+    private ResultBean result;
     private String transid;
-
     private String trxid;
-
-    private Result result;
 
     public String getBusiorder() {
         return busiorder;
@@ -54,27 +41,27 @@ public class BillDTO implements Serializable {
         this.ecsbusiorder = ecsbusiorder;
     }
 
-    public Boolean getExistexception() {
+    public boolean isExistexception() {
         return existexception;
     }
 
-    public void setExistexception(Boolean existexception) {
+    public void setExistexception(boolean existexception) {
         this.existexception = existexception;
     }
 
-    public Boolean getIsnotsuccess() {
+    public boolean isIsnotsuccess() {
         return isnotsuccess;
     }
 
-    public void setIsnotsuccess(Boolean isnotsuccess) {
+    public void setIsnotsuccess(boolean isnotsuccess) {
         this.isnotsuccess = isnotsuccess;
     }
 
-    public Boolean getIssuccess() {
+    public boolean isIssuccess() {
         return issuccess;
     }
 
-    public void setIssuccess(Boolean issuccess) {
+    public void setIssuccess(boolean issuccess) {
         this.issuccess = issuccess;
     }
 
@@ -110,6 +97,14 @@ public class BillDTO implements Serializable {
         this.rspts = rspts;
     }
 
+    public ResultBean getResult() {
+        return result;
+    }
+
+    public void setResult(ResultBean result) {
+        this.result = result;
+    }
+
     public String getTransid() {
         return transid;
     }
@@ -126,58 +121,28 @@ public class BillDTO implements Serializable {
         this.trxid = trxid;
     }
 
-    public Result getResult() {
-        return result;
-    }
-
-    public void setResult(Result result) {
-        this.result = result;
-    }
-
-    public static class Result {
+    public static class ResultBean {
 
         private String actionfeeused;
-
         private String adjustfee;
-
         private String allfee;
-
         private String areacode;
-
         private String backfee;
-
         private String balance;
-
         private String busiorder;
-
         private String cycleid;
-
         private String deratefee;
-
-        private String issuccess;
-
+        private boolean issuccess;
         private String presentfeeused;
-
         private String recvfeeused;
-
         private String respcode;
-
         private String respdesc;
-
         private String serialnumber;
-
         private String userid;
-
         private String writeofffee;
-
-        @JsonProperty("billinfo")
-        private List<BillInfo> billInfo;
-
-        @JsonProperty("billinfoitem")
-        private List<List<BillInfo>> billInfoItem;
-
-        @JsonProperty("scoreinfo")
-        private List<ScoreInfo> scoreInfo;
+        private List<BillinfoBean> billinfo;
+        private List<List<BillinfoitemBean>> billinfoitem;
+        private List<ScoreinfoBean> scoreinfo;
 
         public String getActionfeeused() {
             return actionfeeused;
@@ -251,11 +216,11 @@ public class BillDTO implements Serializable {
             this.deratefee = deratefee;
         }
 
-        public String getIssuccess() {
+        public boolean isIssuccess() {
             return issuccess;
         }
 
-        public void setIssuccess(String issuccess) {
+        public void setIssuccess(boolean issuccess) {
             this.issuccess = issuccess;
         }
 
@@ -315,185 +280,247 @@ public class BillDTO implements Serializable {
             this.writeofffee = writeofffee;
         }
 
-        public List<BillInfo> getBillInfo() {
-            return billInfo;
+        public List<BillinfoBean> getBillinfo() {
+            return billinfo;
         }
 
-        public void setBillInfo(List<BillInfo> billInfo) {
-            this.billInfo = billInfo;
+        public void setBillinfo(List<BillinfoBean> billinfo) {
+            this.billinfo = billinfo;
         }
 
-        public List<List<BillInfo>> getBillInfoItem() {
-            return billInfoItem;
+        public List<List<BillinfoitemBean>> getBillinfoitem() {
+            return billinfoitem;
         }
 
-        public void setBillInfoItem(List<List<BillInfo>> billInfoItem) {
-            this.billInfoItem = billInfoItem;
+        public void setBillinfoitem(List<List<BillinfoitemBean>> billinfoitem) {
+            this.billinfoitem = billinfoitem;
         }
 
-        public List<ScoreInfo> getScoreInfo() {
-            return scoreInfo;
+        public List<ScoreinfoBean> getScoreinfo() {
+            return scoreinfo;
         }
 
-        public void setScoreInfo(List<ScoreInfo> scoreInfo) {
-            this.scoreInfo = scoreInfo;
+        public void setScoreinfo(List<ScoreinfoBean> scoreinfo) {
+            this.scoreinfo = scoreinfo;
+        }
+
+        public static class BillinfoBean {
+
+            private String adjustafter;
+            private String adjustbefore;
+            private String balance;
+            private String discnt;
+            private String fee;
+            private String integrateitem;
+            private String integrateitemcode;
+            private String parentitemcode;
+            private String usedvalue;
+
+            public String getAdjustafter() {
+                return adjustafter;
+            }
+
+            public void setAdjustafter(String adjustafter) {
+                this.adjustafter = adjustafter;
+            }
+
+            public String getAdjustbefore() {
+                return adjustbefore;
+            }
+
+            public void setAdjustbefore(String adjustbefore) {
+                this.adjustbefore = adjustbefore;
+            }
+
+            public String getBalance() {
+                return balance;
+            }
+
+            public void setBalance(String balance) {
+                this.balance = balance;
+            }
+
+            public String getDiscnt() {
+                return discnt;
+            }
+
+            public void setDiscnt(String discnt) {
+                this.discnt = discnt;
+            }
+
+            public String getFee() {
+                return fee;
+            }
+
+            public void setFee(String fee) {
+                this.fee = fee;
+            }
+
+            public String getIntegrateitem() {
+                return integrateitem;
+            }
+
+            public void setIntegrateitem(String integrateitem) {
+                this.integrateitem = integrateitem;
+            }
+
+            public String getIntegrateitemcode() {
+                return integrateitemcode;
+            }
+
+            public void setIntegrateitemcode(String integrateitemcode) {
+                this.integrateitemcode = integrateitemcode;
+            }
+
+            public String getParentitemcode() {
+                return parentitemcode;
+            }
+
+            public void setParentitemcode(String parentitemcode) {
+                this.parentitemcode = parentitemcode;
+            }
+
+            public String getUsedvalue() {
+                return usedvalue;
+            }
+
+            public void setUsedvalue(String usedvalue) {
+                this.usedvalue = usedvalue;
+            }
+        }
+
+        public static class BillinfoitemBean {
+
+            private String adjustbefore;
+            private String fee;
+            private String balance;
+            private String adjustafter;
+            private String discnt;
+            private String usedvalue;
+            private String integrateitem;
+            private String parentitemcode;
+            private String integrateitemcode;
+
+            public String getAdjustbefore() {
+                return adjustbefore;
+            }
+
+            public void setAdjustbefore(String adjustbefore) {
+                this.adjustbefore = adjustbefore;
+            }
+
+            public String getFee() {
+                return fee;
+            }
+
+            public void setFee(String fee) {
+                this.fee = fee;
+            }
+
+            public String getBalance() {
+                return balance;
+            }
+
+            public void setBalance(String balance) {
+                this.balance = balance;
+            }
+
+            public String getAdjustafter() {
+                return adjustafter;
+            }
+
+            public void setAdjustafter(String adjustafter) {
+                this.adjustafter = adjustafter;
+            }
+
+            public String getDiscnt() {
+                return discnt;
+            }
+
+            public void setDiscnt(String discnt) {
+                this.discnt = discnt;
+            }
+
+            public String getUsedvalue() {
+                return usedvalue;
+            }
+
+            public void setUsedvalue(String usedvalue) {
+                this.usedvalue = usedvalue;
+            }
+
+            public String getIntegrateitem() {
+                return integrateitem;
+            }
+
+            public void setIntegrateitem(String integrateitem) {
+                this.integrateitem = integrateitem;
+            }
+
+            public String getParentitemcode() {
+                return parentitemcode;
+            }
+
+            public void setParentitemcode(String parentitemcode) {
+                this.parentitemcode = parentitemcode;
+            }
+
+            public String getIntegrateitemcode() {
+                return integrateitemcode;
+            }
+
+            public void setIntegrateitemcode(String integrateitemcode) {
+                this.integrateitemcode = integrateitemcode;
+            }
+        }
+
+        public static class ScoreinfoBean {
+
+            private String rsrvscore1;
+            private String rsrvscore2;
+            private String rsrvscore3;
+            private String rsrvscoreadjust;
+            private String scoreusevalue;
+
+            public String getRsrvscore1() {
+                return rsrvscore1;
+            }
+
+            public void setRsrvscore1(String rsrvscore1) {
+                this.rsrvscore1 = rsrvscore1;
+            }
+
+            public String getRsrvscore2() {
+                return rsrvscore2;
+            }
+
+            public void setRsrvscore2(String rsrvscore2) {
+                this.rsrvscore2 = rsrvscore2;
+            }
+
+            public String getRsrvscore3() {
+                return rsrvscore3;
+            }
+
+            public void setRsrvscore3(String rsrvscore3) {
+                this.rsrvscore3 = rsrvscore3;
+            }
+
+            public String getRsrvscoreadjust() {
+                return rsrvscoreadjust;
+            }
+
+            public void setRsrvscoreadjust(String rsrvscoreadjust) {
+                this.rsrvscoreadjust = rsrvscoreadjust;
+            }
+
+            public String getScoreusevalue() {
+                return scoreusevalue;
+            }
+
+            public void setScoreusevalue(String scoreusevalue) {
+                this.scoreusevalue = scoreusevalue;
+            }
         }
     }
-
-    public static class BillInfo {
-
-        private String adjustafter;
-
-        private String adjustbefore;
-
-        private String balance;
-
-        private String discnt;
-
-        private String fee;
-
-        private String integrateitem;
-
-        private String integrateitemcode;
-
-        private String parentitemcode;
-
-        private String usedvalue;
-
-        private String level;
-
-        public String getAdjustafter() {
-            return adjustafter;
-        }
-
-        public void setAdjustafter(String adjustafter) {
-            this.adjustafter = adjustafter;
-        }
-
-        public String getAdjustbefore() {
-            return adjustbefore;
-        }
-
-        public void setAdjustbefore(String adjustbefore) {
-            this.adjustbefore = adjustbefore;
-        }
-
-        public String getBalance() {
-            return balance;
-        }
-
-        public void setBalance(String balance) {
-            this.balance = balance;
-        }
-
-        public String getDiscnt() {
-            return discnt;
-        }
-
-        public void setDiscnt(String discnt) {
-            this.discnt = discnt;
-        }
-
-        public String getFee() {
-            return fee;
-        }
-
-        public void setFee(String fee) {
-            this.fee = fee;
-        }
-
-        public String getIntegrateitem() {
-            return integrateitem;
-        }
-
-        public void setIntegrateitem(String integrateitem) {
-            this.integrateitem = integrateitem;
-        }
-
-        public String getIntegrateitemcode() {
-            return integrateitemcode;
-        }
-
-        public void setIntegrateitemcode(String integrateitemcode) {
-            this.integrateitemcode = integrateitemcode;
-        }
-
-        public String getParentitemcode() {
-            return parentitemcode;
-        }
-
-        public void setParentitemcode(String parentitemcode) {
-            this.parentitemcode = parentitemcode;
-        }
-
-        public String getUsedvalue() {
-            return usedvalue;
-        }
-
-        public void setUsedvalue(String usedvalue) {
-            this.usedvalue = usedvalue;
-        }
-
-        public String getLevel() {
-            return level;
-        }
-
-        public void setLevel(String level) {
-            this.level = level;
-        }
-    }
-
-    public static class ScoreInfo {
-
-        private String rsrvscore1;
-
-        private String rsrvscore2;
-
-        private String rsrvscore3;
-
-        private String rsrvscoreadjust;
-
-        private String scoreusevalue;
-
-        public String getRsrvscore1() {
-            return rsrvscore1;
-        }
-
-        public void setRsrvscore1(String rsrvscore1) {
-            this.rsrvscore1 = rsrvscore1;
-        }
-
-        public String getRsrvscore2() {
-            return rsrvscore2;
-        }
-
-        public void setRsrvscore2(String rsrvscore2) {
-            this.rsrvscore2 = rsrvscore2;
-        }
-
-        public String getRsrvscore3() {
-            return rsrvscore3;
-        }
-
-        public void setRsrvscore3(String rsrvscore3) {
-            this.rsrvscore3 = rsrvscore3;
-        }
-
-        public String getRsrvscoreadjust() {
-            return rsrvscoreadjust;
-        }
-
-        public void setRsrvscoreadjust(String rsrvscoreadjust) {
-            this.rsrvscoreadjust = rsrvscoreadjust;
-        }
-
-        public String getScoreusevalue() {
-            return scoreusevalue;
-        }
-
-        public void setScoreusevalue(String scoreusevalue) {
-            this.scoreusevalue = scoreusevalue;
-        }
-    }
-
 }
