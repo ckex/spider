@@ -121,7 +121,7 @@ public class SyncScheduler {
         logger.debug(autohomeFlagTask.toString());
     }
    //每隔一个星期去更新一下360卡车的信息
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0 0 1/7 * ?")
     private void startTruckCarHomeFlagTask() {
         truckCarHomeFlagTask.run();
         logger.debug(autohomeFlagTask.toString());
