@@ -6,20 +6,20 @@ package com.mljr.operators.common.constant;
  */
 public enum OperatorsEnum {
 
-    CHINAUNICOM(1, "联通"),
-    CHINAMOBILE(2, "移动"),
-    CHINATELECOM(3, "电信"),;
+    CHINAUNICOM("1", "联通"),
+    CHINAMOBILE("2", "移动"),
+    CHINATELECOM("3", "电信"),;
 
-    private int value;
+    private String value;
 
     private String name;
 
-    OperatorsEnum(int value, String name) {
+    OperatorsEnum(String value, String name) {
         this.value = value;
         this.name = name;
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
@@ -27,9 +27,9 @@ public enum OperatorsEnum {
         return name;
     }
 
-    public static OperatorsEnum indexOf(int value) {
+    public static OperatorsEnum indexOf(String value) {
         for (OperatorsEnum enums : OperatorsEnum.values()) {
-            if (value == enums.value) {
+            if (value.equals(enums.value)) {
                 return enums;
             }
         }

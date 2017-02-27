@@ -36,6 +36,24 @@
                 <div class="control-group">
 
                     <!-- Text input-->
+                    <label class="control-label" for="input01">姓名</label>
+                    <div class="controls">
+                        <input name="userName" type="text" class="input-xlarge"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+
+                    <!-- Text input-->
+                    <label class="control-label" for="input01">身份证号</label>
+                    <div class="controls">
+                        <input name="idcard" type="text" class="input-xlarge"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+
+                    <!-- Text input-->
                     <label class="control-label" for="input01">短信验证码</label>
                     <div class="controls">
                         <input name="dtm" type="text" class="input-xlarge"/>

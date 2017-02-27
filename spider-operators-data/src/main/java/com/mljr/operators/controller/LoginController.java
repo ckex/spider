@@ -1,7 +1,11 @@
 package com.mljr.operators.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.mljr.operators.common.constant.OperatorsEnum;
+import com.mljr.operators.entity.model.operators.UserInfo;
 import com.mljr.operators.scheduler.ChinaMobileScheduler;
 import com.mljr.operators.service.ChinaMobileService;
+import com.mljr.operators.service.primary.operators.IUserInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +26,9 @@ public class LoginController {
     private ChinaMobileService chinaMobileService;
 
     @Autowired
+    private IUserInfoService userInfoService;
+
+    @Autowired
     ChinaMobileScheduler chinaMobileScheduler;
 
     @RequestMapping("/")
@@ -39,12 +46,32 @@ public class LoginController {
 
     @RequestMapping("/chinaMobile/getAllInfos")
     public String getAllInfos(@RequestParam String telno,
-                                    @RequestParam String password,
-                                    @RequestParam String dtm) throws Exception {
+                              @RequestParam String password,
+                              @RequestParam String userName,
+                              @RequestParam String idcard,
+                              @RequestParam String dtm
+    ) throws Exception {
+        UserInfo retInfo = userInfoService.selectUniqUser(telno, idcard);
+        if (retInfo != null) {
+            return "运营商数据已存在";
+        }
         Map<String, String> cookies = chinaMobileService.loginAndGetCookies(telno, password, dtm);
-        chinaMobileScheduler.setParams(3387L,cookies);
-        chinaMobileScheduler.start();
-        return "success";
+        if (cookies != null && "true".equals(cookies.get("is_login"))) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setMobile(telno);
+            userInfo.setPwd(password);
+            userInfo.setIdcard(idcard);
+            userInfo.setUserName(userName);
+            userInfo.setCityCode("上海");
+            userInfo.setType(OperatorsEnum.CHINAMOBILE.getValue());
+            UserInfo ret = userInfoService.insertIgnore(userInfo);
+            if (ret != null) {
+                chinaMobileScheduler.setParams(ret.getId(), cookies);
+                chinaMobileScheduler.start();
+                return "success";
+            }
+        }
+        return "登录失败 " + JSON.toJSONString(cookies);
     }
 
 

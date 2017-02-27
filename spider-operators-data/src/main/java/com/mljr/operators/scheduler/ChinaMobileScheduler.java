@@ -1,10 +1,6 @@
 package com.mljr.operators.scheduler;
 
-import com.mljr.operators.task.chinamobile.CallInfoTask;
-import com.mljr.operators.task.chinamobile.FlowInfoTask;
-import com.mljr.operators.task.chinamobile.PackageInfoTask;
-import com.mljr.operators.task.chinamobile.SMSInfoTask;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import com.mljr.operators.task.chinamobile.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +13,11 @@ import java.util.concurrent.Executors;
  */
 @Component
 public class ChinaMobileScheduler {
+    @Autowired
+    PackageInfoTask packageInfoTask;
+
+    @Autowired
+    BillInfoTask billInfoTask;
 
     @Autowired
     FlowInfoTask flowInfoTask;
@@ -27,26 +28,27 @@ public class ChinaMobileScheduler {
     @Autowired
     CallInfoTask callInfoTask;
 
-    @Autowired
-    PackageInfoTask packageInfoTask;
-
     public final static ExecutorService threadPool = Executors.newCachedThreadPool();
 
     public void setParams(Long userInfoId, Map<String, String> cookies) {
+        packageInfoTask.setParams(userInfoId, cookies);
+        billInfoTask.setParams(userInfoId, cookies);
         flowInfoTask.setParams(userInfoId, cookies);
         smsInfoTask.setParams(userInfoId, cookies);
         callInfoTask.setParams(userInfoId, cookies);
-        packageInfoTask.setParams(userInfoId, cookies);
     }
 
     public void start() {
+        threadPool.execute(billInfoTask);
+
+        threadPool.execute(packageInfoTask);
+
         threadPool.execute(flowInfoTask);
 
         threadPool.execute(smsInfoTask);
 
         threadPool.execute(callInfoTask);
 
-        threadPool.execute(packageInfoTask);
 
     }
 }

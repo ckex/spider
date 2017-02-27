@@ -6,6 +6,7 @@ import com.mljr.operators.dao.primary.operators.FlowInfoMapper;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.FlowInfo;
 import com.mljr.operators.service.ChinaMobileService;
+import com.mljr.operators.service.primary.operators.IFlowInfoService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,12 +25,12 @@ public class FlowInfoTask extends AbstractTask {
     private ChinaMobileService chinaMobileService;
 
     @Autowired
-    private FlowInfoMapper flowInfoMapper;
+    private IFlowInfoService flowInfoService;
 
-    public void doWork(DatePair pair) throws Exception {
-        String flowInfoStr = chinaMobileService.getFlowInfo(cookies, pair);
-        String data = flowInfoStr.substring(flowInfoStr.indexOf("[["), flowInfoStr.lastIndexOf("]]") + 2);
-        List<List<String>> list = new Gson().fromJson(data, List.class);
+    @Override
+    void writeToDb(String data, DatePair pair) throws Exception {
+        String flowInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
+        List<List<String>> list = new Gson().fromJson(flowInfoStr, List.class);
         List<FlowInfo> fiList = Lists.newArrayList();
         for (List<String> subList : list) {
 
@@ -61,10 +62,18 @@ public class FlowInfoTask extends AbstractTask {
 
             fiList.add(fi);
         }
-        flowInfoMapper.insertByBatch(fiList);
-
+        flowInfoService.insertByBatch(fiList);
     }
 
+    @Override
+    String fetchCurrentData(DatePair pair) throws Exception {
+        return chinaMobileService.getCurrentFlowInfo(cookies, pair);
+    }
+
+    @Override
+    String fetchHistoryData(DatePair pair) throws Exception {
+        return chinaMobileService.getHistoryFlowInfo(cookies, pair);
+    }
 
     private BigDecimal parseBytes(String totalBytes) {
         if (totalBytes.contains("GB")) {

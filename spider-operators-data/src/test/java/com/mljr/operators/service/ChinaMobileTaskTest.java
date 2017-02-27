@@ -1,10 +1,6 @@
 package com.mljr.operators.service;
 
-import com.mljr.operators.dao.primary.operators.PackageInfoMapper;
-import com.mljr.operators.task.chinamobile.CallInfoTask;
-import com.mljr.operators.task.chinamobile.FlowInfoTask;
-import com.mljr.operators.task.chinamobile.PackageInfoTask;
-import com.mljr.operators.task.chinamobile.SMSInfoTask;
+import com.mljr.operators.task.chinamobile.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -28,7 +24,7 @@ public class ChinaMobileTaskTest extends BaseTest {
     PackageInfoTask packageInfoTask;
 
     @Autowired
-    PackageInfoMapper packageInfoMapper;
+    BillInfoTask billInfoTask;
 
     @Test
     public void flowInfoTest() {
@@ -59,6 +55,13 @@ public class ChinaMobileTaskTest extends BaseTest {
         Assert.notNull(packageInfoTask);
 
         packageInfoTask.run();
+
+    }
+
+    @Test
+    public void billInfoTest() throws Exception {
+        billInfoTask.setParams(9900L, null);
+        billInfoTask.writeToDb("", "2016年12月");
 
     }
 }
