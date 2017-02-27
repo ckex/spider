@@ -6,6 +6,7 @@ import com.mljr.operators.dao.primary.operators.CallInfoMapper;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.CallInfo;
 import com.mljr.operators.service.ChinaMobileService;
+import com.mljr.operators.service.primary.operators.ICallInfoService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,12 +25,12 @@ public class CallInfoTask extends AbstractTask {
     private ChinaMobileService chinaMobileService;
 
     @Autowired
-    private CallInfoMapper callInfoMapper;
+    private ICallInfoService callInfoService;
 
-    public void doWork(DatePair pair) throws Exception {
-        String callInfoStr = chinaMobileService.getCallInfo(cookies, pair);
-        String data = callInfoStr.substring(callInfoStr.indexOf("[["), callInfoStr.lastIndexOf("]]") + 2);
-        List<List<String>> list = new Gson().fromJson(data, List.class);
+    @Override
+    void writeToDb(String data, DatePair pair) throws Exception {
+        String callInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
+        List<List<String>> list = new Gson().fromJson(callInfoStr, List.class);
         List<CallInfo> siList = Lists.newArrayList();
         for (List<String> subList : list) {
 
@@ -62,7 +63,16 @@ public class CallInfoTask extends AbstractTask {
 
             siList.add(ci);
         }
-        callInfoMapper.insertByBatch(userInfoId, siList);
+        callInfoService.insertByBatch(userInfoId, siList);
     }
 
+    @Override
+    String fetchCurrentData(DatePair pair) throws Exception {
+        return chinaMobileService.getCurrentCallInfo(cookies, pair);
+    }
+
+    @Override
+    String fetchHistoryData(DatePair pair) throws Exception {
+        return chinaMobileService.getHistoryCallInfo(cookies, pair);
+    }
 }

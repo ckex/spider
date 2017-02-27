@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.mljr.operators.dao.primary.operators.PackageInfoMapper;
 import com.mljr.operators.entity.model.operators.PackageInfo;
 import com.mljr.operators.service.ChinaMobileService;
+import com.mljr.operators.service.primary.operators.IPackageInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class PackageInfoTask implements Runnable {
     private ChinaMobileService chinaMobileService;
 
     @Autowired
-    private PackageInfoMapper packageInfoMapper;
+    private IPackageInfoService packageInfoService;
 
     public Long userInfoId;
 
@@ -51,7 +52,7 @@ public class PackageInfoTask implements Runnable {
 
                 packageInfo.setProductName(productName);
                 packageInfo.setBrandName(brandName);
-                packageInfoMapper.insertSelective(packageInfo);
+                packageInfoService.save(packageInfo);
 
             } else {
                 throw new RuntimeException("获取套餐信息失败 " + data);

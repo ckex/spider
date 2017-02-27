@@ -1,12 +1,10 @@
 package com.mljr.operators.task.chinamobile;
 
-import com.google.common.base.Stopwatch;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by songchi on 17/2/24.
@@ -22,19 +20,29 @@ public abstract class AbstractTask implements Runnable {
         this.cookies = cookies;
     }
 
-    abstract void doWork(DatePair pair) throws Exception;
+    abstract void writeToDb(String data, DatePair pair) throws Exception;
+
+    abstract String fetchCurrentData(DatePair pair) throws Exception;
+
+    abstract String fetchHistoryData(DatePair pair) throws Exception;
 
     @Override
     public void run() {
-        for (DatePair pair : DatePair.getLatestDatePair(6)) {
-            try {
-                Stopwatch watch = Stopwatch.createStarted();
-                doWork(pair);
-                watch.stop();
-                logger.info("execute task, use time:" + watch.elapsed(TimeUnit.MILLISECONDS));
-            } catch (Exception e) {
-                logger.error("doWork error", e);
+
+        try {
+            // 写当月数据
+            DatePair currentPair = DatePair.getCurrentDatePair();
+            String currentData = fetchCurrentData(currentPair);
+            writeToDb(currentData, currentPair);
+
+            // 写历史数据
+            for (DatePair hisPair : DatePair.getHistoryDatePair(7)) {
+                String hisData = fetchHistoryData(hisPair);
+                writeToDb(hisData, hisPair);
             }
+
+        } catch (Exception e) {
+            logger.error(this.toString(), e);
         }
 
     }

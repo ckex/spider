@@ -6,6 +6,7 @@ import com.mljr.operators.dao.primary.operators.SMSInfoMapper;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.SMSInfo;
 import com.mljr.operators.service.ChinaMobileService;
+import com.mljr.operators.service.primary.operators.ISMSInfoService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,12 +25,12 @@ public class SMSInfoTask extends AbstractTask {
     private ChinaMobileService chinaMobileService;
 
     @Autowired
-    private SMSInfoMapper smsInfoMapper;
+    private ISMSInfoService ismsInfoService;
 
-    public void doWork(DatePair pair) throws Exception {
-        String smsInfoStr = chinaMobileService.getSmsInfo(cookies, pair);
-        String data = smsInfoStr.substring(smsInfoStr.indexOf("[["), smsInfoStr.lastIndexOf("]]") + 2);
-        List<List<String>> list = new Gson().fromJson(data, List.class);
+    @Override
+    void writeToDb(String data, DatePair pair) throws Exception {
+        String smsInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
+        List<List<String>> list = new Gson().fromJson(smsInfoStr, List.class);
         List<SMSInfo> siList = Lists.newArrayList();
         for (List<String> subList : list) {
 
@@ -57,8 +58,17 @@ public class SMSInfoTask extends AbstractTask {
             siList.add(si);
         }
 
-        smsInfoMapper.insertByBatch(siList);
+        ismsInfoService.insertByBatch(siList);
+    }
 
+    @Override
+    String fetchCurrentData(DatePair pair) throws Exception {
+        return chinaMobileService.getCurrentSmsInfo(cookies, pair);
+    }
+
+    @Override
+    String fetchHistoryData(DatePair pair) throws Exception {
+        return chinaMobileService.getHistorySmsInfo(cookies, pair);
     }
 
 }

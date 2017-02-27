@@ -38,9 +38,9 @@ public class DatePair {
                 '}';
     }
 
-    public static List<DatePair> getLatestDatePair(int months) {
+    public static List<DatePair> getHistoryDatePair(int months) {
         List<DatePair> ret = Lists.newArrayList();
-        for (int i = 0; i < months; i++) {
+        for (int i = 1; i < months; i++) {
 
             LocalDate today = LocalDate.now().minusMonths(i);
             //本月的第一天
@@ -54,6 +54,26 @@ public class DatePair {
             ret.add(pair);
         }
 
+        return ret;
+    }
+
+    public static DatePair getCurrentDatePair() {
+        LocalDate today = LocalDate.now();
+        LocalDate firstday = LocalDate.of(today.getYear(), today.getMonth(), 1);
+        DatePair pair = new DatePair();
+        pair.setStartDate(firstday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        pair.setEndDate(today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        return pair;
+    }
+
+    public static List<String> getHistoryDate(int months) {
+        List<String> ret = Lists.newArrayList();
+        for (int i = 1; i < months; i++) {
+
+            LocalDate prevMonth = LocalDate.now().minusMonths(i);
+
+            ret.add(prevMonth.format(DateTimeFormatter.ofPattern("yyyy年MM月")));
+        }
         return ret;
     }
 
