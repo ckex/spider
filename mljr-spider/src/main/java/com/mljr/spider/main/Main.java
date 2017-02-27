@@ -3,12 +3,11 @@
  */
 package com.mljr.spider.main;
 
-import com.mljr.spider.task.LBSTask;
+import com.mljr.spider.scheduler.manager.Manager;
 import com.mljr.spider.scheduler.zk.ZkScheduler;
+import com.mljr.spider.task.LBSTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mljr.spider.scheduler.manager.Manager;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

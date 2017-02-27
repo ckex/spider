@@ -52,6 +52,9 @@ public class SyncScheduler {
   @Autowired
   private AbstractTask autohomeFlagTask;
 
+  @Autowired
+  private AbstractTask truckCarHomeFlagTask;
+
   @Scheduled(cron = "0/2 * * * * ?")
   private void startMobileTask() {
     mobileTask.run();
@@ -117,6 +120,12 @@ public class SyncScheduler {
   @Scheduled(cron = "0 0 0 1/7 * ?")
   private void startAutohomeFlagTask() {
     autohomeFlagTask.run();
+    logger.debug(autohomeFlagTask.toString());
+  }
+
+  @Scheduled(cron = "0 0 0 1/7 * ?")
+  private void startTruckCarHomeFlagTask() {
+    truckCarHomeFlagTask.run();
     logger.debug(autohomeFlagTask.toString());
   }
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mljr.sync.task;
 

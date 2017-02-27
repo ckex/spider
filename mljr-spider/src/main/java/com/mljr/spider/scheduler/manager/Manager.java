@@ -80,6 +80,7 @@ public class Manager extends AbstractMessage {
     startJdItemPrice();
     startCarHomeNet();
     startAutohomeTargetUrls();
+    startTruckCarHomeNet();
 
     // 判断天眼查是否开启
     if ("1".equals(ServiceConfig.isStartTianYanChaOff())) {
@@ -437,6 +438,20 @@ public class Manager extends AbstractMessage {
     spider.setScheduler(scheduler);
     spider.runAsync();
     logger.info("Start AutohomeTargetUrls finished. " + spider.toString());
+  }
+
+
+  //360卡车之家
+  private void  startTruckCarHomeNet() throws Exception{
+    PageProcessor processor = new TruckCarHomeProcessor();
+    final Spider spider = Spider.create(processor)
+            .addPipeline(new CarHomeNetInfoPipeline()).thread(5)
+            .setExitWhenComplete(false);
+    //spider.setExecutorService(DEFAULT_THREAD_POOL);
+    final AbstractScheduler scheduler = new TruckCarHomeScheduler(spider, TRUCKCAR_FALG_QUEUE_ID);
+    spider.setScheduler(scheduler);
+    spider.runAsync();
+    logger.info("Start startTruckCarHomeNet finished. " + spider.toString());
   }
 
 }
