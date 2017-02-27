@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mljr.operators.dao.primary.operators.RequestInfoMapper">
+  <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.RequestInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="IDCARD" jdbcType="VARCHAR" property="idcard" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="SIGN" jdbcType="VARCHAR" property="sign" />
+    <result column="DATA_DATE" jdbcType="VARCHAR" property="dataDate" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, MOBILE, IDCARD, URL, SIGN, DATA_DATE, STATUS, CREATE_TIME, UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_request_info
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_request_info
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mljr.operators.entity.model.operators.RequestInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_request_info (MOBILE, IDCARD, URL, 
+      SIGN, DATA_DATE, STATUS, 
+      CREATE_TIME, UPDATE_TIME)
+    values (#{mobile,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{sign,jdbcType=VARCHAR}, #{dataDate,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.RequestInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_request_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mobile != null">
+        MOBILE,
+      </if>
+      <if test="idcard != null">
+        IDCARD,
+      </if>
+      <if test="url != null">
+        URL,
+      </if>
+      <if test="sign != null">
+        SIGN,
+      </if>
+      <if test="dataDate != null">
+        DATA_DATE,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="dataDate != null">
+        #{dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.RequestInfo">
+    update t_request_info
+    <set>
+      <if test="mobile != null">
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        IDCARD = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        SIGN = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="dataDate != null">
+        DATA_DATE = #{dataDate,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mljr.operators.entity.model.operators.RequestInfo">
+    update t_request_info
+    set MOBILE = #{mobile,jdbcType=VARCHAR},
+      IDCARD = #{idcard,jdbcType=VARCHAR},
+      URL = #{url,jdbcType=VARCHAR},
+      SIGN = #{sign,jdbcType=VARCHAR},
+      DATA_DATE = #{dataDate,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <insert id="insertByBatch">
+    INSERT IGNORE INTO t_request_info (MOBILE, IDCARD, URL,
+    SIGN, DATA_DATE, STATUS,
+    CREATE_TIME, UPDATE_TIME)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.mobile,jdbcType=VARCHAR}, #{item.idcard,jdbcType=VARCHAR}, #{item.url,jdbcType=VARCHAR},
+      #{item.sign,jdbcType=VARCHAR}, #{item.dataDate,jdbcType=VARCHAR}, #{item.status,jdbcType=TINYINT},
+      now(), now())
+    </foreach>
+  </insert>
+
+  <select id="getBySign" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/> FROM t_request_info WHERE SIGN=#{sign}
+  </select>
+
+  <update id="updateStatusBySign">
+    UPDATE t_request_info SET STATUS=${status} WHERE SIGN=#{sign} AND STATUS=#{originStatus}
+  </update>
+
+</mapper>
