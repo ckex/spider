@@ -245,7 +245,7 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
   }
 
   protected String pollMessage() {
-    for (int i=0;i<5;i++) {
+    for (;;) {
       boolean autoAck = true;
       try {
         GetResponse response = RabbitmqClient.pollMessage(channel, qid, autoAck);
@@ -267,7 +267,6 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
         logger.error("Push task error. qid:" + qid + ", " + ExceptionUtils.getStackTrace(e));
       }
     }
-    return null;
   }
 
   // 阻塞队列
