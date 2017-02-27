@@ -9,11 +9,15 @@ public class RequestInfo {
 
     private String idcard;
 
+    private String operatorsType;
+
     private String url;
+
+    private String urlType;
 
     private String sign;
 
-    private String dataDate;
+    private String acquireDate;
 
     private Integer status;
 
@@ -45,12 +49,28 @@ public class RequestInfo {
         this.idcard = idcard == null ? null : idcard.trim();
     }
 
+    public String getOperatorsType() {
+        return operatorsType;
+    }
+
+    public void setOperatorsType(String operatorsType) {
+        this.operatorsType = operatorsType == null ? null : operatorsType.trim();
+    }
+
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
+    }
+
+    public String getUrlType() {
+        return urlType;
+    }
+
+    public void setUrlType(String urlType) {
+        this.urlType = urlType == null ? null : urlType.trim();
     }
 
     public String getSign() {
@@ -61,12 +81,12 @@ public class RequestInfo {
         this.sign = sign == null ? null : sign.trim();
     }
 
-    public String getDataDate() {
-        return dataDate;
+    public String getAcquireDate() {
+        return acquireDate;
     }
 
-    public void setDataDate(String dataDate) {
-        this.dataDate = dataDate == null ? null : dataDate.trim();
+    public void setAcquireDate(String acquireDate) {
+        this.acquireDate = acquireDate == null ? null : acquireDate.trim();
     }
 
     public Integer getStatus() {
