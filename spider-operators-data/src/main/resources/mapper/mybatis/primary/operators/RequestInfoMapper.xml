@@ -154,7 +154,7 @@
   </select>
 
   <update id="updateStatusBySign">
-    UPDATE t_request_info SET STATUS=${status} WHERE SIGN=#{sign} AND STATUS=#{originStatus}
+    UPDATE t_request_info SET STATUS=#{status} WHERE SIGN=#{sign} AND STATUS=#{originStatus}
   </update>
 
 </mapper>
