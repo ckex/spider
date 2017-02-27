@@ -61,7 +61,7 @@ public class ChinaMobileTaskTest extends BaseTest {
     @Test
     public void billInfoTest() throws Exception {
         billInfoTask.setParams(9900L, null);
-        billInfoTask.writeToDb("", "2016年12月");
+        billInfoTask.writeHistory("", "2016年12月");
 
     }
 }

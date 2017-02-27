@@ -132,7 +132,7 @@ public class ChinaMobileService {
     }
 
     public String fetchData(String url, Map<String, String> cookies) throws Exception {
-        return Jsoup.connect(url).cookies(cookies).execute().body();
+        return Jsoup.connect(url).timeout(1000*60).cookies(cookies).execute().body();
     }
 
 }
