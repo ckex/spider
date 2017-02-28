@@ -1,8 +1,8 @@
 package com.mljr.operators.task.chinamobile;
 
 import com.google.common.collect.Lists;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.mljr.operators.dao.primary.operators.CallInfoMapper;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.CallInfo;
 import com.mljr.operators.service.ChinaMobileService;
@@ -30,7 +30,7 @@ public class CallInfoTask extends AbstractTask {
     @Override
     void writeToDb(String data, DatePair pair) throws Exception {
         String callInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
-        List<List<String>> list = new Gson().fromJson(callInfoStr, List.class);
+        List<List<String>> list = new Gson().fromJson(callInfoStr, new TypeToken<List<List<String>>>(){}.getType());
         List<CallInfo> siList = Lists.newArrayList();
         for (List<String> subList : list) {
 

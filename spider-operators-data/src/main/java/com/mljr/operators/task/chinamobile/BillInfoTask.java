@@ -1,6 +1,7 @@
 package com.mljr.operators.task.chinamobile;
 
 import com.google.common.collect.Lists;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.BillInfo;
@@ -53,7 +54,7 @@ public class BillInfoTask implements Runnable {
             // 写历史数据
             for (String queryTime : DatePair.getHistoryDate(7)) {
                 String historyData = chinaMobileService.getHistoryBillInfo(cookies, queryTime);
-                Map<String, String> map = gson.fromJson(historyData, Map.class);
+                Map<String, String> map = gson.fromJson(historyData, new TypeToken<Map<String,String>>(){}.getType());
                 String htmlStr = map.get("message");
                 writeHistory(htmlStr, queryTime);
             }

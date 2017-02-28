@@ -1,8 +1,8 @@
 package com.mljr.operators.task.chinamobile;
 
 import com.google.common.collect.Lists;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.mljr.operators.dao.primary.operators.FlowInfoMapper;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.FlowInfo;
 import com.mljr.operators.service.ChinaMobileService;
@@ -30,7 +30,7 @@ public class FlowInfoTask extends AbstractTask {
     @Override
     void writeToDb(String data, DatePair pair) throws Exception {
         String flowInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
-        List<List<String>> list = new Gson().fromJson(flowInfoStr, List.class);
+        List<List<String>> list = new Gson().fromJson(flowInfoStr, new TypeToken<List<List<String>>>(){}.getType());
         List<FlowInfo> fiList = Lists.newArrayList();
         for (List<String> subList : list) {
 
