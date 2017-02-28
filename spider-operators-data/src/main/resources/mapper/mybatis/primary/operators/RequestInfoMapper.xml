@@ -5,15 +5,18 @@
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
     <result column="IDCARD" jdbcType="VARCHAR" property="idcard" />
+    <result column="OPERATORS_TYPE" jdbcType="CHAR" property="operatorsType" />
     <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="URL_TYPE" jdbcType="CHAR" property="urlType" />
     <result column="SIGN" jdbcType="VARCHAR" property="sign" />
-    <result column="DATA_DATE" jdbcType="VARCHAR" property="dataDate" />
+    <result column="ACQUIRE_DATE" jdbcType="VARCHAR" property="acquireDate" />
     <result column="STATUS" jdbcType="INTEGER" property="status" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, MOBILE, IDCARD, URL, SIGN, DATA_DATE, STATUS, CREATE_TIME, UPDATE_TIME
+    ID, MOBILE, IDCARD, OPERATORS_TYPE, URL, URL_TYPE, SIGN, ACQUIRE_DATE, STATUS, CREATE_TIME, 
+    UPDATE_TIME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -29,12 +32,14 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_request_info (MOBILE, IDCARD, URL, 
-      SIGN, DATA_DATE, STATUS, 
-      CREATE_TIME, UPDATE_TIME)
-    values (#{mobile,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{sign,jdbcType=VARCHAR}, #{dataDate,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into t_request_info (MOBILE, IDCARD, OPERATORS_TYPE, 
+      URL, URL_TYPE, SIGN, ACQUIRE_DATE, 
+      STATUS, CREATE_TIME, UPDATE_TIME
+      )
+    values (#{mobile,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{operatorsType,jdbcType=CHAR}, 
+      #{url,jdbcType=VARCHAR}, #{urlType,jdbcType=CHAR}, #{sign,jdbcType=VARCHAR}, #{acquireDate,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.RequestInfo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -48,14 +53,20 @@
       <if test="idcard != null">
         IDCARD,
       </if>
+      <if test="operatorsType != null">
+        OPERATORS_TYPE,
+      </if>
       <if test="url != null">
         URL,
+      </if>
+      <if test="urlType != null">
+        URL_TYPE,
       </if>
       <if test="sign != null">
         SIGN,
       </if>
-      <if test="dataDate != null">
-        DATA_DATE,
+      <if test="acquireDate != null">
+        ACQUIRE_DATE,
       </if>
       <if test="status != null">
         STATUS,
@@ -74,14 +85,20 @@
       <if test="idcard != null">
         #{idcard,jdbcType=VARCHAR},
       </if>
+      <if test="operatorsType != null">
+        #{operatorsType,jdbcType=CHAR},
+      </if>
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="urlType != null">
+        #{urlType,jdbcType=CHAR},
       </if>
       <if test="sign != null">
         #{sign,jdbcType=VARCHAR},
       </if>
-      <if test="dataDate != null">
-        #{dataDate,jdbcType=VARCHAR},
+      <if test="acquireDate != null">
+        #{acquireDate,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -103,14 +120,20 @@
       <if test="idcard != null">
         IDCARD = #{idcard,jdbcType=VARCHAR},
       </if>
+      <if test="operatorsType != null">
+        OPERATORS_TYPE = #{operatorsType,jdbcType=CHAR},
+      </if>
       <if test="url != null">
         URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="urlType != null">
+        URL_TYPE = #{urlType,jdbcType=CHAR},
       </if>
       <if test="sign != null">
         SIGN = #{sign,jdbcType=VARCHAR},
       </if>
-      <if test="dataDate != null">
-        DATA_DATE = #{dataDate,jdbcType=VARCHAR},
+      <if test="acquireDate != null">
+        ACQUIRE_DATE = #{acquireDate,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         STATUS = #{status,jdbcType=INTEGER},
@@ -128,9 +151,11 @@
     update t_request_info
     set MOBILE = #{mobile,jdbcType=VARCHAR},
       IDCARD = #{idcard,jdbcType=VARCHAR},
+      OPERATORS_TYPE = #{operatorsType,jdbcType=CHAR},
       URL = #{url,jdbcType=VARCHAR},
+      URL_TYPE = #{urlType,jdbcType=CHAR},
       SIGN = #{sign,jdbcType=VARCHAR},
-      DATA_DATE = #{dataDate,jdbcType=VARCHAR},
+      ACQUIRE_DATE = #{acquireDate,jdbcType=VARCHAR},
       STATUS = #{status,jdbcType=INTEGER},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
@@ -138,14 +163,16 @@
   </update>
 
   <insert id="insertByBatch">
-    INSERT IGNORE INTO t_request_info (MOBILE, IDCARD, URL,
-    SIGN, DATA_DATE, STATUS,
-    CREATE_TIME, UPDATE_TIME)
+    INSERT IGNORE INTO t_request_info (MOBILE, IDCARD, OPERATORS_TYPE,
+    URL, URL_TYPE, SIGN, ACQUIRE_DATE,
+    STATUS, CREATE_TIME, UPDATE_TIME
+    )
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.mobile,jdbcType=VARCHAR}, #{item.idcard,jdbcType=VARCHAR}, #{item.url,jdbcType=VARCHAR},
-      #{item.sign,jdbcType=VARCHAR}, #{item.dataDate,jdbcType=VARCHAR}, #{item.status,jdbcType=TINYINT},
-      now(), now())
+      (#{item.mobile,jdbcType=VARCHAR}, #{item.idcard,jdbcType=VARCHAR}, #{item.operatorsType,jdbcType=CHAR},
+      #{item.url,jdbcType=VARCHAR}, #{item.urlType,jdbcType=CHAR}, #{item.sign,jdbcType=VARCHAR}, #{item.acquireDate,jdbcType=VARCHAR},
+      #{item.status,jdbcType=INTEGER},now(),now()
+      )
     </foreach>
   </insert>
 
@@ -156,5 +183,4 @@
   <update id="updateStatusBySign">
     UPDATE t_request_info SET STATUS=#{status} WHERE SIGN=#{sign} AND STATUS=#{originStatus}
   </update>
-
 </mapper>
