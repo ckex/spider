@@ -1,17 +1,14 @@
 package com.mljr.operators.service;
 
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.mljr.operators.common.constant.ChinaMobileConstant;
 import com.mljr.operators.common.utils.JsUtils;
 import com.mljr.operators.entity.LoginResponse;
 import com.mljr.operators.entity.chinamobile.DatePair;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -22,13 +19,13 @@ public class ChinaMobileService {
     public String getSmsCode(String telno) {
         try {
             String url = String.format(ChinaMobileConstant.Shanghai.SMS_CODE_PATTERN, telno);
-            String jsonStr = Jsoup.connect(url).execute().body();
+            String jsonStr = fetchData(url);
             String result = new JsonPathSelector("result").select(jsonStr);
             if ("0".equals(result)) {
                 return new JsonPathSelector("message").select(jsonStr);
             }
             return "请求验证码失败";
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "error";
@@ -36,36 +33,22 @@ public class ChinaMobileService {
 
     public String getJumpUrl(String url) {
         try {
-            Connection.Response response = Jsoup.connect(url).timeout(1000 * 60).execute();
-            LoginResponse loginResponse = new Gson().fromJson(response.body(), LoginResponse.class);
+            String data = fetchData(url);
+            LoginResponse loginResponse = new Gson().fromJson(data, LoginResponse.class);
             return JsUtils.getJumpUrl(loginResponse);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public Map<String, String> getCookies(String url) {
-        Map<String, String> cookies = Maps.newHashMap();
-        try {
-            Connection.Response response = Jsoup.connect(url).execute();
-            cookies = response.cookies();
-            for (Map.Entry<String, String> entry : cookies.entrySet()) {
-                System.out.println(entry.getKey() + " " + entry.getValue());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return cookies;
-    }
-
-    public Map<String, String> loginAndGetCookies(String telno, String password, String dtm) {
+    public Map<String, String> loginAndGetCookies(String telno, String password, String dtm) throws Exception {
         String _telno = JsUtils.enString(telno);
         String _password = JsUtils.enString(password);
         String _dtm = JsUtils.enString(dtm);
         String jumpUrl = getJumpUrl(String.format(ChinaMobileConstant.Shanghai.LOGIN_PATTERN, _telno, _password, _dtm));
         System.out.println(jumpUrl);
-        return getCookies(jumpUrl);
+        return fetchCookies(jumpUrl);
     }
 
     // 01 用户在运营商信息
@@ -131,8 +114,16 @@ public class ChinaMobileService {
         return fetchData(url, cookies);
     }
 
+    public String fetchData(String url) throws Exception {
+        return Jsoup.connect(url).timeout(1000 * 60).execute().body();
+    }
+
     public String fetchData(String url, Map<String, String> cookies) throws Exception {
-        return Jsoup.connect(url).timeout(1000*60).cookies(cookies).execute().body();
+        return Jsoup.connect(url).timeout(1000 * 60).cookies(cookies).execute().body();
+    }
+
+    public Map<String, String> fetchCookies(String url) throws Exception {
+        return Jsoup.connect(url).timeout(1000 * 60).execute().cookies();
     }
 
 }
