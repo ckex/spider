@@ -29,4 +29,9 @@ public class CallInfoServiceImpl extends BaseServiceImpl<CallInfo, Long> impleme
     public void insertByBatch(Long userInfoId, List<CallInfo> list) {
         callInfoMapper.insertByBatch(userInfoId, list);
     }
+
+    @Override
+    public List<CallInfo> selectByUid(Long userInfoId) {
+        return callInfoMapper.selectByUid(userInfoId);
+    }
 }
