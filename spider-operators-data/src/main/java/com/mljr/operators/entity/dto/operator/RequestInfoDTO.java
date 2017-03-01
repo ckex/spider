@@ -1,52 +1,105 @@
 package com.mljr.operators.entity.dto.operator;
 
-import java.io.Serializable;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 /**
  * @author gaoxi
- * @time 2017/2/27
+ * @time 2017/2/28
  */
-public class RequestInfoDTO implements Serializable {
-
-  private static final long serialVersionUID = 7315260678662042609L;
+public class RequestInfoDTO {
 
   private String mobile;
 
   private String idcard;
 
-  private String provinceCode;
+  private String operatorsType;
 
-  private String dataDate;
+  private Integer urlType;
+
+  private String url;
+
+  private String startDate;
+
+  private String endDate;
+
+  public static RequestInfoDTO me() {
+    return new RequestInfoDTO();
+  }
+
 
   public String getMobile() {
     return mobile;
   }
 
-  public void setMobile(String mobile) {
+  public RequestInfoDTO setMobile(String mobile) {
     this.mobile = mobile;
+    return this;
   }
 
   public String getIdcard() {
     return idcard;
   }
 
-  public void setIdcard(String idcard) {
+  public RequestInfoDTO setIdcard(String idcard) {
     this.idcard = idcard;
+    return this;
   }
 
-  public String getProvinceCode() {
-    return provinceCode;
+  public String getOperatorsType() {
+    return operatorsType;
   }
 
-  public void setProvinceCode(String provinceCode) {
-    this.provinceCode = provinceCode;
+  public RequestInfoDTO setOperatorsType(String operatorsType) {
+    this.operatorsType = operatorsType;
+    return this;
   }
 
-  public String getDataDate() {
-    return dataDate;
+  public Integer getUrlType() {
+    return urlType;
   }
 
-  public void setDataDate(String dataDate) {
-    this.dataDate = dataDate;
+  public RequestInfoDTO setUrlType(Integer urlType) {
+    this.urlType = urlType;
+    return this;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public RequestInfoDTO setUrl(String url) {
+    this.url = url;
+    return this;
+  }
+
+  public String getStartDate() {
+    return startDate;
+  }
+
+  public RequestInfoDTO setStartDate(String startDate) {
+    this.startDate = startDate;
+    return this;
+  }
+
+  public String getEndDate() {
+    return endDate;
+  }
+
+  public RequestInfoDTO setEndDate(String endDate) {
+    this.endDate = endDate;
+    return this;
+  }
+
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this);
+  }
+
+  public String getSign() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(mobile.trim()).append(idcard.trim()).append(operatorsType.trim()).append(urlType)
+        .append(url.trim()).append(startDate.trim()).append(endDate.trim());
+    return DigestUtils.md5Hex(builder.toString());
   }
 }
