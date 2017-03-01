@@ -6,17 +6,19 @@
     <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
     <result column="IDCARD" jdbcType="VARCHAR" property="idcard" />
     <result column="OPERATORS_TYPE" jdbcType="CHAR" property="operatorsType" />
+    <result column="PROVINCE_CODE" jdbcType="VARCHAR" property="provinceCode" />
+    <result column="URL_TYPE" jdbcType="INTEGER" property="urlType" />
     <result column="URL" jdbcType="VARCHAR" property="url" />
-    <result column="URL_TYPE" jdbcType="CHAR" property="urlType" />
+    <result column="START_DATE" jdbcType="DATE" property="startDate" />
+    <result column="END_DATE" jdbcType="DATE" property="endDate" />
     <result column="SIGN" jdbcType="VARCHAR" property="sign" />
-    <result column="ACQUIRE_DATE" jdbcType="VARCHAR" property="acquireDate" />
     <result column="STATUS" jdbcType="INTEGER" property="status" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, MOBILE, IDCARD, OPERATORS_TYPE, URL, URL_TYPE, SIGN, ACQUIRE_DATE, STATUS, CREATE_TIME, 
-    UPDATE_TIME
+    ID, MOBILE, IDCARD, OPERATORS_TYPE, PROVINCE_CODE, URL_TYPE, URL, START_DATE, END_DATE, 
+    SIGN, STATUS, CREATE_TIME, UPDATE_TIME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -33,11 +35,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_request_info (MOBILE, IDCARD, OPERATORS_TYPE, 
-      URL, URL_TYPE, SIGN, ACQUIRE_DATE, 
+      PROVINCE_CODE, URL_TYPE, URL, 
+      START_DATE, END_DATE, SIGN, 
       STATUS, CREATE_TIME, UPDATE_TIME
       )
     values (#{mobile,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{operatorsType,jdbcType=CHAR}, 
-      #{url,jdbcType=VARCHAR}, #{urlType,jdbcType=CHAR}, #{sign,jdbcType=VARCHAR}, #{acquireDate,jdbcType=VARCHAR}, 
+      #{provinceCode,jdbcType=VARCHAR}, #{urlType,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
+      #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{sign,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -56,17 +60,23 @@
       <if test="operatorsType != null">
         OPERATORS_TYPE,
       </if>
-      <if test="url != null">
-        URL,
+      <if test="provinceCode != null">
+        PROVINCE_CODE,
       </if>
       <if test="urlType != null">
         URL_TYPE,
       </if>
+      <if test="url != null">
+        URL,
+      </if>
+      <if test="startDate != null">
+        START_DATE,
+      </if>
+      <if test="endDate != null">
+        END_DATE,
+      </if>
       <if test="sign != null">
         SIGN,
-      </if>
-      <if test="acquireDate != null">
-        ACQUIRE_DATE,
       </if>
       <if test="status != null">
         STATUS,
@@ -88,17 +98,23 @@
       <if test="operatorsType != null">
         #{operatorsType,jdbcType=CHAR},
       </if>
+      <if test="provinceCode != null">
+        #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="urlType != null">
+        #{urlType,jdbcType=INTEGER},
+      </if>
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
       </if>
-      <if test="urlType != null">
-        #{urlType,jdbcType=CHAR},
+      <if test="startDate != null">
+        #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=DATE},
       </if>
       <if test="sign != null">
         #{sign,jdbcType=VARCHAR},
-      </if>
-      <if test="acquireDate != null">
-        #{acquireDate,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -123,17 +139,23 @@
       <if test="operatorsType != null">
         OPERATORS_TYPE = #{operatorsType,jdbcType=CHAR},
       </if>
+      <if test="provinceCode != null">
+        PROVINCE_CODE = #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="urlType != null">
+        URL_TYPE = #{urlType,jdbcType=INTEGER},
+      </if>
       <if test="url != null">
         URL = #{url,jdbcType=VARCHAR},
       </if>
-      <if test="urlType != null">
-        URL_TYPE = #{urlType,jdbcType=CHAR},
+      <if test="startDate != null">
+        START_DATE = #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null">
+        END_DATE = #{endDate,jdbcType=DATE},
       </if>
       <if test="sign != null">
         SIGN = #{sign,jdbcType=VARCHAR},
-      </if>
-      <if test="acquireDate != null">
-        ACQUIRE_DATE = #{acquireDate,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         STATUS = #{status,jdbcType=INTEGER},
@@ -152,35 +174,45 @@
     set MOBILE = #{mobile,jdbcType=VARCHAR},
       IDCARD = #{idcard,jdbcType=VARCHAR},
       OPERATORS_TYPE = #{operatorsType,jdbcType=CHAR},
+      PROVINCE_CODE = #{provinceCode,jdbcType=VARCHAR},
+      URL_TYPE = #{urlType,jdbcType=INTEGER},
       URL = #{url,jdbcType=VARCHAR},
-      URL_TYPE = #{urlType,jdbcType=CHAR},
+      START_DATE = #{startDate,jdbcType=DATE},
+      END_DATE = #{endDate,jdbcType=DATE},
       SIGN = #{sign,jdbcType=VARCHAR},
-      ACQUIRE_DATE = #{acquireDate,jdbcType=VARCHAR},
       STATUS = #{status,jdbcType=INTEGER},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 
-  <insert id="insertByBatch">
+  <insert id="insertByBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
     INSERT IGNORE INTO t_request_info (MOBILE, IDCARD, OPERATORS_TYPE,
-    URL, URL_TYPE, SIGN, ACQUIRE_DATE,
+    PROVINCE_CODE, URL_TYPE, URL,
+    START_DATE, END_DATE, SIGN,
     STATUS, CREATE_TIME, UPDATE_TIME
     )
     values
-    <foreach collection="list" item="item" separator=",">
+    <foreach collection="list" item="item" index="index" separator=",">
       (#{item.mobile,jdbcType=VARCHAR}, #{item.idcard,jdbcType=VARCHAR}, #{item.operatorsType,jdbcType=CHAR},
-      #{item.url,jdbcType=VARCHAR}, #{item.urlType,jdbcType=CHAR}, #{item.sign,jdbcType=VARCHAR}, #{item.acquireDate,jdbcType=VARCHAR},
-      #{item.status,jdbcType=INTEGER},now(),now()
+      #{item.provinceCode,jdbcType=VARCHAR}, #{item.urlType,jdbcType=INTEGER}, #{item.url,jdbcType=VARCHAR},
+      #{item.startDate,jdbcType=DATE}, #{item.endDate,jdbcType=DATE}, #{item.sign,jdbcType=VARCHAR},
+      #{item.status,jdbcType=INTEGER}, now(), now()
       )
     </foreach>
   </insert>
+
+  <update id="updateStatusBySign">
+    UPDATE t_request_info SET STATUS=#{status} WHERE SIGN=#{sign} AND STATUS=#{originStatus}
+  </update>
 
   <select id="getBySign" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/> FROM t_request_info WHERE SIGN=#{sign}
   </select>
 
-  <update id="updateStatusBySign">
-    UPDATE t_request_info SET STATUS=#{status} WHERE SIGN=#{sign} AND STATUS=#{originStatus}
-  </update>
+  <select id="getPerRequestDate" resultType="java.util.Date">
+    SELECT MAX(END_DATE) FROM t_request_info WHERE MOBILE=#{mobile}
+    AND IDCARD=#{idcard} AND OPERATORS_TYPE=#{operatorsType}
+  </select>
+
 </mapper>
