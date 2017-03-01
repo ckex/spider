@@ -1,8 +1,8 @@
 package com.mljr.operators.task.chinamobile;
 
 import com.google.common.collect.Lists;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.mljr.operators.dao.primary.operators.SMSInfoMapper;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.SMSInfo;
 import com.mljr.operators.service.ChinaMobileService;
@@ -25,12 +25,12 @@ public class SMSInfoTask extends AbstractTask {
     private ChinaMobileService chinaMobileService;
 
     @Autowired
-    private ISMSInfoService ismsInfoService;
+    private ISMSInfoService smsInfoService;
 
     @Override
     void writeToDb(String data, DatePair pair) throws Exception {
         String smsInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
-        List<List<String>> list = new Gson().fromJson(smsInfoStr, List.class);
+        List<List<String>> list = new Gson().fromJson(smsInfoStr, new TypeToken<List<List<String>>>(){}.getType());
         List<SMSInfo> siList = Lists.newArrayList();
         for (List<String> subList : list) {
 
@@ -58,7 +58,7 @@ public class SMSInfoTask extends AbstractTask {
             siList.add(si);
         }
 
-        ismsInfoService.insertByBatch(siList);
+        smsInfoService.insertByBatch(siList);
     }
 
     @Override

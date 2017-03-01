@@ -9,7 +9,7 @@ import com.mljr.operators.common.utils.IndexedEnumUtil;
  */
 public enum RequestInfoEnum implements IndexedEnum<RequestInfoEnum> {
 
-  INIT(1, "初始化"), SUCCESS(2, "成功"), ERROR(3, "失败"),;
+  INIT(1, "初始化"), RUNNING(2,"运行中"),SUCCESS(3, "成功"), ERROR(4, "失败"),;
 
   private int value;
 
