@@ -11,13 +11,17 @@ public class RequestInfo {
 
     private String operatorsType;
 
+    private String provinceCode;
+
+    private Integer urlType;
+
     private String url;
 
-    private String urlType;
+    private Date startDate;
+
+    private Date endDate;
 
     private String sign;
-
-    private String acquireDate;
 
     private Integer status;
 
@@ -57,6 +61,22 @@ public class RequestInfo {
         this.operatorsType = operatorsType == null ? null : operatorsType.trim();
     }
 
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode == null ? null : provinceCode.trim();
+    }
+
+    public Integer getUrlType() {
+        return urlType;
+    }
+
+    public void setUrlType(Integer urlType) {
+        this.urlType = urlType;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -65,12 +85,20 @@ public class RequestInfo {
         this.url = url == null ? null : url.trim();
     }
 
-    public String getUrlType() {
-        return urlType;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setUrlType(String urlType) {
-        this.urlType = urlType == null ? null : urlType.trim();
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getSign() {
@@ -79,14 +107,6 @@ public class RequestInfo {
 
     public void setSign(String sign) {
         this.sign = sign == null ? null : sign.trim();
-    }
-
-    public String getAcquireDate() {
-        return acquireDate;
-    }
-
-    public void setAcquireDate(String acquireDate) {
-        this.acquireDate = acquireDate == null ? null : acquireDate.trim();
     }
 
     public Integer getStatus() {
