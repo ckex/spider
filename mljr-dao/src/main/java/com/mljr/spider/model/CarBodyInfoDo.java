@@ -11,6 +11,8 @@ public class CarBodyInfoDo implements Serializable {
   private static final long serialVersionUID = 1L;
   private Integer id;
 
+  private  String uniqueCarBrand;
+
   private String vehicleBrand;
 
   private String vehicleModelYear;
@@ -24,6 +26,8 @@ public class CarBodyInfoDo implements Serializable {
   private String vehicleModel;
 
   private String displacement;
+
+  private String officialDisplacement;
 
   private String environmentalStandard;
 
@@ -85,11 +89,15 @@ public class CarBodyInfoDo implements Serializable {
 
   private String cruiseControl;
 
-  private String parkDistanceControl;
+  private String frontRadar;
+
+  private String backRadar;
 
   private String automaticAirConditioner;
 
   private String multifunctionSteerWheel;
+
+  private  String sourceCome;
 
   private Date createTime;
 
@@ -101,6 +109,13 @@ public class CarBodyInfoDo implements Serializable {
 
   public void setId(Integer id) {
     this.id = id;
+  }
+
+  public String getUniqueCarBrand() {
+    return uniqueCarBrand;
+  }
+  public void setUniqueCarBrand(String uniqueCarBrand) {
+    this.uniqueCarBrand = uniqueCarBrand;
   }
 
   public String getVehicleBrand() {
@@ -157,6 +172,13 @@ public class CarBodyInfoDo implements Serializable {
 
   public void setDisplacement(String displacement) {
     this.displacement = displacement;
+  }
+
+  public String getOfficialDisplacement() {
+    return officialDisplacement;
+  }
+  public void setOfficialDisplacement(String officialDisplacement) {
+    this.officialDisplacement = officialDisplacement;
   }
 
   public String getEnvironmentalStandard() {
@@ -399,14 +421,21 @@ public class CarBodyInfoDo implements Serializable {
     this.cruiseControl = cruiseControl;
   }
 
-  public String getParkDistanceControl() {
-    return parkDistanceControl;
+  public String getFrontRadar() {
+    return frontRadar;
   }
 
-  public void setParkDistanceControl(String parkDistanceControl) {
-    this.parkDistanceControl = parkDistanceControl;
+  public void setFrontRadar(String frontRadar) {
+    this.frontRadar = frontRadar;
   }
 
+  public String getBackRadar() {
+    return backRadar;
+  }
+
+  public void setBackRadar(String backRadar) {
+    this.backRadar = backRadar;
+  }
   public String getAutomaticAirConditioner() {
     return automaticAirConditioner;
   }
@@ -423,6 +452,13 @@ public class CarBodyInfoDo implements Serializable {
     this.multifunctionSteerWheel = multifunctionSteerWheel;
   }
 
+  public String getSourceCome() {
+    return sourceCome;
+  }
+
+  public void setSourceCome(String sourceCome) {
+    this.sourceCome = sourceCome;
+  }
   public Date getCreateTime() {
     return createTime;
   }

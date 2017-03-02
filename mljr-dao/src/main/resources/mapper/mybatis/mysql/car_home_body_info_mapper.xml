@@ -4,6 +4,7 @@
 	<resultMap id="CarHomeBodyInfoResult" type="com.mljr.spider.model.CarBodyInfoDo">
 		<!-- 这里的字段是model成属性对应都到数据中的字段 -->
 		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="unique_car_brand" jdbcType="VARCHAR" property="uniqueCarBrand" />
 		<result column="vehicle_brand" jdbcType="VARCHAR" property="vehicleBrand" />
 		<result column="vehicle_model_year" jdbcType="VARCHAR"
 			property="vehicleModelYear" />
@@ -12,6 +13,7 @@
 		<result column="origin_country" jdbcType="VARCHAR" property="originCountry" />
 		<result column="vehicle_model" jdbcType="VARCHAR" property="vehicleModel" />
 		<result column="displacement" jdbcType="VARCHAR" property="displacement" />
+		<result column="official_displacement" jdbcType="VARCHAR" property="officialDisplacement" />
 		<result column="environmental_standard" jdbcType="VARCHAR"
 			property="environmentalStandard" />
 		<result column="fuel_type" jdbcType="VARCHAR" property="fuelType" />
@@ -48,18 +50,20 @@
 		<result column="headlamp_type" jdbcType="VARCHAR" property="headlampType" />
 		<result column="navigation_system" jdbcType="VARCHAR" property="navigationSystem" />
 		<result column="cruise_control" jdbcType="VARCHAR" property="cruiseControl" />
-		<result column="park_distance_control" jdbcType="VARCHAR"
-			property="parkDistanceControl" />
+		<result column="front_radar" jdbcType="VARCHAR" property="frontRadar" />
+		<result column="back_radar" jdbcType="VARCHAR" property="backRadar" />
 		<result column="automatic_air_conditioner" jdbcType="VARCHAR"
 			property="automaticAirConditioner" />
 		<result column="multifunction_steer_wheel" jdbcType="VARCHAR"
 			property="multifunctionSteerWheel" />
+		<result column="source_come" jdbcType="VARCHAR"
+				property="sourceCome" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
 	</resultMap>
 	<insert id="create" parameterType="com.mljr.spider.model.CarBodyInfoDo">
-		insert into car_info (vehicle_brand, vehicle_model_year, vehicle_category,
-		vehicle_factory,vehicle_model ,origin_country, displacement,
+		insert into car_info (unique_car_brand,vehicle_brand, vehicle_model_year, vehicle_category,
+		vehicle_factory,vehicle_model ,origin_country, displacement,official_displacement,
 		environmental_standard, fuel_type, engine_model,
 		engine_horse_power, drive_model, gearbox,
 		seat_number, configure, exterior_color,
@@ -69,14 +73,17 @@
 		carriage_height, seat_arrangement, tonnage_level,
 		vehicle_body_structure, sunroof,open_sunroof, electric_adjust_seat,
 		leather_seat, car_body_stedy_control, headlamp_type,
-		navigation_system, cruise_control, park_distance_control,
-		automatic_air_conditioner, multifunction_steer_wheel,
+		navigation_system, cruise_control, front_radar,back_radar,
+		automatic_air_conditioner, multifunction_steer_wheel,source_come,
 		create_time, update_time)
-		values (#{vehicleBrand,jdbcType=VARCHAR},
+		values (#{uniqueCarBrand,jdbcType=VARCHAR},#{vehicleBrand,jdbcType=VARCHAR},
 		#{vehicleModelYear,jdbcType=VARCHAR},
 		#{vehicleCategory,jdbcType=VARCHAR},
-		#{vehicleFactory,jdbcType=VARCHAR}, #{originCountry,jdbcType=VARCHAR},
-		#{vehicleModel,jdbcType=VARCHAR}, #{displacement,jdbcType=VARCHAR},
+		#{vehicleFactory,jdbcType=VARCHAR},
+		#{vehicleModel,jdbcType=VARCHAR},
+		 #{originCountry,jdbcType=VARCHAR},
+		 #{displacement,jdbcType=VARCHAR},
+		 #{officialDisplacement,jdbcType=VARCHAR},
 		#{environmentalStandard,jdbcType=VARCHAR},
 		#{fuelType,jdbcType=VARCHAR}, #{engineModel,jdbcType=VARCHAR},
 		#{engineHorsePower,jdbcType=VARCHAR}, #{driveModel,jdbcType=VARCHAR},
@@ -98,9 +105,11 @@
 		#{headlampType,jdbcType=VARCHAR},
 		#{navigationSystem,jdbcType=VARCHAR},
 		#{cruiseControl,jdbcType=VARCHAR},
-		#{parkDistanceControl,jdbcType=VARCHAR},
+		#{frontRadar,jdbcType=VARCHAR},
+		#{backRadar,jdbcType=VARCHAR},
 		#{automaticAirConditioner,jdbcType=VARCHAR},
 		#{multifunctionSteerWheel,jdbcType=VARCHAR},
+		#{sourceCome,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	<select id="listByPageCount" parameterType="java.util.HashMap"
@@ -112,6 +121,17 @@
 		SELECT * FROM car_info WHERE 1 ORDER BY id
 		LIMIT #{startIndex},#{pageSize}
 	</select>
+	<select id="listByName" parameterType="java.util.HashMap"  resultMap="CarHomeBodyInfoResult" >
+		 SELECT  * from car_info
+		 where  unique_car_brand=#{car_name}
+	</select>
+	<update id="update" parameterType="com.mljr.spider.model.CarBodyInfoDo">
+		update car_info
+		<set>
+			<if test="officialGuidePrice != null">`official_guide_price` = #{officialGuidePrice},</if>
+		</set>
+		WHERE unique_car_brand = #{uniqueCarBrand}
+	</update>
 
 
 </mapper>

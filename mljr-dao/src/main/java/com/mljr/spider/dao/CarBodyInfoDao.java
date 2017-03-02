@@ -13,4 +13,8 @@ public interface CarBodyInfoDao {
   CarBodyInfoDo create(CarBodyInfoDo record);
 
   PageList<CarBodyInfoDo> listByPage(PageQuery pageQuery, Integer count);
+
+  CarBodyInfoDo  load(String carName);
+
+  boolean update(CarBodyInfoDo record);
 }

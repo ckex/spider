@@ -1,5 +1,6 @@
 package com.mljr.sync.service;
 
+import com.google.common.base.Stopwatch;
 import com.google.gson.Gson;
 import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.spider.dao.CarBodyInfoDao;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by fulin on 2017/2/20.
@@ -32,18 +34,21 @@ public class CarHomeNetService {
     public void consume() throws Exception{
         final Channel channel = RabbitmqClient.newChannel();
         try{
-            //每次从队列中拿取一条数据
-            GetResponse response = RabbitmqClient.pollMessage(channel, QUEUE_NAME, false);
-            if (response == null) {
-                logger.debug("qid=" + QUEUE_NAME + " queue is empty.waitting message");
-                return;
+            while(true) {
+                try {
+                    //每次从队列中拿取一条数据
+                    GetResponse response = RabbitmqClient.pollMessage(channel, QUEUE_NAME, false);
+                    if (response == null) {
+                        logger.debug("qid=" + QUEUE_NAME + " queue is empty.waitting message");
+                        return;
+                    }
+                    String message = new String(response.getBody(), "UTF-8");
+                    writeToDb(message);
+                    channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
+                } catch (Exception e) {
+                    logger.error("CarHomeNetService error: " + ", " + ExceptionUtils.getStackTrace(e));
+                }
             }
-            String message = new String(response.getBody(), "UTF-8");
-            writeToDb(message);
-            channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
-
-        }catch (Exception e){
-            logger.error("CarHomeNetService error: " + ", " + ExceptionUtils.getStackTrace(e));
         }finally {
             if(channel != null){
                 channel.close();
@@ -54,10 +59,12 @@ public class CarHomeNetService {
     //将解析后的数据导入到数据库
     public void writeToDb(String carHtml) {
         CarBodyInfoDo car = new CarBodyInfoDo();
+        CarBodyInfoDo car2 = new CarBodyInfoDo();
         Gson gson = new  Gson();
        List<Map<String,String>> list = gson.fromJson(carHtml,List.class);
         for (int i = 0; i <list.size() ; i++) {
             Map<String,String> map= list.get(i);
+            car.setUniqueCarBrand(map.get("unique_car_brand"));
             car.setVehicleBrand(map.get("car_brand"));
             car.setVehicleModelYear(map.get("car_time"));
             car.setVehicleCategory(map.get("car_category"));
@@ -94,13 +101,34 @@ public class CarHomeNetService {
             car.setHeadlampType(map.get("car_headlamp"));
             car.setNavigationSystem(map.get("car_gps"));
             car.setCruiseControl(map.get("car_steady_speed"));
-            car.setParkDistanceControl(map.get("car_radar"));
+            car.setFrontRadar(map.get("front_radar"));
+            car.setBackRadar(map.get("back_radar"));
             car.setAutomaticAirConditioner(map.get("car_conditioner"));
             car.setMultifunctionSteerWheel(map.get("car_wheel"));
             car.setSeatArrangement(map.get("car_seat_arrangement"));
+            car.setSourceCome(map.get("source_come"));
+            car.setOfficialDisplacement(map.get("official_displacement"));
             car.setCreateTime(new Date());
             car.setUpdateTime(new Date());
-            car = carBodyInfoDao.create(car);
+            //如果已经存在就更新，否者插入
+            Stopwatch watch = Stopwatch.createStarted();
+            car2 = carBodyInfoDao.load(car.getUniqueCarBrand());
+            watch.stop();
+            long loadtime=0 ,createtime =0,updatetime=0;
+            loadtime = watch.elapsed(TimeUnit.MILLISECONDS);
+            watch = Stopwatch.createStarted();
+            if(car2 == null){
+                car2 = carBodyInfoDao.create(car);
+                watch.stop();
+                createtime = watch.elapsed(TimeUnit.MILLISECONDS);
+            }else{
+                carBodyInfoDao.update(car);
+                watch.stop();
+                updatetime = watch.elapsed(TimeUnit.MILLISECONDS);
+            }
+            if (loadtime > 100 || createtime > 100 || updatetime > 100){
+                logger.debug("to long loadtime="+loadtime+", createtime="+createtime+", updatetime="+updatetime);
+            }
         }
     }
 
