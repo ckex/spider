@@ -1,6 +1,5 @@
 package com.mljr.operators.service.primary.operators.impl;
 
-import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.dao.BaseMapper;
 import com.mljr.operators.dao.primary.operators.RequestInfoMapper;
@@ -48,7 +47,7 @@ public class RequestInfoServiceImpl extends BaseServiceImpl<RequestInfo, Long>
   }
 
   @Override
-  public Date getPerRequestDate(String mobile, String idcard, OperatorsEnum operatorsEnum) {
-    return requestInfoMapper.getPerRequestDate(mobile, idcard, operatorsEnum.getValue());
+  public Date getPerRequestDate(String mobile, String idcard) {
+    return requestInfoMapper.getPerRequestDate(mobile, idcard);
   }
 }

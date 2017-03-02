@@ -1,6 +1,5 @@
 package com.mljr.operators.service.primary.operators;
 
-import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.primary.IBaseService;
@@ -43,8 +42,7 @@ public interface IRequestInfoService extends IBaseService<RequestInfo, Long> {
    * 
    * @param mobile 手机号
    * @param idcard 身份证
-   * @param operatorsEnum 运营商
    * @return
    */
-  Date getPerRequestDate(String mobile, String idcard, OperatorsEnum operatorsEnum);
+  Date getPerRequestDate(String mobile, String idcard);
 }

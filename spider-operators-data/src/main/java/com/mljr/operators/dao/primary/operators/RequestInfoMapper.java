@@ -41,10 +41,8 @@ public interface RequestInfoMapper extends BaseMapper<RequestInfo, Long> {
    * 
    * @param mobile 手机号
    * @param idcard 身份证
-   * @param operatorsType 运营商
    * @return
    */
-  Date getPerRequestDate(@Param("mobile") String mobile, @Param("idcard") String idcard,
-      @Param("operatorsType") String operatorsType);
+  Date getPerRequestDate(@Param("mobile") String mobile, @Param("idcard") String idcard);
 
 }

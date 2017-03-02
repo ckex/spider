@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,6 +75,13 @@ public class RequestInfoServiceImplTest extends BaseTest {
     boolean flag = requestInfoService.updateStatusBySign("HASH", RequestInfoEnum.SUCCESS,
         RequestInfoEnum.INIT);
     Assert.state(flag);
+  }
+
+  @Test
+  public void testPerRequestDate() {
+    Date date = requestInfoService.getPerRequestDate("18521705532", "429*************34");
+    LocalDate localDate=DateUtil.dateToLocalDate(date);
+    System.out.println();
   }
 
 }
