@@ -1,9 +1,11 @@
 package com.mljr.operators.entity;
 
+import com.mljr.operators.common.constant.ErrorCodeEnum;
+
 /**
  * Created by songchi on 17/3/1.
  */
-public class TokenReqResponse {
+public class ApiResponse {
     private int code;
     private String message;
     private boolean success;
@@ -11,16 +13,24 @@ public class TokenReqResponse {
     private boolean sms_required;
     private boolean required_captcha_user_identified;
 
-    public TokenReqResponse(int code, String message, boolean success) {
-        this.code = code;
-        this.message = message;
+    public ApiResponse() {
+    }
+
+    public ApiResponse(ErrorCodeEnum errorCodeEnum) {
+        this.code = errorCodeEnum.getCode();
+        this.message = errorCodeEnum.getDesc();
+    }
+
+    public ApiResponse(ErrorCodeEnum errorCodeEnum, boolean success) {
+        this.code = errorCodeEnum.getCode();
+        this.message = errorCodeEnum.getDesc();
         this.success = success;
     }
 
-    public TokenReqResponse(int code, String message, boolean success, String token, boolean sms_required,
-                            boolean required_captcha_user_identified) {
-        this.code = code;
-        this.message = message;
+    public ApiResponse(ErrorCodeEnum errorCodeEnum, boolean success, String token, boolean sms_required,
+                       boolean required_captcha_user_identified) {
+        this.code = errorCodeEnum.getCode();
+        this.message = errorCodeEnum.getDesc();
         this.success = success;
         this.token = token;
         this.sms_required = sms_required;

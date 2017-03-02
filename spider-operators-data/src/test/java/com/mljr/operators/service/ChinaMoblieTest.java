@@ -1,6 +1,7 @@
 package com.mljr.operators.service;
 
 import com.google.common.collect.Lists;
+import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.entity.model.operators.SMSInfo;
 import com.mljr.operators.service.primary.operators.ISMSInfoService;
 import org.junit.Test;
@@ -42,8 +43,9 @@ public class ChinaMoblieTest extends BaseTest {
 
     @Test
     public void testName() throws Exception {
-//        System.out.println(chinaMobileService.getLatestMonths(12));
-
+        System.out.println(OperatorsEnum.indexOf("联通"));
+        System.out.println(OperatorsEnum.indexOf("移动"));
+        System.out.println(OperatorsEnum.indexOf("电信"));
     }
 
     @Test

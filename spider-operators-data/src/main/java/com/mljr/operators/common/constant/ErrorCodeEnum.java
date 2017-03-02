@@ -30,28 +30,36 @@ public enum ErrorCodeEnum {
 
     TOKEN_FAIL(65556, "生成token失败"),
 
-    TOKEN_SUCC(65557, "生成token成功");
+    TOKEN_SUCC(65557, "生成token成功"),
 
-    private int value;
+    TASK_RUNNING(31218,"采集任务运行中,请你稍后再试"),
 
-    private String name;
+    TASK_ERROR(31219,"采集任务失败,请重新提交采集申请"),
 
-    ErrorCodeEnum(int value, String name) {
-        this.value = value;
-        this.name = name;
+    TASK_SUCC(31200,"请求数据成功"),
+
+    ;
+
+    private int code;
+
+    private String desc;
+
+    ErrorCodeEnum(int code, String desc) {
+        this.code = code;
+        this.desc = desc;
     }
 
-    public int getValue() {
-        return value;
+    public int getCode() {
+        return code;
     }
 
-    public String getName() {
-        return name;
+    public String getDesc() {
+        return desc;
     }
 
     public static ErrorCodeEnum indexOf(int value) {
         for (ErrorCodeEnum enums : ErrorCodeEnum.values()) {
-            if (value == enums.value) {
+            if (value == enums.code) {
                 return enums;
             }
         }

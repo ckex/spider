@@ -29,7 +29,7 @@ public class ChinaUnicomConvert {
                 entity = new UserInfo();
                 entity.setUserName(personInfo.getResult().getMyDetail().getCustname());
                 entity.setCityCode(personInfo.getResult().getMyDetail().getCitycode());
-                entity.setType(String.valueOf(OperatorsEnum.CHINAUNICOM.getValue()));
+                entity.setType(String.valueOf(OperatorsEnum.CHINAUNICOM.getCode()));
                 if ("男".equals(personInfo.getResult().getMyDetail().getCustsex())) {
                     entity.setSex(Boolean.FALSE);
                 } else {
