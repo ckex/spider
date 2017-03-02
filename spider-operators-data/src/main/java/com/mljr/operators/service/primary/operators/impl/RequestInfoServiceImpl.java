@@ -9,6 +9,7 @@ import com.mljr.operators.service.primary.operators.IRequestInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,8 +29,9 @@ public class RequestInfoServiceImpl extends BaseServiceImpl<RequestInfo, Long>
   }
 
   @Override
-  public void insertByBatch(List<RequestInfo> list) {
+  public List<RequestInfo> insertByBatch(List<RequestInfo> list) {
     requestInfoMapper.insertByBatch(list);
+    return list;
   }
 
   @Override
@@ -41,6 +43,11 @@ public class RequestInfoServiceImpl extends BaseServiceImpl<RequestInfo, Long>
   public boolean updateStatusBySign(String sign, RequestInfoEnum newStatus,
       RequestInfoEnum originStatus) {
     return requestInfoMapper.updateStatusBySign(sign, newStatus.getIndex(),
-        originStatus.getIndex())==1;
+        originStatus.getIndex()) == 1;
+  }
+
+  @Override
+  public Date getPerRequestDate(String mobile, String idcard) {
+    return requestInfoMapper.getPerRequestDate(mobile, idcard);
   }
 }

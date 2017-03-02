@@ -2,6 +2,7 @@ package com.mljr.operators.service.primary.operators.impl;
 
 import com.mljr.operators.dao.BaseMapper;
 import com.mljr.operators.dao.primary.operators.SMSInfoMapper;
+import com.mljr.operators.entity.model.operators.FlowInfo;
 import com.mljr.operators.entity.model.operators.SMSInfo;
 import com.mljr.operators.service.primary.BaseServiceImpl;
 import com.mljr.operators.service.primary.operators.ISMSInfoService;
@@ -28,5 +29,10 @@ public class SMSInfoServiceImpl extends BaseServiceImpl<SMSInfo,Long> implements
     @Override
     public void insertByBatch(List<SMSInfo> list) {
         smsInfoMapper.insertByBatch(list);
+    }
+
+    @Override
+    public List<SMSInfo> selectByUid(Long uid) {
+        return smsInfoMapper.selectByUid(uid);
     }
 }

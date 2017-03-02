@@ -17,4 +17,6 @@ public interface IFlowInfoService extends IBaseService<FlowInfo, Long> {
      * @param list 数据
      */
     void insertByBatch(List<FlowInfo> list);
+
+    List<FlowInfo> selectByUid(Long uid);
 }

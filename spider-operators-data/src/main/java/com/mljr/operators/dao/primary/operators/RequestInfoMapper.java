@@ -5,6 +5,7 @@ import com.mljr.operators.entity.model.operators.RequestInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -15,7 +16,7 @@ public interface RequestInfoMapper extends BaseMapper<RequestInfo, Long> {
    * 
    * @param list
    */
-  void insertByBatch(@Param("list") List<RequestInfo> list);
+  void insertByBatch(List<RequestInfo> list);
 
   /**
    * 根据Sign查询
@@ -34,5 +35,14 @@ public interface RequestInfoMapper extends BaseMapper<RequestInfo, Long> {
    */
   int updateStatusBySign(@Param("sign") String sign, @Param("status") int status,
       @Param("originStatus") int originStatus);
+
+  /**
+   * 获取前一次请求的的日期
+   * 
+   * @param mobile 手机号
+   * @param idcard 身份证
+   * @return
+   */
+  Date getPerRequestDate(@Param("mobile") String mobile, @Param("idcard") String idcard);
 
 }

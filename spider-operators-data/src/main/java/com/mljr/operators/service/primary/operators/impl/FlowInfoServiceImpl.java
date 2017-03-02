@@ -29,4 +29,9 @@ public class FlowInfoServiceImpl extends BaseServiceImpl<FlowInfo, Long> impleme
     public void insertByBatch(List<FlowInfo> list) {
         flowInfoMapper.insertByBatch(list);
     }
+
+    @Override
+    public List<FlowInfo> selectByUid(Long uid) {
+        return flowInfoMapper.selectByUid(uid);
+    }
 }

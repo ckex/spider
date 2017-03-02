@@ -1,5 +1,6 @@
 package com.mljr.operators.service.primary.operators;
 
+import com.mljr.operators.entity.model.operators.FlowInfo;
 import com.mljr.operators.entity.model.operators.SMSInfo;
 import com.mljr.operators.service.primary.IBaseService;
 
@@ -11,4 +12,6 @@ import java.util.List;
  */
 public interface ISMSInfoService extends IBaseService<SMSInfo,Long> {
     void insertByBatch(List<SMSInfo> list);
+
+    List<SMSInfo> selectByUid(Long uid);
 }

@@ -10,4 +10,6 @@ import java.util.List;
 public interface SMSInfoMapper extends BaseMapper<SMSInfo, Long> {
 
     int insertByBatch(List<SMSInfo> list);
+
+    List<SMSInfo> selectByUid(Long userInfoId);
 }

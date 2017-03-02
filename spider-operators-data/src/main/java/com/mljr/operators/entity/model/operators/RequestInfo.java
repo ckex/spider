@@ -9,11 +9,19 @@ public class RequestInfo {
 
     private String idcard;
 
+    private String operatorsType;
+
+    private String provinceCode;
+
+    private Integer urlType;
+
     private String url;
 
-    private String sign;
+    private Date startDate;
 
-    private String dataDate;
+    private Date endDate;
+
+    private String sign;
 
     private Integer status;
 
@@ -45,6 +53,30 @@ public class RequestInfo {
         this.idcard = idcard == null ? null : idcard.trim();
     }
 
+    public String getOperatorsType() {
+        return operatorsType;
+    }
+
+    public void setOperatorsType(String operatorsType) {
+        this.operatorsType = operatorsType == null ? null : operatorsType.trim();
+    }
+
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode == null ? null : provinceCode.trim();
+    }
+
+    public Integer getUrlType() {
+        return urlType;
+    }
+
+    public void setUrlType(Integer urlType) {
+        this.urlType = urlType;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -53,20 +85,28 @@ public class RequestInfo {
         this.url = url == null ? null : url.trim();
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public String getSign() {
         return sign;
     }
 
     public void setSign(String sign) {
         this.sign = sign == null ? null : sign.trim();
-    }
-
-    public String getDataDate() {
-        return dataDate;
-    }
-
-    public void setDataDate(String dataDate) {
-        this.dataDate = dataDate == null ? null : dataDate.trim();
     }
 
     public Integer getStatus() {

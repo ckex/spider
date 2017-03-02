@@ -18,4 +18,6 @@ public interface ICallInfoService extends IBaseService<CallInfo, Long> {
      * @param list       数据
      */
     void insertByBatch(Long userInfoId, List<CallInfo> list);
+
+    List<CallInfo> selectByUid(Long userInfoId);
 }

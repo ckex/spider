@@ -24,6 +24,14 @@
     from t_sms_info
     where ID = #{id,jdbcType=BIGINT}
   </select>
+
+  <select id="selectByUid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sms_info
+    where USER_INFO_ID = #{userInfoId,jdbcType=BIGINT}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_sms_info
     where ID = #{id,jdbcType=BIGINT}

@@ -63,7 +63,7 @@ public class LoginController {
             userInfo.setIdcard(idcard);
             userInfo.setUserName(userName);
             userInfo.setCityCode("上海");
-            userInfo.setType(OperatorsEnum.CHINAMOBILE.getValue());
+            userInfo.setType(OperatorsEnum.CHINAMOBILE.getCode());
             UserInfo ret = userInfoService.insertIgnore(userInfo);
             if (ret != null) {
                 chinaMobileScheduler.setParams(ret.getId(), cookies);

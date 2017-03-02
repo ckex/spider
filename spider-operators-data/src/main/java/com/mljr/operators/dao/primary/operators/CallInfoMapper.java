@@ -11,4 +11,6 @@ import java.util.List;
 public interface CallInfoMapper extends BaseMapper<CallInfo, Long> {
 
     void insertByBatch(@Param("userInfoDetailId") Long userInfoId, @Param("list") List<CallInfo> list);
+
+    List<CallInfo> selectByUid(Long userInfoId);
 }

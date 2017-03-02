@@ -11,4 +11,6 @@ public interface FlowInfoMapper extends BaseMapper<FlowInfo, Long> {
 
     int insertByBatch(List<FlowInfo> list);
 
+    List<FlowInfo> selectByUid(Long userInfoId);
+
 }
