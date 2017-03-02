@@ -25,7 +25,9 @@ public class RedisClient {
     config.setMaxIdle(maxIdle);
     config.setTestOnBorrow(true);
     config.setMaxWaitMillis(maxWaitMillis);
-    this.pool = new JedisPool(config, host, port, timeout,"mljr9876543210");
+    //TODO DATASYNC ADD PASSWARD
+//    this.pool = new JedisPool(config, host, port, timeout,"mljr9876543210"); 
+    this.pool = new JedisPool(config, host, port, timeout);
   }
 
   private Jedis getResource() {
