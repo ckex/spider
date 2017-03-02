@@ -48,4 +48,23 @@ public enum ProvinceEnum {
     public String getName() {
         return name;
     }
+
+    public static ProvinceEnum indexOf(String value) {
+        for (ProvinceEnum enums : ProvinceEnum.values()) {
+            if (value.equals(enums.getName())) {
+                return enums;
+            }
+        }
+        return null;
+    }
+
+    public static String getCode(String value) {
+        for (ProvinceEnum e : ProvinceEnum.values()) {
+            if (value.contains(e.getName())) {
+                return e.name();
+            }
+        }
+        return "";
+    }
+
 }

@@ -1,23 +1,32 @@
 package com.mljr.operators.service;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.mljr.common.ServiceConfig;
+import com.mljr.operators.common.constant.ErrorCodeEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.ApiData;
 import com.mljr.operators.entity.PhoneInfo;
-import com.mljr.operators.entity.TokenReqResponse;
 import com.mljr.operators.entity.model.operators.CallInfo;
 import com.mljr.operators.entity.model.operators.FlowInfo;
 import com.mljr.operators.entity.model.operators.SMSInfo;
 import com.mljr.operators.entity.model.operators.UserInfo;
 import com.mljr.operators.service.primary.operators.*;
+import com.mljr.redis.RedisClient;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
+import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by songchi on 17/3/1.
@@ -44,29 +53,61 @@ public class ApiService {
     @Autowired
     IBillInfoService billInfoService;
 
+    RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
+
+    public final static String TOKEN_KEY = "token-uid";
+
     // TODO
     public RequestInfoEnum checkState(String token) {
         return RequestInfoEnum.SUCCESS;
     }
 
-    // TODO
     public Long findUidByToken(String token) {
-        return 7L;
+        return redisClient.use(new Function<Jedis, Long>() {
+            @Nullable
+            @Override
+            public Long apply(@Nullable Jedis jedis) {
+                List<String> retList = jedis.hmget(TOKEN_KEY, token);
+                if (CollectionUtils.isNotEmpty(retList)) {
+                    return Long.parseLong(retList.get(0));
+                }
+                return -1L;
+            }
+        });
     }
 
-    public PhoneInfo getPhoneInfo(String cellphone) throws Exception{
+    public String saveToken(String token, Long uid) {
+        return redisClient.use(new Function<Jedis, String>() {
+            @Nullable
+            @Override
+            public String apply(@Nullable Jedis jedis) {
+                Map<String, String> map = Maps.newHashMap();
+                map.put(token, String.valueOf(uid));
+                return jedis.hmset(TOKEN_KEY, map);
+            }
+        });
+    }
+
+    public PhoneInfo getPhoneInfo(String cellphone) {
+
         String urlPattern = "http://apis.juhe.cn/mobile/get?phone=%s&dtype=json&key=f36726f33204fd46ed1c380826eab4e2";
-        String ret = Jsoup.connect(String.format(urlPattern,cellphone)).timeout(1000 * 60).execute().body();
+        String ret = null;
+        try {
+            ret = Jsoup.connect(String.format(urlPattern, cellphone)).ignoreContentType(true)
+                    .timeout(1000 * 60).execute().body();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return gson.fromJson(ret, PhoneInfo.class);
     }
 
-    public String getData(String token) {
+    public ApiData getData(String token) {
         Long uid = findUidByToken(token);
         ApiData data = new ApiData();
         data.setStatus("success");
         data.setUpdate_time(DateFormatUtils.format(new Date(), PATTERN));
-        data.setError_code(31200);
-        data.setError_msg("请求用户数据成功");
+        data.setError_code(ErrorCodeEnum.TASK_SUCC.getCode());
+        data.setError_msg(ErrorCodeEnum.TASK_SUCC.getDesc());
 
         ApiData.RequestArgsBean argsBean = new ApiData.RequestArgsBean();
         argsBean.setToken(token);
@@ -90,8 +131,7 @@ public class ApiService {
 
         data.setTransactions(Lists.newArrayList(tbx));
 
-
-        return gson.toJson(data);
+        return data;
     }
 
 

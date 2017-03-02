@@ -33,7 +33,7 @@ public class RequestInfoServiceImplTest extends BaseTest {
     RequestInfo entity = new RequestInfo();
     entity.setMobile("18521705532");
     entity.setIdcard("429*************34");
-    entity.setOperatorsType(OperatorsEnum.CHINAUNICOM.getValue());
+    entity.setOperatorsType(OperatorsEnum.CHINAUNICOM.getCode());
     entity.setStartDate(DateUtil.defaultStringToDate("2016-12-01"));
     entity.setEndDate(DateUtil.defaultStringToDate("2016-12-31"));
     entity.setSign("HASH");
@@ -45,7 +45,7 @@ public class RequestInfoServiceImplTest extends BaseTest {
     RequestInfo entity2 = new RequestInfo();
     entity2.setMobile("18521705533");
     entity2.setIdcard("429*************34");
-    entity2.setOperatorsType(OperatorsEnum.CHINAUNICOM.getValue());
+    entity2.setOperatorsType(OperatorsEnum.CHINAUNICOM.getCode());
     entity2.setStartDate(DateUtil.defaultStringToDate("2016-12-01"));
     entity2.setEndDate(DateUtil.defaultStringToDate("2016-12-31"));
     entity2.setSign("HASH1");

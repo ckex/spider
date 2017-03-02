@@ -11,19 +11,19 @@ public enum RequestInfoEnum implements IndexedEnum<RequestInfoEnum> {
 
   INIT(1, "初始化"), RUNNING(2,"运行中"),SUCCESS(3, "成功"), ERROR(4, "失败"),;
 
-  private int value;
+  private int code;
 
-  private String name;
+  private String desc;
 
-  RequestInfoEnum(int value, String name) {
-    this.value = value;
-    this.name = name;
+  RequestInfoEnum(int code, String name) {
+    this.code = code;
+    this.desc = name;
   }
 
 
   @Override
   public int getIndex() {
-    return this.value;
+    return this.code;
   }
 
   private static final ImmutableMap<Integer, RequestInfoEnum> INDEXS =
