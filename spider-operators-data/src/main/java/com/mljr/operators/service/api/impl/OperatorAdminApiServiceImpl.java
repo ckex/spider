@@ -1,8 +1,8 @@
-package com.mljr.operators.api.impl;
+package com.mljr.operators.service.api.impl;
 
-import com.mljr.operators.api.IOperatorAdminApiService;
 import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
+import com.mljr.operators.service.api.IOperatorAdminApiService;
 import com.mljr.operators.service.reqeust.IOperatorRequestUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class OperatorAdminApiServiceImpl implements IOperatorAdminApiService {
   private IOperatorRequestUrlService operatorRequestUrlService;
 
   @Override
-  public boolean notifyRequest(RequestUrlDTO requestUrlDTO) {
+  public boolean submitAcquisitionTasks(RequestUrlDTO requestUrlDTO) {
     try {
       List<RequestInfoDTO> list = operatorRequestUrlService.getAllUrlByOperator(requestUrlDTO);
       if (null != list && list.size() > 0) {

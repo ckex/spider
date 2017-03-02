@@ -2,6 +2,7 @@ package com.mljr.operators.entity.dto.operator;
 
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.OperatorsUrlEnum;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 /**
@@ -21,6 +22,8 @@ public class RequestInfoDTO {
   private OperatorsEnum operatorsEnum;
 
   private OperatorsUrlEnum operatorsUrl;
+
+  private String url;
 
   private int defaultPageNo = 1;
 
@@ -98,12 +101,24 @@ public class RequestInfoDTO {
     return this;
   }
 
+  public String getUrl() {
+    return url;
+  }
+
+  public RequestInfoDTO setUrl(String url) {
+    this.url = url;
+    return this;
+  }
+
   @Override
   public String toString() {
     return ReflectionToStringBuilder.toString(this);
   }
 
   public String getSign() {
-    return null;
+    StringBuilder builder = new StringBuilder(mobile).append(idcard).append(operatorsEnum.name())
+        .append(operatorsUrl.name()).append(url);
+    return DigestUtils.md5Hex(builder.toString());
+
   }
 }
