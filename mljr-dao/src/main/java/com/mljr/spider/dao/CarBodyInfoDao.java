@@ -8,7 +8,7 @@ import common.page.util.PageQuery;
 /**
  * Created by fulin on 2017/1/24.
  */
-@DataSource("mljrdev")
+@DataSource("udb")
 public interface CarBodyInfoDao {
   CarBodyInfoDo create(CarBodyInfoDo record);
 
