@@ -3,6 +3,8 @@ package com.mljr.operators.service.reqeust.impl.chinaunicom;
 import com.google.common.collect.Lists;
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.OperatorsUrlEnum;
+import com.mljr.operators.common.utils.DateUtil;
+import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
 import com.mljr.operators.service.reqeust.AbstractRequestUrlSelectorService;
@@ -21,7 +23,8 @@ public class USMSUrlSelectorService extends AbstractRequestUrlSelectorService {
   public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl) {
     List<RequestInfoDTO> list = Lists.newArrayList();
     getRecentMonth(requestUrl.getStartDate(), 5).forEach(datePair -> {
-      list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, 1));
+      String url = getUrl(datePair, 1);
+      list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
     });
     return list;
   }
@@ -34,5 +37,15 @@ public class USMSUrlSelectorService extends AbstractRequestUrlSelectorService {
   @Override
   protected OperatorsUrlEnum getOperatorsUrl() {
     return OperatorsUrlEnum.CHINA_UNICOM_SMS;
+  }
+
+  @Override
+  protected String getPattern() {
+    return DateUtil.PATTERN_yyyyMMdd;
+  }
+
+  private String getUrl(DatePair datePair, int pageNo) {
+    return String.format(getOperatorsUrl().getUrl(), pageNo,
+        datePair.getStartDate().replaceAll("-", ""), datePair.getEndDate().replaceAll("-", ""));
   }
 }

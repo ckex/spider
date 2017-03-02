@@ -26,6 +26,7 @@ public class DateUtil {
   public static final String PATTERN_yyyy_MM = "yyyy-MM";
   public static final String PATTERN_yyyy_MM_dd = "yyyy-MM-dd";
   public static final String PATTERN_yyyyMMdd = "yyyyMMdd";
+  public static final String PATTERN_yyyyMM="yyyyMM";
   public static final String PATTERN_MMdd = "MM-dd";
   public static final String PATTERN_yyMMdd = "yy/MM/dd";
   public static final String PATTERN_yyyyMMddHHmmss = "yyyyMMddHHmmss";

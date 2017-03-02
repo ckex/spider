@@ -1,8 +1,12 @@
 package com.mljr.operators.service.api.impl;
 
+import com.mljr.operators.common.constant.RequestInfoEnum;
+import com.mljr.operators.convert.RequestInfoConvert;
 import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
+import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.api.IOperatorAdminApiService;
+import com.mljr.operators.service.primary.operators.IRequestInfoService;
 import com.mljr.operators.service.reqeust.IOperatorRequestUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +27,16 @@ public class OperatorAdminApiServiceImpl implements IOperatorAdminApiService {
   @Autowired
   private IOperatorRequestUrlService operatorRequestUrlService;
 
+  @Autowired
+  private IRequestInfoService requestInfoService;
+
   @Override
   public boolean submitAcquisitionTasks(RequestUrlDTO requestUrlDTO) {
     try {
       List<RequestInfoDTO> list = operatorRequestUrlService.getAllUrlByOperator(requestUrlDTO);
       if (null != list && list.size() > 0) {
-
+        List<RequestInfo> requestInfoList = RequestInfoConvert.convert(list, RequestInfoEnum.INIT);
+        requestInfoService.insertByBatch(requestInfoList);
       }
       return true;
     } catch (Exception e) {

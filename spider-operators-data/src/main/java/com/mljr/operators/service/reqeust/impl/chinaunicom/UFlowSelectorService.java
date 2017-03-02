@@ -31,8 +31,10 @@ public class UFlowSelectorService extends AbstractRequestUrlSelectorService {
           DateUtil.stringToLocalDate(datePair.getEndDate(), DateUtil.PATTERN_yyyy_MM_dd);
       dayDatePairs.addAll(getEachDay(startDate, endDate));
     });
-    dayDatePairs.forEach(
-        datePair -> list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, 1)));
+    dayDatePairs.forEach(datePair -> {
+      String url = getUrl(datePair, 1);
+      list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+    });
     return list;
   }
 
@@ -44,5 +46,10 @@ public class UFlowSelectorService extends AbstractRequestUrlSelectorService {
   @Override
   protected OperatorsUrlEnum getOperatorsUrl() {
     return OperatorsUrlEnum.CHINA_UNICOM_FLOW;
+  }
+
+  private String getUrl(DatePair datePair, int pageNo) {
+    return String.format(getOperatorsUrl().getUrl(), pageNo, datePair.getStartDate(),
+        datePair.getEndDate());
   }
 }
