@@ -22,8 +22,9 @@ public class RequestUrlSelectorServiceImplTest extends BaseTest {
 
   @Test
   public void testSelectorService() {
-    RequestUrlDTO requestUrl=new RequestUrlDTO("18521705531","idcard",OperatorsEnum.CHINATELECOM,ProvinceEnum.SH);
-    List<RequestInfoDTO> list =requestUrlChooseService.getAllUrlByOperator(requestUrl);
+    RequestUrlDTO requestUrl =
+        new RequestUrlDTO("18521705531", "idcard", OperatorsEnum.CHINAUNICOM, ProvinceEnum.SH);
+    List<RequestInfoDTO> list = requestUrlChooseService.getAllUrlByOperator(requestUrl);
 
     System.out.println();
   }

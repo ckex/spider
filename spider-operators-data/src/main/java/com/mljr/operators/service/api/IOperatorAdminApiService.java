@@ -1,4 +1,4 @@
-package com.mljr.operators.api;
+package com.mljr.operators.service.api;
 
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
 
@@ -9,11 +9,11 @@ import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
 public interface IOperatorAdminApiService {
 
   /**
-   * 通知后台请求
+   * 提交采集任务
    * 
    * @param requestUrlDTO
    * @return
    */
-  boolean notifyRequest(RequestUrlDTO requestUrlDTO);
+  boolean submitAcquisitionTasks(RequestUrlDTO requestUrlDTO);
 
 }
