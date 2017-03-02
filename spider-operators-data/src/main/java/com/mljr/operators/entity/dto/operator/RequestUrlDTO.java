@@ -2,17 +2,18 @@ package com.mljr.operators.entity.dto.operator;
 
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.ProvinceEnum;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * @author gaoxi
- * @time 2017/2/27
+ * @time 2017/3/2
  */
-public class AcquisitionDTO implements Serializable {
+public class RequestUrlDTO implements Serializable {
 
-  private static final long serialVersionUID = 7315260678662042609L;
+  private static final long serialVersionUID = -8122181270090911106L;
 
   private String mobile;
 
@@ -22,7 +23,15 @@ public class AcquisitionDTO implements Serializable {
 
   private ProvinceEnum province;
 
-  private LocalDate startDate =LocalDate.now();
+  private LocalDate startDate = LocalDate.now();
+
+  public RequestUrlDTO(String mobile, String idcard, OperatorsEnum operators,
+      ProvinceEnum province) {
+    this.mobile = mobile;
+    this.idcard = idcard;
+    this.operators = operators;
+    this.province = province;
+  }
 
   public String getMobile() {
     return mobile;
@@ -48,15 +57,20 @@ public class AcquisitionDTO implements Serializable {
     this.operators = operators;
   }
 
-  public LocalDate getStartDate() {
-    return startDate;
-  }
-
   public ProvinceEnum getProvince() {
     return province;
   }
 
   public void setProvince(ProvinceEnum province) {
     this.province = province;
+  }
+
+  public LocalDate getStartDate() {
+    return startDate;
+  }
+
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this);
   }
 }

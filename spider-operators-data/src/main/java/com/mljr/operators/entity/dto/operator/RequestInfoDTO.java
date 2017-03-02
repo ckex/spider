@@ -1,6 +1,7 @@
 package com.mljr.operators.entity.dto.operator;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import com.mljr.operators.common.constant.OperatorsEnum;
+import com.mljr.operators.common.constant.OperatorsUrlEnum;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 /**
@@ -13,20 +14,26 @@ public class RequestInfoDTO {
 
   private String idcard;
 
-  private String operatorsType;
-
-  private Integer urlType;
-
-  private String url;
-
   private String startDate;
 
   private String endDate;
 
-  public static RequestInfoDTO me() {
-    return new RequestInfoDTO();
+  private OperatorsEnum operatorsEnum;
+
+  private OperatorsUrlEnum operatorsUrl;
+
+  private int defaultPageNo = 1;
+
+  private Integer pageNo;
+
+  public RequestInfoDTO(String mobile, String idcard) {
+    this.mobile = mobile;
+    this.idcard = idcard;
   }
 
+  public RequestInfoDTO me(String mobile, String idcard) {
+    return new RequestInfoDTO(mobile, idcard);
+  }
 
   public String getMobile() {
     return mobile;
@@ -43,33 +50,6 @@ public class RequestInfoDTO {
 
   public RequestInfoDTO setIdcard(String idcard) {
     this.idcard = idcard;
-    return this;
-  }
-
-  public String getOperatorsType() {
-    return operatorsType;
-  }
-
-  public RequestInfoDTO setOperatorsType(String operatorsType) {
-    this.operatorsType = operatorsType;
-    return this;
-  }
-
-  public Integer getUrlType() {
-    return urlType;
-  }
-
-  public RequestInfoDTO setUrlType(Integer urlType) {
-    this.urlType = urlType;
-    return this;
-  }
-
-  public String getUrl() {
-    return url;
-  }
-
-  public RequestInfoDTO setUrl(String url) {
-    this.url = url;
     return this;
   }
 
@@ -91,15 +71,39 @@ public class RequestInfoDTO {
     return this;
   }
 
+  public OperatorsEnum getOperatorsEnum() {
+    return operatorsEnum;
+  }
+
+  public RequestInfoDTO setOperatorsEnum(OperatorsEnum operatorsEnum) {
+    this.operatorsEnum = operatorsEnum;
+    return this;
+  }
+
+  public OperatorsUrlEnum getOperatorsUrl() {
+    return operatorsUrl;
+  }
+
+  public RequestInfoDTO setOperatorsUrl(OperatorsUrlEnum operatorsUrl) {
+    this.operatorsUrl = operatorsUrl;
+    return this;
+  }
+
+  public Integer getPageNo() {
+    return pageNo;
+  }
+
+  public RequestInfoDTO setPageNo(Integer pageNo) {
+    this.pageNo = pageNo == null || pageNo.intValue() == 0 ? defaultPageNo : pageNo;
+    return this;
+  }
+
   @Override
   public String toString() {
     return ReflectionToStringBuilder.toString(this);
   }
 
   public String getSign() {
-    StringBuilder builder = new StringBuilder();
-    builder.append(mobile.trim()).append(idcard.trim()).append(operatorsType.trim()).append(urlType)
-        .append(url.trim()).append(startDate.trim()).append(endDate.trim());
-    return DigestUtils.md5Hex(builder.toString());
+    return null;
   }
 }

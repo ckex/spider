@@ -212,7 +212,7 @@
 
   <select id="getPerRequestDate" resultType="java.util.Date">
     SELECT MAX(END_DATE) FROM t_request_info WHERE MOBILE=#{mobile}
-    AND IDCARD=#{idcard} AND OPERATORS_TYPE=#{operatorsType}
+    AND IDCARD=#{idcard}
   </select>
 
 </mapper>
