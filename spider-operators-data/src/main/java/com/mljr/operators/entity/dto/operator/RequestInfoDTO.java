@@ -25,9 +25,7 @@ public class RequestInfoDTO {
 
   private String url;
 
-  private int defaultPageNo = 1;
-
-  private Integer pageNo;
+  private String pattern;
 
   public RequestInfoDTO(String mobile, String idcard) {
     this.mobile = mobile;
@@ -92,15 +90,6 @@ public class RequestInfoDTO {
     return this;
   }
 
-  public Integer getPageNo() {
-    return pageNo;
-  }
-
-  public RequestInfoDTO setPageNo(Integer pageNo) {
-    this.pageNo = pageNo == null || pageNo.intValue() == 0 ? defaultPageNo : pageNo;
-    return this;
-  }
-
   public String getUrl() {
     return url;
   }
@@ -110,15 +99,23 @@ public class RequestInfoDTO {
     return this;
   }
 
+  public String getPattern() {
+    return pattern;
+  }
+
+  public RequestInfoDTO setPattern(String pattern) {
+    this.pattern = pattern;
+    return this;
+  }
+
   @Override
   public String toString() {
     return ReflectionToStringBuilder.toString(this);
   }
 
   public String getSign() {
-    StringBuilder builder = new StringBuilder(mobile).append(idcard).append(operatorsEnum.name())
-        .append(operatorsUrl.name()).append(url);
+    StringBuilder builder =
+        new StringBuilder(mobile).append(idcard).append(operatorsEnum.name()).append(url);
     return DigestUtils.md5Hex(builder.toString());
-
   }
 }

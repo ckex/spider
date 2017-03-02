@@ -23,12 +23,21 @@ public abstract class AbstractRequestUrlSelectorService implements IRequestUrlSe
     return Lists.newArrayList(ProvinceEnum.values());
   }
 
+  /**
+   * 获取要请求的URL
+   * 
+   * @return
+   */
   protected abstract OperatorsUrlEnum getOperatorsUrl();
 
-  protected RequestInfoDTO convert(String mobile, String idcard, DatePair datePair, int pageNo) {
+  protected RequestInfoDTO convert(String mobile, String idcard, DatePair datePair, String url) {
     return new RequestInfoDTO(mobile, idcard).setOperatorsEnum(getOperator())
-        .setStartDate(datePair.getStartDate()).setEndDate(datePair.getEndDate()).setPageNo(pageNo)
-        .setOperatorsUrl(getOperatorsUrl());
+        .setStartDate(datePair.getStartDate()).setEndDate(datePair.getEndDate()).setUrl(url)
+        .setPattern(getPattern()).setOperatorsUrl(getOperatorsUrl());
+  }
+
+  protected String getPattern() {
+    return DateUtil.PATTERN_yyyy_MM_dd;
   }
 
   /**
@@ -43,8 +52,10 @@ public abstract class AbstractRequestUrlSelectorService implements IRequestUrlSe
     List<DatePair> fiveList =
         DateUtil.getPreEachOfMonth(localDate, monthCount, DateUtil.PATTERN_yyyy_MM_dd);
     List<DatePair> filterList =
-        fiveList.stream().filter(datePair1 -> !(datePair1.getStartDate() == datePair.getStartDate()
-            && datePair1.getEndDate() == datePair.getEndDate())).collect(Collectors.toList());
+        fiveList.stream()
+            .filter(datePair1 -> !(datePair1.getStartDate().equals(datePair.getStartDate())
+                && datePair1.getEndDate().equals(datePair.getEndDate())))
+            .collect(Collectors.toList());
     list.add(datePair);
     list.addAll(filterList);
     return list;
