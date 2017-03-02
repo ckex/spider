@@ -32,6 +32,12 @@ public enum ErrorCodeEnum {
 
     TOKEN_SUCC(65557, "生成token成功"),
 
+    USER_NOT_FOUND(28000,"没有找到用户,请先申请有效的token"),
+
+    COLLECT_REQ_SUCC(30000, "申请采集任务成功"),
+
+    COLLECT_REQ_FAIL(30001, "申请采集任务失败"),
+
     TASK_RUNNING(31218,"采集任务运行中,请你稍后再试"),
 
     TASK_ERROR(31219,"采集任务失败,请重新提交采集申请"),
