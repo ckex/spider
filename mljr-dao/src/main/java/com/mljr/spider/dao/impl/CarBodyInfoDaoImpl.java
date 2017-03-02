@@ -42,4 +42,16 @@ public class CarBodyInfoDaoImpl extends AbstractBasicDao implements CarBodyInfoD
     result.setPaginator(paginator);
     return result;
   }
+
+  @Override
+  public CarBodyInfoDo load(String carName) {
+    SearchMap map = new SearchMap();
+    map.add("car_name",carName);
+    return (CarBodyInfoDo)getSqlSessionTemplate().selectOne("Mapper.car_home_merge_info.listByName",map);
+  }
+
+  @Override
+  public boolean update(CarBodyInfoDo record) {
+    return getSqlSessionTemplate().update("Mapper.car_home_merge_info.update", record) > 0;
+  }
 }
