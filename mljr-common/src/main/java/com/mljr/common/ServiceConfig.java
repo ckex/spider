@@ -68,9 +68,13 @@ public class ServiceConfig {
   public static RedisClient getSpiderRedisClient() {
     if (redisClient == null) {
       redisClient = new RedisClient(getSpiderRedisHost(), getSpiderRedisPort(), getSpiderRedisTimeout(), getSpiderRedisMaxTotal(),
-          getSpiderRedisMaxIdle(), getSpiderMaxWaitMillis());
+          getSpiderRedisMaxIdle(), getSpiderMaxWaitMillis(),getSpiderRedisPwd());
     }
     return redisClient;
+  }
+
+  private static String getSpiderRedisPwd() {
+    return properties.getProperty("redis.spider.pwd");
   }
 
   private static RedisClient redisClient;
