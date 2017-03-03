@@ -33,6 +33,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
 
     @Override
     boolean onProcess(Page page) {
+        String sourceUrl = page.getUrl().get();
         //获取对应的数据存入到队列中去
         Html html = page.getHtml();
         //先获取表格的行数
@@ -553,6 +554,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
             map.put("car_notice","");
             //汽车来源
             map.put("source_come","汽车之家");
+            map.put("source_url",sourceUrl);
             listmap.add(map);
         }
         page.putField("data", listmap);
