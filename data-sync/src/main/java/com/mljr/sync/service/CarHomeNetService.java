@@ -1,6 +1,7 @@
 package com.mljr.sync.service;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import com.google.gson.Gson;
 import com.mljr.rabbitmq.RabbitmqClient;
@@ -123,7 +124,7 @@ public class CarHomeNetService {
       car.setAutomaticAirConditioner(map.get("car_conditioner"));
       car.setMultifunctionSteerWheel(map.get("car_wheel"));
       car.setSeatArrangement(map.get("car_seat_arrangement"));
-      car.setSourceCome(map.get("source_come"));
+      car.setSourceCome(Joiner.on("@").join(map.get("source_come"),map.get("source_url")));
       car.setOfficialDisplacement(map.get("official_displacement"));
       car.setCreateTime(new Date());
       car.setUpdateTime(new Date());
