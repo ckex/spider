@@ -13,6 +13,7 @@ import com.rabbitmq.client.GetResponse;
 
 import redis.clients.jedis.Jedis;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public class CarHomeNetService {
           String message = new String(response.getBody(), "UTF-8");
           writeToDb(message);
           channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
-        } catch (Exception e) {
+        } catch (Throwable e) {
           logger.error("CarHomeNetService error: " + ", " + ExceptionUtils.getStackTrace(e));
         }
       }
@@ -124,7 +125,8 @@ public class CarHomeNetService {
       car.setAutomaticAirConditioner(map.get("car_conditioner"));
       car.setMultifunctionSteerWheel(map.get("car_wheel"));
       car.setSeatArrangement(map.get("car_seat_arrangement"));
-      car.setSourceCome(Joiner.on("@").join(map.get("source_come"),map.get("source_url")));
+      String url = map.get("source_url");
+      car.setSourceCome(Joiner.on("@").join(map.get("source_come"), StringUtils.isBlank(url) ? "" : url));
       car.setOfficialDisplacement(map.get("official_displacement"));
       car.setCreateTime(new Date());
       car.setUpdateTime(new Date());
