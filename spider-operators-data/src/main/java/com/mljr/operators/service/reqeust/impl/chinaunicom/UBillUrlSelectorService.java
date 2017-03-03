@@ -10,7 +10,7 @@ import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
 import com.mljr.operators.service.reqeust.AbstractRequestUrlSelectorService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,11 +21,13 @@ import java.util.List;
 public class UBillUrlSelectorService extends AbstractRequestUrlSelectorService {
 
   @Override
-  public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl) {
+  public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {
     List<RequestInfoDTO> list = Lists.newArrayList();
     getRecentMonth(requestUrl.getStartDate(), 5).forEach(datePair -> {
-      String url = getUrl(datePair);
-      list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+      if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
+        String url = getUrl(datePair);
+        list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+      }
     });
     return list;
   }
@@ -49,4 +51,6 @@ public class UBillUrlSelectorService extends AbstractRequestUrlSelectorService {
     String[] dateStr = datePair.getEndDate().split("-");
     return String.format(getOperatorsUrl().getUrl(), dateStr[0] + dateStr[1]);
   }
+
+
 }

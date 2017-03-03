@@ -9,6 +9,7 @@ import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,5 +84,28 @@ public abstract class AbstractRequestUrlSelectorService implements IRequestUrlSe
    */
   protected List<DatePair> getEachDay(LocalDate startDate, LocalDate endDate) {
     return DateUtil.getEachDayOfBetween(startDate, endDate, DateUtil.PATTERN_yyyy_MM_dd);
+  }
+
+  /**
+   * 过滤URL
+   * 
+   * @param filterDate 过滤日期
+   * @param datePair 传入日期
+   * @return
+   */
+  protected DatePair filterUrl(Date filterDate, DatePair datePair) {
+    LocalDate startDate =
+        DateUtil.stringToLocalDate(datePair.getStartDate(), DateUtil.PATTERN_yyyy_MM_dd);
+    LocalDate endDate =
+        DateUtil.stringToLocalDate(datePair.getEndDate(), DateUtil.PATTERN_yyyy_MM_dd);
+    LocalDate filterLocalDate = DateUtil.dateToLocalDate(filterDate);
+    if (filterLocalDate.isAfter(endDate) || filterLocalDate.isEqual(endDate))
+      return null;
+    else if ((startDate.isBefore(filterLocalDate) || startDate.isEqual(filterLocalDate))
+        && endDate.isAfter(filterLocalDate)) {
+      datePair.setStartDate(
+          DateUtil.dateToString(filterLocalDate.plusDays(1), DateUtil.PATTERN_yyyy_MM_dd));
+    }
+    return datePair;
   }
 }

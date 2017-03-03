@@ -16,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author gaoxi
@@ -42,36 +42,18 @@ public class OperatorRequestUrlServiceImpl implements IOperatorRequestUrlService
 
   @Override
   public List<RequestInfoDTO> getAllUrlByOperator(RequestUrlDTO requestUrl) {
+    Date date = DateUtil.localDateToDate(LocalDate.of(2017,2,27));
+//        requestInfoService.getPerRequestDate(requestUrl.getMobile(), requestUrl.getIdcard());
     List<RequestInfoDTO> list = Lists.newArrayList();
     requestUrlSelectorServices.forEach(requestUrlSelectorService -> {
       if (requestUrlSelectorService.getOperator() == requestUrl.getOperators()
           && requestUrlSelectorService.availableProvince().contains(requestUrl.getProvince())) {
-        list.addAll(requestUrlSelectorService.getRequestUrl(requestUrl));
+        list.addAll(requestUrlSelectorService.getRequestUrl(requestUrl, date));
       }
     });
     if (LOGGER.isDebugEnabled()) {
       LOGGER.debug("get all url.requestUrl:{},data:{}", requestUrl.toString(), JSON.toJSON(list));
     }
-    if (!list.isEmpty()) {
-      RequestInfoDTO entity = list.get(0);
-      // Date date = requestInfoService.getPerRequestDate(entity.getMobile(), entity.getIdcard());
-
-    }
     return list;
-  }
-
-  private List<RequestInfoDTO> filter(LocalDate filterDate, List<RequestInfoDTO> list) {
-    return list.stream().filter(requestInfoDTO -> {
-      LocalDate startDate =
-          DateUtil.stringToLocalDate(requestInfoDTO.getStartDate(), DateUtil.PATTERN_yyyy_MM_dd);
-      LocalDate endDate =
-          DateUtil.stringToLocalDate(requestInfoDTO.getEndDate(), DateUtil.PATTERN_yyyy_MM_dd);
-      if (filterDate.isAfter(endDate)) {
-        return false;
-      } else if (startDate.isBefore(filterDate) && filterDate.isAfter(endDate)) {
-
-      }
-      return true;
-    }).collect(Collectors.toList());
   }
 }

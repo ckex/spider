@@ -5,6 +5,7 @@ import com.mljr.operators.common.constant.ProvinceEnum;
 import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,9 +25,10 @@ public interface IRequestUrlSelectorService {
    * 获取请求URL
    * 
    * @param requestUrl 请求URL参数
+   * @param filterDate 过滤日期
    * @return
    */
-  List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl);
+  List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate);
 
   /**
    * 运营商

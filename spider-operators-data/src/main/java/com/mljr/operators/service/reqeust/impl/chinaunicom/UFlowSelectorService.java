@@ -11,6 +11,7 @@ import com.mljr.operators.service.reqeust.AbstractRequestUrlSelectorService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ import java.util.List;
 public class UFlowSelectorService extends AbstractRequestUrlSelectorService {
 
   @Override
-  public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl) {
+  public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {
     List<RequestInfoDTO> list = Lists.newArrayList();
     List<DatePair> dayDatePairs = Lists.newArrayList();
     getRecentMonth(requestUrl.getStartDate(), 5).forEach(datePair -> {
@@ -32,8 +33,10 @@ public class UFlowSelectorService extends AbstractRequestUrlSelectorService {
       dayDatePairs.addAll(getEachDay(startDate, endDate));
     });
     dayDatePairs.forEach(datePair -> {
-      String url = getUrl(datePair, 1);
-      list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+      if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
+        String url = getUrl(datePair, 1);
+        list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+      }
     });
     return list;
   }

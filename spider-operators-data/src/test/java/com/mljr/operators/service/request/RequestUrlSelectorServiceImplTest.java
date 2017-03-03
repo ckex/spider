@@ -26,6 +26,8 @@ public class RequestUrlSelectorServiceImplTest extends BaseTest {
         new RequestUrlDTO("18521705531", "idcard", OperatorsEnum.CHINAUNICOM, ProvinceEnum.SH);
     List<RequestInfoDTO> list = requestUrlChooseService.getAllUrlByOperator(requestUrl);
 
+
+
     System.out.println();
   }
 }
