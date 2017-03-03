@@ -1,6 +1,5 @@
 package com.mljr.operators.service;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -20,9 +19,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -65,16 +62,12 @@ public class ApiService {
     }
 
     public Long findUidByToken(String token) {
-        return redisClient.use(new Function<Jedis, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable Jedis jedis) {
-                List<String> retList = jedis.hmget(TOKEN_KEY, token);
-                if (CollectionUtils.isNotEmpty(retList)) {
-                    return Long.parseLong(retList.get(0));
-                }
-                return -1L;
+        return redisClient.use(jedis -> {
+            List<String> retList = jedis.hmget(TOKEN_KEY, token);
+            if (CollectionUtils.isNotEmpty(retList)) {
+                return Long.parseLong(retList.get(0));
             }
+            return -1L;
         });
     }
 
@@ -83,39 +76,28 @@ public class ApiService {
     }
 
     public String saveToken(String token, Long uid) {
-        return redisClient.use(new Function<Jedis, String>() {
-            @Nullable
-            @Override
-            public String apply(@Nullable Jedis jedis) {
-                Map<String, String> map = Maps.newHashMap();
-                map.put(token, String.valueOf(uid));
-                return jedis.hmset(TOKEN_KEY, map);
-            }
+        return redisClient.use(jedis -> {
+            Map<String, String> map = Maps.newHashMap();
+            map.put(token, String.valueOf(uid));
+            return jedis.hmset(TOKEN_KEY, map);
         });
     }
 
     public String saveCookies(String cellphone, String cookies) {
-        return redisClient.use(new Function<Jedis, String>() {
-            @Nullable
-            @Override
-            public String apply(@Nullable Jedis jedis) {
-                Map<String, String> map = Maps.newHashMap();
-                map.put(cellphone, cookies);
-                return jedis.hmset(COOKIES_KEY, map);
-            }
+        return redisClient.use(jedis -> {
+            Map<String, String> map = Maps.newHashMap();
+            map.put(cellphone, cookies);
+            return jedis.hmset(COOKIES_KEY, map);
         });
     }
 
     public String findCookiesByCellphone(String cellphone) {
-        return redisClient.use(new Function<Jedis, String>() {
-            @Override
-            public String apply(Jedis jedis) {
-                List<String> retList = jedis.hmget(COOKIES_KEY, cellphone);
-                if (CollectionUtils.isNotEmpty(retList)) {
-                    return retList.get(0);
-                }
-                return null;
+        return redisClient.use(jedis -> {
+            List<String> retList = jedis.hmget(COOKIES_KEY, cellphone);
+            if (CollectionUtils.isNotEmpty(retList)) {
+                return retList.get(0);
             }
+            return null;
         });
     }
 
