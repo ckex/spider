@@ -99,7 +99,7 @@
 						<id>Generate MyBatis Artifacts</id>
 						<phase>package</phase>
 						<goals>
-							<goal>generate</goal>
+							<goal>help</goal>
 						</goals>
 					</execution>
 				</executions>

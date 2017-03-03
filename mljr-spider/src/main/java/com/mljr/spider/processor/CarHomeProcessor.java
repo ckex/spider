@@ -33,6 +33,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
 
     @Override
     boolean onProcess(Page page) {
+        String sourceUrl = page.getUrl().get();
         //获取对应的数据存入到队列中去
         Html html = page.getHtml();
         //先获取表格的行数
@@ -210,7 +211,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
             }
             //放入发动机型号
             if(map2.containsKey("发动机型号")){
-                map.put("car_engine",map2.get("发动机型号").replace("-","").replace("●",""));
+                map.put("car_engine",map2.get("发动机型号").replace("-","").replace("○","").replace("●",""));
             }else{
                 map.put("car_engine","");
             }
@@ -391,7 +392,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
 
            //座椅材质
             if(map2.containsKey("座椅材质")){
-                String seatMaterial = map2.get("座椅材质").replace("-","").replace("●","");
+                String seatMaterial = map2.get("座椅材质").replace("-","").replace("○","").replace("●","");
                 if(seatMaterial.contains("￥") ||seatMaterial.contains("免费")||seatMaterial.contains("暂无价格")){
                     int num = seatMaterial.indexOf("\n");
                     String subLine = seatMaterial.substring(0,num+1);
@@ -415,7 +416,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
             }
             //大灯
             if(map2.containsKey("远光灯")){
-                String headMap=map2.get("远光灯").replace("-","").replace("●","");
+                String headMap=map2.get("远光灯").replace("-","").replace("○","").replace("●","");
                 if(headMap.contains("￥") ||headMap.contains("免费")||headMap.contains("暂无价格")){
                     int num = headMap.indexOf("\n");
                     String subLine = headMap.substring(0,num+1);
@@ -507,7 +508,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
             }
             //汽车空调
             if(map2.containsKey("空调控制方式")){
-                String aircon= map2.get("空调控制方式").replace("-","").replace("●","");
+                String aircon= map2.get("空调控制方式").replace("-","").replace("○","").replace("●","");
                 if(aircon != null){
                     map.put("car_conditioner",aircon);
                 }else{
@@ -553,6 +554,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
             map.put("car_notice","");
             //汽车来源
             map.put("source_come","汽车之家");
+            map.put("source_url",sourceUrl);
             listmap.add(map);
         }
         page.putField("data", listmap);

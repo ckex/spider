@@ -1,7 +1,10 @@
 package com.mljr.operators.service;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.operators.common.constant.OperatorsEnum;
+import com.mljr.operators.common.utils.ShanghaiUtils;
+import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 import com.mljr.operators.entity.model.operators.SMSInfo;
 import com.mljr.operators.service.primary.operators.ISMSInfoService;
 import org.junit.Test;
@@ -14,7 +17,7 @@ import java.util.Map;
 /**
  * Created by songchi on 17/2/17.
  */
-public class ChinaMoblieTest extends BaseTest {
+public class ChinaMoblieTest  {
 
     @Autowired
     ChinaMobileService chinaMobileService;
@@ -58,6 +61,17 @@ public class ChinaMoblieTest extends BaseTest {
         info.setBusinessType("5");
         List<SMSInfo> list = Lists.newArrayList(info, info, info, info);
         smsInfoService.insertByBatch(list);
+
+    }
+
+    @Test
+    public void testGetUrls() throws Exception {
+        List<RequestInfoDTO> list = ShanghaiUtils.getShanghaiUrls();
+        for (RequestInfoDTO dto : list) {
+            System.out.println(dto.getUrl());
+        }
+
+        System.out.println(list.size());
 
     }
 }

@@ -389,16 +389,5 @@ public class IdcardValidator {
 		}
 		return a;
 	}
-
-	public static void main(String[] args) throws Exception {
-		String idcard15 = "130321860311519";
-		String idcard18 = "210102198617083732";//
-		// 15位身份证
-		System.out.println(isValidatedAllIdcard(idcard15));
-		// 18位身份证
-		System.out.println(isValidatedAllIdcard(idcard18));
-		// 15位身份证转18位身份证
-		System.out.println(convertIdcarBy15bit(idcard15));
-	}
 }
 

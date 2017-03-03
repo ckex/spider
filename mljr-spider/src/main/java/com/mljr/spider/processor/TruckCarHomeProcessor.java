@@ -44,7 +44,6 @@ public class TruckCarHomeProcessor  extends AbstractPageProcessor {
     @Override
     boolean onProcess(Page page) {
         String currentUrl = page.getUrl().get();
-       // System.out.println("看看你是啥："+currentUrl);
         //处理首页地址，获取品牌地址
         if (currentUrl.equals(START_URL)) {
             //不处理页面
@@ -92,7 +91,6 @@ public class TruckCarHomeProcessor  extends AbstractPageProcessor {
     }
     public  void  processOneCar(Page page){
         String currentUrl = page.getUrl().get();
-        System.out.println("看看你是啥："+currentUrl);
         //获取对应的数据存入到队列中去
         Html html = page.getHtml();
         //先获取表格的行数
@@ -473,7 +471,7 @@ public class TruckCarHomeProcessor  extends AbstractPageProcessor {
             }
             //大灯
             if(map2.containsKey("氙气大灯")){
-                String headLamp = map2.get("氙气大灯").trim().replace("-","");
+                String headLamp = map2.get("氙气大灯").replace("-","").replace("○","").trim();
                 if(StringUtils.isNotBlank(headLamp)){
                     map.put("car_headlamp",map2.get("氙气大灯"));
                 }else{
@@ -496,7 +494,6 @@ public class TruckCarHomeProcessor  extends AbstractPageProcessor {
             map.put("official_displacement","");
             listmap.add(map);
             int m= listmap.size();
-            System.out.println("写入MQ中的数据："+m);
         }
         page.putField("data", listmap);
     }
