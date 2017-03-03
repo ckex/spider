@@ -27,6 +27,8 @@ public class RequestInfoDTO {
 
   private String pattern;
 
+  public RequestInfoDTO(){}
+
   public RequestInfoDTO(String mobile, String idcard) {
     this.mobile = mobile;
     this.idcard = idcard;
