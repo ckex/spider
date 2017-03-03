@@ -475,4 +475,23 @@ public class CarBodyInfoDo implements Serializable {
     this.updateTime = updateTime;
   }
 
+  @Override
+  public String toString() {
+    return "CarBodyInfoDo [id=" + id + ", uniqueCarBrand=" + uniqueCarBrand + ", vehicleBrand=" + vehicleBrand + ", vehicleModelYear="
+        + vehicleModelYear + ", vehicleCategory=" + vehicleCategory + ", vehicleFactory=" + vehicleFactory + ", originCountry=" + originCountry
+        + ", vehicleModel=" + vehicleModel + ", displacement=" + displacement + ", officialDisplacement=" + officialDisplacement
+        + ", environmentalStandard=" + environmentalStandard + ", fuelType=" + fuelType + ", engineModel=" + engineModel + ", engineHorsePower="
+        + engineHorsePower + ", driveModel=" + driveModel + ", gearbox=" + gearbox + ", seatNumber=" + seatNumber + ", configure=" + configure
+        + ", exteriorColor=" + exteriorColor + ", officialGuidePrice=" + officialGuidePrice + ", announcementType=" + announcementType
+        + ", wholeCurbWeight=" + wholeCurbWeight + ", wheelBase=" + wheelBase + ", carBodyLength=" + carBodyLength + ", carBodyWidth=" + carBodyWidth
+        + ", carBodyHeight=" + carBodyHeight + ", carriageLength=" + carriageLength + ", carriageWidth=" + carriageWidth + ", carriageHeight="
+        + carriageHeight + ", seatArrangement=" + seatArrangement + ", tonnageLevel=" + tonnageLevel + ", vehicleBodyStructure="
+        + vehicleBodyStructure + ", sunroof=" + sunroof + ", openSunRoof=" + openSunRoof + ", electricAdjustSeat=" + electricAdjustSeat
+        + ", leatherSeat=" + leatherSeat + ", carBodyStedyControl=" + carBodyStedyControl + ", headlampType=" + headlampType + ", navigationSystem="
+        + navigationSystem + ", cruiseControl=" + cruiseControl + ", frontRadar=" + frontRadar + ", backRadar=" + backRadar
+        + ", automaticAirConditioner=" + automaticAirConditioner + ", multifunctionSteerWheel=" + multifunctionSteerWheel + ", sourceCome="
+        + sourceCome + ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
+  }
+
+  
 }
