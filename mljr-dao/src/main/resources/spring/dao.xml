@@ -50,6 +50,7 @@
 		<constructor-arg name="maxTotal" value="${redis.maxTotal}" />
 		<constructor-arg name="maxIdle" value="${redis.maxIdle}" />
 		<constructor-arg name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+		<constructor-arg name="pwd" value="${redis.pwd}" />
 	</bean>
 
 </beans>

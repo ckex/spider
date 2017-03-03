@@ -18,16 +18,14 @@ public class RedisClient {
 
   private JedisPool pool = null;
 
-  public RedisClient(String host, int port, int timeout, int maxTotal, int maxIdle, int maxWaitMillis) {
+  public RedisClient(String host, int port, int timeout, int maxTotal, int maxIdle, int maxWaitMillis,String pwd) {
     super();
     JedisPoolConfig config = new JedisPoolConfig();
     config.setMaxTotal(maxTotal);
     config.setMaxIdle(maxIdle);
     config.setTestOnBorrow(true);
     config.setMaxWaitMillis(maxWaitMillis);
-    //TODO DATASYNC ADD PASSWARD
-//    this.pool = new JedisPool(config, host, port, timeout,"mljr9876543210"); 
-    this.pool = new JedisPool(config, host, port, timeout);
+    this.pool = new JedisPool(config, host, port, timeout,pwd); 
   }
 
   private Jedis getResource() {
