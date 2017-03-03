@@ -32,9 +32,9 @@ public class RequestInfoConvert {
     entity.setUrlType(dto.getOperatorsUrl().getIndex());
     entity.setUrl(dto.getUrl());
     entity.setStartDate(
-        DateUtil.stringToDate(dto.getStartDate(), DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
+        DateUtil.stringToDate(dto.getStartDate(), DateUtil.PATTERN_yyyy_MM_dd));
     entity
-        .setEndDate(DateUtil.stringToDate(dto.getEndDate(), DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
+        .setEndDate(DateUtil.stringToDate(dto.getEndDate(), DateUtil.PATTERN_yyyy_MM_dd));
     entity.setSign(dto.getSign());
     entity.setStatus(requestInfoEnum.getIndex());
     return entity;
