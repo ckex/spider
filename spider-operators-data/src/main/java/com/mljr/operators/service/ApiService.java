@@ -57,6 +57,8 @@ public class ApiService {
 
     public final static String TOKEN_KEY = "token-uid";
 
+    public final static String COOKIES_KEY = "operators-cookies";
+
     // TODO
     public RequestInfoEnum checkState(String token) {
         return RequestInfoEnum.SUCCESS;
@@ -76,6 +78,10 @@ public class ApiService {
         });
     }
 
+    public UserInfo findUserByToken(String token) {
+        return userInfoService.getById(findUidByToken(token));
+    }
+
     public String saveToken(String token, Long uid) {
         return redisClient.use(new Function<Jedis, String>() {
             @Nullable
@@ -84,6 +90,31 @@ public class ApiService {
                 Map<String, String> map = Maps.newHashMap();
                 map.put(token, String.valueOf(uid));
                 return jedis.hmset(TOKEN_KEY, map);
+            }
+        });
+    }
+
+    public String saveCookies(String cellphone, String cookies) {
+        return redisClient.use(new Function<Jedis, String>() {
+            @Nullable
+            @Override
+            public String apply(@Nullable Jedis jedis) {
+                Map<String, String> map = Maps.newHashMap();
+                map.put(cellphone, cookies);
+                return jedis.hmset(COOKIES_KEY, map);
+            }
+        });
+    }
+
+    public String findCookiesByCellphone(String cellphone) {
+        return redisClient.use(new Function<Jedis, String>() {
+            @Override
+            public String apply(Jedis jedis) {
+                List<String> retList = jedis.hmget(COOKIES_KEY, cellphone);
+                if (CollectionUtils.isNotEmpty(retList)) {
+                    return retList.get(0);
+                }
+                return null;
             }
         });
     }
