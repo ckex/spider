@@ -1,12 +1,17 @@
 package com.mljr.sync.service;
 
+import com.google.common.base.Function;
 import com.google.common.base.Stopwatch;
 import com.google.gson.Gson;
 import com.mljr.rabbitmq.RabbitmqClient;
+import com.mljr.redis.RedisClient;
 import com.mljr.spider.dao.CarBodyInfoDao;
 import com.mljr.spider.model.CarBodyInfoDo;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.GetResponse;
+
+import redis.clients.jedis.Jedis;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +34,9 @@ public class CarHomeNetService {
     //将数据存入到数据库中去
     @Autowired
     CarBodyInfoDao carBodyInfoDao;
+    
+    @Autowired
+    private RedisClient redisClient;
 
     //消耗队列中的消息
     public void consume() throws Exception{
@@ -62,6 +70,14 @@ public class CarHomeNetService {
         CarBodyInfoDo car2 = new CarBodyInfoDo();
         Gson gson = new  Gson();
        List<Map<String,String>> list = gson.fromJson(carHtml,List.class);
+      redisClient.use(new Function<Jedis, Long>() {
+  
+        @Override
+        public Long apply(Jedis input) {
+          return input.incrBy("car-home-count", list.size());
+        }
+  
+      });
         for (int i = 0; i <list.size() ; i++) {
             Map<String,String> map= list.get(i);
             car.setUniqueCarBrand(map.get("unique_car_brand"));
@@ -121,10 +137,26 @@ public class CarHomeNetService {
                 car2 = carBodyInfoDao.create(car);
                 watch.stop();
                 createtime = watch.elapsed(TimeUnit.MILLISECONDS);
-            }else{
-                carBodyInfoDao.update(car);
-                watch.stop();
-                updatetime = watch.elapsed(TimeUnit.MILLISECONDS);
+                redisClient.use(new Function<Jedis, Long>() {
+                  
+                  @Override
+                  public Long apply(Jedis input) {
+                    return input.incr("car-home-create");
+                  }
+            
+                });
+            } else {
+              carBodyInfoDao.update(car);
+              watch.stop();
+              updatetime = watch.elapsed(TimeUnit.MILLISECONDS);
+              redisClient.use(new Function<Jedis, Long>() {
+      
+                @Override
+                public Long apply(Jedis input) {
+                  return input.incr("car-home-update");
+                }
+      
+              });
             }
             if (loadtime > 100 || createtime > 100 || updatetime > 100){
                 logger.debug("to long loadtime="+loadtime+", createtime="+createtime+", updatetime="+updatetime);
