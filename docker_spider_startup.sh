@@ -26,3 +26,5 @@ esac
 # "registry-mirrors": ["http://c6823a84.m.daocloud.io"],
 # "insecure-registries":["ucloud20:5000"]
 # }
+# service docker restart
+# systemctl restart docker.service [centos 7.x]
