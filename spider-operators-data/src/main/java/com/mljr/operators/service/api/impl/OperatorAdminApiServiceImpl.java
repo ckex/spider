@@ -1,6 +1,8 @@
 package com.mljr.operators.service.api.impl;
 
+import com.mljr.operators.common.constant.MQConstant;
 import com.mljr.operators.common.constant.RequestInfoEnum;
+import com.mljr.operators.common.utils.RabbitMQUtil;
 import com.mljr.operators.convert.RequestInfoConvert;
 import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author gaoxi
@@ -37,6 +40,14 @@ public class OperatorAdminApiServiceImpl implements IOperatorAdminApiService {
       if (null != list && list.size() > 0) {
         List<RequestInfo> requestInfoList = RequestInfoConvert.convert(list, RequestInfoEnum.INIT);
         requestInfoService.insertByBatch(requestInfoList);
+        List<RequestInfo> filterList = requestInfoList.stream()
+            .filter(requestInfo -> requestInfo.getId() != null).collect(Collectors.toList());
+        if (null != filterList && filterList.size() > 0) {
+          String routingKey = RabbitMQUtil.getRoutingKey(requestUrlDTO.getOperators());
+          if (null != routingKey) {
+            RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE, routingKey, filterList);
+          }
+        }
       }
       return true;
     } catch (Exception e) {
@@ -44,4 +55,6 @@ public class OperatorAdminApiServiceImpl implements IOperatorAdminApiService {
     }
     return false;
   }
+
+
 }

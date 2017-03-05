@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.mljr.operators.common.utils.DateUtil;
 import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
 import com.mljr.operators.service.primary.operators.IRequestInfoService;
@@ -15,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +40,8 @@ public class OperatorRequestUrlServiceImpl implements IOperatorRequestUrlService
 
   @Override
   public List<RequestInfoDTO> getAllUrlByOperator(RequestUrlDTO requestUrl) {
-    Date date = DateUtil.localDateToDate(LocalDate.of(2017,2,27));
-//        requestInfoService.getPerRequestDate(requestUrl.getMobile(), requestUrl.getIdcard());
+    Date date =
+        requestInfoService.getPerRequestDate(requestUrl.getMobile(), requestUrl.getIdcard());
     List<RequestInfoDTO> list = Lists.newArrayList();
     requestUrlSelectorServices.forEach(requestUrlSelectorService -> {
       if (requestUrlSelectorService.getOperator() == requestUrl.getOperators()

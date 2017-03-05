@@ -19,7 +19,7 @@ import java.util.List;
  * @time 2017/3/2
  */
 @Service
-public class UUserSelectorService extends AbstractRequestUrlSelectorService {
+public class UUserSelectorServiceImpl extends AbstractRequestUrlSelectorService {
 
   @Override
   public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {

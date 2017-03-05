@@ -1,4 +1,4 @@
-package com.mljr.operators.service.reqeust.impl.chinaunicom;
+package com.mljr.operators.service.reqeust.impl.chinamobile;
 
 import com.google.common.collect.Lists;
 import com.mljr.operators.common.constant.OperatorsEnum;
@@ -15,40 +15,35 @@ import java.util.List;
 
 /**
  * @author gaoxi
- * @time 2017/3/2
+ * @time 2017/3/5
  */
 @Service
-public class UFlowRecordSelectorService extends AbstractRequestUrlSelectorService {
+public class MHistoryFlowSelectorServiceImpl extends AbstractRequestUrlSelectorService {
 
   @Override
   public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {
     List<RequestInfoDTO> list = Lists.newArrayList();
-    getRecentMonth(requestUrl.getStartDate(), 1).forEach(datePair -> {
-      if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
-        String url = getUrl(datePair, 1);
-        list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
-      }
+    List<DatePair> datePairList =
+        DateUtil.getPreEachOfMonth(requestUrl.getStartDate(), 6, DateUtil.PATTERN_yyyy_MM_dd);
+    datePairList.forEach(datePair -> {
+      String url = getUrl(datePair);
+      list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
     });
     return list;
   }
 
   @Override
   public OperatorsEnum getOperator() {
-    return OperatorsEnum.CHINAUNICOM;
+    return OperatorsEnum.CHINAMOBILE;
   }
 
   @Override
   protected OperatorsUrlEnum getOperatorsUrl() {
-    return OperatorsUrlEnum.CHINA_UNICOM_FLOW_RECORD;
+    return OperatorsUrlEnum.CHINA_MOBILE_HISTORY_FLOW;
   }
 
-  @Override
-  protected String getPattern() {
-    return DateUtil.PATTERN_yyyyMMdd;
-  }
-
-  private String getUrl(DatePair datePair, int pageNo) {
-    return String.format(getOperatorsUrl().getUrl(), pageNo,
-        datePair.getStartDate().replaceAll("-", ""), datePair.getEndDate().replaceAll("-", ""));
+  private String getUrl(DatePair datePair) {
+    return String.format(getOperatorsUrl().getUrl(), datePair.getStartDate(),
+        datePair.getEndDate());
   }
 }

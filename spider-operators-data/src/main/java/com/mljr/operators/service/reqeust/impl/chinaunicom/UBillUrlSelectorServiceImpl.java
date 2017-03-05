@@ -10,7 +10,6 @@ import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
 import com.mljr.operators.service.reqeust.AbstractRequestUrlSelectorService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -19,22 +18,14 @@ import java.util.List;
  * @time 2017/3/2
  */
 @Service
-public class UFlowSelectorService extends AbstractRequestUrlSelectorService {
+public class UBillUrlSelectorServiceImpl extends AbstractRequestUrlSelectorService {
 
   @Override
   public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {
     List<RequestInfoDTO> list = Lists.newArrayList();
-    List<DatePair> dayDatePairs = Lists.newArrayList();
     getRecentMonth(requestUrl.getStartDate(), 5).forEach(datePair -> {
-      LocalDate startDate =
-          DateUtil.stringToLocalDate(datePair.getStartDate(), DateUtil.PATTERN_yyyy_MM_dd);
-      LocalDate endDate =
-          DateUtil.stringToLocalDate(datePair.getEndDate(), DateUtil.PATTERN_yyyy_MM_dd);
-      dayDatePairs.addAll(getEachDay(startDate, endDate));
-    });
-    dayDatePairs.forEach(datePair -> {
       if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
-        String url = getUrl(datePair, 1);
+        String url = getUrl(datePair);
         list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
       }
     });
@@ -48,11 +39,18 @@ public class UFlowSelectorService extends AbstractRequestUrlSelectorService {
 
   @Override
   protected OperatorsUrlEnum getOperatorsUrl() {
-    return OperatorsUrlEnum.CHINA_UNICOM_FLOW;
+    return OperatorsUrlEnum.CHINA_UNICOM_BILL;
   }
 
-  private String getUrl(DatePair datePair, int pageNo) {
-    return String.format(getOperatorsUrl().getUrl(), pageNo, datePair.getStartDate(),
-        datePair.getEndDate());
+  @Override
+  protected String getPattern() {
+    return DateUtil.PATTERN_yyyyMM;
   }
+
+  private String getUrl(DatePair datePair) {
+    String[] dateStr = datePair.getEndDate().split("-");
+    return String.format(getOperatorsUrl().getUrl(), dateStr[0] + dateStr[1]);
+  }
+
+
 }
