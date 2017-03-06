@@ -2,7 +2,11 @@ package com.mljr.operators.service;
 
 import com.alibaba.fastjson.JSON;
 import com.mljr.operators.common.constant.MQConstant;
+import com.mljr.operators.common.constant.OperatorsUrlEnum;
 import com.mljr.operators.entity.model.operators.RequestInfo;
+import com.mljr.operators.entity.model.operators.UserInfo;
+import com.mljr.operators.service.primary.operators.IUserInfoService;
+import com.mljr.operators.task.chinamobile.*;
 import com.mljr.operators.task.chinaunicom.ChinaUnicomTask;
 import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.utils.RandomUtils;
@@ -46,9 +50,15 @@ public class RabbitMQService {
 
   private Channel channel;
 
+  private IUserInfoService userInfoService;
+
+  private ApiService apiService;
+
   public RabbitMQService(ApplicationContext context) throws IOException, InterruptedException {
     this.context = context;
     channel = RabbitmqClient.newChannel();
+    userInfoService = context.getBean(IUserInfoService.class);
+    apiService = context.getBean(ApiService.class);
   }
 
   public void run() {
@@ -62,7 +72,64 @@ public class RabbitMQService {
         continue;
       }
       RequestInfo entity = JSON.parseObject(message, RequestInfo.class);
-      executor.execute(new ChinaUnicomTask(context, entity));
+      if (queue.equals(MQConstant.OPERATOR_MQ_CHINAUNICOM_QUEUE)) {
+        executor.execute(new ChinaUnicomTask(context, entity));
+      } else if (queue.equals(MQConstant.OPERATOR_MQ_CHINAMOBILE_QUEUE)) {
+        String cookies = apiService.findCookiesByCellphone(entity.getMobile());
+        if (StringUtils.isNotBlank(cookies)) {
+          UserInfo userInfo =
+              userInfoService.selectUniqUser(entity.getMobile(), entity.getIdcard());
+          OperatorsUrlEnum enums = OperatorsUrlEnum.indexOf(entity.getUrlType());
+          switch (enums) {
+            case CHINA_MOBILE_PACKAGE_INFO:
+              PackageInfoTask packageInfoTask = new PackageInfoTask();
+              packageInfoTask.setParams(userInfo.getId(), cookies, entity);
+              executor.execute(packageInfoTask);
+              break;
+            case CHINA_MOBILE_CURRENT_BILL:
+              CurrBillInfoTask billInfoTask=new CurrBillInfoTask();
+              billInfoTask.setParams(userInfo.getId(),cookies,entity);
+              executor.execute(billInfoTask);
+              break;
+            case CHINA_MOBILE_CURRENT_CALL:
+              CurrCallInfoTask callInfoTask=new CurrCallInfoTask();
+              callInfoTask.setParams(userInfo.getId(),cookies,entity);
+              executor.execute(callInfoTask);
+              break;
+            case CHINA_MOBILE_CURRENT_FLOW:
+              CurrFlowInfoTask flowInfoTask=new CurrFlowInfoTask();
+              flowInfoTask.setParams(userInfo.getId(),cookies,entity);
+              executor.execute(flowInfoTask);
+              break;
+            case CHINA_MOBILE_CURRENT_SMS:
+              CurrSMSInfoTask smsInfoTask=new CurrSMSInfoTask();
+              smsInfoTask.setParams(userInfo.getId(),cookies,entity);
+              executor.execute(smsInfoTask);
+              break;
+            case CHINA_MOBILE_HISTORY_BILL:
+              HisBillInfoTask hisBillInfoTask=new HisBillInfoTask();
+              hisBillInfoTask.setParams(userInfo.getId(),cookies,entity);
+              executor.execute(hisBillInfoTask);
+              break;
+            case CHINA_MOBILE_HISTORY_CALL:
+              HisCallInfoTask hisCallInfoTask=new HisCallInfoTask();
+              hisCallInfoTask.setParams(userInfo.getId(),cookies,entity);
+              executor.execute(hisCallInfoTask);
+              break;
+            case CHINA_MOBILE_HISTORY_FLOW:
+              HisFlowInfoTask hisFlowInfoTask=new HisFlowInfoTask();
+              hisFlowInfoTask.setParams(userInfo.getId(),cookies,entity);
+              executor.execute(hisFlowInfoTask);
+              break;
+            case CHINA_MOBILE_HISTORY_SMS:
+              HisSMSInfoTask hisSMSInfoTask=new HisSMSInfoTask();
+              hisSMSInfoTask.setParams(userInfo.getId(),cookies,entity);
+              executor.execute(hisSMSInfoTask);
+              break;
+          }
+        }
+      }
+
     }
   }
 

@@ -23,8 +23,10 @@ public class MCurrentSmsSelectorServiceImpl extends AbstractRequestUrlSelectorSe
   public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {
     DatePair datePair = getYesterDayOfMonth(requestUrl.getStartDate());
     List<RequestInfoDTO> list = Lists.newArrayList();
-    String url = getUrl(datePair);
-    list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+    if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
+      String url = getUrl(datePair);
+      list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+    }
     return list;
   }
 
