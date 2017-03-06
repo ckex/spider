@@ -67,4 +67,13 @@ public enum ProvinceEnum {
         return "";
     }
 
+  public static ProvinceEnum codeOf(String code) {
+    for (ProvinceEnum enums : ProvinceEnum.values()) {
+      if (enums.name().equals(code)) {
+        return enums;
+      }
+    }
+    return null;
+  }
+
 }
