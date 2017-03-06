@@ -26,8 +26,10 @@ public class MHistoryFlowSelectorServiceImpl extends AbstractRequestUrlSelectorS
     List<DatePair> datePairList =
         DateUtil.getPreEachOfMonth(requestUrl.getStartDate(), 6, DateUtil.PATTERN_yyyy_MM_dd);
     datePairList.forEach(datePair -> {
-      String url = getUrl(datePair);
-      list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+      if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
+        String url = getUrl(datePair);
+        list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+      }
     });
     return list;
   }

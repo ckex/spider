@@ -25,7 +25,7 @@ public class UFlowSelectorServiceImpl extends AbstractRequestUrlSelectorService 
   public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {
     List<RequestInfoDTO> list = Lists.newArrayList();
     List<DatePair> dayDatePairs = Lists.newArrayList();
-    getRecentMonth(requestUrl.getStartDate(), 5).forEach(datePair -> {
+    getRecentMonth(requestUrl.getStartDate(), 3).forEach(datePair -> {
       LocalDate startDate =
           DateUtil.stringToLocalDate(datePair.getStartDate(), DateUtil.PATTERN_yyyy_MM_dd);
       LocalDate endDate =
