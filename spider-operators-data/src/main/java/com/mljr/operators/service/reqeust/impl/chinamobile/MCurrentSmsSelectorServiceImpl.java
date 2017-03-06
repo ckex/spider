@@ -1,9 +1,8 @@
-package com.mljr.operators.service.reqeust.impl.chinaunicom;
+package com.mljr.operators.service.reqeust.impl.chinamobile;
 
 import com.google.common.collect.Lists;
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.OperatorsUrlEnum;
-import com.mljr.operators.common.utils.DateUtil;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
@@ -15,42 +14,32 @@ import java.util.List;
 
 /**
  * @author gaoxi
- * @time 2017/3/2
+ * @time 2017/3/5
  */
 @Service
-public class UBillUrlSelectorService extends AbstractRequestUrlSelectorService {
+public class MCurrentSmsSelectorServiceImpl extends AbstractRequestUrlSelectorService {
 
   @Override
   public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {
+    DatePair datePair = getYesterDayOfMonth(requestUrl.getStartDate());
     List<RequestInfoDTO> list = Lists.newArrayList();
-    getRecentMonth(requestUrl.getStartDate(), 5).forEach(datePair -> {
-      if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
-        String url = getUrl(datePair);
-        list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
-      }
-    });
+    String url = getUrl(datePair);
+    list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
     return list;
   }
 
   @Override
   public OperatorsEnum getOperator() {
-    return OperatorsEnum.CHINAUNICOM;
+    return OperatorsEnum.CHINAMOBILE;
   }
 
   @Override
   protected OperatorsUrlEnum getOperatorsUrl() {
-    return OperatorsUrlEnum.CHINA_UNICOM_BILL;
-  }
-
-  @Override
-  protected String getPattern() {
-    return DateUtil.PATTERN_yyyyMM;
+    return OperatorsUrlEnum.CHINA_MOBILE_CURRENT_SMS;
   }
 
   private String getUrl(DatePair datePair) {
-    String[] dateStr = datePair.getEndDate().split("-");
-    return String.format(getOperatorsUrl().getUrl(), dateStr[0] + dateStr[1]);
+    return String.format(getOperatorsUrl().getUrl(), datePair.getStartDate(),
+        datePair.getEndDate());
   }
-
-
 }

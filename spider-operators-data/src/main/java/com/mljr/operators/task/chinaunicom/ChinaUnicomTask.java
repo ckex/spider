@@ -2,11 +2,13 @@ package com.mljr.operators.task.chinaunicom;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.mljr.operators.common.constant.MQConstant;
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.OperatorsUrlEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.common.utils.ChinaUnicomUtil;
 import com.mljr.operators.common.utils.DateUtil;
+import com.mljr.operators.common.utils.RabbitMQUtil;
 import com.mljr.operators.convert.RequestInfoConvert;
 import com.mljr.operators.entity.dto.chinaunicom.*;
 import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
@@ -19,9 +21,10 @@ import com.mljr.operators.service.primary.operators.IUserInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author gaoxi
@@ -31,22 +34,22 @@ public class ChinaUnicomTask implements Runnable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ChinaUnicomTask.class);
 
-  @Autowired
   private IChinaUnicomStoreService chinaUnicomStoreService;
 
-  @Autowired
   private IUserInfoService userInfoService;
 
-  @Autowired
   private IRequestInfoService requestInfoService;
 
-  @Autowired
   private ApiService apiServicer;
 
   private RequestInfo requestInfo;
 
-  public ChinaUnicomTask(RequestInfo requestInfo) {
+  public ChinaUnicomTask(ApplicationContext context, RequestInfo requestInfo) {
     this.requestInfo = requestInfo;
+    this.chinaUnicomStoreService = context.getBean(IChinaUnicomStoreService.class);
+    this.userInfoService = context.getBean(IUserInfoService.class);
+    this.requestInfoService = context.getBean(IRequestInfoService.class);
+    this.apiServicer = context.getBean(ApiService.class);
   }
 
   @Override
@@ -107,8 +110,21 @@ public class ChinaUnicomTask implements Runnable {
       }
       if (!list.isEmpty()) {
         try {
-          List<RequestInfo> result = RequestInfoConvert.convert(list, RequestInfoEnum.INIT);
-          requestInfoService.insertByBatch(result);
+          List<RequestInfo> pageList = RequestInfoConvert.convert(list, RequestInfoEnum.INIT);
+          requestInfoService.insertByBatch(pageList);
+          List<RequestInfo> filterList =
+              pageList.stream().filter(filterRequestInfo -> filterRequestInfo.getId() != null)
+                  .collect(Collectors.toList());
+          if (null != filterList && filterList.size() > 0) {
+            filterList.forEach(filterRequestInfo -> {
+              String routingKey =
+                  RabbitMQUtil.getRoutingKey(OperatorsEnum.indexOf(requestInfo.getOperatorsType()));
+              if (null != routingKey) {
+                RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE, routingKey, filterList);
+              }
+            });
+          }
+
         } catch (Exception e) {
           LOGGER.error("page insertByBatch failure.params:{}", JSON.toJSON(requestInfo));
         }
