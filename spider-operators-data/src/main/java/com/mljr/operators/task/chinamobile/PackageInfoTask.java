@@ -2,6 +2,7 @@ package com.mljr.operators.task.chinamobile;
 
 import com.google.gson.Gson;
 import com.mljr.operators.common.constant.RequestInfoEnum;
+import com.mljr.operators.common.utils.CookieUtils;
 import com.mljr.operators.entity.model.operators.PackageInfo;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.ChinaMobileService;
@@ -28,27 +29,27 @@ public class PackageInfoTask implements Runnable {
     @Autowired
     private IPackageInfoService packageInfoService;
 
+    @Autowired
+    private IRequestInfoService requestInfoService;
+
     public Long userInfoId;
 
-    public Map<String, String> cookies;
+    public String cookies;
 
     public RequestInfo requestInfo;
 
 
-    public void setParams(Long userInfoId, Map<String, String> cookies, RequestInfo requestInfo) {
+    public void setParams(Long userInfoId, String cookies, RequestInfo requestInfo) {
         this.userInfoId = userInfoId;
         this.cookies = cookies;
         this.requestInfo = requestInfo;
     }
 
-    @Autowired
-    private IRequestInfoService requestInfoService;
-
-
     @Override
     public void run() {
         try {
-            String data = chinaMobileService.getPackageInfo(cookies);
+            Map<String, String> cMap = CookieUtils.stringToMap(cookies);
+            String data = chinaMobileService.getPackageInfo(cMap);
             PackInfoResponse response = new Gson().fromJson(data, PackInfoResponse.class);
 
             if (response.getError().getCode() == 0) {

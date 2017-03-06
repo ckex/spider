@@ -53,6 +53,13 @@ public class ApiController {
 
     Gson gson = new Gson();
 
+    /**
+     * token申请接口
+     *
+     * @param cellphone
+     * @param idcard
+     * @return
+     */
     @RequestMapping(value = "/api/operators/tokenReq", method = RequestMethod.POST)
     public ApiResponse tokenReq(@RequestParam String cellphone, @RequestParam String idcard) {
         if (!RegexUtils.checkMobile(StringUtils.trim(cellphone))) {
@@ -78,6 +85,15 @@ public class ApiController {
         return new ApiResponse(ErrorCodeEnum.TOKEN_SUCC, true, token, true, false);
     }
 
+    /**
+     * 采集任务申请接口
+     *
+     * @param token
+     * @param cellphone
+     * @param password
+     * @param smscode
+     * @return
+     */
     @RequestMapping(value = "/api/operators/collectReq", method = RequestMethod.POST)
     public BaseResponse collectReq(@RequestParam String token,
                                    @RequestParam String cellphone,
@@ -88,19 +104,20 @@ public class ApiController {
             return new BaseResponse(ErrorCodeEnum.USER_NOT_FOUND, false);
         }
         // 登录获取cookie
-        if(OperatorsEnum.CHINAMOBILE.getCode().equals(u.getType())){
-            try {
-                chinaMobileService.loginAndGetCookies(cellphone,password,smscode);
-            } catch (Exception e) {
-                logger.error("中国移动登录失败",e);
+        try {
+            String cookies = "";
+            if (OperatorsEnum.CHINAMOBILE.getCode().equals(u.getType())) {
+                cookies = chinaMobileService.loginAndGetCookieStr(cellphone, password, smscode);
+            } else if (OperatorsEnum.CHINAUNICOM.getCode().equals(u.getType())) {
+                LoginDTO loginDTO = new LoginDTO();
+                loginDTO.setMobile(cellphone);
+                loginDTO.setPassword(password);
+                cookies = chinaUnicomService.getCookies(loginDTO);
             }
-        }else if(OperatorsEnum.CHINAUNICOM.getCode().equals(u.getType())){
-            LoginDTO loginDTO = new LoginDTO();
-            loginDTO.setMobile(cellphone);
-            loginDTO.setPassword(password);
-            chinaUnicomService.getCookies(loginDTO);
+            apiService.saveCookies(cellphone, cookies);
+        } catch (Exception e) {
+            return new BaseResponse(ErrorCodeEnum.LOGIN_FAIL, false);
         }
-
 
         RequestUrlDTO dto = new RequestUrlDTO(u.getMobile(), u.getIdcard(),
                 OperatorsEnum.indexOf(u.getType()),
@@ -114,6 +131,12 @@ public class ApiController {
         return new BaseResponse(ErrorCodeEnum.COLLECT_REQ_FAIL, false);
     }
 
+    /**
+     * 数据获取接口
+     *
+     * @param token
+     * @return
+     */
     @RequestMapping(value = "/api/operators/accessData", method = RequestMethod.POST)
     public Object accessData(@RequestParam String token) {
         UserInfo u = apiService.findUserByToken(token);

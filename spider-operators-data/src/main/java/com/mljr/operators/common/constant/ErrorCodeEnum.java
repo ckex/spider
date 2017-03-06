@@ -34,6 +34,8 @@ public enum ErrorCodeEnum {
 
     USER_NOT_FOUND(28000,"没有找到用户,请先申请有效的token"),
 
+    LOGIN_FAIL(28001,"登录失败"),
+
     COLLECT_REQ_SUCC(30000, "申请采集任务成功"),
 
     COLLECT_REQ_FAIL(30001, "申请采集任务失败"),

@@ -54,7 +54,7 @@ public class LoginController {
         if (retInfo != null) {
             return "运营商数据已存在";
         }
-        Map<String, String> cookies = chinaMobileService.loginAndGetCookies(telno, password, dtm);
+        Map<String, String> cookies = chinaMobileService.loginAndGetCookieMap(telno, password, dtm);
         if (cookies != null && "true".equals(cookies.get("is_login"))) {
             UserInfo userInfo = new UserInfo();
             userInfo.setMobile(telno);

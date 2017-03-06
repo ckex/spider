@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.mljr.operators.common.constant.RequestInfoEnum;
+import com.mljr.operators.common.utils.CookieUtils;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.FlowInfo;
 import com.mljr.operators.entity.model.operators.RequestInfo;
@@ -41,11 +42,11 @@ public class CurrFlowInfoTask implements Runnable {
 
     public Long userInfoId;
 
-    public Map<String, String> cookies;
+    public String cookies;
 
     public RequestInfo requestInfo;
 
-    public void setParams(Long userInfoId, Map<String, String> cookies, RequestInfo requestInfo) {
+    public void setParams(Long userInfoId, String cookies, RequestInfo requestInfo) {
         this.userInfoId = userInfoId;
         this.cookies = cookies;
         this.requestInfo = requestInfo;
@@ -56,7 +57,8 @@ public class CurrFlowInfoTask implements Runnable {
         try {
             DatePair pair = new DatePair(DateFormatUtils.format(requestInfo.getStartDate(), "yyyy-MM-dd"),
                     DateFormatUtils.format(requestInfo.getEndDate(), "yyyy-MM-dd"));
-            String data = chinaMobileService.getCurrentFlowInfo(cookies, pair);
+            Map<String, String> cMap = CookieUtils.stringToMap(cookies);
+            String data = chinaMobileService.getCurrentFlowInfo(cMap, pair);
             writeToDb(data, pair);
             requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.SUCCESS,
                     RequestInfoEnum.INIT);

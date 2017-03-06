@@ -1,6 +1,5 @@
 package com.mljr.operators.service;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.utils.ShanghaiUtils;
@@ -28,7 +27,7 @@ public class ChinaMoblieTest  {
     @Test
     public void getAllInfos() throws Exception {
 
-        Map<String, String> cookies = chinaMobileService.loginAndGetCookies("13681668945", "672440", "438237");
+        Map<String, String> cookies = chinaMobileService.loginAndGetCookieMap("13681668945", "672440", "438237");
 
 
 //        System.out.println(chinaMobileService.getUserInfo(cookies));
