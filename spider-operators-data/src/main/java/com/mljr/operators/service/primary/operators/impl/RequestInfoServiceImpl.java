@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author gaoxi
@@ -49,5 +50,10 @@ public class RequestInfoServiceImpl extends BaseServiceImpl<RequestInfo, Long>
   @Override
   public Date getPerRequestDate(String mobile, String idcard) {
     return requestInfoMapper.getPerRequestDate(mobile, idcard);
+  }
+
+  @Override
+  public Set<Integer> checkState(String mobile, String idcard) {
+    return requestInfoMapper.checkState(mobile,idcard);
   }
 }

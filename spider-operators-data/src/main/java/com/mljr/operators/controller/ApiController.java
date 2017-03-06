@@ -151,7 +151,7 @@ public class ApiController {
         if (u == null) {
             return new BaseResponse(ErrorCodeEnum.USER_NOT_FOUND, false);
         }
-        RequestInfoEnum state = apiService.checkState(token);
+        RequestInfoEnum state = apiService.checkState(u);
         switch (state) {
             case RUNNING:
                 return new ApiResponse(ErrorCodeEnum.TASK_RUNNING);

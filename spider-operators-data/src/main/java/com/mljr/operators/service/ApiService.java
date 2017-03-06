@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by songchi on 17/3/1.
@@ -50,15 +51,29 @@ public class ApiService {
     @Autowired
     IBillInfoService billInfoService;
 
+    @Autowired
+    IRequestInfoService requestInfoService;
+
     RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
 
     public final static String TOKEN_KEY = "token-uid";
 
     public final static String COOKIES_KEY = "operators-cookies";
 
-    // TODO
-    public RequestInfoEnum checkState(String token) {
-        return RequestInfoEnum.SUCCESS;
+    public RequestInfoEnum checkState(UserInfo userInfo) {
+        Set<Integer> stateSet = requestInfoService.checkState(userInfo.getMobile(), userInfo.getIdcard());
+        if (stateSet.contains(RequestInfoEnum.ERROR.getIndex())) {
+            return RequestInfoEnum.ERROR;
+        }
+
+        if (stateSet.contains(RequestInfoEnum.RUNNING.getIndex())) {
+            return RequestInfoEnum.RUNNING;
+        }
+
+        if (stateSet.size() == 1 && stateSet.contains(RequestInfoEnum.SUCCESS.getIndex())) {
+            return RequestInfoEnum.SUCCESS;
+        }
+        return RequestInfoEnum.INIT;
     }
 
     public Long findUidByToken(String token) {
