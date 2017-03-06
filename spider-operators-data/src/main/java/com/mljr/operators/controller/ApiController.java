@@ -5,6 +5,7 @@ import com.mljr.operators.common.constant.ErrorCodeEnum;
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.ProvinceEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
+import com.mljr.operators.common.utils.CookieUtils;
 import com.mljr.operators.common.utils.IdcardValidator;
 import com.mljr.operators.common.utils.RegexUtils;
 import com.mljr.operators.entity.ApiResponse;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * Created by songchi on 16/12/23.
@@ -89,14 +92,12 @@ public class ApiController {
      * 采集任务申请接口
      *
      * @param token
-     * @param cellphone
      * @param password
      * @param smscode
      * @return
      */
     @RequestMapping(value = "/api/operators/collectReq", method = RequestMethod.POST)
     public BaseResponse collectReq(@RequestParam String token,
-                                   @RequestParam String cellphone,
                                    @RequestParam String password,
                                    @RequestParam String smscode) {
         UserInfo u = apiService.findUserByToken(token);
@@ -107,21 +108,28 @@ public class ApiController {
         try {
             String cookies = "";
             if (OperatorsEnum.CHINAMOBILE.getCode().equals(u.getType())) {
-                cookies = chinaMobileService.loginAndGetCookieStr(cellphone, password, smscode);
+                Map<String, String> cMap = chinaMobileService.loginAndGetCookieMap(u.getMobile(), password, smscode);
+                if (cMap == null || !"true".equals(cMap.get("is_login"))) {
+                    return new BaseResponse(ErrorCodeEnum.LOGIN_FAIL, false);
+                }
+                cookies = CookieUtils.mapToString(cMap);
             } else if (OperatorsEnum.CHINAUNICOM.getCode().equals(u.getType())) {
                 LoginDTO loginDTO = new LoginDTO();
-                loginDTO.setMobile(cellphone);
+                loginDTO.setMobile(u.getMobile());
                 loginDTO.setPassword(password);
                 cookies = chinaUnicomService.getCookies(loginDTO);
+                if (cookies == null) {
+                    return new BaseResponse(ErrorCodeEnum.LOGIN_FAIL, false);
+                }
             }
-            apiService.saveCookies(cellphone, cookies);
+            apiService.saveCookies(u.getMobile(), cookies);
         } catch (Exception e) {
             return new BaseResponse(ErrorCodeEnum.LOGIN_FAIL, false);
         }
 
         RequestUrlDTO dto = new RequestUrlDTO(u.getMobile(), u.getIdcard(),
                 OperatorsEnum.indexOf(u.getType()),
-                ProvinceEnum.indexOf(u.getProvinceCode()));
+                ProvinceEnum.codeOf(u.getProvinceCode()));
 
         boolean ret = operatorAdminApiService.submitAcquisitionTasks(dto);
         if (ret) {
