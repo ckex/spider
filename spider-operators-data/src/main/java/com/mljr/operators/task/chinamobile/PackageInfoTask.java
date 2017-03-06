@@ -1,10 +1,12 @@
 package com.mljr.operators.task.chinamobile;
 
 import com.google.gson.Gson;
-import com.mljr.operators.dao.primary.operators.PackageInfoMapper;
+import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.model.operators.PackageInfo;
+import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.ChinaMobileService;
 import com.mljr.operators.service.primary.operators.IPackageInfoService;
+import com.mljr.operators.service.primary.operators.IRequestInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +32,17 @@ public class PackageInfoTask implements Runnable {
 
     public Map<String, String> cookies;
 
-    public void setParams(Long userInfoId, Map<String, String> cookies) {
+    public RequestInfo requestInfo;
+
+
+    public void setParams(Long userInfoId, Map<String, String> cookies, RequestInfo requestInfo) {
         this.userInfoId = userInfoId;
         this.cookies = cookies;
+        this.requestInfo = requestInfo;
     }
+
+    @Autowired
+    private IRequestInfoService requestInfoService;
 
 
     @Override
@@ -54,13 +63,19 @@ public class PackageInfoTask implements Runnable {
                 packageInfo.setBrandName(brandName);
                 packageInfoService.save(packageInfo);
 
+                requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.SUCCESS,
+                        RequestInfoEnum.INIT);
+
             } else {
-                throw new RuntimeException("获取套餐信息失败 " + data);
+                requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.ERROR,
+                        RequestInfoEnum.INIT);
             }
 
 
         } catch (Exception e) {
             logger.error("PackageInfoTask error", e);
+            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.ERROR,
+                    RequestInfoEnum.INIT);
 
         }
     }

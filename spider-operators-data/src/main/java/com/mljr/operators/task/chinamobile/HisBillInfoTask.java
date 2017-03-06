@@ -3,10 +3,12 @@ package com.mljr.operators.task.chinamobile;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.mljr.operators.entity.chinamobile.DatePair;
+import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.model.operators.BillInfo;
+import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.ChinaMobileService;
 import com.mljr.operators.service.primary.operators.IBillInfoService;
+import com.mljr.operators.service.primary.operators.IRequestInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -15,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.selector.Html;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,8 @@ import java.util.Map;
  * Created by songchi on 17/2/23.
  */
 @Component
-public class BillInfoTask implements Runnable {
-    protected static final Logger logger = LoggerFactory.getLogger(CallInfoTask.class);
+public class HisBillInfoTask implements Runnable {
+    protected static final Logger logger = LoggerFactory.getLogger(CurrCallInfoTask.class);
 
     @Autowired
     private ChinaMobileService chinaMobileService;
@@ -32,75 +33,47 @@ public class BillInfoTask implements Runnable {
     @Autowired
     private IBillInfoService billInfoService;
 
+    @Autowired
+    private IRequestInfoService requestInfoService;
+
     public Long userInfoId;
 
     public Map<String, String> cookies;
 
-    public void setParams(Long userInfoId, Map<String, String> cookies) {
+    public RequestInfo requestInfo;
+
+
+    public void setParams(Long userInfoId, Map<String, String> cookies, RequestInfo requestInfo) {
         this.userInfoId = userInfoId;
         this.cookies = cookies;
+        this.requestInfo = requestInfo;
     }
 
     Gson gson = new Gson();
 
     @Override
-
     public void run() {
         try {
-            //写当月数据
-            String currentData = chinaMobileService.getCurrentBillInfo(cookies);
-            writeCurrent(currentData, DateFormatUtils.format(new Date(), "yyyy年MM月"));
-
             // 写历史数据
-            for (String queryTime : DatePair.getHistoryDate(7)) {
-                String historyData = chinaMobileService.getHistoryBillInfo(cookies, queryTime);
-                Map<String, String> map = gson.fromJson(historyData, new TypeToken<Map<String,String>>(){}.getType());
-                String htmlStr = map.get("message");
-                writeHistory(htmlStr, queryTime);
-            }
+            String queryTime = DateFormatUtils.format(requestInfo.getStartDate(), "yyyy年MM月");
+            String historyData = chinaMobileService.getHistoryBillInfo(cookies, queryTime);
+            writeHistory(historyData, queryTime);
+            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.SUCCESS,
+                    RequestInfoEnum.INIT);
 
         } catch (Exception e) {
-            logger.error("BillInfoTask error", e);
+            logger.error("CurrBillInfoTask error", e);
+            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.ERROR,
+                    RequestInfoEnum.INIT);
         }
     }
 
-    public void writeCurrent(String htmlStr, String queryTime) {
+    public void writeHistory(String historyData, String queryTime) {
         try {
-            Html html = new Html(htmlStr);
-            List<String> feeNameAll = Lists.newArrayList();
-            List<String> feeValueAll = Lists.newArrayList();
-
-            for (int i = 2; i <= 6; i++) {
-                String namePattern = "//*[@id=\"feeInfo\"]//table//tbody//tr[1]//td[1]//div//table//tbody[%d]//tr//td[1]//span//p//text()";
-                String valuePattern = "//*[@id=\"feeInfo\"]//table//tbody//tr[1]//td[1]//div//table//tbody[%d]//tr//td[2]//text()";
-                String feeName = html.xpath(String.format(namePattern, i)).get();
-                String feeValue = html.xpath(String.format(valuePattern, i)).get();
-                feeNameAll.add(StringUtils.trim(feeName));
-                feeValueAll.add(StringUtils.replace(feeValue, "￥", "").trim());
-            }
-
-            for (int i = 2; i <= 5; i++) {
-                String namePattern = "//*[@id=\"feeInfo\"]//table//tbody//tr[1]//td[2]//div//table//tbody[%d]//tr//td[1]//span//p//text()";
-                String valuePattern = "//*[@id=\"feeInfo\"]//table//tbody//tr[1]//td[2]//div//table//tbody[%d]//tr//td[2]//text()";
-                String feeName = html.xpath(String.format(namePattern, i)).get();
-                String feeValue = html.xpath(String.format(valuePattern, i)).get();
-                feeNameAll.add(StringUtils.trim(feeName));
-                feeValueAll.add(StringUtils.replace(feeValue, "￥", "").trim());
-            }
-
-            List<BillInfo> infos = getBillInfos(queryTime, feeNameAll, feeValueAll);
-
-            billInfoService.insertByBatch(userInfoId, infos);
-
-        } catch (Exception e) {
-            logger.error("BillInfoTask write current data error", e);
-            e.printStackTrace();
-        }
-    }
-
-    public void writeHistory(String htmlStr, String queryTime) {
-        try {
-
+            Map<String, String> map = gson.fromJson(historyData,
+                    new TypeToken<Map<String, String>>() {
+                    }.getType());
+            String htmlStr = map.get("message");
             Html html = new Html(htmlStr);
             List<String> feeNameAll = Lists.newArrayList();
             List<String> feeValueAll = Lists.newArrayList();
@@ -128,7 +101,7 @@ public class BillInfoTask implements Runnable {
             billInfoService.insertByBatch(userInfoId, infos);
 
         } catch (Exception e) {
-            logger.error("BillInfoTask write history data error", e);
+            logger.error("CurrBillInfoTask write history data error", e);
             e.printStackTrace();
         }
     }

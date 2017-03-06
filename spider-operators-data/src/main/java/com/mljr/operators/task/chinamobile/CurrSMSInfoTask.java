@@ -3,23 +3,32 @@ package com.mljr.operators.task.chinamobile;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.chinamobile.DatePair;
+import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.entity.model.operators.SMSInfo;
 import com.mljr.operators.service.ChinaMobileService;
+import com.mljr.operators.service.primary.operators.IRequestInfoService;
 import com.mljr.operators.service.primary.operators.ISMSInfoService;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by songchi on 17/2/23.
  */
 @Component
-public class SMSInfoTask extends AbstractTask {
+public class CurrSMSInfoTask implements Runnable {
+
+    protected static final Logger logger = LoggerFactory.getLogger(CurrSMSInfoTask.class);
 
     @Autowired
     private ChinaMobileService chinaMobileService;
@@ -27,10 +36,44 @@ public class SMSInfoTask extends AbstractTask {
     @Autowired
     private ISMSInfoService smsInfoService;
 
+    @Autowired
+    private IRequestInfoService requestInfoService;
+
+    public Long userInfoId;
+
+    public Map<String, String> cookies;
+
+    public RequestInfo requestInfo;
+
+
+    public void setParams(Long userInfoId, Map<String, String> cookies, RequestInfo requestInfo) {
+        this.userInfoId = userInfoId;
+        this.cookies = cookies;
+        this.requestInfo = requestInfo;
+    }
+
     @Override
+    public void run() {
+        try {
+            DatePair pair = new DatePair(DateFormatUtils.format(requestInfo.getStartDate(), "yyyy-MM-dd"),
+                    DateFormatUtils.format(requestInfo.getEndDate(), "yyyy-MM-dd"));
+            String data = chinaMobileService.getCurrentSmsInfo(cookies, pair);
+            writeToDb(data, pair);
+
+            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.SUCCESS,
+                    RequestInfoEnum.INIT);
+
+        } catch (Exception e) {
+            logger.error("CurrSMSInfoTask error", e);
+            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.ERROR,
+                    RequestInfoEnum.INIT);
+        }
+    }
+
     void writeToDb(String data, DatePair pair) throws Exception {
         String smsInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
-        List<List<String>> list = new Gson().fromJson(smsInfoStr, new TypeToken<List<List<String>>>(){}.getType());
+        List<List<String>> list = new Gson().fromJson(smsInfoStr, new TypeToken<List<List<String>>>() {
+        }.getType());
         List<SMSInfo> siList = Lists.newArrayList();
         for (List<String> subList : list) {
 
@@ -61,14 +104,6 @@ public class SMSInfoTask extends AbstractTask {
         smsInfoService.insertByBatch(siList);
     }
 
-    @Override
-    String fetchCurrentData(DatePair pair) throws Exception {
-        return chinaMobileService.getCurrentSmsInfo(cookies, pair);
-    }
 
-    @Override
-    String fetchHistoryData(DatePair pair) throws Exception {
-        return chinaMobileService.getHistorySmsInfo(cookies, pair);
-    }
 
 }

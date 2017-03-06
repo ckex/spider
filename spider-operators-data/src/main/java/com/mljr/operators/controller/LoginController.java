@@ -3,7 +3,6 @@ package com.mljr.operators.controller;
 import com.alibaba.fastjson.JSON;
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.entity.model.operators.UserInfo;
-import com.mljr.operators.scheduler.ChinaMobileScheduler;
 import com.mljr.operators.service.ChinaMobileService;
 import com.mljr.operators.service.primary.operators.IUserInfoService;
 import org.apache.commons.lang.StringUtils;
@@ -28,8 +27,8 @@ public class LoginController {
     @Autowired
     private IUserInfoService userInfoService;
 
-    @Autowired
-    ChinaMobileScheduler chinaMobileScheduler;
+//    @Autowired
+//    ChinaMobileScheduler chinaMobileScheduler;
 
     @RequestMapping("/")
     public ModelAndView login() {
@@ -65,11 +64,11 @@ public class LoginController {
             userInfo.setCityCode("上海");
             userInfo.setType(OperatorsEnum.CHINAMOBILE.getCode());
             UserInfo ret = userInfoService.insertIgnore(userInfo);
-            if (ret != null) {
-                chinaMobileScheduler.setParams(ret.getId(), cookies);
-                chinaMobileScheduler.start();
-                return "success";
-            }
+//            if (ret != null) {
+//                chinaMobileScheduler.setParams(ret.getId(), cookies);
+//                chinaMobileScheduler.start();
+//                return "success";
+//            }
         }
         return "登录失败 " + JSON.toJSONString(cookies);
     }
