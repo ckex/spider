@@ -12,41 +12,41 @@ import org.springframework.util.Assert;
 public class ChinaMobileTaskTest extends BaseTest {
 
     @Autowired
-    FlowInfoTask flowInfoTask;
+    CurrFlowInfoTask currFlowInfoTask;
 
     @Autowired
-    SMSInfoTask smsInfoTask;
+    CurrSMSInfoTask currSmsInfoTask;
 
     @Autowired
-    CallInfoTask callInfoTask;
+    CurrCallInfoTask currCallInfoTask;
 
     @Autowired
     PackageInfoTask packageInfoTask;
 
     @Autowired
-    BillInfoTask billInfoTask;
+    CurrBillInfoTask currBillInfoTask;
 
     @Test
     public void flowInfoTest() {
 
-        Assert.notNull(flowInfoTask);
+        Assert.notNull(currFlowInfoTask);
 
-        flowInfoTask.run();
+        currFlowInfoTask.run();
     }
 
     @Test
     public void smsInfoTest() throws Exception {
-        Assert.notNull(smsInfoTask);
+        Assert.notNull(currSmsInfoTask);
 
-        smsInfoTask.run();
+        currSmsInfoTask.run();
 
     }
 
     @Test
     public void callInfoTest() throws Exception {
-        Assert.notNull(callInfoTask);
+        Assert.notNull(currCallInfoTask);
 
-        callInfoTask.run();
+        currCallInfoTask.run();
 
     }
 
@@ -58,10 +58,4 @@ public class ChinaMobileTaskTest extends BaseTest {
 
     }
 
-    @Test
-    public void billInfoTest() throws Exception {
-        billInfoTask.setParams(9900L, null);
-        billInfoTask.writeHistory("", "2016年12月");
-
-    }
 }

@@ -3,23 +3,32 @@ package com.mljr.operators.task.chinamobile;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.FlowInfo;
+import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.ChinaMobileService;
 import com.mljr.operators.service.primary.operators.IFlowInfoService;
+import com.mljr.operators.service.primary.operators.IRequestInfoService;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by songchi on 17/2/23.
  */
 @Component
-public class FlowInfoTask extends AbstractTask {
+public class HisFlowInfoTask implements Runnable {
+
+    protected static final Logger logger = LoggerFactory.getLogger(HisFlowInfoTask.class);
 
     @Autowired
     private ChinaMobileService chinaMobileService;
@@ -27,10 +36,41 @@ public class FlowInfoTask extends AbstractTask {
     @Autowired
     private IFlowInfoService flowInfoService;
 
+    @Autowired
+    private IRequestInfoService requestInfoService;
+
+    public Long userInfoId;
+
+    public Map<String, String> cookies;
+
+    public RequestInfo requestInfo;
+
+    public void setParams(Long userInfoId, Map<String, String> cookies, RequestInfo requestInfo) {
+        this.userInfoId = userInfoId;
+        this.cookies = cookies;
+        this.requestInfo = requestInfo;
+    }
+
     @Override
+    public void run() {
+        try {
+            DatePair pair = new DatePair(DateFormatUtils.format(requestInfo.getStartDate(), "yyyy-MM-dd"),
+                    DateFormatUtils.format(requestInfo.getEndDate(), "yyyy-MM-dd"));
+            String data = chinaMobileService.getHistoryFlowInfo(cookies, pair);
+            writeToDb(data, pair);
+            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.SUCCESS,
+                    RequestInfoEnum.INIT);
+        } catch (Exception e) {
+            logger.error("HisFlowInfoTask error", e);
+            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.ERROR,
+                    RequestInfoEnum.INIT);
+        }
+    }
+
     void writeToDb(String data, DatePair pair) throws Exception {
         String flowInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
-        List<List<String>> list = new Gson().fromJson(flowInfoStr, new TypeToken<List<List<String>>>(){}.getType());
+        List<List<String>> list = new Gson().fromJson(flowInfoStr, new TypeToken<List<List<String>>>() {
+        }.getType());
         List<FlowInfo> fiList = Lists.newArrayList();
         for (List<String> subList : list) {
 
@@ -65,16 +105,6 @@ public class FlowInfoTask extends AbstractTask {
         flowInfoService.insertByBatch(fiList);
     }
 
-    @Override
-    String fetchCurrentData(DatePair pair) throws Exception {
-        return chinaMobileService.getCurrentFlowInfo(cookies, pair);
-    }
-
-    @Override
-    String fetchHistoryData(DatePair pair) throws Exception {
-        return chinaMobileService.getHistoryFlowInfo(cookies, pair);
-    }
-
     private BigDecimal parseBytes(String totalBytes) {
         if (totalBytes.contains("GB")) {
             totalBytes = totalBytes.replace("GB", "");
@@ -89,4 +119,6 @@ public class FlowInfoTask extends AbstractTask {
             throw new RuntimeException("流量单位处理错误  " + totalBytes);
         }
     }
+
+
 }
