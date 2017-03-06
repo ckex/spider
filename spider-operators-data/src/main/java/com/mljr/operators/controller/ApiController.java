@@ -126,6 +126,7 @@ public class ApiController {
             }
             apiService.saveCookies(u.getMobile(), cookies);
         } catch (Exception e) {
+            logger.error("获取cookie失败", e);
             return new BaseResponse(ErrorCodeEnum.LOGIN_FAIL, false);
         }
 
