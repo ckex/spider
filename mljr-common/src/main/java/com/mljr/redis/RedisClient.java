@@ -8,6 +8,7 @@ import com.google.common.base.Function;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Protocol;
 
 /**
  * @author Ckex zha </br>
@@ -18,14 +19,24 @@ public class RedisClient {
 
   private JedisPool pool = null;
 
-  public RedisClient(String host, int port, int timeout, int maxTotal, int maxIdle, int maxWaitMillis,String pwd) {
+  public RedisClient(String host, int port, int timeout, int maxTotal, int maxIdle, int maxWaitMillis, String pwd) {
     super();
     JedisPoolConfig config = new JedisPoolConfig();
     config.setMaxTotal(maxTotal);
     config.setMaxIdle(maxIdle);
     config.setTestOnBorrow(true);
     config.setMaxWaitMillis(maxWaitMillis);
-    this.pool = new JedisPool(config, host, port, timeout,pwd); 
+    this.pool = new JedisPool(config, host, port, timeout, pwd);
+  }
+
+  public RedisClient(String host, int port, int timeout, int maxTotal, int maxIdle, int maxWaitMillis, int dataabase, String pwd) {
+    super();
+    JedisPoolConfig config = new JedisPoolConfig();
+    config.setMaxTotal(maxTotal);
+    config.setMaxIdle(maxIdle);
+    config.setTestOnBorrow(true);
+    config.setMaxWaitMillis(maxWaitMillis);
+    this.pool = new JedisPool(config, host, port, timeout, pwd, dataabase, null);
   }
 
   private Jedis getResource() {
