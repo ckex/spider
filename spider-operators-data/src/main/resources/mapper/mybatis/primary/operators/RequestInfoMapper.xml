@@ -215,4 +215,9 @@
     AND IDCARD=#{idcard}
   </select>
 
+  <select id="checkState" resultType="java.lang.Integer">
+    SELECT `status` FROM t_request_info WHERE MOBILE=#{mobile}
+    AND IDCARD=#{idcard}
+  </select>
+
 </mapper>

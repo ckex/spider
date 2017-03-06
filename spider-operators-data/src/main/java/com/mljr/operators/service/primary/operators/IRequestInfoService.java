@@ -6,6 +6,7 @@ import com.mljr.operators.service.primary.IBaseService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author gaoxi
@@ -45,4 +46,6 @@ public interface IRequestInfoService extends IBaseService<RequestInfo, Long> {
    * @return
    */
   Date getPerRequestDate(String mobile, String idcard);
+
+  Set<Integer> checkState(String mobile, String idcard);
 }

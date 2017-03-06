@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface RequestInfoMapper extends BaseMapper<RequestInfo, Long> {
@@ -44,5 +45,7 @@ public interface RequestInfoMapper extends BaseMapper<RequestInfo, Long> {
    * @return
    */
   Date getPerRequestDate(@Param("mobile") String mobile, @Param("idcard") String idcard);
+
+  Set<Integer> checkState(@Param("mobile") String mobile, @Param("idcard") String idcard);
 
 }

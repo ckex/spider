@@ -17,19 +17,26 @@ import com.mljr.redis.RedisClient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by songchi on 17/3/1.
  */
 @Service
 public class ApiService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ApiService.class);
 
     Gson gson = new Gson();
 
@@ -50,15 +57,29 @@ public class ApiService {
     @Autowired
     IBillInfoService billInfoService;
 
+    @Autowired
+    IRequestInfoService requestInfoService;
+
     RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
 
     public final static String TOKEN_KEY = "token-uid";
 
     public final static String COOKIES_KEY = "operators-cookies";
 
-    // TODO
-    public RequestInfoEnum checkState(String token) {
-        return RequestInfoEnum.SUCCESS;
+    public RequestInfoEnum checkState(UserInfo userInfo) {
+        Set<Integer> stateSet = requestInfoService.checkState(userInfo.getMobile(), userInfo.getIdcard());
+        if (stateSet.contains(RequestInfoEnum.ERROR.getIndex())) {
+            return RequestInfoEnum.ERROR;
+        }
+
+        if (stateSet.contains(RequestInfoEnum.RUNNING.getIndex())) {
+            return RequestInfoEnum.RUNNING;
+        }
+
+        if (stateSet.size() == 1 && stateSet.contains(RequestInfoEnum.SUCCESS.getIndex())) {
+            return RequestInfoEnum.SUCCESS;
+        }
+        return RequestInfoEnum.INIT;
     }
 
     public Long findUidByToken(String token) {
@@ -134,6 +155,8 @@ public class ApiService {
         ApiData.TransactionsBeanX.BasicBean basicBean = this.getBasic(uid);
         String cellPhone = basicBean.getCell_phone();
 
+        tbx.setBasic(basicBean);
+
         tbx.setCalls(this.getCalls(uid, cellPhone));
 
         tbx.setNets(this.getNets(uid, cellPhone));
@@ -193,8 +216,7 @@ public class ApiService {
             bean.setCell_phone(cellPhone);
             bean.setInit_type(info.getCallType());
             bean.setCall_type(info.getLandType());
-            //  TODO 转秒
-//            bean.setUse_time(info.getCallLongHour());
+            bean.setUse_time(this.toSecond(info.getCallLongHour()));
             retList.add(bean);
         }
         return retList;
@@ -223,8 +245,7 @@ public class ApiService {
             bean.setCell_phone(cellPhone);
             bean.setSubtotal(info.getFee().doubleValue());
             bean.setSubflow(info.getTotalBytes().floatValue());
-            // TODO
-//            bean.setUse_time(info.getDuration());
+            bean.setUse_time(this.toSecond(info.getDuration()));
             retList.add(bean);
         }
         return retList;
@@ -293,6 +314,17 @@ public class ApiService {
 //        }
 //        return retList;
         return null;
+    }
+
+    private int toSecond(String duration) {
+        try {
+            LocalTime time = LocalTime.parse(duration, DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+            return time.getSecond() + time.getMinute() * 60 + time.getHour() * 60 * 60;
+        } catch (Exception e) {
+            logger.error("解析时间错误", e);
+        }
+        return 0;
     }
 
 

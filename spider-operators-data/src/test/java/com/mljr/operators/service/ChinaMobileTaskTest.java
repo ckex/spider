@@ -1,9 +1,14 @@
 package com.mljr.operators.service;
 
+import com.mljr.operators.dao.primary.operators.RequestInfoMapper;
+import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.task.chinamobile.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author gaoxi
@@ -25,6 +30,9 @@ public class ChinaMobileTaskTest extends BaseTest {
 
     @Autowired
     CurrBillInfoTask currBillInfoTask;
+
+    @Autowired
+    RequestInfoMapper requestInfoMapper;
 
     @Test
     public void flowInfoTest() {
@@ -58,4 +66,11 @@ public class ChinaMobileTaskTest extends BaseTest {
 
     }
 
+    @Test
+    public void checkState() throws Exception {
+        Set<Integer> set = requestInfoMapper.checkState("13681668945","310112198212207354");
+
+        System.out.println(set);
+
+    }
 }
