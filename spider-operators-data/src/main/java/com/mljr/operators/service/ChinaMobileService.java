@@ -2,6 +2,7 @@ package com.mljr.operators.service;
 
 import com.google.gson.Gson;
 import com.mljr.operators.common.constant.ChinaMobileConstant;
+import com.mljr.operators.common.utils.CookieUtils;
 import com.mljr.operators.common.utils.JsUtils;
 import com.mljr.operators.entity.LoginResponse;
 import com.mljr.operators.entity.chinamobile.DatePair;
@@ -42,13 +43,17 @@ public class ChinaMobileService {
         return null;
     }
 
-    public Map<String, String> loginAndGetCookies(String telno, String password, String dtm) throws Exception {
+    public Map<String, String> loginAndGetCookieMap(String telno, String password, String dtm) throws Exception {
         String _telno = JsUtils.enString(telno);
         String _password = JsUtils.enString(password);
         String _dtm = JsUtils.enString(dtm);
         String jumpUrl = getJumpUrl(String.format(ChinaMobileConstant.Shanghai.LOGIN_PATTERN, _telno, _password, _dtm));
         System.out.println(jumpUrl);
         return fetchCookies(jumpUrl);
+    }
+
+    public String loginAndGetCookieStr(String telno, String password, String dtm) throws Exception {
+        return CookieUtils.mapToString(loginAndGetCookieMap(telno, password, dtm));
     }
 
     // 01 用户在运营商信息

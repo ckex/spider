@@ -3,6 +3,7 @@ package com.mljr.operators.task.chinamobile;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.mljr.operators.common.constant.RequestInfoEnum;
+import com.mljr.operators.common.utils.CookieUtils;
 import com.mljr.operators.entity.model.operators.BillInfo;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.ChinaMobileService;
@@ -38,12 +39,12 @@ public class CurrBillInfoTask implements Runnable {
 
     public Long userInfoId;
 
-    public Map<String, String> cookies;
+    public String cookies;
 
     public RequestInfo requestInfo;
 
 
-    public void setParams(Long userInfoId, Map<String, String> cookies, RequestInfo requestInfo) {
+    public void setParams(Long userInfoId, String cookies, RequestInfo requestInfo) {
         this.userInfoId = userInfoId;
         this.cookies = cookies;
         this.requestInfo = requestInfo;
@@ -56,7 +57,8 @@ public class CurrBillInfoTask implements Runnable {
     public void run() {
         try {
             //写当月数据
-            String currentData = chinaMobileService.getCurrentBillInfo(cookies);
+            Map<String, String> cMap = CookieUtils.stringToMap(cookies);
+            String currentData = chinaMobileService.getCurrentBillInfo(cMap);
             writeCurrent(currentData, DateFormatUtils.format(new Date(), "yyyy年MM月"));
             requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.SUCCESS,
                     RequestInfoEnum.INIT);

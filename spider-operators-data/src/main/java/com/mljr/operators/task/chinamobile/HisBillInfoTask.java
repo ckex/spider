@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.mljr.operators.common.constant.RequestInfoEnum;
+import com.mljr.operators.common.utils.CookieUtils;
 import com.mljr.operators.entity.model.operators.BillInfo;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.ChinaMobileService;
@@ -38,12 +39,12 @@ public class HisBillInfoTask implements Runnable {
 
     public Long userInfoId;
 
-    public Map<String, String> cookies;
+    public String cookies;
 
     public RequestInfo requestInfo;
 
 
-    public void setParams(Long userInfoId, Map<String, String> cookies, RequestInfo requestInfo) {
+    public void setParams(Long userInfoId, String cookies, RequestInfo requestInfo) {
         this.userInfoId = userInfoId;
         this.cookies = cookies;
         this.requestInfo = requestInfo;
@@ -56,7 +57,8 @@ public class HisBillInfoTask implements Runnable {
         try {
             // 写历史数据
             String queryTime = DateFormatUtils.format(requestInfo.getStartDate(), "yyyy年MM月");
-            String historyData = chinaMobileService.getHistoryBillInfo(cookies, queryTime);
+            Map<String, String> cMap = CookieUtils.stringToMap(cookies);
+            String historyData = chinaMobileService.getHistoryBillInfo(cMap, queryTime);
             writeHistory(historyData, queryTime);
             requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.SUCCESS,
                     RequestInfoEnum.INIT);

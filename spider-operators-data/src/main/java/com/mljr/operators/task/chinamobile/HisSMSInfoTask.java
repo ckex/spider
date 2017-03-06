@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.mljr.operators.common.constant.RequestInfoEnum;
+import com.mljr.operators.common.utils.CookieUtils;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.entity.model.operators.SMSInfo;
@@ -41,15 +42,33 @@ public class HisSMSInfoTask implements Runnable {
 
     public Long userInfoId;
 
-    public Map<String, String> cookies;
+    public String cookies;
 
     public RequestInfo requestInfo;
 
-
-    public void setParams(Long userInfoId, Map<String, String> cookies, RequestInfo requestInfo) {
+    public void setParams(Long userInfoId, String cookies, RequestInfo requestInfo) {
         this.userInfoId = userInfoId;
         this.cookies = cookies;
         this.requestInfo = requestInfo;
+    }
+
+    @Override
+    public void run() {
+        try {
+            DatePair pair = new DatePair(DateFormatUtils.format(requestInfo.getStartDate(), "yyyy-MM-dd"),
+                    DateFormatUtils.format(requestInfo.getEndDate(), "yyyy-MM-dd"));
+            Map<String, String> cMap = CookieUtils.stringToMap(cookies);
+            String data = chinaMobileService.getHistorySmsInfo(cMap, pair);
+            writeToDb(data, pair);
+
+            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.SUCCESS,
+                    RequestInfoEnum.INIT);
+
+        } catch (Exception e) {
+            logger.error("CurrSMSInfoTask error", e);
+            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.ERROR,
+                    RequestInfoEnum.INIT);
+        }
     }
 
     void writeToDb(String data, DatePair pair) throws Exception {
@@ -86,22 +105,4 @@ public class HisSMSInfoTask implements Runnable {
         smsInfoService.insertByBatch(siList);
     }
 
-
-    @Override
-    public void run() {
-        try {
-            DatePair pair = new DatePair(DateFormatUtils.format(requestInfo.getStartDate(), "yyyy-MM-dd"),
-                    DateFormatUtils.format(requestInfo.getEndDate(), "yyyy-MM-dd"));
-            String data = chinaMobileService.getHistorySmsInfo(cookies, pair);
-            writeToDb(data, pair);
-
-            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.SUCCESS,
-                    RequestInfoEnum.INIT);
-
-        } catch (Exception e) {
-            logger.error("CurrSMSInfoTask error", e);
-            requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.ERROR,
-                    RequestInfoEnum.INIT);
-        }
-    }
 }
