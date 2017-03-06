@@ -113,6 +113,8 @@ public class ApiController {
                     return new BaseResponse(ErrorCodeEnum.LOGIN_FAIL, false);
                 }
                 cookies = CookieUtils.mapToString(cMap);
+                // 发送短信验证码
+                chinaMobileService.getSmsCode(u.getMobile());
             } else if (OperatorsEnum.CHINAUNICOM.getCode().equals(u.getType())) {
                 LoginDTO loginDTO = new LoginDTO();
                 loginDTO.setMobile(u.getMobile());
