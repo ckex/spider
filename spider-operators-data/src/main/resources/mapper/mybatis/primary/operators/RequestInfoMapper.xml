@@ -203,7 +203,7 @@
   </insert>
 
   <update id="updateStatusBySign">
-    UPDATE t_request_info SET STATUS=#{status} WHERE SIGN=#{sign} AND STATUS=#{originStatus}
+    UPDATE t_request_info SET STATUS=#{status},UPDATE_TIME=now() WHERE SIGN=#{sign} AND STATUS=#{originStatus}
   </update>
 
   <select id="getBySign" resultMap="BaseResultMap">
