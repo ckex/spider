@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mljr.operators.dao.primary.operators.OperatorFeaturesMapper">
+  <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.OperatorFeatures">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
+    <result column="operator_type" jdbcType="VARCHAR" property="operatorType" />
+    <result column="need_sms_code" jdbcType="BIT" property="needSmsCode" />
+    <result column="need_pwd" jdbcType="BIT" property="needPwd" />
+    <result column="need_captcha" jdbcType="BIT" property="needCaptcha" />
+    <result column="need_second_query_pwd" jdbcType="BIT" property="needSecondQueryPwd" />
+    <result column="sms_code_url" jdbcType="VARCHAR" property="smsCodeUrl" />
+    <result column="captcha_url" jdbcType="VARCHAR" property="captchaUrl" />
+    <result column="login_url" jdbcType="VARCHAR" property="loginUrl" />
+    <result column="user_info_url" jdbcType="VARCHAR" property="userInfoUrl" />
+    <result column="package_info_url" jdbcType="VARCHAR" property="packageInfoUrl" />
+    <result column="package_info_detail_url" jdbcType="VARCHAR" property="packageInfoDetailUrl" />
+    <result column="curr_bill_info_url" jdbcType="VARCHAR" property="currBillInfoUrl" />
+    <result column="curr_flow_info_url" jdbcType="VARCHAR" property="currFlowInfoUrl" />
+    <result column="curr_sms_info_url" jdbcType="VARCHAR" property="currSmsInfoUrl" />
+    <result column="curr_call_info_url" jdbcType="VARCHAR" property="currCallInfoUrl" />
+    <result column="his_bill_info_url" jdbcType="VARCHAR" property="hisBillInfoUrl" />
+    <result column="his_flow_info_url" jdbcType="VARCHAR" property="hisFlowInfoUrl" />
+    <result column="his_sms_info_url" jdbcType="VARCHAR" property="hisSmsInfoUrl" />
+    <result column="his_call_info_url" jdbcType="VARCHAR" property="hisCallInfoUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, province_code, operator_type, need_sms_code, need_pwd, need_captcha, need_second_query_pwd, 
+    sms_code_url, captcha_url, login_url, user_info_url, package_info_url, package_info_detail_url, 
+    curr_bill_info_url, curr_flow_info_url, curr_sms_info_url, curr_call_info_url, his_bill_info_url, 
+    his_flow_info_url, his_sms_info_url, his_call_info_url, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_operator_features
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectUniqFeatures" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_operator_features
+    where province_code = #{provinceCode,jdbcType=VARCHAR}
+    and operator_type = #{operatorType,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_operator_features
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mljr.operators.entity.model.operators.OperatorFeatures">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_operator_features (province_code, operator_type, need_sms_code, 
+      need_pwd, need_captcha, need_second_query_pwd, 
+      sms_code_url, captcha_url, login_url, 
+      user_info_url, package_info_url, package_info_detail_url, 
+      curr_bill_info_url, curr_flow_info_url, curr_sms_info_url, 
+      curr_call_info_url, his_bill_info_url, his_flow_info_url, 
+      his_sms_info_url, his_call_info_url, create_time, 
+      update_time)
+    values (#{provinceCode,jdbcType=VARCHAR}, #{operatorType,jdbcType=VARCHAR}, #{needSmsCode,jdbcType=BIT}, 
+      #{needPwd,jdbcType=BIT}, #{needCaptcha,jdbcType=BIT}, #{needSecondQueryPwd,jdbcType=BIT}, 
+      #{smsCodeUrl,jdbcType=VARCHAR}, #{captchaUrl,jdbcType=VARCHAR}, #{loginUrl,jdbcType=VARCHAR}, 
+      #{userInfoUrl,jdbcType=VARCHAR}, #{packageInfoUrl,jdbcType=VARCHAR}, #{packageInfoDetailUrl,jdbcType=VARCHAR}, 
+      #{currBillInfoUrl,jdbcType=VARCHAR}, #{currFlowInfoUrl,jdbcType=VARCHAR}, #{currSmsInfoUrl,jdbcType=VARCHAR}, 
+      #{currCallInfoUrl,jdbcType=VARCHAR}, #{hisBillInfoUrl,jdbcType=VARCHAR}, #{hisFlowInfoUrl,jdbcType=VARCHAR}, 
+      #{hisSmsInfoUrl,jdbcType=VARCHAR}, #{hisCallInfoUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.OperatorFeatures">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_operator_features
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="provinceCode != null">
+        province_code,
+      </if>
+      <if test="operatorType != null">
+        operator_type,
+      </if>
+      <if test="needSmsCode != null">
+        need_sms_code,
+      </if>
+      <if test="needPwd != null">
+        need_pwd,
+      </if>
+      <if test="needCaptcha != null">
+        need_captcha,
+      </if>
+      <if test="needSecondQueryPwd != null">
+        need_second_query_pwd,
+      </if>
+      <if test="smsCodeUrl != null">
+        sms_code_url,
+      </if>
+      <if test="captchaUrl != null">
+        captcha_url,
+      </if>
+      <if test="loginUrl != null">
+        login_url,
+      </if>
+      <if test="userInfoUrl != null">
+        user_info_url,
+      </if>
+      <if test="packageInfoUrl != null">
+        package_info_url,
+      </if>
+      <if test="packageInfoDetailUrl != null">
+        package_info_detail_url,
+      </if>
+      <if test="currBillInfoUrl != null">
+        curr_bill_info_url,
+      </if>
+      <if test="currFlowInfoUrl != null">
+        curr_flow_info_url,
+      </if>
+      <if test="currSmsInfoUrl != null">
+        curr_sms_info_url,
+      </if>
+      <if test="currCallInfoUrl != null">
+        curr_call_info_url,
+      </if>
+      <if test="hisBillInfoUrl != null">
+        his_bill_info_url,
+      </if>
+      <if test="hisFlowInfoUrl != null">
+        his_flow_info_url,
+      </if>
+      <if test="hisSmsInfoUrl != null">
+        his_sms_info_url,
+      </if>
+      <if test="hisCallInfoUrl != null">
+        his_call_info_url,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="provinceCode != null">
+        #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorType != null">
+        #{operatorType,jdbcType=VARCHAR},
+      </if>
+      <if test="needSmsCode != null">
+        #{needSmsCode,jdbcType=BIT},
+      </if>
+      <if test="needPwd != null">
+        #{needPwd,jdbcType=BIT},
+      </if>
+      <if test="needCaptcha != null">
+        #{needCaptcha,jdbcType=BIT},
+      </if>
+      <if test="needSecondQueryPwd != null">
+        #{needSecondQueryPwd,jdbcType=BIT},
+      </if>
+      <if test="smsCodeUrl != null">
+        #{smsCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="captchaUrl != null">
+        #{captchaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="loginUrl != null">
+        #{loginUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userInfoUrl != null">
+        #{userInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="packageInfoUrl != null">
+        #{packageInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="packageInfoDetailUrl != null">
+        #{packageInfoDetailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="currBillInfoUrl != null">
+        #{currBillInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="currFlowInfoUrl != null">
+        #{currFlowInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="currSmsInfoUrl != null">
+        #{currSmsInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="currCallInfoUrl != null">
+        #{currCallInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hisBillInfoUrl != null">
+        #{hisBillInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hisFlowInfoUrl != null">
+        #{hisFlowInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hisSmsInfoUrl != null">
+        #{hisSmsInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hisCallInfoUrl != null">
+        #{hisCallInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.OperatorFeatures">
+    update t_operator_features
+    <set>
+      <if test="provinceCode != null">
+        province_code = #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorType != null">
+        operator_type = #{operatorType,jdbcType=VARCHAR},
+      </if>
+      <if test="needSmsCode != null">
+        need_sms_code = #{needSmsCode,jdbcType=BIT},
+      </if>
+      <if test="needPwd != null">
+        need_pwd = #{needPwd,jdbcType=BIT},
+      </if>
+      <if test="needCaptcha != null">
+        need_captcha = #{needCaptcha,jdbcType=BIT},
+      </if>
+      <if test="needSecondQueryPwd != null">
+        need_second_query_pwd = #{needSecondQueryPwd,jdbcType=BIT},
+      </if>
+      <if test="smsCodeUrl != null">
+        sms_code_url = #{smsCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="captchaUrl != null">
+        captcha_url = #{captchaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="loginUrl != null">
+        login_url = #{loginUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userInfoUrl != null">
+        user_info_url = #{userInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="packageInfoUrl != null">
+        package_info_url = #{packageInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="packageInfoDetailUrl != null">
+        package_info_detail_url = #{packageInfoDetailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="currBillInfoUrl != null">
+        curr_bill_info_url = #{currBillInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="currFlowInfoUrl != null">
+        curr_flow_info_url = #{currFlowInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="currSmsInfoUrl != null">
+        curr_sms_info_url = #{currSmsInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="currCallInfoUrl != null">
+        curr_call_info_url = #{currCallInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hisBillInfoUrl != null">
+        his_bill_info_url = #{hisBillInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hisFlowInfoUrl != null">
+        his_flow_info_url = #{hisFlowInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hisSmsInfoUrl != null">
+        his_sms_info_url = #{hisSmsInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="hisCallInfoUrl != null">
+        his_call_info_url = #{hisCallInfoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mljr.operators.entity.model.operators.OperatorFeatures">
+    update t_operator_features
+    set province_code = #{provinceCode,jdbcType=VARCHAR},
+      operator_type = #{operatorType,jdbcType=VARCHAR},
+      need_sms_code = #{needSmsCode,jdbcType=BIT},
+      need_pwd = #{needPwd,jdbcType=BIT},
+      need_captcha = #{needCaptcha,jdbcType=BIT},
+      need_second_query_pwd = #{needSecondQueryPwd,jdbcType=BIT},
+      sms_code_url = #{smsCodeUrl,jdbcType=VARCHAR},
+      captcha_url = #{captchaUrl,jdbcType=VARCHAR},
+      login_url = #{loginUrl,jdbcType=VARCHAR},
+      user_info_url = #{userInfoUrl,jdbcType=VARCHAR},
+      package_info_url = #{packageInfoUrl,jdbcType=VARCHAR},
+      package_info_detail_url = #{packageInfoDetailUrl,jdbcType=VARCHAR},
+      curr_bill_info_url = #{currBillInfoUrl,jdbcType=VARCHAR},
+      curr_flow_info_url = #{currFlowInfoUrl,jdbcType=VARCHAR},
+      curr_sms_info_url = #{currSmsInfoUrl,jdbcType=VARCHAR},
+      curr_call_info_url = #{currCallInfoUrl,jdbcType=VARCHAR},
+      his_bill_info_url = #{hisBillInfoUrl,jdbcType=VARCHAR},
+      his_flow_info_url = #{hisFlowInfoUrl,jdbcType=VARCHAR},
+      his_sms_info_url = #{hisSmsInfoUrl,jdbcType=VARCHAR},
+      his_call_info_url = #{hisCallInfoUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -16,8 +16,8 @@
 
 		<!-- jdbc连接 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://106.75.80.159:3306/mljrdev?characterEncoding=utf8"
-			userId="mljr" password="2016@mljr" />
+			connectionURL="jdbc:mysql://106.75.72.140:3306/spider_operator?noAccessToProcedureBodies=true&amp;useUnicode=true&amp;characterEncoding=utf8"
+			userId="mljr" password="mljr@@)!&amp;" />
 
 		<!-- 类型转换 -->
 		<javaTypeResolver>
@@ -48,12 +48,12 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<!--<table tableName="t_user_info" domainObjectName="UserInfo"-->
-			<!--enableCountByExample="false" enableUpdateByExample="false"-->
-			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
-			<!--selectByExampleQueryId="false">-->
-			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
-		<!--</table>-->
+		<table tableName="t_operator_features" domainObjectName="OperatorFeatures"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
 
 		<!--<table tableName="t_package_info" domainObjectName="PackageInfo"-->
 			<!--enableCountByExample="false" enableUpdateByExample="false"-->
