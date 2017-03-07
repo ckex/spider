@@ -8,10 +8,7 @@ import com.mljr.operators.common.constant.ErrorCodeEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.ApiData;
 import com.mljr.operators.entity.PhoneInfo;
-import com.mljr.operators.entity.model.operators.CallInfo;
-import com.mljr.operators.entity.model.operators.FlowInfo;
-import com.mljr.operators.entity.model.operators.SMSInfo;
-import com.mljr.operators.entity.model.operators.UserInfo;
+import com.mljr.operators.entity.model.operators.*;
 import com.mljr.operators.service.primary.operators.*;
 import com.mljr.redis.RedisClient;
 import org.apache.commons.collections.CollectionUtils;
@@ -43,6 +40,9 @@ public class ApiService {
     public final static String PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     @Autowired
+    ChinaMobileService chinaMobileService;
+
+    @Autowired
     ICallInfoService callInfoService;
 
     @Autowired
@@ -59,6 +59,9 @@ public class ApiService {
 
     @Autowired
     IRequestInfoService requestInfoService;
+
+    @Autowired
+    IOperatorFeaturesService operatorFeaturesService;
 
     RedisClient redisClient = ServiceConfig.getSpiderRedisClient();
 
@@ -80,6 +83,23 @@ public class ApiService {
             return RequestInfoEnum.SUCCESS;
         }
         return RequestInfoEnum.INIT;
+    }
+
+
+    public void sendSmsCodeIfNeeded(String cellphone, String provinceCode, String opType) {
+        OperatorFeatures fe = operatorFeaturesService.selectUniqFeatures(provinceCode, opType);
+        if (fe != null && fe.getNeedSmsCode()) {
+            this.sendSmsCode(fe.getSmsCodeUrl(), cellphone);
+        }
+    }
+
+    public void sendSmsCode(String urlPattern, String cellphone) {
+        try {
+            String url = String.format(urlPattern, cellphone);
+            Jsoup.connect(url).timeout(1000 * 60).execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Long findUidByToken(String token) {

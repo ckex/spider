@@ -1,13 +1,18 @@
 package com.mljr.operators.service;
 
+import com.google.common.collect.Maps;
+import com.mljr.operators.dao.primary.operators.OperatorFeaturesMapper;
 import com.mljr.operators.dao.primary.operators.RequestInfoMapper;
+import com.mljr.operators.entity.model.operators.OperatorFeatures;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.task.chinamobile.*;
+import com.mljr.redis.RedisClient;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,6 +38,12 @@ public class ChinaMobileTaskTest extends BaseTest {
 
     @Autowired
     RequestInfoMapper requestInfoMapper;
+
+    @Autowired
+    ApiService apiService;
+
+    @Autowired
+    OperatorFeaturesMapper operatorFeaturesMapper;
 
     @Test
     public void flowInfoTest() {
@@ -72,5 +83,15 @@ public class ChinaMobileTaskTest extends BaseTest {
 
         System.out.println(set);
 
+    }
+
+    @Test
+    public void testFe() throws Exception {
+        OperatorFeatures fe = new OperatorFeatures();
+        fe.setProvinceCode("sh");
+        fe.setOperatorType("2");
+        operatorFeaturesMapper.insertSelective(fe);
+
+        operatorFeaturesMapper.selectUniqFeatures("sh","2");
     }
 }
