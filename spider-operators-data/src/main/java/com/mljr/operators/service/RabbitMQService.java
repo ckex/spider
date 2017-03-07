@@ -153,17 +153,13 @@ public class RabbitMQService {
   }
 
   public String pollMessage(String queueId) {
-    boolean autoAck = true;
     try {
-      GetResponse response = RabbitmqClient.pollMessage(channel, queueId, autoAck);
+      GetResponse response = RabbitmqClient.pollMessage(channel, queueId, true);
       if (response == null) {
         if (RandomUtils.randomPrint(100)) {
           logger.debug("qid=" + queueId + "queue is empty.waitting message");
         }
         return null;
-      }
-      if (!autoAck) {
-        channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
       }
       return new String(response.getBody(), "UTF-8");
     } catch (Exception e) {
