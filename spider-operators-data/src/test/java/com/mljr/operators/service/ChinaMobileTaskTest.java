@@ -1,18 +1,14 @@
 package com.mljr.operators.service;
 
-import com.google.common.collect.Maps;
+import com.mljr.operators.common.constant.ProvinceEnum;
 import com.mljr.operators.dao.primary.operators.OperatorFeaturesMapper;
 import com.mljr.operators.dao.primary.operators.RequestInfoMapper;
 import com.mljr.operators.entity.model.operators.OperatorFeatures;
-import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.task.chinamobile.*;
-import com.mljr.redis.RedisClient;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -79,7 +75,7 @@ public class ChinaMobileTaskTest extends BaseTest {
 
     @Test
     public void checkState() throws Exception {
-        Set<Integer> set = requestInfoMapper.checkState("13681668945","310112198212207354");
+        Set<Integer> set = requestInfoMapper.checkState("13681668945", "310112198212207354");
 
         System.out.println(set);
 
@@ -92,6 +88,23 @@ public class ChinaMobileTaskTest extends BaseTest {
         fe.setOperatorType("2");
         operatorFeaturesMapper.insertSelective(fe);
 
-        operatorFeaturesMapper.selectUniqFeatures("sh","2");
+        operatorFeaturesMapper.selectUniqFeatures("sh", "2");
+    }
+
+    @Test
+    public void testInsertData() throws Exception {
+        ProvinceEnum[] arr = ProvinceEnum.values();
+        for (int i = 0; i < arr.length; i++) {
+            ProvinceEnum anEnum = arr[i];
+
+            for (int j = 1; j <= 3; j++) {
+                OperatorFeatures fe = new OperatorFeatures();
+                fe.setProvinceCode(anEnum.name());
+                fe.setOperatorType(j + "");
+                operatorFeaturesMapper.insertSelective(fe);
+            }
+
+        }
+
     }
 }

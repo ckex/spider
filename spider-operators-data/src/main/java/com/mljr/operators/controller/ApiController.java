@@ -13,11 +13,13 @@ import com.mljr.operators.entity.BaseResponse;
 import com.mljr.operators.entity.PhoneInfo;
 import com.mljr.operators.entity.dto.chinaunicom.LoginDTO;
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
+import com.mljr.operators.entity.model.operators.OperatorFeatures;
 import com.mljr.operators.entity.model.operators.UserInfo;
 import com.mljr.operators.service.ApiService;
 import com.mljr.operators.service.ChinaMobileService;
 import com.mljr.operators.service.api.IOperatorAdminApiService;
 import com.mljr.operators.service.chinaunicom.IChinaUnicomService;
+import com.mljr.operators.service.primary.operators.IOperatorFeaturesService;
 import com.mljr.operators.service.primary.operators.IUserInfoService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -54,6 +56,9 @@ public class ApiController {
     @Autowired
     IChinaUnicomService chinaUnicomService;
 
+    @Autowired
+    IOperatorFeaturesService operatorFeaturesService;
+
     Gson gson = new Gson();
 
     /**
@@ -84,8 +89,10 @@ public class ApiController {
             ret = userInfoService.selectUniqUser(cellphone, idcard);
         }
         apiService.saveToken(token, ret.getId());
-        apiService.sendSmsCodeIfNeeded(cellphone, info.getProvinceCode(), info.getType());
-        return new ApiResponse(ErrorCodeEnum.TOKEN_SUCC, true, token, true, false);
+
+        OperatorFeatures fe = operatorFeaturesService.selectUniqFeatures(ret.getProvinceCode(), ret.getType());
+        apiService.sendSmsCodeIfNeeded(cellphone, fe);
+        return new ApiResponse(ErrorCodeEnum.TOKEN_SUCC, true, token, fe);
     }
 
     /**
@@ -155,11 +162,11 @@ public class ApiController {
         RequestInfoEnum state = apiService.checkState(u);
         switch (state) {
             case INIT:
-                return new BaseResponse(ErrorCodeEnum.TASK_RUNNING,false);
+                return new BaseResponse(ErrorCodeEnum.TASK_RUNNING, false);
             case RUNNING:
-                return new BaseResponse(ErrorCodeEnum.TASK_RUNNING,false);
+                return new BaseResponse(ErrorCodeEnum.TASK_RUNNING, false);
             case ERROR:
-                return new BaseResponse(ErrorCodeEnum.TASK_ERROR,false);
+                return new BaseResponse(ErrorCodeEnum.TASK_ERROR, false);
             case SUCCESS:
                 return apiService.getData(token);
         }
