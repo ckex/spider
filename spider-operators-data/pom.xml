@@ -81,10 +81,57 @@
     </dependencies>
 
 	<build>
+
+		<finalName>${output.file.name}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
+
+			<plugin>
+				<!-- http://maven.apache.org/plugins/maven-assembly-plugin/usage.html -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>assemble</id>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<!-- 发布模式使用的maven assembly插件描述文件 -->
+					<descriptors>
+						<descriptor>src/assemble/release.xml</descriptor>
+					</descriptors>
+					<!-- 如果一个应用的包含多个deploy模块，如果使用同样的包名�?如果把它们复制的一个目录中可能会失败，所以包名加�? artifactId以示区分 -->
+					<finalName>${project.artifactId}</finalName>
+					<!-- scm 要求 release 模式打出的包放到顶级目录下的target子目录中 -->
+					<!-- <outputDirectory>${project.parent.build.directory}</outputDirectory> -->
+					<outputDirectory>${output.dir}</outputDirectory>
+					<finalName>${finalName}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<attach>false</attach>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.mybatis.generator</groupId>
@@ -127,14 +174,6 @@
 					<configurationFile>
 						src/main/resources/generatorConfig.xml
 					</configurationFile>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<encoding>UTF-8</encoding>
-					<source>1.8</source>
-					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
