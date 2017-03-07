@@ -1,11 +1,14 @@
 package com.mljr.operators.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.utils.ShanghaiUtils;
 import com.mljr.operators.entity.dto.operator.RequestInfoDTO;
 import com.mljr.operators.entity.model.operators.SMSInfo;
 import com.mljr.operators.service.primary.operators.ISMSInfoService;
+import com.mljr.redis.RedisClient;
+import org.apache.poi.util.SystemOutLogger;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -72,5 +75,21 @@ public class ChinaMoblieTest  {
 
         System.out.println(list.size());
 
+    }
+
+    RedisClient redisClient = new RedisClient("106.75.80.159",6379,10000,100,10,1000,"mljr9876543210");
+
+    @Test
+    public void testToken() throws Exception {
+        System.out.println(redisClient.toString());
+        System.out.println(saveToken("cfcb087379f2acb934f05c4e758fecbc",1l));
+    }
+
+    public String saveToken(String token, Long uid) {
+        return redisClient.use(jedis -> {
+            Map<String, String> map = Maps.newHashMap();
+            map.put(token, String.valueOf(uid));
+            return jedis.hmset("token-uid", map);
+        });
     }
 }

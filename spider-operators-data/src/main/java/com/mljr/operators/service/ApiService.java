@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.mljr.common.ServiceConfig;
 import com.mljr.operators.common.constant.ErrorCodeEnum;
+import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.ApiData;
 import com.mljr.operators.entity.PhoneInfo;
@@ -41,6 +42,9 @@ public class ApiService {
     Gson gson = new Gson();
 
     public final static String PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+    @Autowired
+    ChinaMobileService chinaMobileService;
 
     @Autowired
     ICallInfoService callInfoService;
@@ -80,6 +84,13 @@ public class ApiService {
             return RequestInfoEnum.SUCCESS;
         }
         return RequestInfoEnum.INIT;
+    }
+
+
+    public void sendSmsCodeIfNeeded(String cellphone, String provinceCode, String opType) {
+        if (OperatorsEnum.CHINAMOBILE.getCode().equals(opType)) {
+            chinaMobileService.sendSmsCode(cellphone);
+        }
     }
 
     public Long findUidByToken(String token) {

@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Service
 public class ChinaMobileService {
-    public String getSmsCode(String telno) {
+    public String sendSmsCode(String telno) {
         try {
             String url = String.format(ChinaMobileConstant.Shanghai.SMS_CODE_PATTERN, telno);
             String jsonStr = fetchData(url);

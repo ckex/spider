@@ -37,7 +37,7 @@ import java.util.Map;
 @RestController
 public class ApiController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChinaUnicomController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 
     @Autowired
     private IUserInfoService userInfoService;
@@ -84,7 +84,7 @@ public class ApiController {
             ret = userInfoService.selectUniqUser(cellphone, idcard);
         }
         apiService.saveToken(token, ret.getId());
-
+        apiService.sendSmsCodeIfNeeded(cellphone, info.getProvinceCode(), info.getType());
         return new ApiResponse(ErrorCodeEnum.TOKEN_SUCC, true, token, true, false);
     }
 
@@ -113,8 +113,6 @@ public class ApiController {
                     return new BaseResponse(ErrorCodeEnum.LOGIN_FAIL, false);
                 }
                 cookies = CookieUtils.mapToString(cMap);
-                // 发送短信验证码
-                chinaMobileService.getSmsCode(u.getMobile());
             } else if (OperatorsEnum.CHINAUNICOM.getCode().equals(u.getType())) {
                 LoginDTO loginDTO = new LoginDTO();
                 loginDTO.setMobile(u.getMobile());

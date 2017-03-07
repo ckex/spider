@@ -40,7 +40,7 @@ public class LoginController {
         if (StringUtils.isBlank(telno) || telno.length() != 11) {
             return "请输入正确的手机号";
         }
-        return chinaMobileService.getSmsCode(StringUtils.trim(telno));
+        return chinaMobileService.sendSmsCode(StringUtils.trim(telno));
     }
 
     @RequestMapping("/chinaMobile/getAllInfos")

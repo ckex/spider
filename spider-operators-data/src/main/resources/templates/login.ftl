@@ -81,7 +81,7 @@
         var telno=$("#telno").val();
         $.ajax({
             type: "POST",
-            url: "/getSmsCode/"+telno,
+            url: "/sendSmsCode/"+telno,
             cache: false,
             async: true,
             success: function (json) {
