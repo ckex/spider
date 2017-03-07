@@ -1,7 +1,10 @@
 package com.mljr.operators.common.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.mljr.operators.entity.dto.chinaunicom.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
@@ -19,12 +22,112 @@ public class ChinaUnicomUtil {
 
   private ChinaUnicomUtil() {}
 
-  public static <T> T request(String cookies, String url, Class<T> c) {
-    String respStr = request(url, cookies);
-    if (null != respStr) {
-      return JSON.parseObject(respStr, c);
+  public static HttpRespDTO<UserInfoDTO> validatePackageInfo(String cookies, String url) {
+    HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    try {
+      String json = request(url, cookies);
+      if (null != json) {
+        JSONObject jsonObject = JSON.parseObject(json);
+        if (jsonObject.containsKey("packageInfo")) {
+          JSONObject packageObj = (JSONObject) jsonObject.get("packageInfo");
+          if (packageObj.containsKey("respCode")
+              && "0000".equals(packageObj.getString("respCode"))) {
+            respDTO.setSucc(true).setBody(parse(json, UserInfoDTO.class));
+          }
+        }
+      }
+    } catch (Exception e) {
+      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
     }
-    return null;
+    return respDTO;
+  }
+
+  public static HttpRespDTO<CallDTO> validateCall(String cookies, String url) {
+    HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    try {
+      String json = request(url, cookies);
+      if (null != json) {
+        JSONObject jsonObject = JSON.parseObject(json);
+        if (jsonObject.containsKey("isSuccess")
+            && true == jsonObject.getBooleanValue("isSuccess")) {
+          respDTO.setSucc(true).setBody(parse(json, CallDTO.class));
+        }
+      }
+    } catch (Exception e) {
+      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+    }
+    return respDTO;
+  }
+
+  public static HttpRespDTO<BillDTO> validateBill(String cookies, String url) {
+    HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    try {
+      String json = request(url, cookies);
+      if (null != json) {
+        JSONObject jsonObject = JSON.parseObject(json);
+        if (jsonObject.containsKey("rspcode") && "0000".equals(jsonObject.getString("rspcode"))) {
+          respDTO.setSucc(true).setBody(parse(json, BillDTO.class));
+        }
+      }
+    } catch (Exception e) {
+      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+    }
+    return respDTO;
+  }
+
+  public static HttpRespDTO<SMSDTO> validateSMS(String cookies, String url) {
+    HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    try {
+      String json = request(url, cookies);
+      if (null != json) {
+        JSONObject jsonObject = JSON.parseObject(json);
+        if (jsonObject.containsKey("isSuccess")
+            && true == (jsonObject.getBooleanValue("isSuccess"))) {
+          respDTO.setSucc(true).setBody(parse(json, SMSDTO.class));
+        }
+      }
+    } catch (Exception e) {
+      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+    }
+    return respDTO;
+  }
+
+  public static HttpRespDTO<FlowDetailDTO> validateFlow(String cookies, String url) {
+    HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    try {
+      String json = request(url, cookies);
+      if (null != json) {
+        JSONObject jsonObject = JSON.parseObject(json);
+        if (jsonObject.containsKey("rspcode") && "0000".equals(jsonObject.getString("rspcode"))) {
+          respDTO.setSucc(true).setBody(parse(json, FlowDetailDTO.class));
+        }
+      }
+    } catch (Exception e) {
+      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+    }
+    return respDTO;
+  }
+
+  public static HttpRespDTO<FlowRecordDTO> validateFlowRecord(String cookies, String url) {
+    HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    try {
+      String json = request(url, cookies);
+      if (null != json) {
+        JSONObject jsonObject = JSON.parseObject(json);
+        if (jsonObject.containsKey("isSuccess")
+            && true == jsonObject.getBooleanValue("isSuccess")) {
+          respDTO.setSucc(true).setBody(parse(json, FlowRecordDTO.class));
+        }
+      }
+    } catch (Exception e) {
+      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+    }
+    return respDTO;
+  }
+
+
+  public static <T> T parse(String json, Class<T> c) {
+    return JSON.parseObject(json, c);
   }
 
   private static String request(String url, String cookies) {

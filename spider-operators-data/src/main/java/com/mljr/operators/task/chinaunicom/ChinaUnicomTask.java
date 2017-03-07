@@ -63,42 +63,59 @@ public class ChinaUnicomTask implements Runnable {
       OperatorsUrlEnum enums = OperatorsUrlEnum.indexOf(requestInfo.getUrlType().intValue());
       switch (enums) {
         case CHINA_UNICOM_BILL:
-          BillDTO billDTO = ChinaUnicomUtil.request(cookies, requestInfo.getUrl(), BillDTO.class);
-          flag = chinaUnicomStoreService.saveBillInfo(userInfo.getId(), billDTO);
+          HttpRespDTO<BillDTO> billHttpResp =
+              ChinaUnicomUtil.validateBill(cookies, requestInfo.getUrl());
+          if (billHttpResp.isSucc()) {
+            flag = chinaUnicomStoreService.saveBillInfo(userInfo.getId(), billHttpResp.getBody());
+          }
           break;
         case CHINA_UNICOM_SMS:
-          SMSDTO smsdto = ChinaUnicomUtil.request(cookies, requestInfo.getUrl(), SMSDTO.class);
-          flag = chinaUnicomStoreService.saveSmsInfo(userInfo.getId(), smsdto);
-          int totalPage = getPageUrl(smsdto);
-          if (totalPage > 0) {
-            list = getPageList(enums, totalPage);
+          HttpRespDTO<SMSDTO> smsHttpResp =
+              ChinaUnicomUtil.validateSMS(cookies, requestInfo.getUrl());
+          if (smsHttpResp.isSucc()) {
+            flag = chinaUnicomStoreService.saveSmsInfo(userInfo.getId(), smsHttpResp.getBody());
+            int totalPage = getPageUrl(smsHttpResp.getBody());
+            if (totalPage > 0) {
+              list = getPageList(enums, totalPage);
+            }
           }
           break;
         case CHINA_UNICOM_CALL:
-          CallDTO callDTO = ChinaUnicomUtil.request(cookies, requestInfo.getUrl(), CallDTO.class);
-          flag = chinaUnicomStoreService.saveCallInfo(userInfo.getId(), callDTO);
-          int callTotalPage = getPageUrl(callDTO);
-          if (callTotalPage > 0) {
-            list = getPageList(enums, callTotalPage);
+          HttpRespDTO<CallDTO> callHttpResp =
+              ChinaUnicomUtil.validateCall(cookies, requestInfo.getUrl());
+          if (callHttpResp.isSucc()) {
+            flag = chinaUnicomStoreService.saveCallInfo(userInfo.getId(), callHttpResp.getBody());
+            int callTotalPage = getPageUrl(callHttpResp.getBody());
+            if (callTotalPage > 0) {
+              list = getPageList(enums, callTotalPage);
+            }
           }
           break;
         case CHINA_UNICOM_FLOW:
-          FlowDetailDTO flowDetailDTO =
-              ChinaUnicomUtil.request(cookies, requestInfo.getUrl(), FlowDetailDTO.class);
-          flag = chinaUnicomStoreService.saveFlowInfo(userInfo.getId(), flowDetailDTO);
+          HttpRespDTO<FlowDetailDTO> flowHttpResp =
+              ChinaUnicomUtil.validateFlow(cookies, requestInfo.getUrl());
+          if (flowHttpResp.isSucc()) {
+            flag = chinaUnicomStoreService.saveFlowInfo(userInfo.getId(), flowHttpResp.getBody());
+          }
           break;
         case CHINA_UNICOM_USER_INFO:
-          UserInfoDTO userInfoDTO =
-              ChinaUnicomUtil.request(cookies, requestInfo.getUrl(), UserInfoDTO.class);
-          flag = chinaUnicomStoreService.savePackageInfo(userInfo.getId(), userInfoDTO);
+          HttpRespDTO<UserInfoDTO> userInfoHttpResp =
+              ChinaUnicomUtil.validatePackageInfo(cookies, requestInfo.getUrl());
+          if (userInfoHttpResp.isSucc()) {
+            flag = chinaUnicomStoreService.savePackageInfo(userInfo.getId(),
+                userInfoHttpResp.getBody());
+          }
           break;
         case CHINA_UNICOM_FLOW_RECORD:
-          FlowRecordDTO flowRecordDTO =
-              ChinaUnicomUtil.request(cookies, requestInfo.getUrl(), FlowRecordDTO.class);
-          flag = chinaUnicomStoreService.saveFlowRecordInfo(userInfo.getId(), flowRecordDTO);
-          int flowRecordTotalPage = getPageUrl(flowRecordDTO);
-          if (flowRecordTotalPage > 0) {
-            list = getPageList(enums, flowRecordTotalPage);
+          HttpRespDTO<FlowRecordDTO> flowRecordHttpResp =
+              ChinaUnicomUtil.validateFlowRecord(cookies, requestInfo.getUrl());
+          if (flowRecordHttpResp.isSucc()) {
+            flag = chinaUnicomStoreService.saveFlowRecordInfo(userInfo.getId(),
+                flowRecordHttpResp.getBody());
+            int flowRecordTotalPage = getPageUrl(flowRecordHttpResp.getBody());
+            if (flowRecordTotalPage > 0) {
+              list = getPageList(enums, flowRecordTotalPage);
+            }
           }
           break;
         default:
