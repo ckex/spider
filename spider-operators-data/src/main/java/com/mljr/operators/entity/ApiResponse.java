@@ -1,11 +1,13 @@
 package com.mljr.operators.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mljr.operators.common.constant.ErrorCodeEnum;
 import com.mljr.operators.entity.model.operators.OperatorFeatures;
 
 /**
  * Created by songchi on 17/3/1.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse {
     public Integer code;
     public String message;
