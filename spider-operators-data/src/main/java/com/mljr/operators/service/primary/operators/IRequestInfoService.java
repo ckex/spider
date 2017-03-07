@@ -1,5 +1,6 @@
 package com.mljr.operators.service.primary.operators;
 
+import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.primary.IBaseService;
@@ -48,4 +49,21 @@ public interface IRequestInfoService extends IBaseService<RequestInfo, Long> {
   Date getPerRequestDate(String mobile, String idcard);
 
   Set<Integer> checkState(String mobile, String idcard);
+
+  /**
+   * 批量修改状态
+   * @param newStatus 状态
+   * @param originStatus 修改状态
+   * @param ids
+   * @return
+   */
+  boolean batchUpdateStatusById(RequestInfoEnum newStatus,RequestInfoEnum originStatus,List<Long> ids);
+
+  /**
+   * 重试
+   * @param operatorsEnum 运营商
+   * @param status 状态
+   * @return
+   */
+  List<RequestInfo> retry(OperatorsEnum operatorsEnum,RequestInfoEnum status);
 }

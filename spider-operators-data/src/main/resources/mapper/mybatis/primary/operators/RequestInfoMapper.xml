@@ -220,4 +220,16 @@
     AND IDCARD=#{idcard}
   </select>
 
+  <update id="batchUpdateStatusById">
+    UPDATE t_request_info SET STATUS=#{newStatus},UPDATE_TIME=now() WHERE ID IN
+    <foreach collection="ids" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    AND STATUS=#{originStatus}
+  </update>
+
+  <select id="retry" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/> FROM t_request_info WHERE OPERATORS_TYPE=#{operatorsType} AND STATUS=#{status} ORDER BY ID DESC limit 100
+  </select>
+
 </mapper>

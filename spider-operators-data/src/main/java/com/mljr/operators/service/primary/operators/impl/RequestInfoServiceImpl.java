@@ -1,5 +1,6 @@
 package com.mljr.operators.service.primary.operators.impl;
 
+import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.dao.BaseMapper;
 import com.mljr.operators.dao.primary.operators.RequestInfoMapper;
@@ -54,6 +55,18 @@ public class RequestInfoServiceImpl extends BaseServiceImpl<RequestInfo, Long>
 
   @Override
   public Set<Integer> checkState(String mobile, String idcard) {
-    return requestInfoMapper.checkState(mobile,idcard);
+    return requestInfoMapper.checkState(mobile, idcard);
+  }
+
+  @Override
+  public boolean batchUpdateStatusById(RequestInfoEnum newStatus, RequestInfoEnum originStatus,
+      List<Long> ids) {
+    return requestInfoMapper.batchUpdateStatusById(newStatus.getIndex(), originStatus.getIndex(),
+        ids) > 0;
+  }
+
+  @Override
+  public List<RequestInfo> retry(OperatorsEnum operatorsEnum, RequestInfoEnum status) {
+    return requestInfoMapper.retry(operatorsEnum.getCode(), status.getIndex());
   }
 }
