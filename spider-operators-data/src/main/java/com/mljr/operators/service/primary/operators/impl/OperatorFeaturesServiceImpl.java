@@ -6,10 +6,12 @@ import com.mljr.operators.entity.model.operators.OperatorFeatures;
 import com.mljr.operators.service.primary.BaseServiceImpl;
 import com.mljr.operators.service.primary.operators.IOperatorFeaturesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by songchi on 17/3/7.
  */
+@Service
 public class OperatorFeaturesServiceImpl extends BaseServiceImpl<OperatorFeatures, Long>
         implements IOperatorFeaturesService {
     @Autowired
