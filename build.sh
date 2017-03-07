@@ -55,6 +55,13 @@ function docker_spider(){
 	docker push ucloud20:5000/ckex/spider:develop
 }
 
+function build_spider_operators_data(){
+        echo "build spider operators data"
+        model="mljr-common,umq-client,spider-operators-data"
+        mvn -pl $model clean
+        mvn -T1C -P production -pl $model package -Dmaven.test.skip -U -X
+}
+
 case $1 in
 	"spider")
 		build_spider
@@ -68,6 +75,9 @@ case $1 in
 	"spider-task")
 		build_spider_task
 	;;
+	"spider-operators-data")
+                build_spider_operators_data
+        ;;
 	"docker-spider-image")
 		build_spider && docker_spider
 	;;
