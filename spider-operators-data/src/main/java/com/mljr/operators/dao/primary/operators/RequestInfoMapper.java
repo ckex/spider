@@ -48,4 +48,25 @@ public interface RequestInfoMapper extends BaseMapper<RequestInfo, Long> {
 
   Set<Integer> checkState(@Param("mobile") String mobile, @Param("idcard") String idcard);
 
+  /**
+   * 批量修改状态
+   * 
+   * @param newStatus 状态
+   * @param originStatus 修改状态
+   * @param ids
+   * @return
+   */
+  int batchUpdateStatusById(@Param("newStatus") int newStatus,
+      @Param("originStatus") int originStatus, @Param("ids") List<Long>  ids);
+
+  /**
+   * 重试
+   * 
+   * @param operatorsType 运营商
+   * @param status 状态
+   * @return
+   */
+  List<RequestInfo> retry(@Param("operatorsType") String operatorsType,
+      @Param("status") int status);
+
 }

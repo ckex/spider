@@ -3,6 +3,7 @@ package com.mljr.operators.common.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mljr.operators.entity.dto.chinaunicom.*;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jsoup.Connection;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author gaoxi
@@ -131,24 +133,34 @@ public class ChinaUnicomUtil {
   }
 
   private static String request(String url, String cookies) {
-    try {
-      Connection connection = Jsoup.connect(url).timeout(60 * 1000).method(Connection.Method.POST)
-          .header("User-Agent",
-              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0")
-          .ignoreContentType(true);
-      if (!StringUtils.isBlank(cookies)) {
-        connection.header("Cookie", cookies);
+    int i = 0;
+    String json = null;
+    do {
+      try {
+        Connection connection = Jsoup.connect(url).timeout(60 * 1000).method(Connection.Method.POST)
+            .header("User-Agent",
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0")
+            .ignoreContentType(true);
+        if (!StringUtils.isBlank(cookies)) {
+          connection.header("Cookie", cookies);
+        }
+        Connection.Response response = connection.execute();
+        if (response.statusCode() == 200 && !StringUtils.isBlank(response.body())) {
+          logger.info("get reslut json url:{} data:{}", url, response.body());
+          json = response.body();
+        }
+      } catch (IOException e) {
+        logger.error("request failure.url:{}", url, e);
+      } catch (Exception e) {
+        logger.error("request failure.url:{}", url, e);
       }
-      Connection.Response response = connection.execute();
-      if (response.statusCode() == 200 && !StringUtils.isBlank(response.body())) {
-        logger.info("get reslut json url:{} data:{}", url, response.body());
-        return response.body();
+      i++;
+      try {
+        TimeUnit.MILLISECONDS.sleep(RandomUtils.nextLong(1L, 1000L));
+      } catch (InterruptedException e) {
+
       }
-    } catch (IOException e) {
-      logger.error("request failure.url:{}", url, e);
-    } catch (Exception e) {
-      logger.error("request failure.url:{}", url, e);
-    }
-    return null;
+    } while (i < 3 && null == json);
+    return json;
   }
 }
