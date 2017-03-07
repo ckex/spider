@@ -93,6 +93,12 @@ public class ApiService {
         }
     }
 
+    public void sendSmsCodeIfNeeded(String cellphone,OperatorFeatures fe) {
+        if (fe != null && fe.getNeedSmsCode()) {
+            this.sendSmsCode(fe.getSmsCodeUrl(), cellphone);
+        }
+    }
+
     public void sendSmsCode(String urlPattern, String cellphone) {
         try {
             String url = String.format(urlPattern, cellphone);

@@ -1,17 +1,22 @@
 package com.mljr.operators.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mljr.operators.common.constant.ErrorCodeEnum;
+import com.mljr.operators.entity.model.operators.OperatorFeatures;
 
 /**
  * Created by songchi on 17/3/1.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse {
-    private int code;
-    private String message;
-    private boolean success;
-    private String token;
-    private boolean sms_required;
-    private boolean required_captcha_user_identified;
+    public Integer code;
+    public String message;
+    public Boolean success;
+    public String token;
+    public Boolean need_pwd;
+    public Boolean need_sms_code;
+    public Boolean need_captcha;
+    public Boolean need_second_query_pwd;
 
     public ApiResponse() {
     }
@@ -27,61 +32,15 @@ public class ApiResponse {
         this.success = success;
     }
 
-    public ApiResponse(ErrorCodeEnum errorCodeEnum, boolean success, String token, boolean sms_required,
-                       boolean required_captcha_user_identified) {
+    public ApiResponse(ErrorCodeEnum errorCodeEnum, Boolean success, String token, OperatorFeatures fe) {
         this.code = errorCodeEnum.getCode();
         this.message = errorCodeEnum.getDesc();
         this.success = success;
         this.token = token;
-        this.sms_required = sms_required;
-        this.required_captcha_user_identified = required_captcha_user_identified;
+        this.need_pwd = fe.getNeedPwd();
+        this.need_sms_code = fe.getNeedSmsCode();
+        this.need_captcha = fe.getNeedCaptcha();
+        this.need_second_query_pwd = fe.getNeedSecondQueryPwd();
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public boolean isSms_required() {
-        return sms_required;
-    }
-
-    public void setSms_required(boolean sms_required) {
-        this.sms_required = sms_required;
-    }
-
-    public boolean isRequired_captcha_user_identified() {
-        return required_captcha_user_identified;
-    }
-
-    public void setRequired_captcha_user_identified(boolean required_captcha_user_identified) {
-        this.required_captcha_user_identified = required_captcha_user_identified;
-    }
 }
