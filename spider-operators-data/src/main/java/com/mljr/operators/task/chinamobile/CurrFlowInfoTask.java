@@ -1,5 +1,6 @@
 package com.mljr.operators.task.chinamobile;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by songchi on 17/2/23.
@@ -54,6 +56,7 @@ public class CurrFlowInfoTask implements Runnable {
 
     @Override
     public void run() {
+        Stopwatch stopwatch=Stopwatch.createStarted();
         try {
             DatePair pair = new DatePair(DateFormatUtils.format(requestInfo.getStartDate(), "yyyy-MM-dd"),
                     DateFormatUtils.format(requestInfo.getEndDate(), "yyyy-MM-dd"));
@@ -67,6 +70,7 @@ public class CurrFlowInfoTask implements Runnable {
             requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.ERROR,
                     RequestInfoEnum.INIT);
         }
+        logger.info("{} chinamobile curr flow run use time {}",Thread.currentThread().getName(),stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     void writeToDb(String data, DatePair pair) throws Exception {

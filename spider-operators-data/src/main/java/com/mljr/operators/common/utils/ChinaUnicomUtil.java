@@ -2,6 +2,7 @@ package com.mljr.operators.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Stopwatch;
 import com.mljr.operators.entity.dto.chinaunicom.*;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -133,6 +134,7 @@ public class ChinaUnicomUtil {
   }
 
   private static String request(String url, String cookies) {
+    Stopwatch stopwatch = Stopwatch.createStarted();
     int i = 0;
     String json = null;
     do {
@@ -161,6 +163,7 @@ public class ChinaUnicomUtil {
 
       }
     } while (i < 3 && null == json);
+    logger.info("chinaunicom request url use time:{}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     return json;
   }
 }

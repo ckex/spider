@@ -1,5 +1,6 @@
 package com.mljr.operators.task.chinamobile;
 
+import com.google.common.base.Stopwatch;
 import com.google.gson.Gson;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.common.utils.CookieUtils;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by songchi on 17/2/23.
@@ -47,6 +49,7 @@ public class PackageInfoTask implements Runnable {
 
     @Override
     public void run() {
+        Stopwatch stopwatch=Stopwatch.createStarted();
         try {
             Map<String, String> cMap = CookieUtils.stringToMap(cookies);
             String data = chinaMobileService.getPackageInfo(cMap);
@@ -79,6 +82,7 @@ public class PackageInfoTask implements Runnable {
                     RequestInfoEnum.INIT);
 
         }
+        logger.info("{} chinamobile package info run use time {}",Thread.currentThread().getName(),stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     class PackInfoResponse {
