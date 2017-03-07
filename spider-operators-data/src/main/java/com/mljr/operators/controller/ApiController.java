@@ -154,10 +154,12 @@ public class ApiController {
         }
         RequestInfoEnum state = apiService.checkState(u);
         switch (state) {
+            case INIT:
+                return new BaseResponse(ErrorCodeEnum.TASK_RUNNING,false);
             case RUNNING:
-                return new ApiResponse(ErrorCodeEnum.TASK_RUNNING);
+                return new BaseResponse(ErrorCodeEnum.TASK_RUNNING,false);
             case ERROR:
-                return new ApiResponse(ErrorCodeEnum.TASK_ERROR);
+                return new BaseResponse(ErrorCodeEnum.TASK_ERROR,false);
             case SUCCESS:
                 return apiService.getData(token);
         }
