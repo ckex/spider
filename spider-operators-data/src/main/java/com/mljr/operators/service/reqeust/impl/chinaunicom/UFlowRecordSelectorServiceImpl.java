@@ -23,12 +23,12 @@ public class UFlowRecordSelectorServiceImpl extends AbstractRequestUrlSelectorSe
   @Override
   public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {
     List<RequestInfoDTO> list = Lists.newArrayList();
-    getRecentMonth(requestUrl.getStartDate(), 1).forEach(datePair -> {
-      if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
-        String url = getUrl(datePair, 1);
-        list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
-      }
-    });
+//    getRecentMonth(requestUrl.getStartDate(), 1).forEach(datePair -> {
+//      if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
+//        String url = getUrl(datePair, 1);
+//        list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+//      }
+//    });
     return list;
   }
 
