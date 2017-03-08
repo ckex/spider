@@ -37,20 +37,20 @@ public class ChinaUnicomRetryJobs {
   public void retry() {
     Stopwatch stopwatch = Stopwatch.createStarted();
     try {
-//      List<RequestInfo> retryList =
-//          requestInfoService.retry(OperatorsEnum.CHINAUNICOM, RequestInfoEnum.ERROR);
-//      if (null != retryList && retryList.size() > 0) {
-//        List<Long> ids = Lists.newArrayList();
-//        retryList.forEach(requestInfo -> ids.add(requestInfo.getId()));
-//
-//        boolean flag = requestInfoService.batchUpdateStatusById(RequestInfoEnum.INIT,
-//            RequestInfoEnum.ERROR, ids);
-//
-//        if (flag) {
-//          RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE,
-//              MQConstant.OPERATOR_MQ_CHINAUNICOM_ROUTING_KEY, retryList);
-//        }
-//      }
+      List<RequestInfo> retryList =
+          requestInfoService.retry(OperatorsEnum.CHINAUNICOM, RequestInfoEnum.ERROR);
+      if (null != retryList && retryList.size() > 0) {
+        List<Long> ids = Lists.newArrayList();
+        retryList.forEach(requestInfo -> ids.add(requestInfo.getId()));
+
+        boolean flag = requestInfoService.batchUpdateStatusById(RequestInfoEnum.INIT,
+            RequestInfoEnum.ERROR, ids);
+
+        if (flag) {
+          RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE,
+              MQConstant.OPERATOR_MQ_CHINAUNICOM_ROUTING_KEY, retryList);
+        }
+      }
     } catch (Exception e) {
       LOGGER.error("chinaunicom retry jobs exception.msg:{}", ExceptionUtils.getStackTrace(e));
     }
