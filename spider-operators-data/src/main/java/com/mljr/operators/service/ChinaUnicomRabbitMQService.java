@@ -33,7 +33,7 @@ public class ChinaUnicomRabbitMQService {
       MQConstant.OPERATOR_MQ_CHINAMOBILE_QUEUE};
 
   private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 100,
-      TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(15), new ThreadFactory() {
+      TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(10), new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
           return new Thread(r, "chinaunicom-operators-task" + count.incrementAndGet());

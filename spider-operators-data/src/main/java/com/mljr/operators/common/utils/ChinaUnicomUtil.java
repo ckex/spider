@@ -139,7 +139,7 @@ public class ChinaUnicomUtil {
     String json = null;
     do {
       try {
-        TimeUnit.MILLISECONDS.sleep(RandomUtils.nextLong(1L, 1000L));
+        TimeUnit.MILLISECONDS.sleep(RandomUtils.nextLong(1100L, 2000L));
       } catch (InterruptedException e) {
 
       }
