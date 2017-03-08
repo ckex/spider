@@ -129,6 +129,45 @@
 		update car_info
 		<set>
 			<if test="officialGuidePrice != null">`official_guide_price` = #{officialGuidePrice},</if>
+			<if test="originCountry != null">`origin_country` = #{originCountry},</if>
+			<if test="displacement != null">`displacement` = #{displacement},</if>
+			<if test="officialDisplacement != null">`official_displacement` = #{officialDisplacement},</if>
+			<if test="environmentalStandard != null">`environmental_standard` = #{environmentalStandard},</if>
+			<if test="fuelType != null">`fuel_type` = #{fuelType},</if>
+			<if test="vehicleModel != null">`vehicle_model` = #{vehicleModel},</if>
+			<if test="engineModel != null">`engine_model` = #{engineModel},</if>
+			<if test="engineHorsePower != null">`engine_horse_power` = #{engineHorsePower},</if>
+			<if test="driveModel != null">`drive_model` = #{driveModel},</if>
+			<if test="gearbox != null">`gearbox` = #{gearbox},</if>
+			<if test="seatNumber != null">`seat_number` = #{seatNumber},</if>
+			<if test="configure != null">`configure` = #{configure},</if>
+			<if test="driveModel != null">`drive_model` = #{driveModel},</if>
+			<if test="exteriorColor != null">`exterior_color` = #{exteriorColor},</if>
+			<if test="announcementType != null">`announcement_type` = #{announcementType},</if>
+			<if test="wholeCurbWeight != null">`whole_curb_weight` = #{wholeCurbWeight},</if>
+			<if test="carBodyLength != null">`car_body_length` = #{carBodyLength},</if>
+			<if test="carBodyWidth != null">`car_body_width` = #{carBodyWidth},</if>
+			<if test="carBodyHeight != null">`car_body_height` = #{carBodyHeight},</if>
+			<if test="carriageLength != null">`carriage_length` = #{carriageLength},</if>
+			<if test="carriageWidth != null">`carriage_width` = #{carriageWidth},</if>
+			<if test="carriageHeight != null">`carriage_height` = #{carriageHeight},</if>
+			<if test="seatArrangement != null">`seat_arrangement` = #{seatArrangement},</if>
+			<if test="tonnageLevel != null">`tonnage_level` = #{tonnageLevel},</if>
+			<if test="openSunRoof != null">`open_sunroof` = #{openSunRoof},</if>
+			<if test="sunroof != null">`sunroof` = #{sunroof},</if>
+			<if test="electricAdjustSeat != null">`electric_adjust_seat` = #{electricAdjustSeat},</if>
+			<if test="leatherSeat != null">`leather_seat` = #{leatherSeat},</if>
+			<if test="carBodyStedyControl != null">`car_body_stedy_control` = #{carBodyStedyControl},</if>
+			<if test="headlampType != null">`headlamp_type` = #{headlampType},</if>
+			<if test="navigationSystem != null">`navigation_system` = #{navigationSystem},</if>
+			<if test="cruiseControl != null">`cruise_control` = #{cruiseControl},</if>
+			<if test="frontRadar != null">`front_radar` = #{frontRadar},</if>
+			<if test="backRadar != null">`back_radar` = #{backRadar},</if>
+			<if test="automaticAirConditioner != null">`automatic_air_conditioner` = #{automaticAirConditioner},</if>
+			<if test="multifunctionSteerWheel != null">`multifunction_steer_wheel` = #{multifunctionSteerWheel},</if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+
+
 		</set>
 		WHERE unique_car_brand = #{uniqueCarBrand}
 	</update>
