@@ -40,24 +40,6 @@ public class ChinaMobileMQService {
 
   private IUserInfoService userInfoService;
 
-  private CurrFlowInfoTask currFlowInfoTask;
-
-  private CurrBillInfoTask currBillInfoTask;
-
-  private CurrCallInfoTask currCallInfoTask;
-
-  private CurrSMSInfoTask currSMSInfoTask;
-
-  private HisBillInfoTask hisBillInfoTask;
-
-  private HisSMSInfoTask hisSMSInfoTask;
-
-  private HisCallInfoTask hisCallInfoTask;
-
-  private HisFlowInfoTask hisFlowInfoTask;
-
-  private PackageInfoTask packageInfoTask;
-
   private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 100,
       TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(10), new ThreadFactory() {
         @Override
@@ -71,15 +53,6 @@ public class ChinaMobileMQService {
     this.channel = RabbitmqClient.newChannel();
     this.apiService = context.getBean(ApiService.class);
     userInfoService = context.getBean(IUserInfoService.class);
-    currFlowInfoTask = context.getBean(CurrFlowInfoTask.class);
-    currBillInfoTask = context.getBean(CurrBillInfoTask.class);
-    currCallInfoTask = context.getBean(CurrCallInfoTask.class);
-    currSMSInfoTask = context.getBean(CurrSMSInfoTask.class);
-    hisBillInfoTask = context.getBean(HisBillInfoTask.class);
-    hisSMSInfoTask = context.getBean(HisSMSInfoTask.class);
-    hisCallInfoTask = context.getBean(HisCallInfoTask.class);
-    hisFlowInfoTask = context.getBean(HisFlowInfoTask.class);
-    packageInfoTask = context.getBean(PackageInfoTask.class);
   }
 
   public void run() {
@@ -99,39 +72,48 @@ public class ChinaMobileMQService {
       OperatorsUrlEnum enums = OperatorsUrlEnum.indexOf(entity.getUrlType());
       switch (enums) {
         case CHINA_MOBILE_PACKAGE_INFO:
-          packageInfoTask.setParams(userInfo.getId(), cookies, entity);
+          PackageInfoTask packageInfoTask = new PackageInfoTask();
+          packageInfoTask.setParams(userInfo.getId(), cookies, entity, context);
           executor.execute(packageInfoTask);
           break;
         case CHINA_MOBILE_CURRENT_BILL:
-          currBillInfoTask.setParams(userInfo.getId(), cookies, entity);
+          CurrBillInfoTask currBillInfoTask = new CurrBillInfoTask();
+          currBillInfoTask.setParams(userInfo.getId(), cookies, entity, context);
           executor.execute(currBillInfoTask);
           break;
         case CHINA_MOBILE_CURRENT_CALL:
-          currCallInfoTask.setParams(userInfo.getId(), cookies, entity);
+          CurrCallInfoTask currCallInfoTask = new CurrCallInfoTask();
+          currCallInfoTask.setParams(userInfo.getId(), cookies, entity, context);
           executor.execute(currCallInfoTask);
           break;
         case CHINA_MOBILE_CURRENT_FLOW:
-          currFlowInfoTask.setParams(userInfo.getId(), cookies, entity);
+          CurrFlowInfoTask currFlowInfoTask = new CurrFlowInfoTask();
+          currFlowInfoTask.setParams(userInfo.getId(), cookies, entity, context);
           executor.execute(currFlowInfoTask);
           break;
         case CHINA_MOBILE_CURRENT_SMS:
-          currSMSInfoTask.setParams(userInfo.getId(), cookies, entity);
+          CurrSMSInfoTask currSMSInfoTask = new CurrSMSInfoTask();
+          currSMSInfoTask.setParams(userInfo.getId(), cookies, entity, context);
           executor.execute(currSMSInfoTask);
           break;
         case CHINA_MOBILE_HISTORY_BILL:
-          hisBillInfoTask.setParams(userInfo.getId(), cookies, entity);
+          HisBillInfoTask hisBillInfoTask = new HisBillInfoTask();
+          hisBillInfoTask.setParams(userInfo.getId(), cookies, entity, context);
           executor.execute(hisBillInfoTask);
           break;
         case CHINA_MOBILE_HISTORY_CALL:
-          hisCallInfoTask.setParams(userInfo.getId(), cookies, entity);
+          HisCallInfoTask hisCallInfoTask = new HisCallInfoTask();
+          hisCallInfoTask.setParams(userInfo.getId(), cookies, entity, context);
           executor.execute(hisCallInfoTask);
           break;
         case CHINA_MOBILE_HISTORY_FLOW:
-          hisFlowInfoTask.setParams(userInfo.getId(), cookies, entity);
+          HisFlowInfoTask hisFlowInfoTask = new HisFlowInfoTask();
+          hisFlowInfoTask.setParams(userInfo.getId(), cookies, entity, context);
           executor.execute(hisFlowInfoTask);
           break;
         case CHINA_MOBILE_HISTORY_SMS:
-          hisSMSInfoTask.setParams(userInfo.getId(), cookies, entity);
+          HisSMSInfoTask hisSMSInfoTask = new HisSMSInfoTask();
+          hisSMSInfoTask.setParams(userInfo.getId(), cookies, entity, context);
           executor.execute(hisSMSInfoTask);
           break;
       }
