@@ -13,11 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author gaoxi
@@ -27,22 +25,11 @@ public class ChinaUnicomRabbitMQService {
 
   private static final Logger logger = LoggerFactory.getLogger(ChinaUnicomRabbitMQService.class);
 
-  private static final AtomicInteger count = new AtomicInteger();
-
-  private static final String[] queues = new String[] {MQConstant.OPERATOR_MQ_CHINAUNICOM_QUEUE,
-      MQConstant.OPERATOR_MQ_CHINAMOBILE_QUEUE};
-
-  private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 100,
-      TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(10), new ThreadFactory() {
-        @Override
-        public Thread newThread(Runnable r) {
-          return new Thread(r, "chinaunicom-operators-task" + count.incrementAndGet());
-        }
-      }, new ThreadPoolExecutor.CallerRunsPolicy());
-
   private ApplicationContext context;
 
   private Channel channel;
+
+  private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
   public ChinaUnicomRabbitMQService(ApplicationContext context)
       throws IOException, InterruptedException {
@@ -52,15 +39,15 @@ public class ChinaUnicomRabbitMQService {
 
   public void run() {
     String message = RabbitMQUtil.pollMessage(channel, MQConstant.OPERATOR_MQ_CHINAUNICOM_QUEUE);
-    if (StringUtils.isBlank(message)) {
-      try {
-        TimeUnit.SECONDS.sleep(5);
-      } catch (InterruptedException e) {
-      }
-      return;
+    if (StringUtils.isNotBlank(message)) {
+      RequestInfo entity = JSON.parseObject(message, RequestInfo.class);
+      executor.execute(new ChinaUnicomTask(context, entity));
     }
-    RequestInfo entity = JSON.parseObject(message, RequestInfo.class);
-    executor.execute(new ChinaUnicomTask(context, entity));
+    try {
+      TimeUnit.SECONDS.sleep(3);
+    } catch (InterruptedException e) {
+
+    }
   }
 
 
