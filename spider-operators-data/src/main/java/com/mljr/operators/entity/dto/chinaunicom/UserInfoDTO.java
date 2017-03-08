@@ -479,6 +479,7 @@ public class UserInfoDTO implements Serializable {
             private String productName;
             private String productId;
             private String productType;
+            private String productFee;
             private List<PackageInfoBean> packageInfo;
 
             public String getProductName() {
@@ -503,6 +504,14 @@ public class UserInfoDTO implements Serializable {
 
             public void setProductType(String productType) {
                 this.productType = productType;
+            }
+
+            public String getProductFee() {
+                return productFee;
+            }
+
+            public void setProductFee(String productFee) {
+                this.productFee = productFee;
             }
 
             public List<PackageInfoBean> getPackageInfo() {
