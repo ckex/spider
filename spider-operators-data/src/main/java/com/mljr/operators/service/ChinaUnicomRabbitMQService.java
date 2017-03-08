@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,8 +27,6 @@ public class ChinaUnicomRabbitMQService {
 
   private Channel channel;
 
-  private static final ExecutorService executor = Executors.newSingleThreadExecutor();
-
   public ChinaUnicomRabbitMQService(ApplicationContext context)
       throws IOException, InterruptedException {
     this.context = context;
@@ -41,7 +37,8 @@ public class ChinaUnicomRabbitMQService {
     String message = RabbitMQUtil.pollMessage(channel, MQConstant.OPERATOR_MQ_CHINAUNICOM_QUEUE);
     if (StringUtils.isNotBlank(message)) {
       RequestInfo entity = JSON.parseObject(message, RequestInfo.class);
-      executor.execute(new ChinaUnicomTask(context, entity));
+      ChinaUnicomTask chinaUnicomTask = new ChinaUnicomTask(context, entity);
+      chinaUnicomTask.run();
     }
     try {
       TimeUnit.SECONDS.sleep(3);
