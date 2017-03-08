@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -134,10 +135,15 @@ public class ChinaUnicomUtil {
   }
 
   private static String request(String url, String cookies) {
-    Stopwatch stopwatch = Stopwatch.createStarted();
     int i = 0;
     String json = null;
     do {
+      try {
+        TimeUnit.MILLISECONDS.sleep(RandomUtils.nextLong(1L, 1000L));
+      } catch (InterruptedException e) {
+
+      }
+      Stopwatch stopwatch = Stopwatch.createStarted();
       try {
         Connection connection = Jsoup.connect(url).timeout(60 * 1000).method(Connection.Method.POST)
             .header("User-Agent",
@@ -156,14 +162,10 @@ public class ChinaUnicomUtil {
       } catch (Exception e) {
         logger.error("request failure.url:{}", url, e);
       }
+      logger.info(String.format("chinaunicom request url {%s} use time:{%s}  count:{%s}", url,
+          stopwatch.elapsed(TimeUnit.MILLISECONDS), i));
       i++;
-      try {
-        TimeUnit.MILLISECONDS.sleep(RandomUtils.nextLong(1L, 1000L));
-      } catch (InterruptedException e) {
-
-      }
     } while (i < 3 && null == json);
-    logger.info("chinaunicom request url use time:{}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     return json;
   }
 }
