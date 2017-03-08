@@ -50,6 +50,7 @@ public class ChinaUnicomStoreServiceImplTest extends BaseTest {
         loginDTO.setMobile("18521705533");
         loginDTO.setPassword("123456");
 
+        //userInfo2.json 和 userInfo.json格式不一样
         UserInfoDTO personInfo = parse(USER_INFO_FILE, UserInfoDTO.class);
         if (null != personInfo) {
             boolean flag = chinaUnicomStoreService.saveUserInfo(loginDTO, personInfo);

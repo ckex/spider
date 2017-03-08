@@ -45,11 +45,18 @@ public class ChinaUnicomConvert {
   public static List<PackageInfoDTO> packageForConvert(UserInfoDTO personInfo) {
     List<PackageInfoDTO> list = Lists.newArrayList();
     try {
+      String brandName = "";
+      if (null != personInfo && null != personInfo.getResult()
+          && null != personInfo.getResult().getMyDetail()) {
+        brandName = personInfo.getResult().getMyDetail().getBrand();
+      }
       if (null != personInfo && personInfo.getPackageInfo() != null) {
         if (null != personInfo.getPackageInfo().getProductInfo()
             && personInfo.getPackageInfo().getProductInfo().size() > 0) {
-          personInfo.getPackageInfo().getProductInfo()
-              .forEach(productInfo -> list.add(convert(productInfo)));
+          String finalBrandName = brandName;
+          personInfo.getPackageInfo().getProductInfo().forEach(productInfo -> {
+            list.add(convert(productInfo, finalBrandName));
+          });
         }
       }
     } catch (Exception e) {
@@ -58,18 +65,28 @@ public class ChinaUnicomConvert {
     return list;
   }
 
-  public static PackageInfoDTO convert(UserInfoDTO.PackageInfoBeanXX.ProductInfoBean productInfo) {
+  public static PackageInfoDTO convert(UserInfoDTO.PackageInfoBeanXX.ProductInfoBean productInfo,
+      String brand) {
     PackageInfoDTO dtoEntity = new PackageInfoDTO();
     {
       PackageInfo entity = new PackageInfo();
       entity.setProductName(productInfo.getProductName());
+      // 获取品牌
+      entity.setBrandName(brand);
       dtoEntity.setPackageInfo(entity);
     }
     List<PackageInfoDetail> list = Lists.newArrayList();
-    productInfo.getPackageInfo()
-        .forEach(packageInfo -> packageInfo.getDiscntInfo().forEach(discntInfo -> {
-          list.add(convert(discntInfo));
-        }));
+    if (null == productInfo.getPackageInfo() || productInfo.getPackageInfo().size() == 0) {
+      PackageInfoDetail entity = new PackageInfoDetail();
+      entity.setDiscntFee(productInfo.getProductFee());
+      entity.setDiscntName(productInfo.getProductName());
+      list.add(entity);
+    } else {
+      productInfo.getPackageInfo()
+          .forEach(packageInfo -> packageInfo.getDiscntInfo().forEach(discntInfo -> {
+            list.add(convert(discntInfo));
+          }));
+    }
     dtoEntity.setDetailList(list);
     return dtoEntity;
   }
