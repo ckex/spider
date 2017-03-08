@@ -1,6 +1,7 @@
 package com.mljr.operators;
 
-import com.mljr.operators.service.RabbitMQService;
+import com.mljr.operators.service.ChinaMobileMQService;
+import com.mljr.operators.service.ChinaUnicomRabbitMQService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,13 +33,27 @@ public class SpringBootOperatorsMain {
   }
 
   private void startTask(final ApplicationContext context) throws Exception {
-    final RabbitMQService service = new RabbitMQService(context);
+    final ChinaUnicomRabbitMQService chinaUnicomRabbitMQService =
+        new ChinaUnicomRabbitMQService(context);
     new Thread(new Runnable() {
       @Override
       public void run() {
         while (true) {
           try {
-            service.run();
+            chinaUnicomRabbitMQService.run();
+          } catch (Exception e) {
+
+          }
+        }
+      }
+    }).start();
+    final ChinaMobileMQService chinaMobileMQService = new ChinaMobileMQService(context);
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        while (true) {
+          try {
+            chinaMobileMQService.run();
           } catch (Exception e) {
 
           }

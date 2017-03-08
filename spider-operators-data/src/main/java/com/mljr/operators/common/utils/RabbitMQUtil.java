@@ -8,8 +8,10 @@ import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.rabbitmq.Rmq;
+import com.mljr.utils.RandomUtils;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.GetResponse;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,5 +86,24 @@ public class RabbitMQUtil {
         break;
     }
     return key;
+  }
+
+  public static String pollMessage(Channel channel, String queueId) {
+    try {
+      GetResponse response = RabbitmqClient.pollMessage(channel, queueId, true);
+      if (response == null) {
+        if (RandomUtils.randomPrint(100)) {
+          LOGGER.debug("qid=" + queueId + "queue is empty.waitting message");
+        }
+        return null;
+      }
+      return new String(response.getBody(), "UTF-8");
+    } catch (Exception e) {
+      if (LOGGER.isDebugEnabled()) {
+        e.printStackTrace();
+      }
+      LOGGER.error("Push task error. qid:" + queueId + ", " + ExceptionUtils.getStackTrace(e));
+    }
+    return null;
   }
 }

@@ -1,6 +1,7 @@
 package com.mljr.operators.task.chinaunicom;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.mljr.operators.common.constant.MQConstant;
 import com.mljr.operators.common.constant.OperatorsEnum;
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +56,7 @@ public class ChinaUnicomTask implements Runnable {
 
   @Override
   public void run() {
+    Stopwatch stopwatch = Stopwatch.createStarted();
     String cookies = apiServicer.findCookiesByCellphone(requestInfo.getMobile());
     List<RequestInfoDTO> list = Lists.newArrayList();
     if (StringUtils.isNotBlank(cookies)) {
@@ -149,6 +152,12 @@ public class ChinaUnicomTask implements Runnable {
       RequestInfoEnum requestInfoEnum = flag ? RequestInfoEnum.SUCCESS : RequestInfoEnum.ERROR;
       requestInfoService.updateStatusBySign(requestInfo.getSign(), requestInfoEnum,
           RequestInfoEnum.INIT);
+      if (null != enums) {
+        String info = String.format("{%s} chinaunicom {%s} run use time={%s}",
+            Thread.currentThread().getName(), String.valueOf(enums.getIndex()),
+            stopwatch.elapsed(TimeUnit.MILLISECONDS));
+        LOGGER.info(info);
+      }
     }
   }
 

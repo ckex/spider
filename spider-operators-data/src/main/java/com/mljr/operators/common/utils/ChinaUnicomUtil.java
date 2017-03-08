@@ -2,6 +2,7 @@ package com.mljr.operators.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Stopwatch;
 import com.mljr.operators.entity.dto.chinaunicom.*;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -137,6 +139,12 @@ public class ChinaUnicomUtil {
     String json = null;
     do {
       try {
+        TimeUnit.MILLISECONDS.sleep(RandomUtils.nextLong(1L, 1000L));
+      } catch (InterruptedException e) {
+
+      }
+      Stopwatch stopwatch = Stopwatch.createStarted();
+      try {
         Connection connection = Jsoup.connect(url).timeout(60 * 1000).method(Connection.Method.POST)
             .header("User-Agent",
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0")
@@ -154,12 +162,9 @@ public class ChinaUnicomUtil {
       } catch (Exception e) {
         logger.error("request failure.url:{}", url, e);
       }
+      logger.info(String.format("chinaunicom request url {%s} use time:{%s}  count:{%s}", url,
+          stopwatch.elapsed(TimeUnit.MILLISECONDS), i));
       i++;
-      try {
-        TimeUnit.MILLISECONDS.sleep(RandomUtils.nextLong(1L, 1000L));
-      } catch (InterruptedException e) {
-
-      }
     } while (i < 3 && null == json);
     return json;
   }

@@ -1,5 +1,6 @@
 package com.mljr.operators.task.chinamobile;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -20,6 +21,7 @@ import us.codecraft.webmagic.selector.Html;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by songchi on 17/2/23.
@@ -54,6 +56,7 @@ public class HisBillInfoTask implements Runnable {
 
     @Override
     public void run() {
+        Stopwatch stopwatch=Stopwatch.createStarted();
         try {
             // 写历史数据
             String queryTime = DateFormatUtils.format(requestInfo.getStartDate(), "yyyy年MM月");
@@ -68,6 +71,7 @@ public class HisBillInfoTask implements Runnable {
             requestInfoService.updateStatusBySign(requestInfo.getSign(), RequestInfoEnum.ERROR,
                     RequestInfoEnum.INIT);
         }
+        logger.info("{} chinamobile history bill run use time {}",Thread.currentThread().getName(),stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     public void writeHistory(String historyData, String queryTime) {
