@@ -1,5 +1,6 @@
 package com.mljr.operators.task.chinaunicom;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.mljr.operators.common.constant.MQConstant;
 import com.mljr.operators.common.constant.OperatorsEnum;
@@ -14,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author gaoxi
@@ -34,7 +35,7 @@ public class ChinaUnicomRetryJobs {
   // 任务执行完成后 5分钟后执行
   @Scheduled(fixedDelay = 5 * ONE_Minute)
   public void retry() {
-    LOGGER.info("chinaunicom retry jobs start....time:{}", LocalDateTime.now().toString());
+    Stopwatch stopwatch = Stopwatch.createStarted();
     try {
       List<RequestInfo> retryList =
           requestInfoService.retry(OperatorsEnum.CHINAUNICOM, RequestInfoEnum.ERROR);
@@ -43,7 +44,7 @@ public class ChinaUnicomRetryJobs {
         retryList.forEach(requestInfo -> ids.add(requestInfo.getId()));
 
         boolean flag = requestInfoService.batchUpdateStatusById(RequestInfoEnum.INIT,
-            RequestInfoEnum.ERROR,ids);
+            RequestInfoEnum.ERROR, ids);
 
         if (flag) {
           RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE,
@@ -51,10 +52,9 @@ public class ChinaUnicomRetryJobs {
         }
       }
     } catch (Exception e) {
-      LOGGER.error("chinaunicom retry jobs exception...time:{}.msg:{}",
-          LocalDateTime.now().toString(), ExceptionUtils.getStackTrace(e));
+      LOGGER.error("chinaunicom retry jobs exception.msg:{}", ExceptionUtils.getStackTrace(e));
     }
-    LOGGER.info("chinaunicom retry jobs end...time:{}", LocalDateTime.now().toString());
+    LOGGER.info("chinaunicom retry jobs end...time:{}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
   }
 }

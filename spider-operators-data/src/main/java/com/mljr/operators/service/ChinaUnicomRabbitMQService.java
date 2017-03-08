@@ -32,7 +32,7 @@ public class ChinaUnicomRabbitMQService {
   private static final String[] queues = new String[] {MQConstant.OPERATOR_MQ_CHINAUNICOM_QUEUE,
       MQConstant.OPERATOR_MQ_CHINAMOBILE_QUEUE};
 
-  private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 100,
+  private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 100,
       TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(15), new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
