@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 public class CarHomeNetService {
   protected static transient Logger logger = LoggerFactory.getLogger(CarHomeNetService.class);
   // 队列的名称
-  private final static String QUEUE_NAME = "car_test";
+  private final static String QUEUE_NAME = "autohome_result";
   // 将数据存入到数据库中去
   @Autowired
   CarBodyInfoDao carBodyInfoDao;
