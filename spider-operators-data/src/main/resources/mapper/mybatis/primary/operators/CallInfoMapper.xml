@@ -33,7 +33,7 @@
     select
     <include refid="Base_Column_List" />
     from t_call_info
-    where USER_INFO_ID = #{USER_INFO_ID,jdbcType=BIGINT}
+    where USER_INFO_ID = #{userInfoId,jdbcType=BIGINT}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
