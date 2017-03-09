@@ -44,11 +44,27 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
         for (int i = 1; i <= carNum ; i++) {
             Map<String,String> map = new HashMap<String,String>();
             Map<String, String> map2 = new HashMap<String, String>();
-            String path = String.format("//table[@class='tbcs']//tr[@id]//td[%d]//div//tidyText()",i);
+            String path = String.format("//table[@class='tbcs']//tr[@id]//td[%d]/div[@class !='pop pop02 fn-hide' and @class !='other-sel']//tidyText()",i);
             List<String> list = html.xpath(path).all();
             //将每一列数据对应起来
             for (int j = 0; j <list.size() ; j++) {
-                map2.put(list_name.get(j).replaceAll("<(.*)>", "").replace("\n","").trim(),list.get(j).replaceAll("<(.*)>", "").replace("\n","").trim());
+                //对数据进行处理
+                String clearData = list.get(j).replaceAll("<(.*)>", "").replace("\n","").trim();
+                String regx = "";
+                if(clearData.contains("￥")) {
+                    Pattern p = Pattern.compile("[\\u4e00-\\u9fa5]{1,}：￥[0-9]{1,}");
+                    if (p.matcher(clearData).find()) {
+                        Matcher matcher = p.matcher(clearData);
+                        while (matcher.find()) {
+                            String s1 = matcher.group();
+                            String s2 = clearData.substring(0, clearData.indexOf(s1));
+                            regx += s2;
+                        }
+                    }
+                }else{
+                    regx+=clearData;
+                }
+                map2.put(list_name.get(j).replaceAll("<(.*)>", "").replace("\n","").trim(),regx.trim());
             }
             //获取车的配置颜色
             String li_num = String.format("//tr[@id='tr_2003']//td[%d]//div//ul//li",i);

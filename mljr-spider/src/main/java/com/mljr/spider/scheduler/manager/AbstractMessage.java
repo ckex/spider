@@ -84,6 +84,8 @@ public abstract class AbstractMessage {
   protected static final String RMQ_JD_ITEM_PRICE_QUEUE_ID = "jd-item-price";
   //360卡车之家
   protected static final String TRUCKCAR_FALG_QUEUE_ID ="360che_flag";
+  //腾讯汽车
+  protected static final String TENCENT_FALG_QUEUE_ID="autoqq_flag";
 
   protected static final String AUTOHOME_FALG_QUEUE_ID = "autohome_flag";
 
