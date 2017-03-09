@@ -204,6 +204,8 @@ public class ChinaUnicomConvert {
     }
     if ("01".equals(smsDetailDTO.getBusinesstype())) {
       entity.setBusinessType("国内短信");
+    }else if("02".equals(smsDetailDTO.getBusinesstype())){
+      entity.setBusinessType("国际短信");
     }else if("03".equals(smsDetailDTO.getBusinesstype())){
       entity.setBusinessType("国内彩信");
     } else {
