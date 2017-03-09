@@ -52,7 +52,7 @@ public class AutohomeTargetUrlsProcessor implements PageProcessor {
             List<String> stopSales = page.getHtml().links().regex(STOP_SALE_PEIZHI).all();
 
             if (CollectionUtils.isNotEmpty(stopSales)) {
-                page.putField("dataSet", stopSales);
+                page.putField("dataSet", Sets.newHashSet(stopSales));
             }
 
             // 分页
