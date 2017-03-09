@@ -224,7 +224,7 @@ public class ApiService {
             bean.setCell_phone(cellPhone);
             bean.setInit_type(info.getCallType());
             bean.setCall_type(info.getLandType());
-            bean.setUse_time(this.toSecond(info.getCallLongHour()));
+            bean.setUse_time(CommonService.toSecond(info.getCallLongHour()));
             retList.add(bean);
         }
         return retList;
@@ -253,7 +253,7 @@ public class ApiService {
             bean.setCell_phone(cellPhone);
             bean.setSubtotal(info.getFee().doubleValue());
             bean.setSubflow(info.getTotalBytes().floatValue());
-            bean.setUse_time(this.toSecond(info.getDuration()));
+            bean.setUse_time(Integer.parseInt(info.getDuration()));
             retList.add(bean);
         }
         return retList;
@@ -324,16 +324,7 @@ public class ApiService {
         return null;
     }
 
-    private int toSecond(String duration) {
-        try {
-            LocalTime time = LocalTime.parse(duration, DateTimeFormatter.ofPattern("HH:mm:ss"));
 
-            return time.getSecond() + time.getMinute() * 60 + time.getHour() * 60 * 60;
-        } catch (Exception e) {
-            logger.error("解析时间错误", e);
-        }
-        return 0;
-    }
 
 
 }
