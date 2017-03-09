@@ -17,7 +17,6 @@ public class AutohomeFlagTask extends AbstractTask {
   private AutohomeFlagService autohomeFlagService;
 
   @Override
-  @PostConstruct
   void execute() {
     try {
       autohomeFlagService.sendUrls();
