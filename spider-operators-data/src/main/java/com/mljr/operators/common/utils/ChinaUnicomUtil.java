@@ -27,8 +27,9 @@ public class ChinaUnicomUtil {
 
   public static HttpRespDTO<UserInfoDTO> validatePackageInfo(String cookies, String url) {
     HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    String json = null;
     try {
-      String json = request(url, cookies);
+      json = request(url, cookies);
       if (null != json) {
         JSONObject jsonObject = JSON.parseObject(json);
         if (jsonObject.containsKey("packageInfo")) {
@@ -40,32 +41,45 @@ public class ChinaUnicomUtil {
         }
       }
     } catch (Exception e) {
-      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+      logger.error(String.format(
+          "validate chinaunicom packageInfo data failure.url:{%s} json:{%s},exception:{%s}", url,
+          json, ExceptionUtils.getStackTrace(e)), e);
     }
     return respDTO;
   }
 
   public static HttpRespDTO<CallDTO> validateCall(String cookies, String url) {
     HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    String json = null;
     try {
-      String json = request(url, cookies);
+      json = request(url, cookies);
       if (null != json) {
         JSONObject jsonObject = JSON.parseObject(json);
-        if (jsonObject.containsKey("isSuccess")
+        if (jsonObject.containsKey("errorMessage")) {
+          JSONObject errorMessage = (JSONObject) jsonObject.get("errorMessage");
+          if (errorMessage.containsKey("respCode")
+              && "2114030170".equals(errorMessage.getString("respCode"))) { // 表示查询无记录
+            respDTO.setSucc(true).setBody(parse(json, CallDTO.class));
+          }
+        } else if (jsonObject.containsKey("isSuccess")
             && true == jsonObject.getBooleanValue("isSuccess")) {
           respDTO.setSucc(true).setBody(parse(json, CallDTO.class));
         }
       }
     } catch (Exception e) {
-      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+      logger.error(
+          String.format("validate chinaunicom call data failure.url:{%s},json:{%s},exception:{%s}",
+              url, json, ExceptionUtils.getStackTrace(e)),
+          e);
     }
     return respDTO;
   }
 
   public static HttpRespDTO<BillDTO> validateBill(String cookies, String url) {
     HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    String json = null;
     try {
-      String json = request(url, cookies);
+      json = request(url, cookies);
       if (null != json) {
         JSONObject jsonObject = JSON.parseObject(json);
         if (jsonObject.containsKey("rspcode") && "0000".equals(jsonObject.getString("rspcode"))) {
@@ -73,48 +87,67 @@ public class ChinaUnicomUtil {
         }
       }
     } catch (Exception e) {
-      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+      logger.error(
+          String.format("validate chinaunicom bill data failure.url:{%s} json:{%s},exception:{%s}",
+              url, json, ExceptionUtils.getStackTrace(e)),
+          e);
     }
     return respDTO;
   }
 
   public static HttpRespDTO<SMSDTO> validateSMS(String cookies, String url) {
     HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    String json = null;
     try {
-      String json = request(url, cookies);
+      json = request(url, cookies);
       if (null != json) {
         JSONObject jsonObject = JSON.parseObject(json);
-        if (jsonObject.containsKey("isSuccess")
+        if (jsonObject.containsKey("errorMessage")) {
+          JSONObject errorMessage = (JSONObject) jsonObject.get("errorMessage");
+          if (errorMessage.containsKey("respCode")
+              && "2114030170".equals(errorMessage.getString("respCode"))) { // 表示查询无记录
+            respDTO.setSucc(true).setBody(parse(json, SMSDTO.class));
+          }
+        } else if (jsonObject.containsKey("isSuccess")
             && true == (jsonObject.getBooleanValue("isSuccess"))) {
           respDTO.setSucc(true).setBody(parse(json, SMSDTO.class));
         }
       }
     } catch (Exception e) {
-      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+      logger.error(
+          String.format("validate chinaunicom sms data failure.url:{%s} json:{%s},exception:{%s}",
+              url, json, ExceptionUtils.getStackTrace(e)),
+          e);
     }
     return respDTO;
   }
 
   public static HttpRespDTO<FlowDetailDTO> validateFlow(String cookies, String url) {
     HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    String json = null;
     try {
-      String json = request(url, cookies);
+      json = request(url, cookies);
       if (null != json) {
         JSONObject jsonObject = JSON.parseObject(json);
-        if (jsonObject.containsKey("rspcode") && "0000".equals(jsonObject.getString("rspcode"))) {
+        if (jsonObject.containsKey("rspcode") && ("0000".equals(jsonObject.getString("rspcode"))
+            || "2107000076".equals(jsonObject.getString("rspcode")))) {// 2107000076表示查无记录
           respDTO.setSucc(true).setBody(parse(json, FlowDetailDTO.class));
         }
       }
     } catch (Exception e) {
-      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+      logger.error(
+          String.format("validate chinaunicom flow data failure.url:{%s} json:{%s},exception:{%s}",
+              url, json, ExceptionUtils.getStackTrace(e)),
+          e);
     }
     return respDTO;
   }
 
   public static HttpRespDTO<FlowRecordDTO> validateFlowRecord(String cookies, String url) {
     HttpRespDTO respDTO = HttpRespDTO.me().setSucc(false);
+    String json = null;
     try {
-      String json = request(url, cookies);
+      json = request(url, cookies);
       if (null != json) {
         JSONObject jsonObject = JSON.parseObject(json);
         if (jsonObject.containsKey("isSuccess")
@@ -123,7 +156,9 @@ public class ChinaUnicomUtil {
         }
       }
     } catch (Exception e) {
-      logger.error("validate chinaunicom data.url:{}", url, ExceptionUtils.getStackTrace(e));
+      logger.error(String.format(
+          "validate chinaunicom flowrecord data failure.url:{%s} json:{%s},exception:{%s}", url,
+          json, ExceptionUtils.getStackTrace(e)), e);
     }
     return respDTO;
   }
