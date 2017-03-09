@@ -214,41 +214,61 @@ public class CarHomeNetService {
   }
   //对表表头进行处理
   public  String getUniqueBrand(String header,String gerbox){
-    String act = "";
-    if(StringUtils.isNotBlank(gerbox)){
-        if(gerbox.contains("AT")||gerbox.contains("CVT")||gerbox.contains("DCT")||gerbox.contains("AMT")){
-              act ="自动";
-        }else {
-              act="手动";
-        }
-    }
-    String[] carHome =header.split(" ");
     String header_brand = " ";
-    Pattern p = Pattern.compile("[a-zA-z]{1,}");
-    Pattern pp = Pattern.compile("[a-zA-z]{2,}");
-    for (int i = 0; i <carHome.length ; i++) {
-      if(carHome[i].contains("型") && !p.matcher(carHome[i]).find()){
-        if(!carHome[i].contains("动")){
-          header_brand+=act+carHome[i]+" ";
-        }else{
-          if(carHome[i].contains("自动")){
-            header_brand+=carHome[i].replace("自动","").trim()+" ";
-          }else if(carHome[i].contains("手动")){
-            header_brand+=carHome[i].replace("手动","").trim()+" ";
+    String reg= "[0-9].[0-9]{1,2}[T|L]";
+    if(header.contains("柴油")){
+      String[]  carHome=header.replace("柴油","").trim().split(" ");
+      if(header.contains("版")){
+        for (int i = 0; i <carHome.length ; i++) {
+          if(carHome[i].matches(reg)){
+            header_brand +=carHome[i]+" 柴油"+" ";
+          }else{
+            header_brand+=carHome[i]+" ";
           }
         }
-
-      }else if(carHome[i].contains("型") && pp.matcher(carHome[i]).find()){
-        Matcher matcher = pp.matcher(carHome[i]);
-        while(matcher.find()){
-          String ss = matcher.group();
-          String ss2 = carHome[i].substring(ss.length(),carHome[i].length());
-          header_brand+=ss+" "+ss2+" ";
-        }
       }else{
-        header_brand+=carHome[i]+" ";
+        for (int i = 0; i <carHome.length ; i++) {
+          if(carHome[i].matches(reg)){
+            header_brand +="绿静"+carHome[i]+" ";
+          }else{
+            header_brand+=carHome[i]+" ";
+          }
+        }
       }
-
+    }else{
+      String act = "";
+      if(StringUtils.isNotBlank(gerbox)){
+        if(gerbox.contains("AT")||gerbox.contains("CVT")||gerbox.contains("DCT")||gerbox.contains("AMT")){
+          act ="自动";
+        }else {
+          act="手动";
+        }
+      }
+      String[] carHome =header.split(" ");
+      Pattern p = Pattern.compile("[a-zA-z]{1,}");
+      Pattern pp = Pattern.compile("[a-zA-z]{2,}");
+      for (int i = 0; i <carHome.length ; i++) {
+        if(carHome[i].contains("型") && !p.matcher(carHome[i]).find()){
+          if(!carHome[i].contains("动")){
+            header_brand+=act+carHome[i]+" ";
+          }else{
+            if(carHome[i].contains("自动")){
+              header_brand+=carHome[i].replace("自动","").trim()+" ";
+            }else if(carHome[i].contains("手动")){
+              header_brand+=carHome[i].replace("手动","").trim()+" ";
+            }
+          }
+        }else if(carHome[i].contains("型") && pp.matcher(carHome[i]).find()){
+          Matcher matcher = pp.matcher(carHome[i]);
+          while(matcher.find()){
+            String ss = matcher.group();
+            String ss2 = carHome[i].substring(ss.length(),carHome[i].length());
+            header_brand+=ss+" "+ss2+" ";
+          }
+        }else{
+          header_brand+=carHome[i]+" ";
+        }
+      }
     }
     return header_brand.trim();
   }

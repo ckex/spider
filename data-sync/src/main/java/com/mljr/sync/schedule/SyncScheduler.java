@@ -133,7 +133,7 @@ public class SyncScheduler {
   }
 
   //腾讯汽车，每隔一个星期启动一次
-  @Scheduled(cron = "0 0/1 * * * ?")
+  @Scheduled(cron = "0 0 0 1/7 * ?")
   private void startTencentCarNetworkFlagTask() {
     tencentCarNetworkFlagTask.run();
     logger.debug(tencentCarNetworkFlagTask.toString());
