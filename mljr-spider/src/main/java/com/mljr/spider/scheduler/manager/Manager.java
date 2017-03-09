@@ -421,7 +421,7 @@ public class Manager extends AbstractMessage {
         Spider.create(processor).setDownloader(phantomDownloader).addPipeline(new CarHomeNetInfoPipeline()).thread(5).setExitWhenComplete(false);
     SpiderListener listener = new DownloaderSpiderListener(CARHOME_LISTENER_LOG_NAME);
     spider.setSpiderListeners(Lists.newArrayList(listener));
-    spider.setExecutorService(newThreadPool(3, 3, RMQ_LBS_CAR_HOME_ID));
+    spider.setExecutorService(newThreadPool(10, 10, RMQ_LBS_CAR_HOME_ID));
     final AbstractScheduler scheduler = new CarHomeScheduler(spider, RMQ_LBS_CAR_HOME_ID);
     spider.setScheduler(scheduler);
     spider.runAsync();
