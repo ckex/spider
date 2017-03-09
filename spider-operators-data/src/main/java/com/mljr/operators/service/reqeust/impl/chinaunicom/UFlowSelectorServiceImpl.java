@@ -24,20 +24,20 @@ public class UFlowSelectorServiceImpl extends AbstractRequestUrlSelectorService 
   @Override
   public List<RequestInfoDTO> getRequestUrl(RequestUrlDTO requestUrl, Date filterDate) {
     List<RequestInfoDTO> list = Lists.newArrayList();
-    List<DatePair> dayDatePairs = Lists.newArrayList();
-    getRecentMonth(requestUrl.getStartDate(), 3).forEach(datePair -> {
-      LocalDate startDate =
-          DateUtil.stringToLocalDate(datePair.getStartDate(), DateUtil.PATTERN_yyyy_MM_dd);
-      LocalDate endDate =
-          DateUtil.stringToLocalDate(datePair.getEndDate(), DateUtil.PATTERN_yyyy_MM_dd);
-      dayDatePairs.addAll(getEachDay(startDate, endDate));
-    });
-    dayDatePairs.forEach(datePair -> {
-      if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
-        String url = getUrl(datePair, 1);
-        list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
-      }
-    });
+//    List<DatePair> dayDatePairs = Lists.newArrayList();
+//    getRecentMonth(requestUrl.getStartDate(), 3).forEach(datePair -> {
+//      LocalDate startDate =
+//          DateUtil.stringToLocalDate(datePair.getStartDate(), DateUtil.PATTERN_yyyy_MM_dd);
+//      LocalDate endDate =
+//          DateUtil.stringToLocalDate(datePair.getEndDate(), DateUtil.PATTERN_yyyy_MM_dd);
+//      dayDatePairs.addAll(getEachDay(startDate, endDate));
+//    });
+//    dayDatePairs.forEach(datePair -> {
+//      if (null == filterDate || null != filterDate && null != filterUrl(filterDate, datePair)) {
+//        String url = getUrl(datePair, 1);
+//        list.add(convert(requestUrl.getMobile(), requestUrl.getIdcard(), datePair, url));
+//      }
+//    });
     return list;
   }
 
