@@ -1,7 +1,6 @@
 package com.mljr.operators.service;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.mljr.common.ServiceConfig;
 import com.mljr.operators.common.constant.ErrorCodeEnum;
@@ -11,7 +10,7 @@ import com.mljr.operators.entity.PhoneInfo;
 import com.mljr.operators.entity.model.operators.*;
 import com.mljr.operators.service.primary.operators.*;
 import com.mljr.redis.RedisClient;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
@@ -24,7 +23,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -93,7 +91,7 @@ public class ApiService {
         }
     }
 
-    public void sendSmsCodeIfNeeded(String cellphone,OperatorFeatures fe) {
+    public void sendSmsCodeIfNeeded(String cellphone, OperatorFeatures fe) {
         if (fe != null && fe.getNeedSmsCode()) {
             this.sendSmsCode(fe.getSmsCodeUrl(), cellphone);
         }
@@ -108,44 +106,28 @@ public class ApiService {
         }
     }
 
-    public Long findUidByToken(String token) {
-        return redisClient.use(jedis -> {
-            List<String> retList = jedis.hmget(TOKEN_KEY, token);
-            if (CollectionUtils.isNotEmpty(retList)) {
-                return Long.parseLong(retList.get(0));
-            }
-            return -1L;
-        });
-    }
-
     public UserInfo findUserByToken(String token) {
         return userInfoService.getById(findUidByToken(token));
     }
 
-    public String saveToken(String token, Long uid) {
-        return redisClient.use(jedis -> {
-            Map<String, String> map = Maps.newHashMap();
-            map.put(token, String.valueOf(uid));
-            return jedis.hmset(TOKEN_KEY, map);
-        });
+    public Long findUidByToken(String token) {
+        String uid = redisClient.use(jedis -> jedis.hget(TOKEN_KEY, token));
+        if (StringUtils.isNotBlank(uid)) {
+            return Long.parseLong(uid);
+        }
+        return -1L;
     }
 
-    public String saveCookies(String cellphone, String cookies) {
-        return redisClient.use(jedis -> {
-            Map<String, String> map = Maps.newHashMap();
-            map.put(cellphone, cookies);
-            return jedis.hmset(COOKIES_KEY, map);
-        });
+    public Long saveToken(String token, Long uid) {
+        return redisClient.use(jedis -> jedis.hset(TOKEN_KEY, token, String.valueOf(uid)));
+    }
+
+    public Long saveCookies(String cellphone, String cookies) {
+        return redisClient.use(jedis -> jedis.hset(COOKIES_KEY, cellphone, cookies));
     }
 
     public String findCookiesByCellphone(String cellphone) {
-        return redisClient.use(jedis -> {
-            List<String> retList = jedis.hmget(COOKIES_KEY, cellphone);
-            if (CollectionUtils.isNotEmpty(retList)) {
-                return retList.get(0);
-            }
-            return null;
-        });
+        return redisClient.use(jedis -> jedis.hget(COOKIES_KEY, cellphone));
     }
 
     public PhoneInfo getPhoneInfo(String cellphone) {
@@ -242,7 +224,7 @@ public class ApiService {
             bean.setCell_phone(cellPhone);
             bean.setInit_type(info.getCallType());
             bean.setCall_type(info.getLandType());
-            bean.setUse_time(this.toSecond(info.getCallLongHour()));
+            bean.setUse_time(CommonService.toSecond(info.getCallLongHour()));
             retList.add(bean);
         }
         return retList;
@@ -271,7 +253,7 @@ public class ApiService {
             bean.setCell_phone(cellPhone);
             bean.setSubtotal(info.getFee().doubleValue());
             bean.setSubflow(info.getTotalBytes().floatValue());
-            bean.setUse_time(this.toSecond(info.getDuration()));
+            bean.setUse_time(Integer.parseInt(info.getDuration()));
             retList.add(bean);
         }
         return retList;
@@ -342,16 +324,7 @@ public class ApiService {
         return null;
     }
 
-    private int toSecond(String duration) {
-        try {
-            LocalTime time = LocalTime.parse(duration, DateTimeFormatter.ofPattern("HH:mm:ss"));
 
-            return time.getSecond() + time.getMinute() * 60 + time.getHour() * 60 * 60;
-        } catch (Exception e) {
-            logger.error("解析时间错误", e);
-        }
-        return 0;
-    }
 
 
 }

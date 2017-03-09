@@ -10,6 +10,7 @@ import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.FlowInfo;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.ChinaMobileService;
+import com.mljr.operators.service.CommonService;
 import com.mljr.operators.service.primary.operators.IFlowInfoService;
 import com.mljr.operators.service.primary.operators.IRequestInfoService;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -98,7 +99,7 @@ public class CurrFlowInfoTask implements Runnable {
       fi.setStartTime(DateUtils.parseDate(year + "-" + startTime, "yyyy-MM-dd HH:mm:ss"));
       fi.setHomeArea(homeArea);
       fi.setOnlinePattern(onlinePattern);
-      fi.setDuration(duration);
+      fi.setDuration(CommonService.toSecond(duration)+"");
       fi.setTotalBytes(parseBytes(totalBytes));
       fi.setSvcName(svcName);
       fi.setFee(new BigDecimal(fee));
