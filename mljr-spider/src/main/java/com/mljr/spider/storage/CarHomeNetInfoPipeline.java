@@ -30,7 +30,7 @@ public class CarHomeNetInfoPipeline implements Pipeline {
     try {
       sendRmq(JSON.toJSONString(listmap));
     } catch (Exception e) {
-      logger.error("send jd error!!!", e);
+      logger.error("send page data error!!!", e);
     }
   }
 
@@ -39,9 +39,9 @@ public class CarHomeNetInfoPipeline implements Pipeline {
     AMQP.BasicProperties.Builder builder = new AMQP.BasicProperties.Builder();
     builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
     try {
-      RabbitmqClient.publishMessage(channel, "", "autohome_result", builder.build(), data.getBytes(Charsets.UTF_8));
+      RabbitmqClient.publishMessage(channel, "", "car_test", builder.build(), data.getBytes(Charsets.UTF_8));
     } catch (Exception e) {
-      logger.error("send jd error!", e);
+      logger.error("send page data error!", e);
     } finally {
       if (channel != null) {
         channel.close();
