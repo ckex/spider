@@ -50,7 +50,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
                 //将每一列数据对应起来
                 for (int j = 0; j <list.size() ; j++) {
                     //对数据进行处理
-                    String clearData = list.get(j).replaceAll("<(.*)>", "").replace("\n","").trim();
+                    String clearData = list.get(j).replaceAll("<(.*)>", "").replace("\n","").replace("暂无价格","").trim();
                     String regx = "";
                     if(clearData.contains("￥")) {
                         Pattern p = Pattern.compile("[\\u4e00-\\u9fa5]{1,}：￥[0-9]{1,}");
