@@ -418,7 +418,7 @@ public class Manager extends AbstractMessage {
     LogPipeline pipeline = new LogPipeline(CAR_HOME_NET_LOG_NAME);
     MljrPhantomJSDownloader phantomDownloader = new MljrPhantomJSDownloader().setRetryNum(1);
     final Spider spider =
-        Spider.create(processor).setDownloader(phantomDownloader).addPipeline(new CarHomeNetInfoPipeline()).thread(5).setExitWhenComplete(false);
+        Spider.create(processor).setDownloader(phantomDownloader).addPipeline(new CarHomeNetInfoPipeline()).thread(10).setExitWhenComplete(false);
     SpiderListener listener = new DownloaderSpiderListener(CARHOME_LISTENER_LOG_NAME);
     spider.setSpiderListeners(Lists.newArrayList(listener));
     spider.setExecutorService(newThreadPool(10, 10, RMQ_LBS_CAR_HOME_ID));
