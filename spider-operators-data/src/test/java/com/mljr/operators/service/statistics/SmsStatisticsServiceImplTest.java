@@ -27,7 +27,7 @@ public class SmsStatisticsServiceImplTest extends BaseTest {
     @Test
   public void testGetTimeBySmsType() {
 
-      List<SmsStatisticsVO> list = smsStatisticsService.getTimeBySmsType(10);
+//      List<SmsStatisticsVO> list = smsStatisticsService.getTimeBySmsType(10);
 
         System.out.println();
 

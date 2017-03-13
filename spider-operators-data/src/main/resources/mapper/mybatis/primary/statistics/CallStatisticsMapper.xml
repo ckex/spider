@@ -23,7 +23,7 @@
 
 
     <select id="selectMaxMinDate" parameterType="java.lang.Long"
-            resultType="com.mljr.operators.entity.vo.statistics.CallStatisticsVO">
+            resultType="com.mljr.operators.entity.vo.statistics.call.MaxMinDateVO">
         select call_type as callType,
                 max(`call_date`) as maxCallDate,
 	            min(`call_date`) as minCallDate
@@ -33,7 +33,7 @@
     </select>
 
     <select id="selectByMonth" parameterType="java.lang.Long"
-            resultType="com.mljr.operators.entity.vo.statistics.CallStatisticsVO">
+            resultType="com.mljr.operators.entity.vo.statistics.call.ByMonthVO">
        select date_format(CALL_DATE , '%Y-%m') as month,
             count(distinct CALL_NUMBER) as uniqNum ,
             count(distinct call_remote_address) as uniqCity ,
@@ -49,7 +49,7 @@
     </select>
 
     <select id="selectByAddress" parameterType="java.lang.Long"
-            resultType="com.mljr.operators.entity.vo.statistics.CallStatisticsVO">
+            resultType="com.mljr.operators.entity.vo.statistics.call.ByAddressVO">
          select call_remote_address as city,
             count(distinct CALL_NUMBER) as uniqNum ,
             count( CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) as outCount ,
