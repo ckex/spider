@@ -1,10 +1,9 @@
 package com.mljr.operators.controller;
 
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
-import com.mljr.operators.common.constant.ErrorCodeEnum;
-import com.mljr.operators.common.constant.OperatorsEnum;
-import com.mljr.operators.common.constant.ProvinceEnum;
-import com.mljr.operators.common.constant.RequestInfoEnum;
+import com.mljr.operators.common.constant.*;
 import com.mljr.operators.common.utils.CookieUtils;
 import com.mljr.operators.common.utils.IdcardValidator;
 import com.mljr.operators.common.utils.RegexUtils;
@@ -21,6 +20,8 @@ import com.mljr.operators.service.api.IOperatorAdminApiService;
 import com.mljr.operators.service.chinaunicom.IChinaUnicomService;
 import com.mljr.operators.service.primary.operators.IOperatorFeaturesService;
 import com.mljr.operators.service.primary.operators.IUserInfoService;
+import com.mljr.operators.service.statistics.ICallStatisticsService;
+import com.mljr.operators.service.statistics.ISmsStatisticsService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by songchi on 16/12/23.
@@ -58,6 +60,12 @@ public class ApiController {
 
     @Autowired
     IOperatorFeaturesService operatorFeaturesService;
+
+    @Autowired
+    ICallStatisticsService callStatisticsService;
+
+    @Autowired
+    ISmsStatisticsService smsStatisticsService;
 
     Gson gson = new Gson();
 
@@ -164,13 +172,43 @@ public class ApiController {
             case INIT:
                 return new BaseResponse(ErrorCodeEnum.TASK_RUNNING, false);
             case RUNNING:
-                return new BaseResponse(ErrorCodeEnum.TASK_RUNNING, false);
+                return apiService.getData(token);
             case ERROR:
-                return new BaseResponse(ErrorCodeEnum.TASK_ERROR, false);
+                return apiService.getData(token);
             case SUCCESS:
                 return apiService.getData(token);
         }
         return null;
+    }
+
+    /**
+     * 统计报告接口
+     *
+     * @param token
+     * @return
+     */
+    @RequestMapping(value = "/api/operators/statistics", method = RequestMethod.POST)
+    public Object statistics(@RequestParam String token) {
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        UserInfo u = apiService.findUserByToken(token);
+        if (u == null) {
+            return new BaseResponse(ErrorCodeEnum.USER_NOT_FOUND, false);
+        }
+        Long uid = u.getId();
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("call_max_min_date", callStatisticsService.selectMaxMinDate(uid));
+
+        map.put("call_by_month", callStatisticsService.selectByMonth(uid));
+
+        map.put("call_by_address", callStatisticsService.selectByAddress(uid));
+
+        map.put("call_by_number", callStatisticsService.getStatisticsByNumber(uid));
+
+        map.put("sms_max_min_date", smsStatisticsService.getTimeBySmsType(uid, SmsTypeEnum.ALL));
+
+        logger.debug("statistics api use time   " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
+
+        return map;
     }
 
 
