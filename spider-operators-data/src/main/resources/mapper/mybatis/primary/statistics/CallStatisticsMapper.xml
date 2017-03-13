@@ -26,8 +26,8 @@
             resultType="com.mljr.operators.entity.vo.statistics.CallStatisticsVO">
         select max(`call_date`) as maxCallOutDate,min(`call_date`) as minCallOutdate
         from t_call_info
-        where `user_info_id`=#{userinfoid,jdbcType=bigint}
-        and `call_type`=#{calltype,jdbcType=varchar}
+        where `user_info_id`=#{userInfoId,jdbcType=BIGINT}
+        and `call_type`=#{callType,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByMonth" parameterType="java.lang.Long" resultType="map">
@@ -36,8 +36,8 @@
 	    count(distinct call_remote_address) as uniqCity,
         sum(CALL_DURATION) as totalTime, count(*) as times
         from t_call_info
-        where `user_info_id`=#{userinfoid,jdbcType=bigint}
-        and `call_type`=#{calltype,jdbcType=varchar}
+        where `user_info_id`=#{userInfoId,jdbcType=BIGINT}
+        and `call_type`=#{callType,jdbcType=VARCHAR}
         group by date_format(CALL_DATE, '%Y-%m')
     </select>
 
@@ -46,8 +46,8 @@
         count(distinct CALL_NUMBER) as uniqNum,
         sum(CALL_DURATION) as totalTime, count(*) as times
         from t_call_info
-        where `user_info_id`=#{userinfoid,jdbcType=bigint}
-        and `call_type`=#{calltype,jdbcType=varchar}
+        where `user_info_id`=#{userInfoId,jdbcType=BIGINT}
+        and `call_type`=#{callType,jdbcType=VARCHAR}
         group by call_remote_address
     </select>
 
