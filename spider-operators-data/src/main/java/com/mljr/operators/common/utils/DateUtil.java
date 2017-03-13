@@ -8,6 +8,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -127,5 +128,13 @@ public class DateUtil {
 
   public static Date localDateToDate(LocalDate localDate) {
     return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+  }
+
+  public static String dateToString(LocalDateTime localDateTime,String pattern){
+    return localDateTime.format(DateTimeFormatter.ofPattern(pattern));
+  }
+
+  public static LocalDateTime stringToDateTime(String dateTime,String pattern ){
+    return LocalDateTime.parse(dateTime,DateTimeFormatter.ofPattern(pattern));
   }
 }
