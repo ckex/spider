@@ -1,4 +1,4 @@
-package com.mljr.operators.dao.statistics;
+package com.mljr.operators.dao.primary.operators.statistics;
 
 import com.mljr.operators.entity.vo.statistics.SmsStatisticsVO;
 import org.apache.ibatis.annotations.Mapper;
