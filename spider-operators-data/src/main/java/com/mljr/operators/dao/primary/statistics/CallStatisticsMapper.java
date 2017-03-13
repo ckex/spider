@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+import com.mljr.operators.entity.vo.statistics.CallStatisticsVO;
+
+
 /**
  * Created by songchi on 17/3/13.
  */
@@ -19,6 +22,8 @@ public interface CallStatisticsMapper {
    */
   List<CallNumberStatisticsVO> getStatisticsByNumber(@Param("userInfoId") long userInfoId,
       @Param("nowDate") String nowDate);
+    CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
+                                          @Param("callType") String callType);
 
 
 }

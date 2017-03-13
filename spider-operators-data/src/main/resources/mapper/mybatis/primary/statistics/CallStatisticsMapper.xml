@@ -22,16 +22,33 @@
     </resultMap>
 
 
-    <select id="selectCallOutDate" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT MAX(`CALL_DATE`) AS maxCallOutDate,MIN(`CALL_DATE`) AS minCallOutDate
-        FROM T_CALL_INFOWHERE `USER_INFO_ID`=#{USERINFOID,JDBCTYPE=BIGINT}
-        AND `CALL_TYPE`='主叫'
+    <select id="selectTimeByCallType" parameterType="java.lang.Long"
+            resultType="com.mljr.operators.entity.vo.statistics.CallStatisticsVO">
+        select max(`call_date`) as maxCallOutDate,min(`call_date`) as minCallOutdate
+        from t_call_info
+        where `user_info_id`=#{userinfoid,jdbcType=bigint}
+        and `call_type`=#{calltype,jdbcType=varchar}
     </select>
 
-    <select id="selectCallInDate" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT MAX(`CALL_DATE`) AS maxCallOutDate,MIN(`CALL_DATE`) AS minCallOutDate
-        FROM T_CALL_INFOWHERE `USER_INFO_ID`=#{USERINFOID,JDBCTYPE=BIGINT}
-        AND `CALL_TYPE`='被叫'
+    <select id="selectByMonth" parameterType="java.lang.Long" resultType="map">
+        select
+        count(distinct CALL_NUMBER) as uniqNum,
+	    count(distinct call_remote_address) as uniqCity,
+        sum(CALL_DURATION) as totalTime, count(*) as times
+        from t_call_info
+        where `user_info_id`=#{userinfoid,jdbcType=bigint}
+        and `call_type`=#{calltype,jdbcType=varchar}
+        group by date_format(CALL_DATE, '%Y-%m')
+    </select>
+
+    <select id="selectByAddress" parameterType="java.lang.Long" resultType="map">
+        select
+        count(distinct CALL_NUMBER) as uniqNum,
+        sum(CALL_DURATION) as totalTime, count(*) as times
+        from t_call_info
+        where `user_info_id`=#{userinfoid,jdbcType=bigint}
+        and `call_type`=#{calltype,jdbcType=varchar}
+        group by call_remote_address
     </select>
 
     <select id="getStatisticsByNumber" resultMap="CallNumberResultMap">
