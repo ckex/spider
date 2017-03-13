@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="com.mljr.operators.dao.statistics.SmsStatisticsMapper">
 
+    <resultMap id="BaseResultMap" type="com.mljr.operators.entity.vo.statistics.SmsStatisticsVO">
+        <result column="MIN_DATE_TIME" jdbcType="TIMESTAMP" property="minDateTime"/>
+        <result column="MAX_DATE_TIME" jdbcType="TIMESTAMP" property="maxDateTime"/>
+        <result column="SMS_TYPE" jdbcType="VARCHAR" property="smsType"/>
+    </resultMap>
+
+    <select id="getTimeBySmsType" resultMap="BaseResultMap">
+        SELECT SMS_TYPE,MIN(SEND_TIME) MIN_DATE_TIME,MAX(SEND_TIME) MAX_DATE_TIME
+        FROM T_SMS_INFO WHERE USER_INFO_ID=#{userInfoId} GROUP BY SMS_TYPE
+    </select>
 
 </mapper>
