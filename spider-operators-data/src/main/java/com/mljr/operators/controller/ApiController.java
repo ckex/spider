@@ -172,9 +172,9 @@ public class ApiController {
             case INIT:
                 return new BaseResponse(ErrorCodeEnum.TASK_RUNNING, false);
             case RUNNING:
-                return new BaseResponse(ErrorCodeEnum.TASK_RUNNING, false);
+                return apiService.getData(token);
             case ERROR:
-                return new BaseResponse(ErrorCodeEnum.TASK_ERROR, false);
+                return apiService.getData(token);
             case SUCCESS:
                 return apiService.getData(token);
         }
