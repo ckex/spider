@@ -42,9 +42,9 @@ public class CallStatisticsServiceImpl implements ICallStatisticsService {
     return statisticsList;
   }
 
-    @Override
-    public CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
-                                                 @Param("callType") String callType) {
-        return callStatisticsMapper.selectTimeByCallType(userInfoId, callType);
-    }
+  @Override
+  public CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
+      @Param("callType") String callType) {
+    return callStatisticsMapper.selectTimeByCallType(userInfoId, callType);
+  }
 }

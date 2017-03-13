@@ -22,8 +22,9 @@ public interface CallStatisticsMapper {
    */
   List<CallNumberStatisticsVO> getStatisticsByNumber(@Param("userInfoId") long userInfoId,
       @Param("nowDate") String nowDate);
-    CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
-                                          @Param("callType") String callType);
+
+  CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
+      @Param("callType") String callType);
 
 
 }

@@ -21,6 +21,6 @@ public interface ICallStatisticsService {
   List<CallNumberStatisticsVO> getStatisticsByNumber(long userInfoId);
 
 
-    CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
-                                          @Param("callType") String callType);
+  CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
+      @Param("callType") String callType);
 }

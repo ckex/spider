@@ -10,9 +10,9 @@
 
     <select id="getTimeBySmsType" resultMap="BaseResultMap">
         SELECT SMS_TYPE,MIN(SEND_TIME) MIN_DATE_TIME,MAX(SEND_TIME) MAX_DATE_TIME
-        FROM T_SMS_INFO WHERE USER_INFO_ID=#{userInfoId}
+        FROM t_sms_info WHERE USER_INFO_ID=#{userInfoId}
         <if test="smsType!=null">
-            SMS_TYPE=#{smsType}
+            AND SMS_TYPE=#{smsType}
         </if>
         GROUP BY SMS_TYPE
     </select>
