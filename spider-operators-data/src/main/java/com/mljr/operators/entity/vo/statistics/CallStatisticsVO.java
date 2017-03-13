@@ -10,44 +10,34 @@ import java.util.Date;
  */
 public class CallStatisticsVO implements Serializable {
     public static class MaxMinDate {
-        private Date minCallOutDate;
+        private Date minCallDate;
 
-        private Date maxCallOutDate;
+        private Date maxCallDate;
 
-        private Date minCallInDate;
+        private String callType;
 
-        private Date maxCallInDate;
-
-        public Date getMinCallOutDate() {
-            return minCallOutDate;
+        public Date getMinCallDate() {
+            return minCallDate;
         }
 
-        public void setMinCallOutDate(Date minCallOutDate) {
-            this.minCallOutDate = minCallOutDate;
+        public void setMinCallDate(Date minCallDate) {
+            this.minCallDate = minCallDate;
         }
 
-        public Date getMaxCallOutDate() {
-            return maxCallOutDate;
+        public Date getMaxCallDate() {
+            return maxCallDate;
         }
 
-        public void setMaxCallOutDate(Date maxCallOutDate) {
-            this.maxCallOutDate = maxCallOutDate;
+        public void setMaxCallDate(Date maxCallDate) {
+            this.maxCallDate = maxCallDate;
         }
 
-        public Date getMinCallInDate() {
-            return minCallInDate;
+        public String getCallType() {
+            return callType;
         }
 
-        public void setMinCallInDate(Date minCallInDate) {
-            this.minCallInDate = minCallInDate;
-        }
-
-        public Date getMaxCallInDate() {
-            return maxCallInDate;
-        }
-
-        public void setMaxCallInDate(Date maxCallInDate) {
-            this.maxCallInDate = maxCallInDate;
+        public void setCallType(String callType) {
+            this.callType = callType;
         }
     }
 
@@ -58,11 +48,11 @@ public class CallStatisticsVO implements Serializable {
         private int totalDuraton;
         private int totalCount;
 
-        private int totalCallOutDuraton;
-        private int totalCallInDuraton;
+        private int outDuration;
+        private int inDuration;
 
-        private int totalCallOutCount;
-        private int totalCallInCount;
+        private int outCount;
+        private int inCount;
 
         public int getUniqNum() {
             return uniqNum;
@@ -81,7 +71,7 @@ public class CallStatisticsVO implements Serializable {
         }
 
         public int getTotalDuraton() {
-            return this.getTotalCallInDuraton() + this.getTotalCallOutCount();
+            return totalDuraton;
         }
 
         public void setTotalDuraton(int totalDuraton) {
@@ -89,58 +79,57 @@ public class CallStatisticsVO implements Serializable {
         }
 
         public int getTotalCount() {
-            return this.getTotalCallInCount() + this.getTotalCallOutCount();
+            return totalCount;
         }
 
         public void setTotalCount(int totalCount) {
             this.totalCount = totalCount;
         }
 
-        public int getTotalCallOutDuraton() {
-            return totalCallOutDuraton;
+        public int getOutDuration() {
+            return outDuration;
         }
 
-        public void setTotalCallOutDuraton(int totalCallOutDuraton) {
-            this.totalCallOutDuraton = totalCallOutDuraton;
+        public void setOutDuration(int outDuration) {
+            this.outDuration = outDuration;
         }
 
-        public int getTotalCallInDuraton() {
-            return totalCallInDuraton;
+        public int getInDuration() {
+            return inDuration;
         }
 
-        public void setTotalCallInDuraton(int totalCallInDuraton) {
-            this.totalCallInDuraton = totalCallInDuraton;
+        public void setInDuration(int inDuration) {
+            this.inDuration = inDuration;
         }
 
-        public int getTotalCallOutCount() {
-            return totalCallOutCount;
+        public int getOutCount() {
+            return outCount;
         }
 
-        public void setTotalCallOutCount(int totalCallOutCount) {
-            this.totalCallOutCount = totalCallOutCount;
+        public void setOutCount(int outCount) {
+            this.outCount = outCount;
         }
 
-        public int getTotalCallInCount() {
-            return totalCallInCount;
+        public int getInCount() {
+            return inCount;
         }
 
-        public void setTotalCallInCount(int totalCallInCount) {
-            this.totalCallInCount = totalCallInCount;
+        public void setInCount(int inCount) {
+            this.inCount = inCount;
         }
     }
 
     public static class ByAddress {
         private int uniqNum;
-        private int uniqCity;
 
         private int totalDuraton;
         private int totalCount;
 
-        private int totalCallOutDuraton;
-        private int totalCallInDuraton;
+        private int outDuration;
+        private int inDuration;
 
-        private int totalCallOutCount;
-        private int totalCallInCount;
+        private int outCount;
+        private int inCount;
 
         public int getUniqNum() {
             return uniqNum;
@@ -150,16 +139,8 @@ public class CallStatisticsVO implements Serializable {
             this.uniqNum = uniqNum;
         }
 
-        public int getUniqCity() {
-            return uniqCity;
-        }
-
-        public void setUniqCity(int uniqCity) {
-            this.uniqCity = uniqCity;
-        }
-
         public int getTotalDuraton() {
-            return this.getTotalCallInDuraton() + this.getTotalCallOutCount();
+            return totalDuraton;
         }
 
         public void setTotalDuraton(int totalDuraton) {
@@ -167,43 +148,43 @@ public class CallStatisticsVO implements Serializable {
         }
 
         public int getTotalCount() {
-            return this.getTotalCallInCount() + this.getTotalCallOutCount();
+            return totalCount;
         }
 
         public void setTotalCount(int totalCount) {
             this.totalCount = totalCount;
         }
 
-        public int getTotalCallOutDuraton() {
-            return totalCallOutDuraton;
+        public int getOutDuration() {
+            return outDuration;
         }
 
-        public void setTotalCallOutDuraton(int totalCallOutDuraton) {
-            this.totalCallOutDuraton = totalCallOutDuraton;
+        public void setOutDuration(int outDuration) {
+            this.outDuration = outDuration;
         }
 
-        public int getTotalCallInDuraton() {
-            return totalCallInDuraton;
+        public int getInDuration() {
+            return inDuration;
         }
 
-        public void setTotalCallInDuraton(int totalCallInDuraton) {
-            this.totalCallInDuraton = totalCallInDuraton;
+        public void setInDuration(int inDuration) {
+            this.inDuration = inDuration;
         }
 
-        public int getTotalCallOutCount() {
-            return totalCallOutCount;
+        public int getOutCount() {
+            return outCount;
         }
 
-        public void setTotalCallOutCount(int totalCallOutCount) {
-            this.totalCallOutCount = totalCallOutCount;
+        public void setOutCount(int outCount) {
+            this.outCount = outCount;
         }
 
-        public int getTotalCallInCount() {
-            return totalCallInCount;
+        public int getInCount() {
+            return inCount;
         }
 
-        public void setTotalCallInCount(int totalCallInCount) {
-            this.totalCallInCount = totalCallInCount;
+        public void setInCount(int inCount) {
+            this.inCount = inCount;
         }
     }
 

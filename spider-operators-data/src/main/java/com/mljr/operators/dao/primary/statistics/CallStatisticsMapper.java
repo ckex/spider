@@ -22,8 +22,14 @@ public interface CallStatisticsMapper {
    */
   List<CallNumberStatisticsVO> getStatisticsByNumber(@Param("userInfoId") long userInfoId,
       @Param("nowDate") String nowDate);
-    CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
-                                          @Param("callType") String callType);
+
+
+  List<CallStatisticsVO.MaxMinDate> selectMaxMinDate(@Param("userInfoId") long userInfo);
+
+  List selectByMonth(@Param("userInfoId") long userInfo);
+
+  List selectByAddress(@Param("userInfoId") long userInfo);
+
 
 
 }
