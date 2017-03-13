@@ -1,4 +1,4 @@
-package com.mljr.operators.dao.primary.operators.statistics;
+package com.mljr.operators.dao.primary.statistics;
 
 import com.mljr.operators.entity.vo.statistics.SmsStatisticsVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -12,5 +12,6 @@ import java.util.List;
 @Mapper
 public interface SmsStatisticsMapper {
 
-    List<SmsStatisticsVO> getTimeBySmsType(@Param("userInfoId") long userInfoId);
+  List<SmsStatisticsVO> getTimeBySmsType(@Param("userInfoId") long userInfoId,
+      @Param("smsType") String smsType);
 }

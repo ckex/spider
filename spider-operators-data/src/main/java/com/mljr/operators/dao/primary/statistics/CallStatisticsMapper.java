@@ -1,4 +1,4 @@
-package com.mljr.operators.dao.primary.operators.statistics;
+package com.mljr.operators.dao.primary.statistics;
 
 /**
  * Created by songchi on 17/3/13.

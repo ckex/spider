@@ -1,6 +1,7 @@
 package com.mljr.operators.service.statistics.impl;
 
-import com.mljr.operators.dao.statistics.SmsStatisticsMapper;
+import com.mljr.operators.common.constant.SmsTypeEnum;
+import com.mljr.operators.dao.primary.statistics.SmsStatisticsMapper;
 import com.mljr.operators.entity.vo.statistics.SmsStatisticsVO;
 import com.mljr.operators.service.statistics.ISmsStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,11 @@ public class SmsStatisticsServiceImpl implements ISmsStatisticsService {
   private SmsStatisticsMapper smsStatisticsMapper;
 
   @Override
-  public List<SmsStatisticsVO> getTimeBySmsType(long userInfoId) {
-    return smsStatisticsMapper.getTimeBySmsType(userInfoId);
+  public List<SmsStatisticsVO> getTimeBySmsType(long userInfoId, SmsTypeEnum smsTypeEnum) {
+    String smsType = null;
+    if (smsTypeEnum != SmsTypeEnum.ALL) {
+      smsType = smsTypeEnum.getDesc();
+    }
+    return smsStatisticsMapper.getTimeBySmsType(userInfoId, smsType);
   }
 }
