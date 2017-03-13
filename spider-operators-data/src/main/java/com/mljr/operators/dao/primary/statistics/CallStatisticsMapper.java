@@ -1,6 +1,9 @@
 package com.mljr.operators.dao.primary.statistics;
 
 import com.mljr.operators.entity.vo.statistics.CallNumberStatisticsVO;
+import com.mljr.operators.entity.vo.statistics.call.ByAddressVO;
+import com.mljr.operators.entity.vo.statistics.call.ByMonthVO;
+import com.mljr.operators.entity.vo.statistics.call.MaxMinDateVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,8 +26,13 @@ public interface CallStatisticsMapper {
   List<CallNumberStatisticsVO> getStatisticsByNumber(@Param("userInfoId") long userInfoId,
       @Param("nowDate") String nowDate);
 
-  CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
-      @Param("callType") String callType);
+
+  List<MaxMinDateVO> selectMaxMinDate(@Param("userInfoId") long userInfo);
+
+  List<ByMonthVO> selectByMonth(@Param("userInfoId") long userInfo);
+
+  List<ByAddressVO> selectByAddress(@Param("userInfoId") long userInfo);
+
 
 
 }

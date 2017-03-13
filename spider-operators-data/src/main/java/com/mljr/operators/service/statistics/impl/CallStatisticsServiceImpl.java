@@ -3,6 +3,9 @@ package com.mljr.operators.service.statistics.impl;
 import com.mljr.operators.common.utils.DateUtil;
 import com.mljr.operators.dao.primary.statistics.CallStatisticsMapper;
 import com.mljr.operators.entity.vo.statistics.CallNumberStatisticsVO;
+import com.mljr.operators.entity.vo.statistics.call.ByAddressVO;
+import com.mljr.operators.entity.vo.statistics.call.ByMonthVO;
+import com.mljr.operators.entity.vo.statistics.call.MaxMinDateVO;
 import com.mljr.operators.service.statistics.ICallStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,8 +46,18 @@ public class CallStatisticsServiceImpl implements ICallStatisticsService {
   }
 
   @Override
-  public CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
-      @Param("callType") String callType) {
-    return callStatisticsMapper.selectTimeByCallType(userInfoId, callType);
+  public List<MaxMinDateVO> selectMaxMinDate(long userInfoId) {
+    return callStatisticsMapper.selectMaxMinDate(userInfoId);
   }
+
+  @Override
+  public List<ByMonthVO> selectByMonth(long userInfoId) {
+    return callStatisticsMapper.selectByMonth(userInfoId);
+  }
+
+  @Override
+  public List<ByAddressVO> selectByAddress(long userInfoId) {
+    return callStatisticsMapper.selectByAddress(userInfoId);
+  }
+
 }

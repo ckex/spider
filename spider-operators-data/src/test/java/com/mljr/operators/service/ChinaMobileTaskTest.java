@@ -3,12 +3,17 @@ package com.mljr.operators.service;
 import com.mljr.operators.common.constant.ProvinceEnum;
 import com.mljr.operators.dao.primary.operators.OperatorFeaturesMapper;
 import com.mljr.operators.dao.primary.operators.RequestInfoMapper;
+import com.mljr.operators.dao.primary.statistics.CallStatisticsMapper;
 import com.mljr.operators.entity.model.operators.OperatorFeatures;
+import com.mljr.operators.entity.vo.statistics.CallStatisticsVO;
+import com.mljr.operators.entity.vo.statistics.call.ByAddressVO;
 import com.mljr.operators.task.chinamobile.*;
+import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,29 +22,32 @@ import java.util.Set;
  */
 public class ChinaMobileTaskTest extends BaseTest {
 
-    @Autowired
+//    @Autowired
     CurrFlowInfoTask currFlowInfoTask;
 
-    @Autowired
+//    @Autowired
     CurrSMSInfoTask currSmsInfoTask;
 
-    @Autowired
+//    @Autowired
     CurrCallInfoTask currCallInfoTask;
 
-    @Autowired
+//    @Autowired
     PackageInfoTask packageInfoTask;
 
-    @Autowired
+//    @Autowired
     CurrBillInfoTask currBillInfoTask;
 
-    @Autowired
+//    @Autowired
     RequestInfoMapper requestInfoMapper;
 
-    @Autowired
+//    @Autowired
     ApiService apiService;
 
-    @Autowired
+//    @Autowired
     OperatorFeaturesMapper operatorFeaturesMapper;
+
+    @Autowired
+    CallStatisticsMapper callStatisticsMapper;
 
     @Test
     public void flowInfoTest() {
@@ -105,6 +113,23 @@ public class ChinaMobileTaskTest extends BaseTest {
             }
 
         }
+
+    }
+
+    @Test
+    public void testCall1() throws Exception {
+        callStatisticsMapper.selectMaxMinDate(2).forEach(System.out::println);
+    }
+
+    @Test
+    public void testCall2() throws Exception {
+        callStatisticsMapper.selectByMonth(2).forEach(System.out::println);
+
+    }
+
+    @Test
+    public void testCall3() throws Exception {
+      callStatisticsMapper.selectByAddress(2).forEach(System.out::println);
 
     }
 }

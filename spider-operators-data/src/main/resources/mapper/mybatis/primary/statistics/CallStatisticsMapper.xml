@@ -22,33 +22,45 @@
     </resultMap>
 
 
-    <select id="selectTimeByCallType" parameterType="java.lang.Long"
-            resultType="com.mljr.operators.entity.vo.statistics.CallStatisticsVO">
-        select max(`call_date`) as maxCallOutDate,min(`call_date`) as minCallOutdate
+    <select id="selectMaxMinDate" parameterType="java.lang.Long"
+            resultType="com.mljr.operators.entity.vo.statistics.call.MaxMinDateVO">
+        select call_type as callType,
+                max(`call_date`) as maxCallDate,
+	            min(`call_date`) as minCallDate
         from t_call_info
         where `user_info_id`=#{userInfoId,jdbcType=BIGINT}
-        and `call_type`=#{callType,jdbcType=VARCHAR}
+        group by call_type
     </select>
 
-    <select id="selectByMonth" parameterType="java.lang.Long" resultType="map">
-        select
-        count(distinct CALL_NUMBER) as uniqNum,
-	    count(distinct call_remote_address) as uniqCity,
-        sum(CALL_DURATION) as totalTime, count(*) as times
-        from t_call_info
-        where `user_info_id`=#{userInfoId,jdbcType=BIGINT}
-        and `call_type`=#{callType,jdbcType=VARCHAR}
-        group by date_format(CALL_DATE, '%Y-%m')
+    <select id="selectByMonth" parameterType="java.lang.Long"
+            resultType="com.mljr.operators.entity.vo.statistics.call.ByMonthVO">
+       select date_format(CALL_DATE , '%Y-%m') as month,
+            count(distinct CALL_NUMBER) as uniqNum ,
+            count(distinct call_remote_address) as uniqCity ,
+            count( CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) as outCount ,
+            count( CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) as inCount ,
+            sum( CASE CALL_TYPE WHEN '主叫' THEN CALL_DURATION ELSE 0 END) as outDuration ,
+            count( CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) as inDuration ,
+            count(*) as totalCount ,
+            sum(CALL_DURATION) as totalDuration
+	   from t_call_info
+	   where `user_info_id`=#{userInfoId,jdbcType=BIGINT}
+	   group by date_format(CALL_DATE , '%Y-%m')
     </select>
 
-    <select id="selectByAddress" parameterType="java.lang.Long" resultType="map">
-        select
-        count(distinct CALL_NUMBER) as uniqNum,
-        sum(CALL_DURATION) as totalTime, count(*) as times
-        from t_call_info
-        where `user_info_id`=#{userInfoId,jdbcType=BIGINT}
-        and `call_type`=#{callType,jdbcType=VARCHAR}
-        group by call_remote_address
+    <select id="selectByAddress" parameterType="java.lang.Long"
+            resultType="com.mljr.operators.entity.vo.statistics.call.ByAddressVO">
+         select call_remote_address as city,
+            count(distinct CALL_NUMBER) as uniqNum ,
+            count( CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) as outCount ,
+            count( CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) as inCount ,
+            sum( CASE CALL_TYPE WHEN '主叫' THEN CALL_DURATION ELSE 0 END) as outDuration ,
+            count( CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) as inDuration ,
+            count(*) as totalCount ,
+            sum(CALL_DURATION) as totalDuration
+	   from t_call_info
+	   where `user_info_id`=#{userInfoId,jdbcType=BIGINT}
+	   group by call_remote_address
     </select>
 
     <select id="getStatisticsByNumber" resultMap="CallNumberResultMap">
