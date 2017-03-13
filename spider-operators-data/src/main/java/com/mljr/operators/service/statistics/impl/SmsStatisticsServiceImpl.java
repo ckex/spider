@@ -1,6 +1,7 @@
 package com.mljr.operators.service.statistics.impl;
 
 import com.mljr.operators.common.constant.SmsTypeEnum;
+import com.mljr.operators.common.utils.DateUtil;
 import com.mljr.operators.dao.primary.statistics.SmsStatisticsMapper;
 import com.mljr.operators.entity.vo.statistics.SmsStatisticsVO;
 import com.mljr.operators.service.statistics.ISmsStatisticsService;
@@ -24,6 +25,15 @@ public class SmsStatisticsServiceImpl implements ISmsStatisticsService {
     if (smsTypeEnum != SmsTypeEnum.ALL) {
       smsType = smsTypeEnum.getDesc();
     }
-    return smsStatisticsMapper.getTimeBySmsType(userInfoId, smsType);
+    List<SmsStatisticsVO> list = smsStatisticsMapper.getTimeBySmsType(userInfoId, smsType);
+    if (null != list && list.size() > 0) {
+      list.forEach(entity -> {
+        entity.setMaxDateTimeStr(
+            DateUtil.dateToString(entity.getMaxDateTime(), DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
+        entity.setMinDateTimeStr(
+            DateUtil.dateToString(entity.getMinDateTime(), DateUtil.PATTERN_yyyy_MM_dd_HH_mm_ss));
+      });
+    }
+    return list;
   }
 }

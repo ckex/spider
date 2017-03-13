@@ -1,5 +1,6 @@
 package com.mljr.operators.service.statistics;
 
+import com.mljr.operators.common.constant.SmsTypeEnum;
 import com.mljr.operators.entity.vo.statistics.SmsStatisticsVO;
 import com.mljr.operators.service.BaseTest;
 import org.junit.Assert;
@@ -18,18 +19,17 @@ public class SmsStatisticsServiceImplTest extends BaseTest {
   @Autowired
   private ISmsStatisticsService smsStatisticsService;
 
-    @Override
-    public void testInit() {
-        super.testInit();
-        Assert.assertNotNull(smsStatisticsService);
-    }
+  @Override
+  public void testInit() {
+    super.testInit();
+    Assert.assertNotNull(smsStatisticsService);
+  }
 
-    @Test
+  @Test
   public void testGetTimeBySmsType() {
 
-//      List<SmsStatisticsVO> list = smsStatisticsService.getTimeBySmsType(10);
+    List<SmsStatisticsVO> list = smsStatisticsService.getTimeBySmsType(10, SmsTypeEnum.RECEIVE);
 
-        System.out.println();
-
+    System.out.println();
   }
 }

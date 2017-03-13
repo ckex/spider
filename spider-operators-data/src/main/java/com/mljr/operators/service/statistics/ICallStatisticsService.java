@@ -5,6 +5,9 @@ import com.mljr.operators.entity.vo.statistics.CallNumberStatisticsVO;
 import java.util.List;
 
 import com.mljr.operators.entity.vo.statistics.CallStatisticsVO;
+import com.mljr.operators.entity.vo.statistics.call.ByAddressVO;
+import com.mljr.operators.entity.vo.statistics.call.ByMonthVO;
+import com.mljr.operators.entity.vo.statistics.call.MaxMinDateVO;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -20,7 +23,9 @@ public interface ICallStatisticsService {
    */
   List<CallNumberStatisticsVO> getStatisticsByNumber(long userInfoId);
 
+  List<MaxMinDateVO> selectMaxMinDate(long userInfoId);
 
-    CallStatisticsVO selectTimeByCallType(@Param("userInfoId") long userInfoId,
-                                          @Param("callType") String callType);
+  List<ByMonthVO> selectByMonth( long userInfoId);
+
+  List<ByAddressVO> selectByAddress(long userInfoId);
 }

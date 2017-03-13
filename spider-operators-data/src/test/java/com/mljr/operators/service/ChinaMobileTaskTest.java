@@ -6,6 +6,7 @@ import com.mljr.operators.dao.primary.operators.RequestInfoMapper;
 import com.mljr.operators.dao.primary.statistics.CallStatisticsMapper;
 import com.mljr.operators.entity.model.operators.OperatorFeatures;
 import com.mljr.operators.entity.vo.statistics.CallStatisticsVO;
+import com.mljr.operators.entity.vo.statistics.call.ByAddressVO;
 import com.mljr.operators.task.chinamobile.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Test;
@@ -117,21 +118,18 @@ public class ChinaMobileTaskTest extends BaseTest {
 
     @Test
     public void testCall1() throws Exception {
-        List<CallStatisticsVO.MaxMinDate> obj = callStatisticsMapper.selectMaxMinDate(2);
-        System.out.println(obj.get(0).getMaxCallDate());
-
+        callStatisticsMapper.selectMaxMinDate(2).forEach(System.out::println);
     }
 
     @Test
     public void testCall2() throws Exception {
-        List<CallStatisticsVO.ByMonth> obj = callStatisticsMapper.selectByMonth(2);
-        System.out.println(obj.get(0).getInDuration());
+        callStatisticsMapper.selectByMonth(2).forEach(System.out::println);
 
     }
 
     @Test
     public void testCall3() throws Exception {
-        List obj = callStatisticsMapper.selectByAddress(2);
-        System.out.println(obj.toString());
+      callStatisticsMapper.selectByAddress(2).forEach(System.out::println);
+
     }
 }
