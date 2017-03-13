@@ -2,6 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mljr.operators.dao.primary.statistics.CallStatisticsMapper">
 
+    <resultMap id="CallNumberResultMap" type="com.mljr.operators.entity.vo.statistics.CallNumberStatisticsVO">
+        <result column="CALL_NUMBER" jdbcType="VARCHAR" property="callNumber"/>
+        <result column="TOTAL_HOUR" jdbcType="INTEGER" property="totalHour"/>
+        <result column="TOTAL_COUNT" jdbcType="INTEGER" property="totalCount"/>
+        <result column="CALLER_HOUR" jdbcType="INTEGER" property="callerHour"/>
+        <result column="CALLER_COUNT" jdbcType="INTEGER" property="callerCount"/>
+        <result column="CALLED_HOUR" jdbcType="INTEGER" property="calledHour"/>
+        <result column="CALLED_COUNT" jdbcType="INTEGER" property="calledCount"/>
+        <result column="LAST_WEEK_COUNT" jdbcType="INTEGER" property="lastWeekCount"/>
+        <result column="LAST_ONE_MONTH_COUNT" jdbcType="INTEGER" property="lastOneMonthCount"/>
+        <result column="LAST_THREE_MONTH_COUNT" jdbcType="INTEGER" property="lastThreeMonthCount"/>
+        <result column="THREE_MONTH_AGO_COUNT" jdbcType="INTEGER" property="threeMonthAgoCount"/>
+        <result column="ZERO_COUNT" jdbcType="INTEGER" property="zeroCount"/>
+        <result column="SIX_COUNT" jdbcType="INTEGER" property="sixCount"/>
+        <result column="NINE_COUNT" jdbcType="INTEGER" property="nineCount"/>
+        <result column="EIGHTEEN_COUNT" jdbcType="INTEGER" property="eighteenCount"/>
+        <result column="LAST_THREE_MONTH_COUNT" jdbcType="INTEGER" property="lastThreeMonthCount"/>
+    </resultMap>
+
 
     <select id="selectTimeByCallType" parameterType="java.lang.Long"
             resultType="com.mljr.operators.entity.vo.statistics.CallStatisticsVO">
@@ -30,6 +49,26 @@
         where `user_info_id`=#{userinfoid,jdbcType=bigint}
         and `call_type`=#{calltype,jdbcType=varchar}
         group by call_remote_address
+    </select>
+
+    <select id="getStatisticsByNumber" resultMap="CallNumberResultMap">
+        SELECT CALL_NUMBER,COUNT(CALL_NUMBER) TOTAL_COUNT,
+          COUNT(CASE CALL_TYPE WHEN '主叫' THEN 1 END) CALLER_COUNT,
+          COUNT(CASE CALL_TYPE WHEN '被叫' THEN 1 END) CALLED_COUNT,
+          COUNT(CASE WHEN
+                  DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 7 DAY) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
+                THEN 1 END) LAST_WEEK_COUNT,
+          COUNT(CASE WHEN
+                  DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 1 MONTH) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
+                THEN 1 END) LAST_ONE_MONTH_COUNT,
+          COUNT(CASE WHEN
+                  DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 3 MONTH) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
+                THEN 1 END) LAST_THREE_MONTH_COUNT,
+          COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 0 AND 5 THEN 1 END) ZERO_COUNT,
+          COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 6 AND 8 THEN 1 END) SIX_COUNT,
+          COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 9 AND 17 THEN 1 END) NINE_COUNT,
+          COUNT(CASE  WHEN HOUR(CALL_DATE) BETWEEN 18 AND 23 THEN 1 END) EIGHTEEN_COUNT
+        FROM t_call_info WHERE USER_INFO_ID = #{userInfoId} GROUP BY CALL_NUMBER;
     </select>
 
 
