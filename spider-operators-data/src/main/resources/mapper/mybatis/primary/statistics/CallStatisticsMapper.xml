@@ -19,6 +19,8 @@
         <result column="NINE_COUNT" jdbcType="INTEGER" property="nineCount"/>
         <result column="EIGHTEEN_COUNT" jdbcType="INTEGER" property="eighteenCount"/>
         <result column="LAST_THREE_MONTH_COUNT" jdbcType="INTEGER" property="lastThreeMonthCount"/>
+        <result column="WORKING_DAY_COUNT" jdbcType="INTEGER" property="workingDayCount"/>
+        <result column="WEEKEND_COUNT" jdbcType="INTEGER" property="weekendCount"/>
     </resultMap>
 
 
@@ -80,8 +82,10 @@
           COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 0 AND 5 THEN 1 END) ZERO_COUNT,
           COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 6 AND 8 THEN 1 END) SIX_COUNT,
           COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 9 AND 17 THEN 1 END) NINE_COUNT,
-          COUNT(CASE  WHEN HOUR(CALL_DATE) BETWEEN 18 AND 23 THEN 1 END) EIGHTEEN_COUNT
-        FROM t_call_info WHERE USER_INFO_ID = #{userInfoId} GROUP BY CALL_NUMBER;
+          COUNT(CASE  WHEN HOUR(CALL_DATE) BETWEEN 18 AND 23 THEN 1 END) EIGHTEEN_COUNT,
+          SUM(CASE WHEN WEEKDAY(CALL_DATE) BETWEEN 0 AND 4 THEN 1 ELSE 0 END ) WORKING_DAY_COUNT,
+          SUM(CASE WHEN WEEKDAY(CALL_DATE) BETWEEN 5 AND 6 THEN 1 ELSE 0 END ) WEEKEND_COUNT
+        FROM t_call_info WHERE USER_INFO_ID = #{userInfoId} GROUP BY CALL_NUMBER
     </select>
 
 
