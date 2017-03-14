@@ -1,7 +1,7 @@
 #!/bin/bash
 #set ($jmx_port = 8883 )
 #set ($debug_port = 1088 )
-APP_NAME=data-api
+APP_NAME=spider-operators-data
 MAIN_PATH=com.mljr.operators.SpringBootOperatorsMain
 PRODUCTION=run
 JAVA_HOME=/usr/local/jdk1.8.0_111/
