@@ -9,6 +9,8 @@ import com.mljr.operators.exception.ConvertException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -165,6 +167,7 @@ public class ChinaUnicomConvert {
     entity.setCallFee(new BigDecimal(callDetailDTO.getTotalfee()));
     entity.setCallLocalAddress(callDetailDTO.getHomearea());
     entity.setCallRemoteAddress(callDetailDTO.getCalledhome());
+    entity.setCallDuration(getSecond(entity.getCallLongHour()));
     return entity;
   }
 
@@ -284,5 +287,15 @@ public class ChinaUnicomConvert {
     entity.setFlowName(resultBean.getFlowname());
     return entity;
   }
-
+  
+  private static int getSecond(String timeStr) {
+    if (StringUtils.isBlank(timeStr)) {
+      return 0;
+    }
+    Date date = DateUtil.stringToDate(timeStr, new String[] {"mm分ss秒", "ss秒", "hh时mm分ss秒"});
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    return calendar.get(Calendar.SECOND) + calendar.get(Calendar.MINUTE) * 60
+        + calendar.get(Calendar.HOUR) * 60 * 60;
+  }
 }

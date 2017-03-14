@@ -18,6 +18,8 @@ public class CallInfo {
 
     private String callLongHour;
 
+    private Integer callDuration;
+
     private BigDecimal callFee;
 
     private String callLocalAddress;
@@ -86,6 +88,14 @@ public class CallInfo {
 
     public void setCallLongHour(String callLongHour) {
         this.callLongHour = callLongHour == null ? null : callLongHour.trim();
+    }
+
+    public Integer getCallDuration() {
+        return callDuration;
+    }
+
+    public void setCallDuration(Integer callDuration) {
+        this.callDuration = callDuration;
     }
 
     public BigDecimal getCallFee() {
