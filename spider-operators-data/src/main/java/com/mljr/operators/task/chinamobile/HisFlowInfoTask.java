@@ -1,26 +1,20 @@
 package com.mljr.operators.task.chinamobile;
 
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.Lists;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.common.utils.CookieUtils;
 import com.mljr.operators.entity.chinamobile.DatePair;
 import com.mljr.operators.entity.model.operators.FlowInfo;
 import com.mljr.operators.entity.model.operators.RequestInfo;
+import com.mljr.operators.service.ChinaMobileParseService;
 import com.mljr.operators.service.ChinaMobileService;
-import com.mljr.operators.service.CommonService;
 import com.mljr.operators.service.primary.operators.IFlowInfoService;
 import com.mljr.operators.service.primary.operators.IRequestInfoService;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -76,57 +70,12 @@ public class HisFlowInfoTask implements Runnable {
   }
 
   void writeToDb(String data, DatePair pair) throws Exception {
-    String flowInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
-    List<List<String>> list =
-        new Gson().fromJson(flowInfoStr, new TypeToken<List<List<String>>>() {}.getType());
-    List<FlowInfo> fiList = Lists.newArrayList();
-    for (List<String> subList : list) {
 
-      String startTime = subList.get(1);
-      String homeArea = subList.get(2);
-      String onlinePattern = subList.get(3); // 上网方式
-      String duration = subList.get(4); // 时长
-      String totalBytes = subList.get(5); // 流量
-      String svcName = subList.get(6);
-      String fee = subList.get(7);
-      String netType = subList.get(8);
+    List<FlowInfo> fiList = ChinaMobileParseService.parseFlowInfo(data,pair,userInfoId);
 
-      String year = pair.getStartDate().substring(0, 4);
-
-      FlowInfo fi = new FlowInfo();
-      fi.setUserInfoId(userInfoId);
-      fi.setForwardType(true);
-
-      fi.setStartTime(DateUtils.parseDate(year + "-" + startTime, "yyyy-MM-dd HH:mm:ss"));
-      fi.setHomeArea(homeArea);
-      fi.setOnlinePattern(onlinePattern);
-      fi.setDuration(CommonService.toSecond(duration)+"");
-      fi.setTotalBytes(parseBytes(totalBytes));
-      fi.setSvcName(svcName);
-      fi.setFee(new BigDecimal(fee));
-      fi.setNetType(netType);
-      fi.setCreateTime(new Date());
-      fi.setUpdateTime(new Date());
-
-      fiList.add(fi);
-    }
     flowInfoService.insertByBatch(fiList);
   }
 
-  private BigDecimal parseBytes(String totalBytes) {
-    if (totalBytes.contains("GB")) {
-      totalBytes = totalBytes.replace("GB", "");
-      return new BigDecimal(Integer.parseInt(totalBytes) * 1024 * 1024);
-    } else if (totalBytes.contains("MB")) {
-      totalBytes = totalBytes.replace("MB", "");
-      return new BigDecimal(Integer.parseInt(totalBytes) * 1024);
-    } else if (totalBytes.contains("KB")) {
-      totalBytes = totalBytes.replace("KB", "");
-      return new BigDecimal(Integer.parseInt(totalBytes));
-    } else {
-      throw new RuntimeException("流量单位处理错误  " + totalBytes);
-    }
-  }
 
 
 }
