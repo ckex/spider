@@ -37,10 +37,10 @@
        select date_format(CALL_DATE , '%Y-%m') as month,
             count(distinct CALL_NUMBER) as uniqNum ,
             count(distinct call_remote_address) as uniqCity ,
-            count( CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) as outCount ,
-            count( CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) as inCount ,
+            sum( CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) as outCount ,
+            sum( CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) as inCount ,
             sum( CASE CALL_TYPE WHEN '主叫' THEN CALL_DURATION ELSE 0 END) as outDuration ,
-            count( CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) as inDuration ,
+            sum( CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) as inDuration ,
             count(*) as totalCount ,
             sum(CALL_DURATION) as totalDuration
 	   from t_call_info
@@ -52,10 +52,10 @@
             resultType="com.mljr.operators.entity.vo.statistics.call.ByAddressVO">
          select call_remote_address as city,
             count(distinct CALL_NUMBER) as uniqNum ,
-            count( CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) as outCount ,
-            count( CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) as inCount ,
+            sum( CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) as outCount ,
+            sum( CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) as inCount ,
             sum( CASE CALL_TYPE WHEN '主叫' THEN CALL_DURATION ELSE 0 END) as outDuration ,
-            count( CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) as inDuration ,
+            sum( CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) as inDuration ,
             count(*) as totalCount ,
             sum(CALL_DURATION) as totalDuration
 	   from t_call_info
