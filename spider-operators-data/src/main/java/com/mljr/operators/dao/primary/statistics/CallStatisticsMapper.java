@@ -8,8 +8,6 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-import com.mljr.operators.entity.vo.statistics.CallStatisticsVO;
-
 
 /**
  * Created by songchi on 17/3/13.
@@ -17,14 +15,24 @@ import com.mljr.operators.entity.vo.statistics.CallStatisticsVO;
 public interface CallStatisticsMapper {
 
   /**
-   * 根据联系人电话统计
+   * 根据联系人电话统计(联通)
    *
    * @param userInfoId
    * @param nowDate 当前时间
    * @return
    */
-  List<CallNumberStatisticsVO> getStatisticsByNumber(@Param("userInfoId") long userInfoId,
-      @Param("nowDate") String nowDate);
+  List<CallNumberStatisticsVO> getChinaUnicomStatisticsByNumber(
+      @Param("userInfoId") long userInfoId, @Param("nowDate") String nowDate);
+
+  /**
+   * 根据联系人电话统计(移动)
+   *
+   * @param userInfoId
+   * @param nowDate 当前时间
+   * @return
+   */
+  List<CallNumberStatisticsVO> getChinaMobileStatisticsByNumber(
+      @Param("userInfoId") long userInfoId, @Param("nowDate") String nowDate);
 
 
   List<MaxMinDateVO> selectMaxMinDate(@Param("userInfoId") long userInfo);
@@ -33,6 +41,12 @@ public interface CallStatisticsMapper {
 
   List<ByAddressVO> selectByAddress(@Param("userInfoId") long userInfo);
 
-
+  /**
+   * 根据法定假日统计电话
+   *
+   * @param userInfoId userInfoId
+   * @return
+   */
+  List<CallNumberStatisticsVO> getStatisticsByHoliday(@Param("userInfoId") long userInfoId);
 
 }

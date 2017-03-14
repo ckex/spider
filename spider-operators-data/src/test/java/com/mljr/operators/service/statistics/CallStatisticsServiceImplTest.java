@@ -1,5 +1,6 @@
 package com.mljr.operators.service.statistics;
 
+import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.entity.vo.statistics.CallNumberStatisticsVO;
 import com.mljr.operators.service.BaseTest;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class CallStatisticsServiceImplTest extends BaseTest {
 
     @Test
     public void testGetStatisticsByNumber(){
-        List<CallNumberStatisticsVO> list = callStatisticsService.getStatisticsByNumber(10);
+        List<CallNumberStatisticsVO> list = callStatisticsService.getStatisticsByNumber(1, OperatorsEnum.CHINAMOBILE);
 
         System.out.println();
     }
