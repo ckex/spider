@@ -4,6 +4,7 @@
 
     <resultMap id="CallNumberResultMap" type="com.mljr.operators.entity.vo.statistics.CallNumberStatisticsVO">
         <result column="CALL_NUMBER" jdbcType="VARCHAR" property="callNumber"/>
+        <result column="CALL_NUMBER_ADDRESS" jdbcType="VARCHAR" property="callNumberAddress"/>
         <result column="TOTAL_HOUR" jdbcType="INTEGER" property="totalHour"/>
         <result column="TOTAL_COUNT" jdbcType="INTEGER" property="totalCount"/>
         <result column="CALLER_HOUR" jdbcType="INTEGER" property="callerHour"/>
@@ -19,8 +20,31 @@
         <result column="NINE_COUNT" jdbcType="INTEGER" property="nineCount"/>
         <result column="EIGHTEEN_COUNT" jdbcType="INTEGER" property="eighteenCount"/>
         <result column="LAST_THREE_MONTH_COUNT" jdbcType="INTEGER" property="lastThreeMonthCount"/>
+        <result column="WORKING_DAY_COUNT" jdbcType="INTEGER" property="workingDayCount"/>
+        <result column="WEEKEND_COUNT" jdbcType="INTEGER" property="weekendCount"/>
+        <result column="HOLIDAY_COUNT" jdbcType="INTEGER" property="holidayCount"/>
     </resultMap>
 
+    <sql id="statistics_column_by_number_sql">
+          COUNT(CALL_NUMBER) TOTAL_COUNT,SUM(CALL_DURATION) TOTAL_HOUR,
+          SUM(CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) CALLER_COUNT,SUM(CASE CALL_TYPE WHEN '主叫' THEN CALL_DURATION ELSE 0 END) CALLER_HOUR,
+          SUM(CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) CALLED_COUNT,SUM(CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) CALLED_HOUR,
+          SUM(CASE WHEN
+                  DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 7 DAY) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
+                THEN 1 ELSE 0 END) LAST_WEEK_COUNT,
+          SUM(CASE WHEN
+                  DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 1 MONTH) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
+                THEN 1 ELSE 0 END) LAST_ONE_MONTH_COUNT,
+          SUM(CASE WHEN
+                  DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 3 MONTH) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
+                THEN 1 ELSE 0 END) LAST_THREE_MONTH_COUNT,
+          COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 0 AND 5 THEN 1 END) ZERO_COUNT,
+          COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 6 AND 8 THEN 1 END) SIX_COUNT,
+          COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 9 AND 17 THEN 1 END) NINE_COUNT,
+          COUNT(CASE  WHEN HOUR(CALL_DATE) BETWEEN 18 AND 23 THEN 1 END) EIGHTEEN_COUNT,
+          SUM(CASE WHEN WEEKDAY(CALL_DATE) BETWEEN 0 AND 4 THEN 1 ELSE 0 END ) WORKING_DAY_COUNT,
+          SUM(CASE WHEN WEEKDAY(CALL_DATE) BETWEEN 5 AND 6 THEN 1 ELSE 0 END ) WEEKEND_COUNT
+    </sql>
 
     <select id="selectMaxMinDate" parameterType="java.lang.Long"
             resultType="com.mljr.operators.entity.vo.statistics.call.MaxMinDateVO">
@@ -63,25 +87,26 @@
 	   group by call_remote_address
     </select>
 
-    <select id="getStatisticsByNumber" resultMap="CallNumberResultMap">
-        SELECT CALL_NUMBER,
-          COUNT(CALL_NUMBER) TOTAL_COUNT,SUM(CALL_DURATION) TOTAL_HOUR,
-          SUM(CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) CALLER_COUNT,SUM(CASE CALL_TYPE WHEN '主叫' THEN CALL_DURATION ELSE 0 END) CALLER_HOUR,
-          SUM(CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) CALLED_COUNT,SUM(CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) CALLED_HOUR,
-          SUM(CASE WHEN
-                  DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 7 DAY) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
-                THEN 1 ELSE 0 END) LAST_WEEK_COUNT,
-          SUM(CASE WHEN
-                  DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 1 MONTH) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
-                THEN 1 ELSE 0 END) LAST_ONE_MONTH_COUNT,
-          SUM(CASE WHEN
-                  DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 3 MONTH) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
-                THEN 1 ELSE 0 END) LAST_THREE_MONTH_COUNT,
-          COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 0 AND 5 THEN 1 END) ZERO_COUNT,
-          COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 6 AND 8 THEN 1 END) SIX_COUNT,
-          COUNT(CASE WHEN HOUR(CALL_DATE) BETWEEN 9 AND 17 THEN 1 END) NINE_COUNT,
-          COUNT(CASE  WHEN HOUR(CALL_DATE) BETWEEN 18 AND 23 THEN 1 END) EIGHTEEN_COUNT
-        FROM t_call_info WHERE USER_INFO_ID = #{userInfoId} GROUP BY CALL_NUMBER;
+    <select id="getChinaUnicomStatisticsByNumber" resultMap="CallNumberResultMap">
+        SELECT CALL_NUMBER,<include refid="statistics_column_by_number_sql"/>, CALL_REMOTE_ADDRESS CALL_NUMBER_ADDRESS
+        FROM t_call_info WHERE USER_INFO_ID = #{userInfoId} GROUP BY CALL_NUMBER,CALL_REMOTE_ADDRESS
+    </select>
+
+    <select id="getChinaMobileStatisticsByNumber" resultMap="CallNumberResultMap">
+        SELECT A.* ,p.CITY CALL_NUMBER_ADDRESS FROM
+        (
+        SELECT CASE WHEN LEFT(CALL_NUMBER, 4) = '0086' THEN SUBSTR(CALL_NUMBER, 5) ELSE CALL_NUMBER END CALL_NUMBER,
+        <include refid="statistics_column_by_number_sql"/>
+        FROM t_call_info WHERE USER_INFO_ID = #{userInfoId} GROUP BY CASE WHEN LEFT(CALL_NUMBER, 4) = '0086' THEN SUBSTR(CALL_NUMBER, 5) ELSE CALL_NUMBER END
+        ) A LEFT JOIN phone_info p ON LEFT(A.CALL_NUMBER,7)=p.PHONE
+    </select>
+
+    <select id="getStatisticsByHoliday" resultMap="CallNumberResultMap">
+        SELECT
+        CASE WHEN LEFT(c.CALL_NUMBER, 4) = '0086' THEN SUBSTR(c.CALL_NUMBER, 5) ELSE c.CALL_NUMBER END CALL_NUMBER,
+        COUNT(c.ID) HOLIDAY_COUNT FROM t_call_info c,t_holiday_info h WHERE
+        c.USER_INFO_ID =#{userInfoId} AND DATE_FORMAT(c.CALL_DATE, '%Y-%m-%d') = h.START_DATE
+        GROUP BY c.CALL_NUMBER
     </select>
 
 

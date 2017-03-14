@@ -202,7 +202,7 @@ public class ApiController {
 
         map.put("call_by_address", callStatisticsService.selectByAddress(uid));
 
-        map.put("call_by_number", callStatisticsService.getStatisticsByNumber(uid));
+        map.put("call_by_number", callStatisticsService.getStatisticsByNumber(uid,OperatorsEnum.indexOf(u.getType())));
 
         map.put("sms_max_min_date", smsStatisticsService.getTimeBySmsType(uid, SmsTypeEnum.ALL));
 
