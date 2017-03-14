@@ -4,7 +4,7 @@ public class ByMonthVO {
     private int uniqNum;
     private int uniqCity;
 
-    private int totalDuraton;
+    private int totalDuration;
     private int totalCount;
 
     private int outDuration;
@@ -31,12 +31,12 @@ public class ByMonthVO {
         this.uniqCity = uniqCity;
     }
 
-    public int getTotalDuraton() {
-        return totalDuraton;
+    public int getTotalDuration() {
+        return totalDuration;
     }
 
-    public void setTotalDuraton(int totalDuraton) {
-        this.totalDuraton = totalDuraton;
+    public void setTotalDuration(int totalDuration) {
+        this.totalDuration = totalDuration;
     }
 
     public int getTotalCount() {
@@ -92,7 +92,7 @@ public class ByMonthVO {
         return "ByMonthVO{" +
                 "uniqNum=" + uniqNum +
                 ", uniqCity=" + uniqCity +
-                ", totalDuraton=" + totalDuraton +
+                ", totalDuration=" + totalDuration +
                 ", totalCount=" + totalCount +
                 ", outDuration=" + outDuration +
                 ", inDuration=" + inDuration +

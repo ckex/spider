@@ -3,7 +3,7 @@ package com.mljr.operators.entity.vo.statistics.call;
 public class ByAddressVO {
     private int uniqNum;
 
-    private int totalDuraton;
+    private int totalDuration;
     private int totalCount;
 
     private int outDuration;
@@ -22,12 +22,12 @@ public class ByAddressVO {
         this.uniqNum = uniqNum;
     }
 
-    public int getTotalDuraton() {
-        return totalDuraton;
+    public int getTotalDuration() {
+        return totalDuration;
     }
 
-    public void setTotalDuraton(int totalDuraton) {
-        this.totalDuraton = totalDuraton;
+    public void setTotalDuration(int totalDuration) {
+        this.totalDuration = totalDuration;
     }
 
     public int getTotalCount() {
@@ -82,7 +82,7 @@ public class ByAddressVO {
     public String toString() {
         return "ByAddressVO{" +
                 "uniqNum=" + uniqNum +
-                ", totalDuraton=" + totalDuraton +
+                ", totalDuration=" + totalDuration +
                 ", totalCount=" + totalCount +
                 ", outDuration=" + outDuration +
                 ", inDuration=" + inDuration +
