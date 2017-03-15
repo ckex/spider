@@ -1,6 +1,7 @@
 package com.mljr.operators.service.api.impl;
 
 import com.mljr.operators.common.constant.MQConstant;
+import com.mljr.operators.common.constant.OperatorsUrlEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.common.utils.RabbitMQUtil;
 import com.mljr.operators.convert.RequestInfoConvert;
@@ -40,13 +41,16 @@ public class OperatorAdminApiServiceImpl implements IOperatorAdminApiService {
       if (null != list && list.size() > 0) {
         List<RequestInfo> requestInfoList = RequestInfoConvert.convert(list, RequestInfoEnum.INIT);
         requestInfoService.insertByBatch(requestInfoList);
-        List<RequestInfo> filterList = requestInfoList.stream()
-            .filter(requestInfo -> requestInfo.getId() != null).collect(Collectors.toList());
-        if (null != filterList && filterList.size() > 0) {
-          String routingKey = RabbitMQUtil.getRoutingKey(requestUrlDTO.getOperators());
-          if (null != routingKey) {
-            RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE, routingKey, filterList);
-          }
+        switch (requestUrlDTO.getOperators()) {
+          case CHINAUNICOM:
+            sendChinaUnicom(requestInfoList);
+            sendChinaUnicomFlow(requestInfoList);
+            break;
+          case CHINAMOBILE:
+            sendChinaMobile(requestInfoList);
+            break;
+          case CHINATELECOM:
+            break;
         }
       }
       return true;
@@ -56,5 +60,34 @@ public class OperatorAdminApiServiceImpl implements IOperatorAdminApiService {
     return false;
   }
 
+  private void sendChinaMobile(List<RequestInfo> list) {
+    List<RequestInfo> filterList = list.stream().filter(requestInfo -> null != requestInfo.getId())
+        .collect(Collectors.toList());
+    if (null != filterList && filterList.size() > 0) {
+      RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE,
+          MQConstant.OPERATOR_MQ_CHINAMOBILE_ROUTING_KEY, filterList);
+    }
+  }
 
+  private void sendChinaUnicom(List<RequestInfo> list) {
+    List<RequestInfo> filterList = list.stream()
+        .filter(requestInfo -> null != requestInfo.getId()
+            && OperatorsUrlEnum.CHINA_UNICOM_FLOW.getIndex() != requestInfo.getUrlType())
+        .collect(Collectors.toList());
+    if (null != filterList && filterList.size() > 0) {
+      RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE,
+          MQConstant.OPERATOR_MQ_CHINAUNICOM_ROUTING_KEY, filterList);
+    }
+  }
+
+  private void sendChinaUnicomFlow(List<RequestInfo> list) {
+    List<RequestInfo> filterList = list.stream()
+        .filter(requestInfo -> null != requestInfo.getId()
+            && OperatorsUrlEnum.CHINA_UNICOM_FLOW.getIndex() == requestInfo.getUrlType())
+        .collect(Collectors.toList());
+    if (null != filterList && filterList.size() > 0) {
+      RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE,
+          MQConstant.OPERATOR_MQ_CHINAUNICOM_FLOW_ROUTING_KEY, filterList);
+    }
+  }
 }
