@@ -15,15 +15,15 @@ public class CallNumberStatisticsVO implements Serializable {
 
   private String callNumberAddress;// 号码归属地
 
-  private int totalHour;// 总共呼叫时长
+  private int totalDuration;// 总共呼叫时长
 
   private int totalCount;// 总呼叫次数
 
-  private int callerHour;// 呼出时长
+  private int callerDuration;// 呼出时长
 
   private int callerCount;// 呼出次数
 
-  private int calledHour;// 呼入时长
+  private int calledDuration;// 呼入时长
 
   private int calledCount;// 呼入次数
 
@@ -65,12 +65,12 @@ public class CallNumberStatisticsVO implements Serializable {
     this.callNumberAddress = callNumberAddress;
   }
 
-  public int getTotalHour() {
-    return totalHour;
+  public int getTotalDuration() {
+    return totalDuration;
   }
 
-  public void setTotalHour(int totalHour) {
-    this.totalHour = totalHour;
+  public void setTotalDuration(int totalDuration) {
+    this.totalDuration = totalDuration;
   }
 
   public int getTotalCount() {
@@ -81,12 +81,12 @@ public class CallNumberStatisticsVO implements Serializable {
     this.totalCount = totalCount;
   }
 
-  public int getCallerHour() {
-    return callerHour;
+  public int getCallerDuration() {
+    return callerDuration;
   }
 
-  public void setCallerHour(int callerHour) {
-    this.callerHour = callerHour;
+  public void setCallerDuration(int callerDuration) {
+    this.callerDuration = callerDuration;
   }
 
   public int getCallerCount() {
@@ -97,12 +97,12 @@ public class CallNumberStatisticsVO implements Serializable {
     this.callerCount = callerCount;
   }
 
-  public int getCalledHour() {
-    return calledHour;
+  public int getCalledDuration() {
+    return calledDuration;
   }
 
-  public void setCalledHour(int calledHour) {
-    this.calledHour = calledHour;
+  public void setCalledDuration(int calledDuration) {
+    this.calledDuration = calledDuration;
   }
 
   public int getCalledCount() {

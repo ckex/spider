@@ -5,11 +5,11 @@
     <resultMap id="CallNumberResultMap" type="com.mljr.operators.entity.vo.statistics.CallNumberStatisticsVO">
         <result column="CALL_NUMBER" jdbcType="VARCHAR" property="callNumber"/>
         <result column="CALL_NUMBER_ADDRESS" jdbcType="VARCHAR" property="callNumberAddress"/>
-        <result column="TOTAL_HOUR" jdbcType="INTEGER" property="totalHour"/>
+        <result column="TOTAL_DURATION" jdbcType="INTEGER" property="totalDuration"/>
         <result column="TOTAL_COUNT" jdbcType="INTEGER" property="totalCount"/>
-        <result column="CALLER_HOUR" jdbcType="INTEGER" property="callerHour"/>
+        <result column="CALLER_DURATION" jdbcType="INTEGER" property="callerDuration"/>
         <result column="CALLER_COUNT" jdbcType="INTEGER" property="callerCount"/>
-        <result column="CALLED_HOUR" jdbcType="INTEGER" property="calledHour"/>
+        <result column="CALLED_DURATION" jdbcType="INTEGER" property="calledDuration"/>
         <result column="CALLED_COUNT" jdbcType="INTEGER" property="calledCount"/>
         <result column="LAST_WEEK_COUNT" jdbcType="INTEGER" property="lastWeekCount"/>
         <result column="LAST_ONE_MONTH_COUNT" jdbcType="INTEGER" property="lastOneMonthCount"/>
@@ -26,9 +26,9 @@
     </resultMap>
 
     <sql id="statistics_column_by_number_sql">
-          COUNT(CALL_NUMBER) TOTAL_COUNT,SUM(CALL_DURATION) TOTAL_HOUR,
-          SUM(CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) CALLER_COUNT,SUM(CASE CALL_TYPE WHEN '主叫' THEN CALL_DURATION ELSE 0 END) CALLER_HOUR,
-          SUM(CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) CALLED_COUNT,SUM(CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) CALLED_HOUR,
+          COUNT(CALL_NUMBER) TOTAL_COUNT,SUM(CALL_DURATION) TOTAL_DURATION,
+          SUM(CASE CALL_TYPE WHEN '主叫' THEN 1 ELSE 0 END) CALLER_COUNT,SUM(CASE CALL_TYPE WHEN '主叫' THEN CALL_DURATION ELSE 0 END) CALLER_DURATION,
+          SUM(CASE CALL_TYPE WHEN '被叫' THEN 1 ELSE 0 END) CALLED_COUNT,SUM(CASE CALL_TYPE WHEN '被叫' THEN CALL_DURATION ELSE 0 END) CALLED_DURATION,
           SUM(CASE WHEN
                   DATE_ADD(DATE_FORMAT(CALL_DATE, '%Y-%m-%d'),INTERVAL 7 DAY) &gt;= STR_TO_DATE(#{nowDate}, '%Y-%m-%d')
                 THEN 1 ELSE 0 END) LAST_WEEK_COUNT,
