@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mljr.operators.dao.primary.operators.PhoneInfoMapper">
+  <resultMap id="BaseResultMap" type="com.mljr.operators.entity.model.operators.PhoneInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode" />
+    <result column="CARD" jdbcType="VARCHAR" property="card" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="COMPANY" jdbcType="VARCHAR" property="company" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="ZIP" jdbcType="VARCHAR" property="zip" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, PHONE, AREA_CODE, CARD, CITY, COMPANY, PROVINCE, ZIP
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from phone_info
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from phone_info
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mljr.operators.entity.model.operators.PhoneInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into phone_info (PHONE, AREA_CODE, CARD, 
+      CITY, COMPANY, PROVINCE, 
+      ZIP)
+    values (#{phone,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{card,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{zip,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mljr.operators.entity.model.operators.PhoneInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into phone_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="phone != null">
+        PHONE,
+      </if>
+      <if test="areaCode != null">
+        AREA_CODE,
+      </if>
+      <if test="card != null">
+        CARD,
+      </if>
+      <if test="city != null">
+        CITY,
+      </if>
+      <if test="company != null">
+        COMPANY,
+      </if>
+      <if test="province != null">
+        PROVINCE,
+      </if>
+      <if test="zip != null">
+        ZIP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="card != null">
+        #{card,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null">
+        #{zip,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mljr.operators.entity.model.operators.PhoneInfo">
+    update phone_info
+    <set>
+      <if test="phone != null">
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="card != null">
+        CARD = #{card,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        CITY = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        COMPANY = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        PROVINCE = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null">
+        ZIP = #{zip,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mljr.operators.entity.model.operators.PhoneInfo">
+    update phone_info
+    set PHONE = #{phone,jdbcType=VARCHAR},
+      AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+      CARD = #{card,jdbcType=VARCHAR},
+      CITY = #{city,jdbcType=VARCHAR},
+      COMPANY = #{company,jdbcType=VARCHAR},
+      PROVINCE = #{province,jdbcType=VARCHAR},
+      ZIP = #{zip,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

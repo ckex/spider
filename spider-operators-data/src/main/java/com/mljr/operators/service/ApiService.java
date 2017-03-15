@@ -6,7 +6,7 @@ import com.mljr.common.ServiceConfig;
 import com.mljr.operators.common.constant.ErrorCodeEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.entity.ApiData;
-import com.mljr.operators.entity.PhoneInfo;
+import com.mljr.operators.entity.vo.PhoneInfoVO;
 import com.mljr.operators.entity.model.operators.*;
 import com.mljr.operators.service.primary.operators.*;
 import com.mljr.redis.RedisClient;
@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -130,7 +128,7 @@ public class ApiService {
         return redisClient.use(jedis -> jedis.hget(COOKIES_KEY, cellphone));
     }
 
-    public PhoneInfo getPhoneInfo(String cellphone) {
+    public PhoneInfoVO getPhoneInfo(String cellphone) {
 
         String urlPattern = "http://apis.juhe.cn/mobile/get?phone=%s&dtype=json&key=f36726f33204fd46ed1c380826eab4e2";
         String ret = null;
@@ -140,7 +138,7 @@ public class ApiService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return gson.fromJson(ret, PhoneInfo.class);
+        return gson.fromJson(ret, PhoneInfoVO.class);
     }
 
     public ApiData getData(String token) {

@@ -9,7 +9,7 @@ import com.mljr.operators.common.utils.IdcardValidator;
 import com.mljr.operators.common.utils.RegexUtils;
 import com.mljr.operators.entity.ApiResponse;
 import com.mljr.operators.entity.BaseResponse;
-import com.mljr.operators.entity.PhoneInfo;
+import com.mljr.operators.entity.vo.PhoneInfoVO;
 import com.mljr.operators.entity.dto.chinaunicom.LoginDTO;
 import com.mljr.operators.entity.dto.operator.RequestUrlDTO;
 import com.mljr.operators.entity.model.operators.OperatorFeatures;
@@ -86,7 +86,7 @@ public class ApiController {
             return new ApiResponse(ErrorCodeEnum.IDCARD_ERR, false);
         }
         String token = DigestUtils.md5Hex(cellphone + idcard + "mljr");
-        PhoneInfo phoneInfo = apiService.getPhoneInfo(cellphone);
+        PhoneInfoVO phoneInfo = apiService.getPhoneInfo(cellphone);
         UserInfo info = new UserInfo();
         info.setMobile(cellphone);
         info.setIdcard(idcard);
