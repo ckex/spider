@@ -8,6 +8,7 @@ import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.ChinaMobileParseService;
 import com.mljr.operators.service.ChinaMobileService;
 import com.mljr.operators.service.primary.operators.ICallInfoService;
+import com.mljr.operators.service.primary.operators.IPhoneInfoService;
 import com.mljr.operators.service.primary.operators.IRequestInfoService;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ public class CurrCallInfoTask implements Runnable {
 
   public RequestInfo requestInfo;
 
+  public IPhoneInfoService phoneInfoService;
+
 
   public void setParams(Long userInfoId, String cookies, RequestInfo requestInfo,
       ApplicationContext context) {
@@ -45,6 +48,7 @@ public class CurrCallInfoTask implements Runnable {
     this.chinaMobileService = context.getBean(ChinaMobileService.class);
     this.callInfoService = context.getBean(ICallInfoService.class);
     this.requestInfoService = context.getBean(IRequestInfoService.class);
+    this.phoneInfoService = context.getBean(IPhoneInfoService.class);
   }
 
   @Override
@@ -71,7 +75,7 @@ public class CurrCallInfoTask implements Runnable {
 
   void writeToDb(String data, DatePair pair) throws Exception {
 
-    callInfoService.insertByBatch(userInfoId, ChinaMobileParseService.parseCallInfo(data,pair,userInfoId));
+    callInfoService.insertByBatch(userInfoId, ChinaMobileParseService.parseCallInfo(phoneInfoService,data,pair,userInfoId));
   }
 
 }

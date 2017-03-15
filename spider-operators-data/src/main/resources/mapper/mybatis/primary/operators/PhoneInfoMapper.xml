@@ -125,4 +125,12 @@
       ZIP = #{zip,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectByPhone" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from phone_info
+    where PHONE = #{phone}
+  </select>
+
 </mapper>
