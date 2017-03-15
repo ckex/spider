@@ -225,4 +225,11 @@
     </foreach>
   </insert>
 
+  <select id="selectByUid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_call_info
+    where USER_INFO_ID = #{userInfoId,jdbcType=BIGINT}
+  </select>
+
 </mapper>
