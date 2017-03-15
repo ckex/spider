@@ -292,7 +292,8 @@ public class ChinaUnicomConvert {
     if (StringUtils.isBlank(timeStr)) {
       return 0;
     }
-    Date date = DateUtil.stringToDate(timeStr, new String[] {"mm分ss秒", "ss秒", "hh时mm分ss秒"});
+    Date date =
+        DateUtil.stringToDate(timeStr, new String[] {"mm分ss秒", "ss秒", "hh时mm分ss秒", "hh小时mm分ss秒"});
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(date);
     return calendar.get(Calendar.SECOND) + calendar.get(Calendar.MINUTE) * 60
