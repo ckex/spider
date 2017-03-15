@@ -1,9 +1,9 @@
-package com.mljr.operators.entity;
+package com.mljr.operators.entity.vo;
 
 /**
  * Created by songchi on 17/3/1.
  */
-public class PhoneInfo {
+public class PhoneInfoVO {
 
     /**
      * resultcode : 200
