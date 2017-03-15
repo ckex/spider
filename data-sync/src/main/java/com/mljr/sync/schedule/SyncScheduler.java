@@ -58,6 +58,9 @@ public class SyncScheduler {
   @Autowired
   private AbstractTask tencentCarNetworkFlagTask;
 
+  @Autowired
+  private AbstractTask auto163CarNetFlagTask;
+
   @Scheduled(cron = "0/2 * * * * ?")
   private void startMobileTask() {
     mobileTask.run();
@@ -138,5 +141,13 @@ public class SyncScheduler {
     tencentCarNetworkFlagTask.run();
     logger.debug(tencentCarNetworkFlagTask.toString());
   }
+
+  //网易汽车
+  @Scheduled(cron = "0 0 0 1/7 * ?")
+  private void startAuto163CarNetFlagTask() {
+    auto163CarNetFlagTask.run();
+    logger.debug(auto163CarNetFlagTask.toString());
+  }
+
 
 }

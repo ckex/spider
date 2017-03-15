@@ -88,6 +88,8 @@ public abstract class AbstractMessage {
   protected static final String TENCENT_FALG_QUEUE_ID="autoqq_flag";
 
   protected static final String AUTOHOME_FALG_QUEUE_ID = "autohome_flag";
+  //网易汽车
+  protected static final String AUTOCAR_FLAG_QUEUE_ID = "auto163_flag";
 
   // Downloader error listener
   protected static final String SAIGE_GPS_LISTENER_LOG_NAME = "saige-gps-downloader";

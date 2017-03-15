@@ -24,7 +24,7 @@ public class TencentCarNetworkProcessorTest {
             .setDownloader(new HttpClientDownloader())
             .addPipeline(new ConsolePipeline()).addPipeline(new CarHomeNetInfoPipeline());
     //spider.addUrl("http://js.data.auto.qq.com/car_public/1/manufacturer_list_json.js?_=1488525597592");
-    spider.addUrl("http://data.auto.qq.com/car_serial/509/modelscompare.shtml");
+    spider.addUrl("http://baojia.auto.qq.com/php/baojia_center.php?brandid=195");
     spider.thread(10);
     spider.run();
   }

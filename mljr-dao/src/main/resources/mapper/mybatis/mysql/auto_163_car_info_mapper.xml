@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Mapper.auto_163_car_info">
+	<resultMap id="CarHomeBodyInfoResult" type="com.mljr.spider.model.CarBodyInfoDo">
+		<!-- 这里的字段是model成属性对应都到数据中的字段 -->
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="unique_car_brand" jdbcType="VARCHAR" property="uniqueCarBrand" />
+		<result column="vehicle_brand" jdbcType="VARCHAR" property="vehicleBrand" />
+		<result column="vehicle_model_year" jdbcType="VARCHAR"
+			property="vehicleModelYear" />
+		<result column="vehicle_category" jdbcType="VARCHAR" property="vehicleCategory" />
+		<result column="vehicle_factory" jdbcType="VARCHAR" property="vehicleFactory" />
+		<result column="origin_country" jdbcType="VARCHAR" property="originCountry" />
+		<result column="vehicle_model" jdbcType="VARCHAR" property="vehicleModel" />
+		<result column="displacement" jdbcType="VARCHAR" property="displacement" />
+		<result column="official_displacement" jdbcType="VARCHAR" property="officialDisplacement" />
+		<result column="environmental_standard" jdbcType="VARCHAR"
+			property="environmentalStandard" />
+		<result column="fuel_type" jdbcType="VARCHAR" property="fuelType" />
+		<result column="engine_model" jdbcType="VARCHAR" property="engineModel" />
+		<result column="engine_horse_power" jdbcType="VARCHAR"
+			property="engineHorsePower" />
+		<result column="drive_model" jdbcType="VARCHAR" property="driveModel" />
+		<result column="gearbox" jdbcType="VARCHAR" property="gearbox" />
+		<result column="seat_number" jdbcType="VARCHAR" property="seatNumber" />
+		<result column="configure" jdbcType="VARCHAR" property="configure" />
+		<result column="exterior_color" jdbcType="VARCHAR" property="exteriorColor" />
+		<result column="official_guide_price" jdbcType="VARCHAR"
+			property="officialGuidePrice" />
+		<result column="announcement_type" jdbcType="VARCHAR" property="announcementType" />
+		<result column="whole_curb_weight" jdbcType="VARCHAR" property="wholeCurbWeight" />
+		<result column="wheel_base" jdbcType="VARCHAR" property="wheelBase" />
+		<result column="car_body_length" jdbcType="VARCHAR" property="carBodyLength" />
+		<result column="car_body_width" jdbcType="VARCHAR" property="carBodyWidth" />
+		<result column="car_body_height" jdbcType="VARCHAR" property="carBodyHeight" />
+		<result column="carriage_length" jdbcType="VARCHAR" property="carriageLength" />
+		<result column="carriage_width" jdbcType="VARCHAR" property="carriageWidth" />
+		<result column="carriage_height" jdbcType="VARCHAR" property="carriageHeight" />
+		<result column="seat_arrangement" jdbcType="VARCHAR" property="seatArrangement" />
+		<result column="tonnage_level" jdbcType="VARCHAR" property="tonnageLevel" />
+		<result column="vehicle_body_structure" jdbcType="VARCHAR"
+			property="vehicleBodyStructure" />
+		<result column="sunroof" jdbcType="VARCHAR" property="sunroof" />
+		<result column="open_sunroof" jdbcType="VARCHAR" property="openSunRoof" />
+		<result column="electric_adjust_seat" jdbcType="VARCHAR"
+			property="electricAdjustSeat" />
+		<result column="leather_seat" jdbcType="VARCHAR" property="leatherSeat" />
+		<result column="car_body_stedy_control" jdbcType="VARCHAR"
+			property="carBodyStedyControl" />
+		<result column="headlamp_type" jdbcType="VARCHAR" property="headlampType" />
+		<result column="navigation_system" jdbcType="VARCHAR" property="navigationSystem" />
+		<result column="cruise_control" jdbcType="VARCHAR" property="cruiseControl" />
+		<result column="front_radar" jdbcType="VARCHAR" property="frontRadar" />
+		<result column="back_radar" jdbcType="VARCHAR" property="backRadar" />
+		<result column="automatic_air_conditioner" jdbcType="VARCHAR"
+			property="automaticAirConditioner" />
+		<result column="multifunction_steer_wheel" jdbcType="VARCHAR"
+			property="multifunctionSteerWheel" />
+		<result column="source_come" jdbcType="VARCHAR"
+				property="sourceCome" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	<insert id="createAuto" parameterType="com.mljr.spider.model.CarBodyInfoDo">
+		insert into car_bitauto_info (unique_car_brand,vehicle_brand, vehicle_model_year, vehicle_category,
+		vehicle_factory,vehicle_model ,origin_country, displacement,official_displacement,
+		environmental_standard, fuel_type, engine_model,
+		engine_horse_power, drive_model, gearbox,
+		seat_number, configure, exterior_color,
+		official_guide_price, announcement_type, whole_curb_weight,
+		wheel_base, car_body_length, car_body_width,
+		car_body_height, carriage_length, carriage_width,
+		carriage_height, seat_arrangement, tonnage_level,
+		vehicle_body_structure, sunroof,open_sunroof, electric_adjust_seat,
+		leather_seat, car_body_stedy_control, headlamp_type,
+		navigation_system, cruise_control, front_radar,back_radar,
+		automatic_air_conditioner, multifunction_steer_wheel,source_come,
+		create_time, update_time)
+		values (#{uniqueCarBrand,jdbcType=VARCHAR},#{vehicleBrand,jdbcType=VARCHAR},
+		#{vehicleModelYear,jdbcType=VARCHAR},
+		#{vehicleCategory,jdbcType=VARCHAR},
+		#{vehicleFactory,jdbcType=VARCHAR},
+		#{vehicleModel,jdbcType=VARCHAR},
+		 #{originCountry,jdbcType=VARCHAR},
+		 #{displacement,jdbcType=VARCHAR},
+		 #{officialDisplacement,jdbcType=VARCHAR},
+		#{environmentalStandard,jdbcType=VARCHAR},
+		#{fuelType,jdbcType=VARCHAR}, #{engineModel,jdbcType=VARCHAR},
+		#{engineHorsePower,jdbcType=VARCHAR}, #{driveModel,jdbcType=VARCHAR},
+		#{gearbox,jdbcType=VARCHAR},
+		#{seatNumber,jdbcType=VARCHAR}, #{configure,jdbcType=VARCHAR}, #{exteriorColor,jdbcType=VARCHAR},
+		#{officialGuidePrice,jdbcType=VARCHAR},
+		#{announcementType,jdbcType=VARCHAR},
+		#{wholeCurbWeight,jdbcType=VARCHAR},
+		#{wheelBase,jdbcType=VARCHAR}, #{carBodyLength,jdbcType=VARCHAR}, #{carBodyWidth,jdbcType=VARCHAR},
+		#{carBodyHeight,jdbcType=VARCHAR}, #{carriageLength,jdbcType=VARCHAR},
+		#{carriageWidth,jdbcType=VARCHAR},
+		#{carriageHeight,jdbcType=VARCHAR}, #{seatArrangement,jdbcType=VARCHAR},
+		#{tonnageLevel,jdbcType=VARCHAR},
+		#{vehicleBodyStructure,jdbcType=VARCHAR}, #{sunroof,jdbcType=VARCHAR},
+		#{openSunRoof,jdbcType=VARCHAR},
+		#{electricAdjustSeat,jdbcType=VARCHAR},
+		#{leatherSeat,jdbcType=VARCHAR},
+		#{carBodyStedyControl,jdbcType=VARCHAR},
+		#{headlampType,jdbcType=VARCHAR},
+		#{navigationSystem,jdbcType=VARCHAR},
+		#{cruiseControl,jdbcType=VARCHAR},
+		#{frontRadar,jdbcType=VARCHAR},
+		#{backRadar,jdbcType=VARCHAR},
+		#{automaticAirConditioner,jdbcType=VARCHAR},
+		#{multifunctionSteerWheel,jdbcType=VARCHAR},
+		#{sourceCome,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	<select id="listByPageCount" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select count(*) from car_bitauto_info
+	</select>
+	<select id="listByAutoPage" resultMap="CarHomeBodyInfoResult"
+		parameterType="java.util.HashMap">
+		SELECT * FROM car_bitauto_info WHERE 1 ORDER BY id
+		LIMIT #{startIndex},#{pageSize}
+	</select>
+	<select id="listByName" parameterType="java.util.HashMap"  resultMap="CarHomeBodyInfoResult" >
+		 SELECT  * from car_bitauto_info
+		 where  unique_car_brand=#{car_name}
+	</select>
+	<update id="updateAuto" parameterType="com.mljr.spider.model.CarBodyInfoDo">
+		update car_bitauto_info
+		<set>
+			<if test="officialGuidePrice != null">`official_guide_price` = #{officialGuidePrice},</if>
+			<if test="originCountry != null">`origin_country` = #{originCountry},</if>
+			<if test="displacement != null">`displacement` = #{displacement},</if>
+			<if test="officialDisplacement != null">`official_displacement` = #{officialDisplacement},</if>
+			<if test="environmentalStandard != null">`environmental_standard` = #{environmentalStandard},</if>
+			<if test="fuelType != null">`fuel_type` = #{fuelType},</if>
+			<if test="vehicleModel != null">`vehicle_model` = #{vehicleModel},</if>
+			<if test="engineModel != null">`engine_model` = #{engineModel},</if>
+			<if test="engineHorsePower != null">`engine_horse_power` = #{engineHorsePower},</if>
+			<if test="driveModel != null">`drive_model` = #{driveModel},</if>
+			<if test="gearbox != null">`gearbox` = #{gearbox},</if>
+			<if test="seatNumber != null">`seat_number` = #{seatNumber},</if>
+			<if test="configure != null">`configure` = #{configure},</if>
+			<if test="driveModel != null">`drive_model` = #{driveModel},</if>
+			<if test="exteriorColor != null">`exterior_color` = #{exteriorColor},</if>
+			<if test="announcementType != null">`announcement_type` = #{announcementType},</if>
+			<if test="wholeCurbWeight != null">`whole_curb_weight` = #{wholeCurbWeight},</if>
+			<if test="carBodyLength != null">`car_body_length` = #{carBodyLength},</if>
+			<if test="carBodyWidth != null">`car_body_width` = #{carBodyWidth},</if>
+			<if test="carBodyHeight != null">`car_body_height` = #{carBodyHeight},</if>
+			<if test="carriageLength != null">`carriage_length` = #{carriageLength},</if>
+			<if test="carriageWidth != null">`carriage_width` = #{carriageWidth},</if>
+			<if test="carriageHeight != null">`carriage_height` = #{carriageHeight},</if>
+			<if test="seatArrangement != null">`seat_arrangement` = #{seatArrangement},</if>
+			<if test="tonnageLevel != null">`tonnage_level` = #{tonnageLevel},</if>
+			<if test="openSunRoof != null">`open_sunroof` = #{openSunRoof},</if>
+			<if test="sunroof != null">`sunroof` = #{sunroof},</if>
+			<if test="electricAdjustSeat != null">`electric_adjust_seat` = #{electricAdjustSeat},</if>
+			<if test="leatherSeat != null">`leather_seat` = #{leatherSeat},</if>
+			<if test="carBodyStedyControl != null">`car_body_stedy_control` = #{carBodyStedyControl},</if>
+			<if test="headlampType != null">`headlamp_type` = #{headlampType},</if>
+			<if test="navigationSystem != null">`navigation_system` = #{navigationSystem},</if>
+			<if test="cruiseControl != null">`cruise_control` = #{cruiseControl},</if>
+			<if test="frontRadar != null">`front_radar` = #{frontRadar},</if>
+			<if test="backRadar != null">`back_radar` = #{backRadar},</if>
+			<if test="automaticAirConditioner != null">`automatic_air_conditioner` = #{automaticAirConditioner},</if>
+			<if test="multifunctionSteerWheel != null">`multifunction_steer_wheel` = #{multifunctionSteerWheel},</if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+
+
+		</set>
+		WHERE unique_car_brand = #{uniqueCarBrand}
+	</update>
+
+
+</mapper>

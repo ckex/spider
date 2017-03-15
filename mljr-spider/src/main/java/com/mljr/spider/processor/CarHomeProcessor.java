@@ -1,5 +1,6 @@
 package com.mljr.spider.processor;
 
+import com.google.common.base.Stopwatch;
 import org.apache.commons.lang.StringUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +35,7 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
 
     @Override
     boolean onProcess(Page page) {
+        Stopwatch watch = Stopwatch.createStarted();
         String sourceUrl = page.getUrl().get();
         //获取对应的数据存入到队列中去
         Html html = page.getHtml();
@@ -578,6 +581,8 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
         }else{
             page.setSkip(true);
         }
+        watch.stop();
+        logger.info("页面解析时间"+page.getUrl().toString()+"耗时为："+watch.elapsed(TimeUnit.MILLISECONDS) );
         return true;
     }
 
