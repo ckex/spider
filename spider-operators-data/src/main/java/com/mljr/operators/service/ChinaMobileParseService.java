@@ -8,6 +8,7 @@ import com.mljr.operators.entity.model.operators.BillInfo;
 import com.mljr.operators.entity.model.operators.CallInfo;
 import com.mljr.operators.entity.model.operators.FlowInfo;
 import com.mljr.operators.entity.model.operators.SMSInfo;
+import com.mljr.operators.service.primary.operators.IPhoneInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import us.codecraft.webmagic.selector.Html;
@@ -21,12 +22,13 @@ public class ChinaMobileParseService {
 
     public static Gson gson = new Gson();
 
-    public static List<CallInfo> parseCallInfo(String data, DatePair pair, Long userInfoId) throws Exception {
+    public static List<CallInfo> parseCallInfo(IPhoneInfoService phoneInfoService,
+                                               String data, DatePair pair, Long userInfoId) throws Exception {
         String callInfoStr = data.substring(data.indexOf("[["), data.lastIndexOf("]]") + 2);
         List<List<String>> list =
                 new Gson().fromJson(callInfoStr, new TypeToken<List<List<String>>>() {
                 }.getType());
-        List<CallInfo> siList = Lists.newArrayList();
+        List<CallInfo> ciList = Lists.newArrayList();
         for (List<String> subList : list) {
 
             String year = pair.getStartDate().substring(0, 4);
@@ -57,11 +59,11 @@ public class ChinaMobileParseService {
             ci.setDiscountPackage(discountPackage);
             ci.setCallFee(new BigDecimal(fee));
             ci.setFirstCall(firstCall);
-
-            siList.add(ci);
+            ci.setCallRemoteAddress(phoneInfoService.selectByPhone(callNumber));
+            ciList.add(ci);
         }
 
-        return siList;
+        return ciList;
     }
 
     public static List<FlowInfo> parseFlowInfo(String data, DatePair pair, Long userInfoId) throws Exception {
