@@ -222,7 +222,7 @@ public class ApiService {
             bean.setCell_phone(cellPhone);
             bean.setInit_type(info.getCallType());
             bean.setCall_type(info.getLandType());
-            bean.setUse_time(CommonService.toSecond(info.getCallLongHour()));
+            bean.setUse_time(info.getCallDuration().intValue());
             retList.add(bean);
         }
         return retList;
