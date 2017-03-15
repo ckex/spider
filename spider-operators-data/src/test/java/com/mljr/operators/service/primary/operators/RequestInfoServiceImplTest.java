@@ -1,10 +1,12 @@
 package com.mljr.operators.service.primary.operators;
 
 import com.google.common.collect.Lists;
+import com.mljr.operators.common.constant.MQConstant;
 import com.mljr.operators.common.constant.OperatorsEnum;
 import com.mljr.operators.common.constant.ProvinceEnum;
 import com.mljr.operators.common.constant.RequestInfoEnum;
 import com.mljr.operators.common.utils.DateUtil;
+import com.mljr.operators.common.utils.RabbitMQUtil;
 import com.mljr.operators.entity.model.operators.RequestInfo;
 import com.mljr.operators.service.BaseTest;
 import org.junit.Test;
@@ -80,7 +82,18 @@ public class RequestInfoServiceImplTest extends BaseTest {
   @Test
   public void testPerRequestDate() {
     Date date = requestInfoService.getPerRequestDate("18521705532", "429*************34");
-    LocalDate localDate=DateUtil.dateToLocalDate(date);
+    LocalDate localDate = DateUtil.dateToLocalDate(date);
+    System.out.println();
+  }
+
+  @Test
+  public void testSendMessage() {
+    RequestInfo requestInfo = requestInfoService.getById(155L);
+    if (requestInfo != null) {
+      List<RequestInfo> list = Lists.newArrayList(requestInfo);
+      RabbitMQUtil.sendMessage(MQConstant.OPERATOR_MQ_EXCHANGE,
+          MQConstant.OPERATOR_MQ_CHINAUNICOM_ROUTING_KEY, list);
+    }
     System.out.println();
   }
 
