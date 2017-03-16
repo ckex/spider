@@ -1,6 +1,7 @@
 package com.mljr.spider.processor;
 
 import com.google.common.base.Joiner;
+import com.mljr.spider.storage.CarHomeNetInfoPipeline;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
@@ -33,7 +34,7 @@ public class TruckCarHomeProcessorTest {
         TruckCarHomeProcessor  truckCarHomeProcessor = new TruckCarHomeProcessor();
         Spider spider = Spider.create(truckCarHomeProcessor)
                 .setDownloader(new HttpClientDownloader())
-               .addPipeline(new ConsolePipeline());
+               .addPipeline(new ConsolePipeline()).addPipeline(new CarHomeNetInfoPipeline());
         spider.addUrl("http://product.360che.com/");
         spider.thread(1);
         spider.setExecutorService(DEFAULT_THREAD_POOL);

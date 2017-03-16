@@ -21,9 +21,9 @@ import java.util.regex.Pattern;
  */
 public class TencentCarNetworkProcessor  extends AbstractPageProcessor{
       //品牌地址格式
-      private  final static String START_BRAND_URL="http://js.data.auto.qq.com/car_manufacturer/%s/serial_list_json_baojia.js?_=1484291243255";
-      //获取详细的品牌下对应的车系
-      private final static  String BRAND_CATGORY_URL="http://baojia.auto.qq.com/php/baojia_detail.php?info=0&serialID=%s";
+      private  final static String START_BRAND_URL="http://baojia.auto.qq.com/php/baojia_center.php?brandid=%s";
+      private final static String FIRST_URL_REGEX = "http://baojia\\.auto\\.qq\\.com/php/baojia_center.php\\?brandid=[0-9]{1,7}";
+      //获取分页的数据页面
       private static String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36";
       //最终详情页
       public final static String TARGET_URL_REGEX = "http://data\\.auto\\.qq\\.com/car_serial/[0-9]{1,6}/modelscompare\\.shtml";
@@ -60,29 +60,26 @@ public class TencentCarNetworkProcessor  extends AbstractPageProcessor{
             listMap.add(middleUrl);
           }
           page.addTargetRequests(listMap);
-        }else if(currentUrl.contains("serial_list_json_baojia")){
+        }else if(currentUrl.matches(FIRST_URL_REGEX )){
           page.setSkip(true);
-          //抓取品牌对应的所有车系
-          List<String> allList = Lists.newArrayList();
+         Html html = page.getHtml();
+         String pageUrl = page.getUrl().toString();
+          //抓取车辆的分页信息
+          String  pagePath = "body > div.wrapper.mt25 > div.right > div.serialList > div.page";
+          String pageNum = html.css(pagePath,"pageall").toString();
+          int pageNumber=Integer.parseInt(pageNum);
           List<String> listMap = Lists.newArrayList();
-          try {
-            String data = Jsoup.connect(currentUrl).ignoreContentType(true).get().text();
-            if(StringUtils.isNotBlank(data)){
-              if(data.contains("[")&&data.contains("]")){
-                data=data.substring(data.indexOf("["),data.indexOf("]")+1);
-              }
-              allList.addAll(getCodes(data));
-            }
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
           //获取品牌下面的所有车系
-          for (int i = 0; i <allList.size() ; i++) {
-            String middleUrl = String.format(BRAND_CATGORY_URL,allList.get(i));
-            listMap.add(middleUrl);
+          if(pageNumber>0){
+            for (int i = 0; i <pageNumber ; i++) {
+              String middleUrl =pageUrl+"&page="+i;
+              listMap.add(middleUrl);
+            }
+            page.addTargetRequests(listMap);
+          }else{
+            page.setSkip(true);
           }
-          page.addTargetRequests(listMap);
-        }else if(currentUrl.contains("baojia_detail") && currentUrl.contains("serialID")){
+        }else if(currentUrl.contains("brandid") && currentUrl.contains("page")){
           page.setSkip(true);
           //抓取详情页
           List<String> peizhiUrlone = page.getHtml().links().regex(TARGET_URL_REGEX).all();
@@ -105,7 +102,6 @@ public class TencentCarNetworkProcessor  extends AbstractPageProcessor{
 
       public  void processCarUrlone(Page page){
         String currentUrl = page.getUrl().get();
-        System.out.println("目标地址一："+currentUrl);
         //获取对应的数据存入到队列中去
         Html html = page.getHtml();
         //先获取表格的参数列表

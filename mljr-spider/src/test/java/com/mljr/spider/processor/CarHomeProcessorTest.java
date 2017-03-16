@@ -32,7 +32,7 @@ public class CarHomeProcessorTest {
             return new Thread(r, Joiner.on("-").join(name, count.incrementAndGet()));
         }
     }, new ThreadPoolExecutor.CallerRunsPolicy());
-     private static final String filePath = "D:\\clawpage\\carHome.txt";
+     private static final String filePath = "D:\\clawpage\\car.txt";
     public static void main(String[] args){
         //处理js渲染问题
         MljrPhantomJSDownloader phantomDownloader = new MljrPhantomJSDownloader().setRetryNum(1);
@@ -43,10 +43,11 @@ public class CarHomeProcessorTest {
             Spider spider = Spider.create(carHomeProcessor)
                     .setDownloader(phantomDownloader)
                   .addPipeline(new CarHomeNetInfoPipeline()).addPipeline(new ConsolePipeline());
-           for (String url : urls) {
+       /*    for (String url : urls) {
                 spider.addUrl(url);
-            }
-          // spider.addUrl("http://car.autohome.com.cn/config/series/692-7991.html");
+            }*/
+          spider.addUrl("http://car.autohome.com.cn/config/series/692.html");
+           // spider.addUrl("http://car.autohome.com.cn/config/series/692.html");
             spider.thread(1);
 
             spider.setExecutorService(DEFAULT_THREAD_POOL);

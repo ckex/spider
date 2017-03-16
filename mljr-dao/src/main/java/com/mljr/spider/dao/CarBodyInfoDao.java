@@ -17,4 +17,22 @@ public interface CarBodyInfoDao {
   CarBodyInfoDo  load(String carName);
 
   boolean update(CarBodyInfoDo record);
+
+  //腾讯汽车操作
+  CarBodyInfoDo createTencent(CarBodyInfoDo record);
+
+  PageList<CarBodyInfoDo> listByTencentPage(PageQuery pageQuery, Integer count);
+
+  CarBodyInfoDo  loadTencent(String carName);
+
+  boolean updateTencent(CarBodyInfoDo record);
+  //网易汽车操作
+  CarBodyInfoDo createAuto(CarBodyInfoDo record);
+
+  PageList<CarBodyInfoDo> listByAutoPage(PageQuery pageQuery, Integer count);
+
+  CarBodyInfoDo  loadAuto(String carName);
+
+  boolean updateAuto(CarBodyInfoDo record);
+
 }
