@@ -67,18 +67,10 @@ public class ApiService {
 
     public RequestInfoEnum checkState(UserInfo userInfo) {
         Set<Integer> stateSet = requestInfoService.checkState(userInfo.getMobile(), userInfo.getIdcard());
-        if (stateSet.contains(RequestInfoEnum.ERROR.getIndex())) {
-            return RequestInfoEnum.ERROR;
+        if (stateSet.contains(RequestInfoEnum.INIT.getIndex())) {
+            return RequestInfoEnum.INIT;
         }
-
-        if (stateSet.contains(RequestInfoEnum.RUNNING.getIndex())) {
-            return RequestInfoEnum.RUNNING;
-        }
-
-        if (stateSet.size() == 1 && stateSet.contains(RequestInfoEnum.SUCCESS.getIndex())) {
-            return RequestInfoEnum.SUCCESS;
-        }
-        return RequestInfoEnum.INIT;
+        return RequestInfoEnum.SUCCESS;
     }
 
 

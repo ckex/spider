@@ -194,6 +194,10 @@ public class ApiController {
         if (u == null) {
             return new BaseResponse(ErrorCodeEnum.USER_NOT_FOUND, false);
         }
+        RequestInfoEnum state = apiService.checkState(u);
+        if(RequestInfoEnum.INIT.equals(state)){
+            return new BaseResponse(ErrorCodeEnum.TASK_RUNNING, false);
+        }
         Long uid = u.getId();
         Map<String, Object> map = Maps.newHashMap();
         map.put("call_max_min_date", callStatisticsService.selectMaxMinDate(uid));

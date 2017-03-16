@@ -218,6 +218,7 @@
   <select id="checkState" resultType="java.lang.Integer">
     SELECT `status` FROM t_request_info WHERE MOBILE=#{mobile}
     AND IDCARD=#{idcard}
+    AND URL_TYPE!=10007
   </select>
 
   <update id="batchUpdateStatusById">
