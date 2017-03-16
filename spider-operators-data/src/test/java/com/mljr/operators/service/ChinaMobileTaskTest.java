@@ -5,15 +5,11 @@ import com.mljr.operators.dao.primary.operators.OperatorFeaturesMapper;
 import com.mljr.operators.dao.primary.operators.RequestInfoMapper;
 import com.mljr.operators.dao.primary.statistics.CallStatisticsMapper;
 import com.mljr.operators.entity.model.operators.OperatorFeatures;
-import com.mljr.operators.entity.vo.statistics.CallStatisticsVO;
-import com.mljr.operators.entity.vo.statistics.call.ByAddressVO;
 import com.mljr.operators.task.chinamobile.*;
-import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import java.util.List;
 import java.util.Set;
 
 /**

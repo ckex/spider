@@ -97,4 +97,9 @@ public class RequestInfoServiceImplTest extends BaseTest {
     System.out.println();
   }
 
+  @Test
+  public void testCheckState() throws Exception {
+    requestInfoService.checkState("15601662655","310226198702100190").forEach(System.out::println);
+
+  }
 }
