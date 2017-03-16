@@ -18,11 +18,12 @@ public class Auto163Processor extends AbstractPageProcessor {
     super(site);
   }
   private static String USER_AGENT ="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36";
+  //构造函数
   private static Site site = Site.me()
           .setDomain("auto.163.com")
           .setSleepTime(300)
           .setRetrySleepTime(2000)
-          .setTimeOut(60000)
+          .setTimeOut(90000)
           .setRetryTimes(3)
            .setUserAgent(USER_AGENT);
   public final static String START_URL = "http://product.auto.163.com/brand/";
@@ -68,12 +69,11 @@ public class Auto163Processor extends AbstractPageProcessor {
         set.add(url);
       }
       for(String url : set){
-        if (url.contains("config_compare")){
-          String urls= CharMatcher.whitespace().replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+        String urls= CharMatcher.whitespace().replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+        if (urls.contains("config_compare")){
           page.addTargetRequest(urls);
         }
-        if (url.matches(SELL_URL_REGEX)) {
-          String urls= CharMatcher.whitespace().replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+        if (urls.matches(SELL_URL_REGEX)) {
           page.addTargetRequest(urls);
         }
       }
@@ -93,7 +93,7 @@ public class Auto163Processor extends AbstractPageProcessor {
     if(currentUrl.contains("config1")){
       carNum = html.xpath("//div[@class='cell']//div//div[@class='action']//a[@class='btn_compare']//em").all().size();
     }else if(currentUrl.contains("config_compare")){
-      carNum = html.xpath("//div[@class='cell']//div//div[@class='action']//a[@class='btn_car_change']//em").all().size();
+      carNum = html.xpath("//div[@class='cell']//div[@class='item_car_info']//div[@class='action']//a[@class='btn_car_change']//em").all().size();
     }
     //用来存放一辆车的信息
     List<Map<String, String>> listmap = new ArrayList<Map<String, String>>();
@@ -391,20 +391,20 @@ public class Auto163Processor extends AbstractPageProcessor {
             String front_radar=radar.substring(num1+1,num1+2);
             int num2 = radar.indexOf("后");
             String back_radar=radar.substring(num2+1,num2+2);
-            if("●".equals(front_radar) && "●".equals(back_radar)){
+            if(sBlack.equals(front_radar) && sBlack.equals(back_radar)){
               map.put("front_radar","1");
               map.put("back_radar","1");
-            }else if("●".equals(front_radar) && !"●".equals(back_radar)){
+            }else if(sBlack.equals(front_radar) && !sBlack.equals(back_radar)){
               map.put("front_radar","1");
               map.put("back_radar","0");
-            }else if("●".equals(back_radar) && !"●".equals(front_radar)){
+            }else if(sBlack.equals(back_radar) && !sBlack.equals(front_radar)){
               map.put("front_radar","0");
               map.put("back_radar","1");
             }else{
               map.put("front_radar","0");
               map.put("back_radar","0");
             }
-          }else if(radar.contains("--")||radar == null){
+          }else if(radar.contains(sLine)||radar == null){
             map.put("front_radar","0");
             map.put("back_radar","0");
           }
