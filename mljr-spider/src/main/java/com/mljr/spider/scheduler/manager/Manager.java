@@ -388,7 +388,10 @@ public class Manager extends AbstractMessage {
   // 京东手机价格监控
   private void startJdItemPrice() throws Exception {
     JdItemPriceProcessor processor = new JdItemPriceProcessor();
-    final Spider spider = Spider.create(processor).addPipeline(new JdItemPricePipeline()).thread(1);
+    final Spider spider = Spider.create(processor)
+            .addPipeline(new JdItemPricePipeline())
+            .thread(1)
+            .setExitWhenComplete(false);
     spider.setSpiderListeners(
         Lists.newArrayList(new DownloaderSpiderListener(JD_ITEM_PRICE_LISTENER_LOG_NAME), new StatusCodeListener(processor.getSite().getDomain())));
     spider.setScheduler(new JdItemPriceScheduler(spider, RMQ_JD_ITEM_PRICE_QUEUE_ID));
