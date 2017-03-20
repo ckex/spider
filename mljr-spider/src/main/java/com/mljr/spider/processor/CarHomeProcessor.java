@@ -99,9 +99,14 @@ public class CarHomeProcessor  extends AbstractPageProcessor {
                 String[] carHome = model.split(" ");
                 String carHomeConfig="";
                 String carTime="";
+                String sTime = "[0-9]{1,4}款";
+                Pattern patternY = Pattern.compile(sTime);
                 for (int j = 0; j <carHome.length ; j++) {
                     if(carHome[j].contains("款")){
-                        carTime+=carHome[j];
+                        Matcher matcher = patternY.matcher(carHome[j]);
+                        while(matcher.find()){
+                            carTime=matcher.group();
+                        }
                     }
                     if(carHome[j].contains("型")){
                         carHomeConfig += carHome[j];
