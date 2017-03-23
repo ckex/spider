@@ -43,4 +43,11 @@ public class PhoneInfoServiceImpl extends BaseServiceImpl<PhoneInfo, Long> imple
         }
         return "";
     }
+
+    @Override
+    public PhoneInfo queryByPhone(String mobile) {
+        if (StringUtils.isBlank(mobile)) return null;
+        mobile = mobile.length() >= 7 ? mobile.substring(0, 7) : mobile;
+        return phoneInfoMapper.selectByPhone(mobile);
+    }
 }
