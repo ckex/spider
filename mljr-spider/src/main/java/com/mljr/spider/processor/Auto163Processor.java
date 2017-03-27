@@ -351,8 +351,8 @@ public class Auto163Processor extends AbstractPageProcessor {
           map.put("car_steady_control","0");
         }
         //大灯材质
-        if(map2.containsKey("前雾灯")){
-          String headMap=map2.get("前雾灯").replace(sLine,"").replace(sCell,"").replace(sBlack,"").trim();
+        if(map2.containsKey("前照灯类型")){
+          String headMap=map2.get("前照灯类型").replace(sLine,"").replace(sCell,"").replace(sBlack,"").trim();
           if(StringUtils.isNotBlank(headMap)){
             map.put("car_headlamp",headMap);
           }else{
