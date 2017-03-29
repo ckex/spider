@@ -86,6 +86,7 @@ public class ApiController {
             return new ApiResponse(ErrorCodeEnum.IDCARD_ERR, false);
         }
         String token = DigestUtils.md5Hex(cellphone + idcard + "mljr");
+        token=token+"_mljr";
         PhoneInfoVO phoneInfo = apiService.getPhoneInfo(cellphone);
         UserInfo info = new UserInfo();
         info.setMobile(cellphone);
