@@ -16,7 +16,10 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 
 import java.text.ParseException;
@@ -29,11 +32,16 @@ public class JdConsumeService {
 
   private final static String QUEUE_NAME = "jd-item-price-result";
 
+  private final static String JD_PRICE_TOPIC = "topic-spider-jd-price";
+
   @Autowired
   private SrcDmPhonePriceDao srcDmPhonePriceDao;
 
   @Autowired
   private DmPhonePriceDao dmPhonePriceDao;
+
+  @Autowired
+  KafkaTemplate<Integer,String> kafkaTemplate;
 
   public void consume() throws Exception {
     final Channel channel = RabbitmqClient.newChannel();
@@ -80,9 +88,31 @@ public class JdConsumeService {
       String p = (String) map.get("p");
       record.setPrice(Float.parseFloat(p));
       dmPhonePriceDao.create(record);
+
+      // send to kafka
+      this.sendToKafka(record);
+
     }
 
   }
 
+  private void sendToKafka(DmPhonePriceDo record){
+
+      try {
+        ListenableFuture<SendResult<Integer, String>> res =  kafkaTemplate.send(JD_PRICE_TOPIC, gson.toJson(record));
+        if(res!=null) {
+          SendResult r = res.get();
+          long offsetIndex = r.getRecordMetadata().offset();
+          if (offsetIndex >= 0) {
+            logger.info("kafka send success");
+          } else {
+            logger.error("kafka send fail", gson.toJson(res));
+          }
+        }
+
+      }catch (Exception e){
+        logger.error("kafka send error" ,e);
+      }
+    }
 
 }
