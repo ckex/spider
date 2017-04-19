@@ -23,10 +23,8 @@ import org.springframework.util.concurrent.ListenableFuture;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class JdConsumeService {
@@ -100,20 +98,21 @@ public class JdConsumeService {
 
   private void sendToKafka(DmPhonePriceDo record){
 
-    ListenableFuture<SendResult<Integer, String>> res =  kafkaTemplate.send(JD_PRICE_TOPIC, gson.toJson(record));
-    if(res!=null){
       try {
-        SendResult r = res.get();
-        long offsetIndex = r.getRecordMetadata().offset();
-        if(offsetIndex>=0){
-          logger.info("kafka send success");
-        }else{
-          logger.error("kafka send fail",gson.toJson(res));
+        ListenableFuture<SendResult<Integer, String>> res =  kafkaTemplate.send(JD_PRICE_TOPIC, gson.toJson(record));
+        if(res!=null) {
+          SendResult r = res.get();
+          long offsetIndex = r.getRecordMetadata().offset();
+          if (offsetIndex >= 0) {
+            logger.info("kafka send success");
+          } else {
+            logger.error("kafka send fail", gson.toJson(res));
+          }
         }
 
       }catch (Exception e){
         logger.error("kafka send error" ,e);
       }
     }
-  }
+
 }

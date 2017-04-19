@@ -22,7 +22,7 @@
         <constructor-arg>
             <!-- key 详见org.apache.kafka.clients.producer.ProducerConfig中的常量用于调优kafka参数 -->
             <map>
-                <entry key="bootstrap.servers" value="192.168.49.206:9092,192.168.49.205:9092,192.168.49.204:9092"/>
+                <entry key="bootstrap.servers" value="10.8.45.103:9092,10.8.45.104:9092,10.8.45.105:9092,10.8.45.106:9092,10.8.45.107:9092"/>
                 <entry key="group.id" value="0"/>
                 <entry key="retries" value="10"/>
                 <entry key="batch.size" value="16384"/>
