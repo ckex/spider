@@ -40,9 +40,6 @@ public class JdConsumeService {
   @Autowired
   private DmPhonePriceDao dmPhonePriceDao;
 
-  @Autowired
-//  KafkaTemplate<Integer,String> kafkaTemplate;
-
   public void consume() throws Exception {
     final Channel channel = RabbitmqClient.newChannel();
     try {
