@@ -22,8 +22,8 @@ public class Main {
         super();
         ctx = new ClassPathXmlApplicationContext("classpath*:/spring/dao.xml",
                 "classpath*:/spring/dao-datasource.xml",
-                "classpath*:/spring/applicationContext.xml",
-                "classpath*:/kafka/kafka-producer.xml"
+                "classpath*:/spring/applicationContext.xml"
+//                "classpath*:/kafka/kafka-producer.xml"
         );
         logger.debug("started . ");
     }
