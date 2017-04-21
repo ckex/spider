@@ -3,6 +3,7 @@
  */
 package com.mljr.sync.service;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mljr.rabbitmq.RabbitmqClient;
@@ -24,7 +25,6 @@ import org.springframework.util.concurrent.ListenableFuture;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -101,7 +101,7 @@ public class JdConsumeService {
     private void sendToKafka(DmPhonePriceDo record) {
 
         try {
-            ListenableFuture<SendResult<Integer, String>> res = kafkaTemplate.send(JD_PRICE_TOPIC, gson.toJson(record));
+            ListenableFuture<SendResult<Integer, String>> res = kafkaTemplate.send(JD_PRICE_TOPIC, JSON.toJSONString(record));
             if (res != null) {
                 SendResult r = res.get();
                 long offsetIndex = r.getRecordMetadata().offset();
