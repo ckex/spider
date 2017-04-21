@@ -4,6 +4,7 @@
 package com.mljr.sync.service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mljr.rabbitmq.RabbitmqClient;
 import com.mljr.spider.dao.DmPhonePriceDao;
 import com.mljr.spider.dao.SrcDmPhonePriceDao;
@@ -23,96 +24,97 @@ import org.springframework.util.concurrent.ListenableFuture;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class JdConsumeService {
-  protected static transient Logger logger = LoggerFactory.getLogger(JdConsumeService.class);
+    protected static transient Logger logger = LoggerFactory.getLogger(JdConsumeService.class);
 
-  private final static String QUEUE_NAME = "jd-item-price-result";
+    private final static String QUEUE_NAME = "jd-item-price-result";
 
-  private final static String JD_PRICE_TOPIC = "topic-spider-jd-price";
+    private final static String JD_PRICE_TOPIC = "topic-spider-jd-price";
 
-  @Autowired
-  private SrcDmPhonePriceDao srcDmPhonePriceDao;
+    @Autowired
+    private SrcDmPhonePriceDao srcDmPhonePriceDao;
 
-  @Autowired
-  private DmPhonePriceDao dmPhonePriceDao;
+    @Autowired
+    private DmPhonePriceDao dmPhonePriceDao;
 
-  @Autowired
-  private KafkaTemplate<Integer,String> kafkaTemplate;
+    @Autowired
+    private KafkaTemplate<Integer, String> kafkaTemplate;
 
-  public void consume() throws Exception {
-    final Channel channel = RabbitmqClient.newChannel();
-    try {
+    public void consume() throws Exception {
+        final Channel channel = RabbitmqClient.newChannel();
+        try {
 
-      GetResponse response = RabbitmqClient.pollMessage(channel, QUEUE_NAME, false);
-      if (response == null) {
-        logger.debug("qid=" + QUEUE_NAME + " queue is empty.waitting message");
-        return;
-      }
-      String message = new String(response.getBody(), "UTF-8");
-      writeToDb(message);
-      channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
-    } catch (Exception e) {
-      logger.error("JdConsumeService error: " + ", " + ExceptionUtils.getStackTrace(e));
-    } finally {
-      if (channel != null) {
-        channel.close();
-      }
-    }
-
-  }
-
-  Gson gson = new Gson();
-
-  public void writeToDb(String jsonStr) {
-    String time = new JsonPathSelector("time").select(jsonStr);
-    String data = new JsonPathSelector("data").select(jsonStr);
-    List<String> dataList = new JsonPathSelector("$[*]").selectList(data);
-    for (String str : dataList) {
-      Map map = gson.fromJson(str, Map.class);
-      String id = (String) map.get("id");
-      String itemUrl = String.format("https://item.jd.com/%s.html", id.replace("J_", "").trim());
-      SrcDmPhonePriceDo src = srcDmPhonePriceDao.load(itemUrl);
-      DmPhonePriceDo record = new DmPhonePriceDo();
-      record.setBrand(src.getBrand());
-      record.setTitle(src.getTitle());
-      record.setWebsite("JD");
-      try {
-        record.setCreateDate(DateUtils.parseDate(time, "yyyy-MM-dd HH:mm:ss"));
-      } catch (ParseException e) {
-        e.printStackTrace();
-      }
-      String p = (String) map.get("p");
-      record.setPrice(Float.parseFloat(p));
-      dmPhonePriceDao.create(record);
-
-//       send to kafka
-      this.sendToKafka(record);
-
-    }
-
-  }
-
-  private void sendToKafka(DmPhonePriceDo record){
-
-      try {
-        ListenableFuture<SendResult<Integer, String>> res =  kafkaTemplate.send(JD_PRICE_TOPIC, gson.toJson(record));
-        if(res!=null) {
-          SendResult r = res.get();
-          long offsetIndex = r.getRecordMetadata().offset();
-          if (offsetIndex >= 0) {
-            logger.info("kafka send success");
-          } else {
-            logger.error("kafka send fail", gson.toJson(res));
-          }
+            GetResponse response = RabbitmqClient.pollMessage(channel, QUEUE_NAME, false);
+            if (response == null) {
+                logger.debug("qid=" + QUEUE_NAME + " queue is empty.waitting message");
+                return;
+            }
+            String message = new String(response.getBody(), "UTF-8");
+            writeToDb(message);
+            channel.basicAck(response.getEnvelope().getDeliveryTag(), false);
+        } catch (Exception e) {
+            logger.error("JdConsumeService error: " + ", " + ExceptionUtils.getStackTrace(e));
+        } finally {
+            if (channel != null) {
+                channel.close();
+            }
         }
 
-      }catch (Exception e){
-        logger.error("kafka send error" ,e);
-      }
+    }
+
+    static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+
+    public void writeToDb(String jsonStr) {
+        String time = new JsonPathSelector("time").select(jsonStr);
+        String data = new JsonPathSelector("data").select(jsonStr);
+        List<String> dataList = new JsonPathSelector("$[*]").selectList(data);
+        for (String str : dataList) {
+            Map map = gson.fromJson(str, Map.class);
+            String id = (String) map.get("id");
+            String itemUrl = String.format("https://item.jd.com/%s.html", id.replace("J_", "").trim());
+            SrcDmPhonePriceDo src = srcDmPhonePriceDao.load(itemUrl);
+            DmPhonePriceDo record = new DmPhonePriceDo();
+            record.setBrand(src.getBrand());
+            record.setTitle(src.getTitle());
+            record.setWebsite("JD");
+            try {
+                record.setCreateDate(DateUtils.parseDate(time, "yyyy-MM-dd HH:mm:ss"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String p = (String) map.get("p");
+            record.setPrice(Float.parseFloat(p));
+            dmPhonePriceDao.create(record);
+
+//       send to kafka
+            this.sendToKafka(record);
+
+        }
+
+    }
+
+    private void sendToKafka(DmPhonePriceDo record) {
+
+        try {
+            ListenableFuture<SendResult<Integer, String>> res = kafkaTemplate.send(JD_PRICE_TOPIC, gson.toJson(record));
+            if (res != null) {
+                SendResult r = res.get();
+                long offsetIndex = r.getRecordMetadata().offset();
+                if (offsetIndex >= 0) {
+                    logger.info("kafka send success");
+                } else {
+                    logger.error("kafka send fail", gson.toJson(res));
+                }
+            }
+
+        } catch (Exception e) {
+            logger.error("kafka send error", e);
+        }
     }
 
 }
