@@ -61,7 +61,7 @@ public class SyncScheduler {
   @Autowired
   private AbstractTask auto163CarNetFlagTask;
 
-  @Scheduled(cron = "0/2 * * * * ?")
+//  @Scheduled(cron = "0/2 * * * * ?")
   private void startMobileTask() {
     mobileTask.run();
     logger.debug(mobileTask.toString());
