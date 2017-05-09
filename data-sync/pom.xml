@@ -28,6 +28,19 @@
 			<groupId>com.ckex</groupId>
 			<artifactId>mljr-dao</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>json-path</artifactId>
+					<groupId>com.jayway.jsonpath</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path -->
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 
 		<dependency>
