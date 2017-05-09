@@ -65,9 +65,6 @@ public abstract class AbstractTask implements Runnable {
       if(ex instanceof com.rabbitmq.client.AlreadyClosedException){
         emailSender.send(null,new String[]{"bee@mljr.com"},"rabbitMq 连接异常",ExceptionUtils.getStackTrace(ex));
       }
-      if(ex instanceof com.mysql.jdbc.exceptions.jdbc4.CommunicationsException){
-        emailSender.send(null,new String[]{"bee@mljr.com"},"rabbitMq 连接异常",ExceptionUtils.getStackTrace(ex));
-      }
     } finally {
       // finishedTask();
     }
