@@ -1,5 +1,6 @@
 package com.mljr.monitor.mail;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class DefaultMailSender {
     public void send(String from, String[] to, String subject, String text) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            if(StringUtils.isBlank(from)){
+                from="datahub-monitor@liyunqiche.com";
+            }
             message.setFrom(from);
             message.setTo(to);
             message.setSubject(subject);
