@@ -210,7 +210,7 @@
 		<property name="targetDataSources">
 			<map key-type="java.lang.String">
 				<!-- read and write -->
-				<!--<entry key="rw" value-ref="dataSourceRW" />-->
+				<entry key="rw" value-ref="dataSourceRW" />
 				<!-- 风控分析库 -->
 				<entry key="rc" value-ref="dataSourceRC" />
 
@@ -220,8 +220,7 @@
 				<entry key="udb" value-ref="dataSource_udb" />
 			</map>
 		</property>
-		<!--<property name="defaultTargetDataSource" ref="dataSourceRW" />-->
-		<property name="defaultTargetDataSource" ref="dataSourceRC" />
+		<property name="defaultTargetDataSource" ref="dataSourceRW" />
 	</bean>
 
 	<!-- 使用JDBC事物 -->
