@@ -155,7 +155,7 @@ public class HttpPipeline implements Pipeline {
 
   private void sentContent(HttpPost post, FutureCallback<HttpResponse> callback) {
     COUNTER.num.incrementAndGet();
-    httpclient.post(post, callback, 3000);
+    httpclient.post(post, callback, 1000*50*10);
   }
 
   private HttpPost buildPost(byte[] body) {

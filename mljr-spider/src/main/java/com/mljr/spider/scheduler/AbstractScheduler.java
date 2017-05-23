@@ -5,13 +5,13 @@ package com.mljr.spider.scheduler;
 
 import com.google.common.base.Joiner;
 import com.mljr.rabbitmq.RabbitmqClient;
-import com.mljr.spider.mq.UMQClient;
+//import com.mljr.spider.mq.UMQClient;
 import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage.PullMsgTask;
 import com.mljr.utils.RandomUtils;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.*;
-import com.ucloud.umq.action.MessageData;
+//import com.ucloud.umq.action.MessageData;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -207,16 +207,16 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
     });
   }
 
-  private void subscribeUmq(final Spider spider, String qid) throws Exception {
-    UMQClient.getInstence().subscribeQueue(UMQClient.getInstence().new MessageHandler(qid) {
-
-      @Override
-      public boolean processMsg(MessageData message) {
-        return sentMsg(spider, new UMQMessage(message));
-      }
-
-    });
-  }
+//  private void subscribeUmq(final Spider spider, String qid) throws Exception {
+//    UMQClient.getInstence().subscribeQueue(UMQClient.getInstence().new MessageHandler(qid) {
+//
+//      @Override
+//      public boolean processMsg(MessageData message) {
+//        return sentMsg(spider, new UMQMessage(message));
+//      }
+//
+//    });
+//  }
 
   private boolean sentMsg(Spider spider, UMQMessage message) {
 
