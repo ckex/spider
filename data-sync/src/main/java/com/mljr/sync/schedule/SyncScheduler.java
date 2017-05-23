@@ -67,7 +67,7 @@ public class SyncScheduler {
     logger.debug(mobileTask.toString());
   }
 
-  @Scheduled(cron = "10 0/1 * * * ?")
+  @Scheduled(cron = "10 0/5 * * * ?")
   private void startGPSTask() {
     gpsTask.run();
     logger.debug(gpsTask.toString());
