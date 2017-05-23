@@ -5,6 +5,7 @@ package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mljr.spider.config.SiteManager;
 import com.mljr.spider.vo.JSONTransferVO;
 import org.apache.commons.lang3.StringUtils;
 import us.codecraft.webmagic.Page;
@@ -16,7 +17,7 @@ import us.codecraft.webmagic.Site;
  */
 public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
-  private static final Site site = Site.me().setDomain("saige-gps").setCharset(UTF_8);
+  private static final Site site = Site.me().setDomain("saige-gps").setCharset(UTF_8).setTimeOut(10*1000*60);
 
   @Override
   boolean onProcess(Page page) {
@@ -41,6 +42,11 @@ public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
   public SaiGeGPSProcessor() {
     super(site);
+  }
+
+  @Override
+  public Site getSite() {
+    return site;
   }
 
 }
