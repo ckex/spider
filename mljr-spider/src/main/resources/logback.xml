@@ -24,14 +24,38 @@
 	<property name="IDCARD_DATA_HOME" value="${BASIC_DATA_PATH}idCard" />
 	<property name="CARHOEM_DATA_HOME" value="${BASIC_DATA_PATH}carHome" />
 	<property name="DOWNLOADER_LISTENER_HOME" value="/data/listener" />
+	<!-- email start -->
+	<property name="smtpHost" value="smtp.exmail.qq.com" />
+	<property name="smtpPort" value="25" />
+    <property name="username" value="datahub-monitor@liyunqiche.com" /> 
+    <property name="password" value="Password1" />
+    <property name="email_to" value="bee@mljr.com" />
+    <property name="SSL" value="false" />
+    <property name="email_subject" value="mljr-spider-warning" />
+    <!-- email end -->
 	<contextName>${APP_NAME}</contextName>
-
+	
+	<!-- 加入email参数 -->
+	<appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+		<smtpHost>${smtpHost}</smtpHost>
+		<smtpPort>${smtpPort}</smtpPort>
+		<Username>${username}</Username>
+		<Password>${password}</Password>
+		<SSL>${SSL}</SSL>
+		<to>${email_to}</to>
+		<from>${username}</from>
+		<subject>${email_subject}</subject>
+		<asynchronousSending>false</asynchronousSending>
+		<layout class="ch.qos.logback.classic.html.HTMLLayout">
+		    <pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS}%X{ip}%level%thread%logger{20}%line%msg%n</pattern>
+		</layout>
+	</appender>
+	
 	<appender name="STDOUT"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>DEBUG</level>
@@ -53,8 +77,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -76,8 +99,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -99,8 +121,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -122,8 +143,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -145,8 +165,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -168,8 +187,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -191,8 +209,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -214,8 +231,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -237,8 +253,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -260,8 +275,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -283,8 +297,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -306,8 +319,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -329,8 +341,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -352,8 +363,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -375,8 +385,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -398,8 +407,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -421,8 +429,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -444,8 +451,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
 		<encoder charset="UTF-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
-			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread]
-				%logger{20}:%line - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -996,6 +1002,11 @@
 	<logger name="carhome-downloader" level="INFO" additivity="false">
 		<appender-ref ref="CAR_HOME_NET_LISTEREN_ERR" />
 	</logger>
+	
+	<logger name="warn-email" level="INFO" additivity="false">
+		<appender-ref ref="EMAIL" />
+	</logger>
+	
 	<root level="DEBUG">
 		<appender-ref ref="A1" />
 		<appender-ref ref="STDOUT" />

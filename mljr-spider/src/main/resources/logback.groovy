@@ -12,6 +12,9 @@
 
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.classic.filter.ThresholdFilter
+import ch.qos.logback.core.encoder.Encoder
+import ch.qos.logback.classic.html.HTMLLayout
+import ch.qos.logback.classic.net.SMTPAppender
 import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy
@@ -89,7 +92,31 @@ if (!DOWNLOADER_LISTENER_HOME) {
   DOWNLOADER_LISTENER_HOME = "/data/listener"
 }
 
+def smtpHost = "smtp.exmail.qq.com"
+def smtpPort = "25"
+def username = "datahub-monitor@liyunqiche.com"
+def password = "Password1"
+def email_to = "bee@mljr.com"
+def SSL = "false"
+def email_subject = "mljr-spider-warning"
+
 context.name = "${APP_NAME}"
+
+appender("EMAIL", SMTPAppender) {
+  smtpHost = "${smtpHost}"
+  smtpPort = "${smtpPort}"
+  username = "${username}"
+  password = "${password}"
+  SSL = "${SSL}"
+  to = "${email_to}"
+  from = "${username}"
+  subject = "${email_subject}"
+  asynchronousSending = false
+  layout(HTMLLayout) {
+    pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS}%X{ip}%level%thread%logger{20}%line%msg%n"
+  }
+}
+
 appender("STDOUT", RollingFileAppender) {
   encoder(PatternLayoutEncoder) {
     pattern = "%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}:%line - %msg%n"
@@ -630,4 +657,5 @@ logger("blackidcard-downloader", INFO, ["BLACK_IDCARD_LISTEREN_ERR"], false)
 logger("qqzone-downloader", INFO, ["QQZONE-SHUOSHUO-ERR"], false)
 logger("car_home_net_log_data", INFO, ["CAR_HOME_NET_LOG_DATA"], false)
 logger("carhome-downloader", INFO, ["CAR_HOME_NET_LISTEREN_ERR"], false)
+logger("warn-email", INFO, ["EMAIL"], false)
 root(DEBUG, ["A1", "STDOUT"])

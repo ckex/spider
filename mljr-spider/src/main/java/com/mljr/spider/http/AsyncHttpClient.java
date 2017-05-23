@@ -39,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
+import org.slf4j.MarkerFactory;
 
 /**
  * @author Ckex zha </br>
@@ -81,9 +82,9 @@ public class AsyncHttpClient {
 
   public AsyncHttpClient() throws IOReactorException {
 
-    int connectTimeout = 1000 * 60;
-    int socketTimeout = 1500;
-    int selectInterval = 50;
+    int connectTimeout = 1000 * 60 * 10;
+    int socketTimeout = 1000 * 60 * 10;
+    int selectInterval = 500;
     boolean tcpNoDelay = true;
 
     IOReactorConfig ioReactorConfig = IOReactorConfig.custom().setConnectTimeout(connectTimeout).setSoKeepAlive(true).setSoTimeout(socketTimeout)
@@ -99,13 +100,13 @@ public class AsyncHttpClient {
 
     ConnectionConfig connectionConfig = ConnectionConfig.custom().setMalformedInputAction(CodingErrorAction.IGNORE)
         .setUnmappableInputAction(CodingErrorAction.IGNORE).setCharset(Consts.UTF_8)
-        .setMessageConstraints(MessageConstraints.custom().setMaxHeaderCount(5000).setMaxLineLength(500000).build()).build();
+        .setMessageConstraints(MessageConstraints.custom().build()).build();
 
     connManager.setDefaultConnectionConfig(connectionConfig);
     connManager.setDefaultMaxPerRoute(10);
-    connManager.setMaxTotal(10);
+    connManager.setMaxTotal(50);
 
-    defaultReqConfig = RequestConfig.custom().setConnectionRequestTimeout(1000 * 30).setConnectTimeout(connectTimeout).setExpectContinueEnabled(false)
+    defaultReqConfig = RequestConfig.custom().setConnectionRequestTimeout(1000 * 60 * 10).setConnectTimeout(connectTimeout).setExpectContinueEnabled(false)
         .setCookieSpec(CookieSpecs.IGNORE_COOKIES).setSocketTimeout(socketTimeout).build();
     if (logger.isInfoEnabled()) {
       logger.info("defaultReqConfig=" + defaultReqConfig.toString());
@@ -131,6 +132,7 @@ public class AsyncHttpClient {
       if (logger.isDebugEnabled()) {
         e.printStackTrace();
       }
+      logger.error(MarkerFactory.getMarker("warn-email"), "exception {} {} ", post.getURI(), ExceptionUtils.getMessage(e));
       logger.error(post.getURI() + " " + ExceptionUtils.getStackTrace(e));
     }
   }

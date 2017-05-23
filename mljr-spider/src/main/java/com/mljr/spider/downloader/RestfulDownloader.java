@@ -10,6 +10,7 @@ import org.apache.http.entity.StringEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.slf4j.MarkerFactory;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.utils.HttpConstant;
@@ -48,6 +49,11 @@ public class RestfulDownloader extends HttpClientDownloader {
     } else {
       return super.selectRequestMethod(request);
     }
+  }
+
+  @Override
+  protected void onError(Request request) {
+    logger.error(MarkerFactory.getMarker("warn-email"), "抓取数据失败 {}",request.toString());
   }
 
 }

@@ -3,7 +3,7 @@
  */
 package com.mljr.spider.mq;
 
-import com.ucloud.umq.action.MessageData;
+//import com.ucloud.umq.action.MessageData;
 
 /**
  * @author Ckex zha </br>
@@ -21,9 +21,9 @@ public class UMQMessage {
     this.message = message;
   }
 
-  public UMQMessage(MessageData msgData) {
-    this(msgData.getMsgId(), msgData.getMsgBody());
-  }
+//  public UMQMessage(MessageData msgData) {
+//    this(msgData.getMsgId(), msgData.getMsgBody());
+//  }
 
   @Override
   public String toString() {
