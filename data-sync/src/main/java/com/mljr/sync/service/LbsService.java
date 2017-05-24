@@ -133,20 +133,28 @@ public class LbsService {
   private void syncLbsInfo(Function<HashMap, Boolean> function) {
 
     List<HashMap> infos = listData(LBS_KEY);
+    logger.info(JSON.toJSONString(infos));
     if (infos != null && !infos.isEmpty()) {
       for (HashMap map : infos) {
-        String pk = (String) map.get(PRIMARY_KEY);
-        if (CommonService.isExist(client, LBS_EXIST_IDS_KEY, pk)) {
-          logger.warn("lbs exist id ==========" + pk);
-          setLastId(LBS_KEY, pk);
-          continue;
+        try {
+          String pk = (String) map.get(PRIMARY_KEY);
+          logger.info("pk is " + pk);
+          if (CommonService.isExist(client, LBS_EXIST_IDS_KEY, pk)) {
+            logger.warn("lbs exist id ==========" + pk);
+            setLastId(LBS_KEY, pk);
+            continue;
+          }
+          if (function.apply(map)) {
+            setLastId(LBS_KEY, pk);
+            continue;
+          }
+          logger.error("sync merchant_info error!");
+          break;
+        }catch (Exception e){
+          String cli = client.toString();
+          logger.error("lbs 错误 {} {} ", org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace(e),"cli = "+ cli);
         }
-        if (function.apply(map)) {
-          setLastId(LBS_KEY, pk);
-          continue;
-        }
-        logger.error("sync merchant_info error!");
-        break;
+
       }
     }
 
