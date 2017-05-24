@@ -14,6 +14,7 @@ import com.mljr.spider.model.YyUserAddressBookDo;
 import com.mljr.spider.model.YyUserAddressBookHistoryDo;
 import com.mljr.spider.model.YyUserCallRecordDo;
 import com.mljr.spider.model.YyUserCallRecordHistoryDo;
+import com.mljr.sync.common.amqp.DefaultProducer;
 import com.mljr.utils.RandomUtils;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
@@ -22,6 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageDeliveryMode;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -76,21 +80,25 @@ public class MobileService {
   @Autowired
   private RedisClient client;
 
+  @Autowired
+  private DefaultProducer defaultProducer;
+
   public void syncMobile() throws Exception {
-    final Rmq rmq = new Rmq();
-    try {
-      Function<String, Boolean> function = (mobile) -> sentMobile(rmq, mobile);
+//    final Rmq rmq = new Rmq();
+//    try {
+//      Function<String, Boolean> function = (mobile) -> sentMobile(rmq, mobile);
+      Function<String, Boolean> function = (mobile) -> sentMobile(mobile);
       syncYyUserAddressBook(function);
       syncYyUserCallRecord(function);
       syncBookHistory(function);
       syncRecordHistory(function);
       syncYybgrkContactList(function);
       syncYybgrkContactListHistory(function);
-    } catch (Exception e) {
-      logger.error("sync mobile error!", e);
-    } finally {
-      rmq.closed();
-    }
+//    } catch (Exception e) {
+//      logger.error("sync mobile error!", e);
+//    } finally {
+//      rmq.closed();
+//    }
   }
 
   private void syncYybgrkContactList(Function<String, Boolean> function) {
@@ -222,7 +230,8 @@ public class MobileService {
     return ret;
   }
 
-  private boolean sentMobile(Rmq rmq, String mobile) {
+  private boolean sentMobile(String mobile) {
+//  private boolean sentMobile(Rmq rmq, String mobile) {
     if (StringUtils.isBlank(mobile)) {
       return true;
     }
@@ -240,28 +249,40 @@ public class MobileService {
     }
     BasicProperties.Builder builder = new BasicProperties.Builder();
     builder.contentEncoding(BasicConstant.UTF8).contentType(BasicConstant.TEXT_PLAIN).deliveryMode(1).priority(0);
-    return rmq.publish(new Function<Channel, Boolean>() {
-
-      @Override
-      public Boolean apply(Channel t) {
-        try {
-          RabbitmqClient.publishMessage(t, ServiceConfig.getMobileExchange(), ServiceConfig.getMobilerRoutingKey(), builder.build(),
-              mobile.getBytes(Charsets.UTF_8));
-          try {
-            TimeUnit.MILLISECONDS.sleep(10);
-          } catch (InterruptedException e) {
-          }
-          return true;
-        } catch (IOException e) {
-          if (logger.isDebugEnabled()) {
-            e.printStackTrace();
-          }
-          logger.error(ExceptionUtils.getStackTrace(e));
-          return false;
-        }
-
-      }
+//    defaultProducer.sent((amqpTemplate) -> {
+//      amqpTemplate.convertAndSend();
+//    });
+    MessageProperties prop = new MessageProperties();
+    prop.setContentEncoding(BasicConstant.UTF8);
+    prop.setContentType(BasicConstant.TEXT_PLAIN);
+    prop.setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT);
+    prop.setPriority(0);
+    defaultProducer.sent((template) -> {
+      template.convertAndSend(ServiceConfig.getMobileExchange(), ServiceConfig.getMobilerRoutingKey(),new Message(mobile.getBytes(Charsets.UTF_8), prop));
     });
+    return true ;
+//    return rmq.pulish(new Function<Channel, Boolean>() {
+//
+//      @Override
+//      public Boolean apply(Channel t) {
+//        try {
+//          RabbitmqClient.publishMessage(t, ServiceConfig.getMobileExchange(), ServiceConfig.getMobilerRoutingKey(), builder.build(),
+//              mobile.getBytes(Charsets.UTF_8));
+//          try {
+//            TimeUnit.MILLISECONDS.sleep(10);
+//          } catch (InterruptedException e) {
+//          }
+//          return true;
+//        } catch (IOException e) {
+//          if (logger.isDebugEnabled()) {
+//            e.printStackTrace();
+//          }
+//          logger.error(ExceptionUtils.getStackTrace(e));
+//          return false;
+//        }
+//
+//      }
+//    });
   }
 
   private boolean sentMobile(Channel channel, String mobile) {

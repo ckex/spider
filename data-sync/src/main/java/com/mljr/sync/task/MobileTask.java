@@ -34,6 +34,7 @@ public class MobileTask extends AbstractTask {
         ex.printStackTrace();
       }
       logger.error("Execute task error. " + ExceptionUtils.getStackTrace(ex));
+      throw new RuntimeException(ex);
     }
   }
 
