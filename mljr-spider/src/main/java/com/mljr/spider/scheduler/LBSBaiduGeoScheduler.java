@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.CharMatcher;
 import com.mljr.spider.mq.UMQMessage;
+import com.mljr.spider.request.ExtReqesut;
 import com.mljr.spider.scheduler.manager.AbstractMessage;
 import com.mljr.spider.util.KeyCacheUtils;
 import com.ucloud.umq.common.ServiceConfig;
@@ -51,8 +52,8 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
       return null;
     }
     JSONObject jsonObject = JSON.parseObject(message);
-    String url = String.format(URL, ServiceConfig.getLBSBaiduKey(), "", "");
-    if (jsonObject.containsKey("city") && jsonObject.containsKey("address")) {
+    String url = String.format(URL, ServiceConfig.getLBSBaiduKey(), "", ""); 
+    if (jsonObject.containsKey("city") && jsonObject.containsKey("address")) {     // id:主键id, idcard:身份证号，contractno:合同号
       String[] cityArray = jsonObject.getString("city").split(" ");
       String address = jsonObject.getString("address");
       String city = "";
@@ -79,8 +80,15 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
       if (logger.isDebugEnabled()) {
         logger.debug("lbs baidu request info.url:{} message:{}", url, message);
       }
+    }else{
+      logger.error("invald msg : "+message);
+      return null;
     }
-    return new Request(url);
+    ExtReqesut request = new ExtReqesut(url);
+    request.putData(LbsKeyEnum.id.name(), jsonObject.get(LbsKeyEnum.id.name()));// 主键id
+    request.putData(LbsKeyEnum.idcard.name(), jsonObject.get(LbsKeyEnum.idcard.name()));// 身份证号
+    request.putData(LbsKeyEnum.contractno.name(), jsonObject.get(LbsKeyEnum.contractno.name()));// 合同号
+    return request;
   }
 
   @Override
@@ -106,4 +114,9 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
     }
     return take();
   }
+  
+  public enum LbsKeyEnum{
+    id,idcard,contractno
+  }
+  
 }
