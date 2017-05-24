@@ -2,16 +2,22 @@ package com.mljr.spider.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mljr.spider.request.ExtReqesut;
+import com.mljr.spider.scheduler.LBSBaiduGeoScheduler.LbsKeyEnum;
 import com.mljr.spider.util.KeyCacheUtils;
 import com.mljr.spider.vo.JSONTransferVO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import us.codecraft.webmagic.Page;
+import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Site;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
 
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xi.gao Date:2016/12/7
@@ -26,11 +32,21 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
     String json = page.getJson().get();
 
     JSONObject jsonObject = JSON.parseObject(json);
-
     Integer status = jsonObject.getInteger("status");
+    
+    Request request = page.getRequest();
+    if (request instanceof ExtReqesut) {
+      ExtReqesut extReqesut = (ExtReqesut) request;
+      Map<String, Object> paramsData = extReqesut.getData();
+      jsonObject.put(LbsKeyEnum.id.name(), paramsData.get(LbsKeyEnum.id.name()));
+      jsonObject.put(LbsKeyEnum.idcard.name(), paramsData.get(LbsKeyEnum.idcard.name()));
+      jsonObject.put(LbsKeyEnum.contractno.name(), paramsData.get(LbsKeyEnum.contractno.name()));
+    } else {
+      logger.error("invalid request. " + request.toString());
+    }
 
     if (logger.isDebugEnabled()) {
-      logger.debug("lbs baidu geo request.url:{},json:{}", page.getRequest().toString(), json);
+      logger.debug("lbs baidu geo request.url:{},json:{},target json:{}", page.getRequest().toString(), json,jsonObject.toJSONString());
     }
 
     // 判断密钥是否超出每天的限制
