@@ -37,6 +37,27 @@
 		</property>
 	</bean>
 
+	<!-- 引入配置文件 -->
+	<bean id="propertyResources" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<value>classpath:sync.default.properties</value>
+				<value>classpath:test.sync.default.properties</value>
+				<value>classpath:rabbitmq.properties</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="propertyConfigurer"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations" ref="propertyResources" />
+		<property name="fileEncoding">
+			<value>UTF-8</value>
+		</property>
+	</bean>
+
 	<bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
 	    <property name="backOffPolicy">
 			<bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy"/>
