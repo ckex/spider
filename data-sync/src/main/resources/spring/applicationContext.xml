@@ -38,7 +38,7 @@
 	</bean>
 
 	<!-- 引入配置文件 -->
-	<bean id="propertyResources" class="java.util.ArrayList">
+	<bean id="dataSyncPropertyResources" class="java.util.ArrayList">
 		<constructor-arg>
 			<list>
 				<value>classpath:sync.default.properties</value>
@@ -48,11 +48,11 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="propertyConfigurer"
+	<bean id="dataSyncPropertyConfigurer"
 		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="ignoreResourceNotFound" value="true" />
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
-		<property name="locations" ref="propertyResources" />
+		<property name="locations" ref="dataSyncPropertyResources" />
 		<property name="fileEncoding">
 			<value>UTF-8</value>
 		</property>
