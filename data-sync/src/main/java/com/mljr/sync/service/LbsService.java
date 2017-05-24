@@ -106,17 +106,23 @@ public class LbsService {
     String city = (String) map.get("company_city");
     String home_address = (String) map.get("home_address");
     String company_address = (String) map.get("company_name");
+    String contract_no = (String) map.get("contract_no");
+    String idcard = (String) map.get("idcard");
 
     HashMap<String, String> homeMap = new HashMap<>();
     homeMap.put("id", id);
     homeMap.put("city", city);
     homeMap.put("address", home_address);
+    homeMap.put("contractNo", contract_no);
+    homeMap.put("idcard", idcard);
     homeMap.put("addressFlag", "home");
 
     HashMap<String, String> companyMap = new HashMap<>();
-    companyMap.put("id", id);
-    companyMap.put("city", city);
-    companyMap.put("address", company_address);
+    homeMap.put("id", id);
+    homeMap.put("city", city);
+    homeMap.put("address", company_address);
+    homeMap.put("contractNo", contract_no);
+    homeMap.put("idcard", idcard);
     companyMap.put("addressFlag", "company");
 
     arr[0] = JSON.toJSONString(homeMap);
