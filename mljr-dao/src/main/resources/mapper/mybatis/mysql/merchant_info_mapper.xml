@@ -39,7 +39,7 @@
 
 	<select id="listAddressById" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap" useCache="false">
-		select bc.SERIALNO as contract_id, p.companyCity as company_city,
+		select p.CUSTOMERID as customer_id ,bc.SERIALNO as contract_no,p.CERTID as idcard, p.companyCity as company_city,
 		p.companyName as company_name,
 		p.homecity as home_city, p.homeaddress as home_address
 		from sba.c002_business_contract as bc
