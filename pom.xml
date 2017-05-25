@@ -22,7 +22,6 @@
 		<module>spider-monitor</module>
 		<module>spider-config</module>
 		<module>gps-monitor</module>
-		<module>data-import</module>
 		<module>spider-task</module>
 		<module>spider-operators-data</module>
 	</modules>
