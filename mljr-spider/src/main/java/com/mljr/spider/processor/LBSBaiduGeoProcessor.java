@@ -13,8 +13,6 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Site;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +38,7 @@ public class LBSBaiduGeoProcessor extends AbstractPageProcessor {
       Map<String, Object> paramsData = extReqesut.getData();
       jsonObject.put(LbsKeyEnum.id.name(), paramsData.get(LbsKeyEnum.id.name()));
       jsonObject.put(LbsKeyEnum.idcard.name(), paramsData.get(LbsKeyEnum.idcard.name()));
-      jsonObject.put(LbsKeyEnum.contractno.name(), paramsData.get(LbsKeyEnum.contractno.name()));
+      jsonObject.put(LbsKeyEnum.contractNo.name(), paramsData.get(LbsKeyEnum.contractNo.name()));
     } else {
       logger.error("invalid request. " + request.toString());
     }
