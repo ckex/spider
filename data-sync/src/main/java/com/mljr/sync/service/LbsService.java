@@ -100,7 +100,7 @@ public class LbsService {
 
   private String[] handleJson(HashMap map) {
     String[] arr = new String[2];
-    String id = (String) map.get("contract_id");
+    String id = (String) map.get("customer_id");
     String city = (String) map.get("company_city");
     String home_address = (String) map.get("home_address");
     String company_address = (String) map.get("company_name");
