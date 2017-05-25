@@ -35,7 +35,7 @@ public class LbsService {
 
   private static final int LIMIT = 50;
 
-  private static final String PRIMARY_KEY = "contract_id";
+  private static final String CONTRACT_NO = "contract_no";
 
   private static final String LBS_KEY = Joiner.on("-").join(BasicConstant.LBS_INFO, BasicConstant.LAST_ID);
 
@@ -49,14 +49,12 @@ public class LbsService {
 
   public void syncLbsInfo() throws Exception {
 
-    // final Channel channel = RabbitmqClient.newChannel();
     final Rmq rmq = new Rmq();
     try {
       Function<HashMap, Boolean> function = new Function<HashMap, Boolean>() {
 
         @Override
         public Boolean apply(HashMap map) {
-          // return sentMercentInfo(channel, map);
           return sentMercentInfo(rmq, map);
         }
       };
@@ -69,7 +67,7 @@ public class LbsService {
   }
 
   private boolean sentMercentInfo(Rmq rmq, HashMap map) {
-    if (map == null || StringUtils.isBlank((String) map.get(PRIMARY_KEY))) {
+    if (map == null || StringUtils.isBlank((String) map.get(CONTRACT_NO))) {
       return true;
     }
     String[] jsonArr = handleJson(map);
@@ -137,15 +135,18 @@ public class LbsService {
     if (infos != null && !infos.isEmpty()) {
       for (HashMap map : infos) {
         try {
-          String pk = (String) map.get(PRIMARY_KEY);
-          logger.info("pk is " + pk);
-          if (CommonService.isExist(client, LBS_EXIST_IDS_KEY, pk)) {
-            logger.warn("lbs exist id ==========" + pk);
-            setLastId(LBS_KEY, pk);
+          String contract_no = (String) map.get(CONTRACT_NO);
+          logger.info("CONTRACT_NO is " + contract_no);
+          if(StringUtils.isBlank(contract_no)){
+            continue;
+          }
+          if (CommonService.isExist(client, LBS_EXIST_IDS_KEY, contract_no)) {
+            logger.warn("lbs exist id ==========" + contract_no);
+            setLastId(LBS_KEY, contract_no);
             continue;
           }
           if (function.apply(map)) {
-            setLastId(LBS_KEY, pk);
+            setLastId(LBS_KEY, contract_no);
             continue;
           }
           logger.error("sync merchant_info error!");
