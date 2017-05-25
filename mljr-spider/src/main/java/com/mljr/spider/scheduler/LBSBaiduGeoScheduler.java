@@ -53,7 +53,7 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
     }
     JSONObject jsonObject = JSON.parseObject(message);
     String url = String.format(URL, ServiceConfig.getLBSBaiduKey(), "", ""); 
-    if (jsonObject.containsKey("city") && jsonObject.containsKey("address")) {     // id:主键id, idcard:身份证号，contractno:合同号
+    if (jsonObject.containsKey("city") && jsonObject.containsKey("address")) {     // id:主键id, idcard:身份证号，contractNo:合同号
       String[] cityArray = jsonObject.getString("city").split(" ");
       String address = jsonObject.getString("address");
       String city = "";
@@ -87,7 +87,7 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
     ExtReqesut request = new ExtReqesut(url);
     request.putData(LbsKeyEnum.id.name(), jsonObject.get(LbsKeyEnum.id.name()));// 主键id
     request.putData(LbsKeyEnum.idcard.name(), jsonObject.get(LbsKeyEnum.idcard.name()));// 身份证号
-    request.putData(LbsKeyEnum.contractno.name(), jsonObject.get(LbsKeyEnum.contractno.name()));// 合同号
+    request.putData(LbsKeyEnum.contractNo.name(), jsonObject.get(LbsKeyEnum.contractNo.name()));// 合同号
     return request;
   }
 
@@ -116,7 +116,7 @@ public class LBSBaiduGeoScheduler extends AbstractScheduler {
   }
   
   public enum LbsKeyEnum{
-    id,idcard,contractno
+    id,idcard, contractNo
   }
   
 }
