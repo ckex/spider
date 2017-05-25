@@ -49,14 +49,12 @@ public class LbsService {
 
   public void syncLbsInfo() throws Exception {
 
-    // final Channel channel = RabbitmqClient.newChannel();
     final Rmq rmq = new Rmq();
     try {
       Function<HashMap, Boolean> function = new Function<HashMap, Boolean>() {
 
         @Override
         public Boolean apply(HashMap map) {
-          // return sentMercentInfo(channel, map);
           return sentMercentInfo(rmq, map);
         }
       };
