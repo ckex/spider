@@ -35,7 +35,7 @@ public class LbsService {
 
   private static final int LIMIT = 50;
 
-  private static final String PRIMARY_KEY = "contract_id";
+  private static final String CONTRACT_NO = "contract_no";
 
   private static final String LBS_KEY = Joiner.on("-").join(BasicConstant.LBS_INFO, BasicConstant.LAST_ID);
 
@@ -49,14 +49,12 @@ public class LbsService {
 
   public void syncLbsInfo() throws Exception {
 
-    // final Channel channel = RabbitmqClient.newChannel();
     final Rmq rmq = new Rmq();
     try {
       Function<HashMap, Boolean> function = new Function<HashMap, Boolean>() {
 
         @Override
         public Boolean apply(HashMap map) {
-          // return sentMercentInfo(channel, map);
           return sentMercentInfo(rmq, map);
         }
       };
@@ -69,7 +67,7 @@ public class LbsService {
   }
 
   private boolean sentMercentInfo(Rmq rmq, HashMap map) {
-    if (map == null || StringUtils.isBlank((String) map.get(PRIMARY_KEY))) {
+    if (map == null || StringUtils.isBlank((String) map.get(CONTRACT_NO))) {
       return true;
     }
     String[] jsonArr = handleJson(map);
@@ -102,21 +100,27 @@ public class LbsService {
 
   private String[] handleJson(HashMap map) {
     String[] arr = new String[2];
-    String id = (String) map.get("contract_id");
+    String id = (String) map.get("customer_id");
     String city = (String) map.get("company_city");
     String home_address = (String) map.get("home_address");
     String company_address = (String) map.get("company_name");
+    String contract_no = (String) map.get("contract_no");
+    String idcard = (String) map.get("idcard");
 
     HashMap<String, String> homeMap = new HashMap<>();
     homeMap.put("id", id);
     homeMap.put("city", city);
     homeMap.put("address", home_address);
+    homeMap.put("contractNo", contract_no);
+    homeMap.put("idcard", idcard);
     homeMap.put("addressFlag", "home");
 
     HashMap<String, String> companyMap = new HashMap<>();
-    companyMap.put("id", id);
-    companyMap.put("city", city);
-    companyMap.put("address", company_address);
+    homeMap.put("id", id);
+    homeMap.put("city", city);
+    homeMap.put("address", company_address);
+    homeMap.put("contractNo", contract_no);
+    homeMap.put("idcard", idcard);
     companyMap.put("addressFlag", "company");
 
     arr[0] = JSON.toJSONString(homeMap);
@@ -127,20 +131,31 @@ public class LbsService {
   private void syncLbsInfo(Function<HashMap, Boolean> function) {
 
     List<HashMap> infos = listData(LBS_KEY);
+    logger.info(JSON.toJSONString(infos));
     if (infos != null && !infos.isEmpty()) {
       for (HashMap map : infos) {
-        String pk = (String) map.get(PRIMARY_KEY);
-        if (CommonService.isExist(client, LBS_EXIST_IDS_KEY, pk)) {
-          logger.warn("lbs exist id ==========" + pk);
-          setLastId(LBS_KEY, pk);
-          continue;
+        try {
+          String contract_no = (String) map.get(CONTRACT_NO);
+          logger.info("CONTRACT_NO is " + contract_no);
+          if(StringUtils.isBlank(contract_no)){
+            continue;
+          }
+          if (CommonService.isExist(client, LBS_EXIST_IDS_KEY, contract_no)) {
+            logger.warn("lbs exist id ==========" + contract_no);
+            setLastId(LBS_KEY, contract_no);
+            continue;
+          }
+          if (function.apply(map)) {
+            setLastId(LBS_KEY, contract_no);
+            continue;
+          }
+          logger.error("sync merchant_info error!");
+          break;
+        }catch (Exception e){
+          String cli = client.toString();
+          logger.error("lbs 错误 {} {} ", org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace(e),"cli = "+ cli);
         }
-        if (function.apply(map)) {
-          setLastId(LBS_KEY, pk);
-          continue;
-        }
-        logger.error("sync merchant_info error!");
-        break;
+
       }
     }
 
