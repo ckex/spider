@@ -24,6 +24,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import com.google.common.base.Stopwatch;
 import com.mljr.spider.http.AsyncHttpClient;
@@ -108,6 +109,8 @@ public class HttpPipeline implements Pipeline {
               COUNTER.failure.incrementAndGet();
               standbyPipeline.process(items, t);
             }
+            logger.error(MarkerFactory.getMarker("warn-email"),String.format("HTTP code:%s,isWrite:%s,time:%s,len:%s, gzipLen:%s, %s, %s", code, isWrite,
+                watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen, COUNTER.toString(), response));
             logger.error(String.format("HTTP code:%s,isWrite:%s,time:%s,len:%s, gzipLen:%s, %s, %s", code, isWrite,
                 watch.elapsed(TimeUnit.MILLISECONDS), length, gzipLen, COUNTER.toString(), response));
             return;
@@ -121,6 +124,7 @@ public class HttpPipeline implements Pipeline {
             e.printStackTrace();
           }
           logger.error(ExceptionUtils.getStackTrace(e));
+          logger.error(MarkerFactory.getMarker("warn-email"),ExceptionUtils.getStackTrace(e));
         } finally {
           try {
             EntityUtils.consume(result.getEntity());
@@ -133,6 +137,7 @@ public class HttpPipeline implements Pipeline {
       public void failed(Exception ex) {
         boolean isWrite = flag.compareAndSet(true, false);
         logger.debug("useTime=" + watch.elapsed(TimeUnit.MILLISECONDS) + ", isWrite=" + isWrite + ", " + COUNTER.toString());
+        logger.error(MarkerFactory.getMarker("warn-email"),"useTime=" + watch.elapsed(TimeUnit.MILLISECONDS) + ", isWrite=" + isWrite + ", " + COUNTER.toString()+">"+ExceptionUtils.getStackTrace(ex));
         watch.stop();
         if (isWrite) {
           COUNTER.failure.incrementAndGet();
